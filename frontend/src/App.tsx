@@ -1,21 +1,41 @@
-import { lazy, Suspense, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { Cycler } from './components/Cycler'
 import { FootageCard } from './components/FootageCard'
 import { Header } from './components/Header'
+import { Help } from './components/Help'
 import { Loader } from './components/Loader'
+import { SkeletonCard } from './components/Skeleton'
 import type { Pin } from './components/globe/Globe'
+import { Show, SHOW_PERIOD_MS } from './components/show/Show'
 import { ArchiveCard } from './components/time/ArchiveCard'
 import { TimeControls } from './components/time/TimeControls'
 import { LIVE, mediaUrl, useCameras, useFeed, useStream } from './lib/api'
 import { ARCHIVE_CAMS, availableCams, camHasYear, describeMoment, frameUrl } from './lib/archive'
 import { EVENT_LABEL, FILTER_LABEL, matchesFilter, type Filter } from './lib/events'
-import { useMoment, useView, type View } from './lib/view'
+import { duskiness, subsolar } from './lib/sun'
+import { stepMoment, useMoment, useView, type View } from './lib/view'
 
 const Globe = lazy(() => import('./components/globe/Globe').then((m) => ({ default: m.Globe })))
 
-/** Broadcast cycles the top few; the globe shows (and lets you pick) many more. */
+/** Broadcast cycles the top few; the globe and the show use many more. */
 const HERO_SLOTS = 4
 const PIN_SLOTS = 50
+/** Sunset ring: the local clock jumps this far every PLAY_MS. */
+const PLAY_STEP_MIN = 30
+const PLAY_MS = 2_000
+/** Story mode starts itself on the broadcast layout after this long without input (booth). */
+const IDLE_MS = 90_000
+const VIEW_KEYS: Record<string, View> = { 1: 'broadcast', 2: 'globe', 3: 'time', 4: 'show' }
+
+/** Subsolar point, refreshed every minute (the terminator moves 0.25° in that time). */
+function useSun() {
+  const [sun, setSun] = useState(() => subsolar())
+  useEffect(() => {
+    const id = setInterval(() => setSun(subsolar()), 60_000)
+    return () => clearInterval(id)
+  }, [])
+  return sun
+}
 
 export default function App() {
   const feed = useFeed()
@@ -26,12 +46,15 @@ export default function App() {
   const [filter, setFilter] = useState<Filter>('all')
   const [index, setIndex] = useState(0)
   const [hover, setHover] = useState(false)
+  const [playing, setPlaying] = useState(false)
+  const [help, setHelp] = useState(false)
+  const sun = useSun()
 
   const filtered = useMemo(
     () => (feed.data ?? []).filter((f) => matchesFilter(f.event.type, filter)),
     [feed.data, filter],
   )
-  const visible = filtered.slice(0, view === 'globe' ? PIN_SLOTS : HERO_SLOTS)
+  const visible = filtered.slice(0, view === 'broadcast' ? HERO_SLOTS : PIN_SLOTS)
   const onFilter = (f: Filter) => {
     setFilter(f)
     setIndex(0)
@@ -39,6 +62,7 @@ export default function App() {
   const onView = (v: View) => {
     setView(v)
     if ((v === 'time') !== (view === 'time')) setIndex(0)
+    if (v !== 'time') setPlaying(false)
   }
   const current = visible[Math.min(index, visible.length - 1)]
 
@@ -73,6 +97,79 @@ export default function App() {
         pins.findIndex((p) => p.id === id),
       ),
     )
+  const count = view === 'time' ? archiveCams.length : visible.length
+
+  // Sunset ring: advance the shared local clock; every pin refetches its frame.
+  useEffect(() => {
+    if (!playing || view !== 'time') return
+    const id = setInterval(() => setMoment(stepMoment(moment, PLAY_STEP_MIN)), PLAY_MS)
+    return () => clearInterval(id)
+  }, [playing, view, moment, setMoment])
+
+  // Warm the browser cache with the neighbouring slider steps once this moment has landed.
+  useEffect(() => {
+    if (view !== 'time') return
+    const id = setTimeout(() => {
+      for (const step of [PLAY_STEP_MIN, -PLAY_STEP_MIN]) {
+        const m = stepMoment(moment, step)
+        for (const c of archiveCams) {
+          const url = camHasYear(c, m) && frameUrl(c, m, 240)
+          if (url) new Image().src = url
+        }
+      }
+    }, 1_200)
+    return () => clearTimeout(id)
+  }, [view, moment, archiveCams])
+
+  // Story mode advances itself; any key or click leaves.
+  useEffect(() => {
+    if (view !== 'show' || count < 2) return
+    const id = setInterval(() => setIndex((i) => (i + 1) % count), SHOW_PERIOD_MS)
+    return () => clearInterval(id)
+  }, [view, count])
+
+  // Booth: idle on the broadcast layout long enough and the show starts.
+  useEffect(() => {
+    if (view !== 'broadcast') return
+    let id = setTimeout(() => setView('show'), IDLE_MS)
+    const reset = () => {
+      clearTimeout(id)
+      id = setTimeout(() => setView('show'), IDLE_MS)
+    }
+    const events = ['pointermove', 'pointerdown', 'keydown', 'wheel'] as const
+    for (const e of events) window.addEventListener(e, reset, { passive: true })
+    return () => {
+      clearTimeout(id)
+      for (const e of events) window.removeEventListener(e, reset)
+    }
+  }, [view, setView])
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.tagName === 'TEXTAREA')) return
+      if (view === 'show') {
+        onView('broadcast')
+        return
+      }
+      if (e.key === 'ArrowRight') setIndex((i) => (count ? (i + 1) % count : 0))
+      else if (e.key === 'ArrowLeft') setIndex((i) => (count ? (i - 1 + count) % count : 0))
+      else if (e.key === ' ' && view === 'time') setPlaying((p) => !p)
+      else if (e.key === '?') setHelp((h) => !h)
+      else if (e.key === 'Escape') setHelp(false)
+      else if (e.key in VIEW_KEYS) onView(VIEW_KEYS[e.key])
+      else return
+      e.preventDefault()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  })
+
+  if (view === 'show') {
+    return (
+      <Show footage={current} cameras={cameras.data} sun={sun} onExit={() => onView('broadcast')} />
+    )
+  }
 
   const card =
     view === 'time' ? (
@@ -84,9 +181,7 @@ export default function App() {
         </div>
       )
     ) : feed.isPending ? (
-      <div className="card aspect-video">
-        <Loader label="looking at the sky…" />
-      </div>
+      <SkeletonCard />
     ) : feed.isError ? (
       <div className="card aspect-video">
         <Loader label="feed unavailable — retrying" />
@@ -100,10 +195,10 @@ export default function App() {
     )
   const cycler = (
     <Cycler
-      count={view === 'time' ? archiveCams.length : visible.length}
+      count={count}
       index={index}
       onChange={setIndex}
-      paused={hover}
+      paused={hover || playing}
       periodMs={view === 'time' ? 8_000 : undefined}
     />
   )
@@ -117,7 +212,9 @@ export default function App() {
         stream={stream}
         view={view}
         onView={onView}
+        onHelp={() => setHelp(true)}
       />
+      {help && <Help onClose={() => setHelp(false)} />}
 
       {view === 'broadcast' ? (
         <main
@@ -134,6 +231,8 @@ export default function App() {
             <TimeControls
               moment={moment}
               onChange={setMoment}
+              playing={playing}
+              onPlaying={setPlaying}
               status={
                 LIVE
                   ? `${archiveCams.length} archive cameras`
@@ -150,6 +249,8 @@ export default function App() {
                     pins={pins}
                     selectedId={selectedId}
                     onSelect={onSelectPin}
+                    sun={view === 'time' ? undefined : sun}
+                    dusk={view === 'time' ? duskiness(moment.minutes) : 0}
                   />
                 )}
               </Suspense>

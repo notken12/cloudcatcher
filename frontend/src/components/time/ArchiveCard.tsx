@@ -1,5 +1,6 @@
-import { ExternalLink } from 'lucide-react'
+import { ExternalLink, Film } from 'lucide-react'
 import { useState } from 'react'
+import { Timelapse } from './Timelapse'
 import { type ArchiveCam, camHasYear, describeMoment, frameUrl } from '../../lib/archive'
 import { LIVE } from '../../lib/api'
 import { formatCoord } from '../../lib/time'
@@ -35,11 +36,14 @@ function Frame({ url, alt }: { url: string; alt: string }) {
 /** Big archive frame + where/when/whose. Same silhouette as FootageCard so the layout holds. */
 export function ArchiveCard({ cam, moment }: { cam: ArchiveCam; moment: Moment }) {
   const url = camHasYear(cam, moment) ? frameUrl(cam, moment, 1280) : null
+  const [lapse, setLapse] = useState(false)
 
   return (
     <article className="fade-in flex w-full flex-col gap-4" key={cam.id}>
       <div className="card relative aspect-video overflow-hidden bg-black/5">
-        {url ? (
+        {url && lapse ? (
+          <Timelapse key={`${cam.id}/${moment.date}`} cam={cam} moment={moment} />
+        ) : url ? (
           <Frame key={url} url={url} alt={`${cam.name} at ${describeMoment(moment)}`} />
         ) : (
           <Loader
@@ -74,6 +78,17 @@ export function ArchiveCard({ cam, moment }: { cam: ArchiveCam; moment: Moment }
           <span>
             every {cam.step_min} min since {cam.since}
           </span>
+          {url && (
+            <button
+              type="button"
+              className="btn ml-auto"
+              aria-pressed={lapse}
+              onClick={() => setLapse((v) => !v)}
+              title="Play this whole day at this camera"
+            >
+              <Film className="h-3.5 w-3.5" /> 24 h
+            </button>
+          )}
         </div>
       </div>
     </article>
