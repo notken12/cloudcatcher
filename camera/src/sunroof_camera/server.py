@@ -184,6 +184,7 @@ def create_app(
             "cameras": len(st.catalog.df) if st.catalog is not None else 0,
             "results": len(st.results),
             "vlm": vlm.describe() if vlm.available() else None,
+            "vlm_usage": vlm.USAGE.as_dict(),
         }
 
     return app

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import asyncio
 import io
+import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -39,6 +40,11 @@ def test_vlm_backend_selection(monkeypatch):
     vlm.backend.cache_clear()
     b = vlm.backend()
     assert b and b.base_url is None and b.native_schema and b.model == "gpt-4o-mini"
+    assert b.model_large == b.model and b.parallel == 8  # no gpt-4o escalation by default
+    monkeypatch.setenv("SUNROOF_VLM_MODEL_LARGE", "gpt-4o")
+    vlm.backend.cache_clear()
+    assert vlm.backend().model_large == "gpt-4o"
+    monkeypatch.delenv("SUNROOF_VLM_MODEL_LARGE")
     monkeypatch.setenv("SUNROOF_VLM_BASE_URL", "http://vllm:8000/v1")
     monkeypatch.setenv("SUNROOF_VLM_MODEL", "Qwen/Qwen2.5-VL-7B-Instruct")
     vlm.backend.cache_clear()
@@ -64,6 +70,84 @@ def test_vlm_backend_selection(monkeypatch):
     monkeypatch.setenv("SUNROOF_VLM_BACKEND", "off")
     vlm.backend.cache_clear()
     assert vlm.backend() is None and not vlm.available() and vlm.describe() == "none"
+
+
+def test_vlm_backend_explicit_choice(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
+    monkeypatch.setenv("GROQ_API_KEY", "gsk-test")
+    for choice, url in (("groq", vlm.GROQ_URL), ("openai", None), ("ollama", vlm.OLLAMA_URL)):
+        monkeypatch.setenv("SUNROOF_VLM_BACKEND", choice)
+        vlm.backend.cache_clear()
+        assert vlm.backend().base_url == url
+    monkeypatch.setenv("SUNROOF_VLM_BACKEND", "openai")
+    monkeypatch.delenv("OPENAI_API_KEY")
+    vlm.backend.cache_clear()
+    with pytest.raises(ValueError, match="OPENAI_API_KEY"):
+        vlm.backend()
+    monkeypatch.setenv("SUNROOF_VLM_BACKEND", "bogus")
+    vlm.backend.cache_clear()
+    with pytest.raises(ValueError, match="bogus"):
+        vlm.backend()
+
+
+def test_openai_structured_path_offline(monkeypatch):
+    """Drive `judge` through the real openai SDK against a mocked api.openai.com: request shape
+    (json_schema response_format, detail=low image) and usage/cost accounting."""
+    from openai import AsyncOpenAI
+
+    monkeypatch.setenv("SUNROOF_VLM_BACKEND", "openai")
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
+    vlm.backend.cache_clear()
+    seen: list[dict] = []
+    answer = {
+        "usable": True,
+        "sky_visible": 0.7,
+        "night": False,
+        "event_visible": "yes",
+        "event_type_seen": "thunderstorm",
+        "confidence": 0.9,
+        "quality": 4,
+        "caption": "anvil over the plains",
+        "burned_in_time": "12:00",
+    }
+
+    def handler(req: httpx.Request) -> httpx.Response:
+        body = json.loads(req.content)
+        seen.append(body)
+        return httpx.Response(
+            200,
+            json={
+                "id": "x",
+                "object": "chat.completion",
+                "created": 0,
+                "model": body["model"],
+                "choices": [
+                    {
+                        "index": 0,
+                        "finish_reason": "stop",
+                        "message": {"role": "assistant", "content": json.dumps(answer)},
+                    }
+                ],
+                "usage": {"prompt_tokens": 300, "completion_tokens": 60, "total_tokens": 360},
+            },
+        )
+
+    monkeypatch.setattr(
+        vlm,
+        "_client",
+        lambda b: AsyncOpenAI(
+            api_key=b.api_key, http_client=httpx.AsyncClient(transport=httpx.MockTransport(handler))
+        ),
+    )
+    before = vlm.USAGE.calls
+    v = asyncio.run(vlm.judge(jpeg(), "thunderstorm", "a cumulonimbus", "cam facing W"))
+    assert v and v.event_visible == "yes" and v.model == "gpt-4o-mini" and v.quality == 4
+    assert len(seen) == 1  # confident answer -> no escalation call
+    req = seen[0]
+    assert req["model"] == "gpt-4o-mini" and req["response_format"]["type"] == "json_schema"
+    img = req["messages"][1]["content"][1]["image_url"]
+    assert img["detail"] == "low" and img["url"].startswith("data:image/jpeg;base64,")
+    assert vlm.USAGE.calls == before + 1 and vlm.USAGE.est_usd > 0
 
 
 def test_vlm_loose_parse():

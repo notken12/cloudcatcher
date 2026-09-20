@@ -3,12 +3,13 @@
 Any OpenAI-chat-compatible vision endpoint, structured (pydantic) answer. Backend is chosen
 by env:
 
-    OPENAI_API_KEY                 -> api.openai.com, gpt-4o-mini (+ gpt-4o escalation)
+    OPENAI_API_KEY                 -> api.openai.com, gpt-4o-mini (detail=low, ~$0.0005/frame)
     GROQ_API_KEY                   -> api.groq.com (free tier, ~1 s/frame), qwen/qwen3.8-27b
     SUNROOF_VLM_BASE_URL           -> e.g. http://127.0.0.1:11434/v1 (Ollama), vLLM, OpenRouter
-    SUNROOF_VLM_MODEL[_LARGE]      -> model ids; default qwen2.5vl:3b for a local base_url
+    SUNROOF_VLM_MODEL[_LARGE]      -> model ids; _LARGE enables escalation on unsure verdicts
     SUNROOF_VLM_API_KEY            -> key for the custom base_url (Ollama ignores it)
-    SUNROOF_VLM_BACKEND=off        -> disable the gate entirely (CI, offline)
+    SUNROOF_VLM_BACKEND            -> openai | groq | ollama | custom | off; default = first key
+                                      found in the order above (off disables the gate: CI, offline)
 
 If neither key nor base_url is set but Ollama answers on localhost:11434, it's used automatically.
 Frames are downscaled to ≤768 px before upload (~100 image tokens on OpenAI). Without any
@@ -39,6 +40,14 @@ OLLAMA_URL = "http://127.0.0.1:11434/v1"
 OLLAMA_MODEL = "qwen2.5vl:3b"
 GROQ_URL = "https://api.groq.com/openai/v1"
 GROQ_MODEL = "qwen/qwen3.8-27b"
+OPENAI_MODEL = "gpt-4o-mini"
+# USD per 1M tokens (input, output) for the cost estimate in /health; approximate list prices
+OPENAI_PRICES = {
+    "gpt-4o-mini": (0.15, 0.60),
+    "gpt-4o": (2.50, 10.00),
+    "gpt-4.1-mini": (0.40, 1.60),
+    "gpt-4.1": (2.00, 8.00),
+}
 
 
 @dataclass(frozen=True)
@@ -59,20 +68,35 @@ class Backend:
 @lru_cache(maxsize=1)
 def backend() -> Backend | None:
     env = os.environ.get
-    if env("SUNROOF_VLM_BACKEND", "").lower() == "off":
+    choice = env("SUNROOF_VLM_BACKEND", "").lower().replace("auto", "")
+    if choice == "off":
         return None
-    if env("OPENAI_API_KEY") and not env("SUNROOF_VLM_BASE_URL"):
+    if choice not in ("", "openai", "groq", "ollama", "custom"):
+        raise ValueError(f"SUNROOF_VLM_BACKEND={choice!r}: use openai|groq|ollama|custom|off")
+    if choice == "openai" or (
+        choice == "" and env("OPENAI_API_KEY") and not env("SUNROOF_VLM_BASE_URL")
+    ):
+        if not env("OPENAI_API_KEY"):
+            raise ValueError("SUNROOF_VLM_BACKEND=openai but OPENAI_API_KEY is not set")
+        model = env("SUNROOF_VLM_MODEL", OPENAI_MODEL)
         return Backend(
             None,
             env("OPENAI_API_KEY", ""),
-            env("SUNROOF_VLM_MODEL", "gpt-4o-mini"),
-            env("SUNROOF_VLM_MODEL_LARGE", "gpt-4o"),
+            model,
+            env("SUNROOF_VLM_MODEL_LARGE", model),  # no gpt-4o escalation unless asked (cost)
             native_schema=True,
+            parallel=int(env("SUNROOF_VLM_PARALLEL", "8")),
         )
-    url = env("SUNROOF_VLM_BASE_URL")
+    url = env("SUNROOF_VLM_BASE_URL") if choice in ("", "custom") else None
+    if choice == "custom" and not url:
+        raise ValueError("SUNROOF_VLM_BACKEND=custom but SUNROOF_VLM_BASE_URL is not set")
     default_model, default_parallel = OLLAMA_MODEL, "4"
-    if not url and env("GROQ_API_KEY"):
+    if choice == "groq" or (not url and choice == "" and env("GROQ_API_KEY")):
+        if not env("GROQ_API_KEY"):
+            raise ValueError("SUNROOF_VLM_BACKEND=groq but GROQ_API_KEY is not set")
         url, default_model, default_parallel = GROQ_URL, GROQ_MODEL, "2"  # free tier 429s above ~2
+    if choice == "ollama":
+        url = OLLAMA_URL
     if not url:
         try:  # zero-config local fallback
             httpx.get(OLLAMA_URL.removesuffix("/v1") + "/api/tags", timeout=0.5).raise_for_status()
@@ -128,6 +152,29 @@ def available() -> bool:
 def describe() -> str:
     b = backend()
     return f"{b.name} / {b.model}" if b else "none"
+
+
+@dataclass
+class Usage:
+    calls: int = 0
+    failed: int = 0
+    prompt_tokens: int = 0
+    completion_tokens: int = 0
+    est_usd: float = 0.0
+
+    def add(self, model: str, prompt: int, completion: int) -> None:
+        self.calls += 1
+        self.prompt_tokens += prompt
+        self.completion_tokens += completion
+        price = OPENAI_PRICES.get(model)
+        if price:
+            self.est_usd += (prompt * price[0] + completion * price[1]) / 1e6
+
+    def as_dict(self) -> dict:
+        return {**self.__dict__, "est_usd": round(self.est_usd, 4)}
+
+
+USAGE = Usage()  # process-wide tally, reported by /health
 
 
 def _prep(content: bytes, max_side: int = 768) -> str:
@@ -201,6 +248,12 @@ def _parse_loose(text: str) -> _Answer | None:
         return None
 
 
+def _client(b: Backend):
+    from openai import AsyncOpenAI  # imported lazily so the package works without the SDK
+
+    return AsyncOpenAI(base_url=b.base_url, api_key=b.api_key, timeout=max(120, b.min_budget_s))
+
+
 async def judge(
     content: bytes,
     event_type: str,
@@ -213,15 +266,13 @@ async def judge(
     b = backend()
     if b is None:
         return None
-    from openai import AsyncOpenAI  # imported lazily so the package works without the SDK
-
-    client = AsyncOpenAI(base_url=b.base_url, api_key=b.api_key, timeout=max(120, b.min_budget_s))
+    client = _client(b)
     model = model or b.model
     b64 = _prep(content, 768 if b.native_schema else 512)
     messages = _messages(b, event_type, definition, context, b64)
     try:
         if b.native_schema:
-            resp = await client.beta.chat.completions.parse(
+            resp = await client.chat.completions.parse(
                 model=model,
                 temperature=0,
                 max_tokens=200,
@@ -239,8 +290,19 @@ async def judge(
             )
             ans = _parse_loose(resp.choices[0].message.content or "")
     except Exception as e:  # noqa: BLE001 - network / API errors are all "no verdict"
+        USAGE.failed += 1
         log.warning("vlm call failed (%s): %s", b.name, e)
         return None
+    if resp.usage is not None:
+        USAGE.add(model, resp.usage.prompt_tokens, resp.usage.completion_tokens)
+        log.info(
+            "vlm %s: %d+%d tokens (session total %d calls, ~$%.4f)",
+            model,
+            resp.usage.prompt_tokens,
+            resp.usage.completion_tokens,
+            USAGE.calls,
+            USAGE.est_usd,
+        )
     if ans is None:
         return None
     v = Verdict(**ans.model_dump(), model=model)
