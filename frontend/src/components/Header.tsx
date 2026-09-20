@@ -1,4 +1,4 @@
-import { ChevronDown, Earth, History, Tv } from 'lucide-react'
+import { ChevronDown, Earth, History, Tv, UserRound } from 'lucide-react'
 import type { StreamState } from '../lib/api'
 import { FILTER_LABEL, FILTERS, type Filter } from '../lib/events'
 import { personalEnabled } from '../lib/personal'
@@ -12,9 +12,11 @@ interface Props {
   stream: StreamState
   view: View
   onView: (v: View) => void
+  userId?: string
 }
 
-export function Header({ filter, onFilter, liveCount, stream, view, onView }: Props) {
+export function Header({ filter, onFilter, liveCount, stream, view, onView, userId }: Props) {
+  const personal = personalEnabled()
   const dot =
     stream === 'open'
       ? 'bg-emerald-500 pulse'
@@ -54,8 +56,19 @@ export function Header({ filter, onFilter, liveCount, stream, view, onView }: Pr
             <History className="h-4 w-4" aria-hidden />
             <span className="sr-only">Time travel</span>
           </button>
+          {personal && (
+            <button
+              type="button"
+              aria-pressed={view === 'join'}
+              onClick={() => onView('join')}
+              title="You"
+            >
+              <UserRound className="h-4 w-4" aria-hidden />
+              <span className="sr-only">You</span>
+            </button>
+          )}
         </div>
-        <label className={`relative ${view === 'time' ? 'invisible' : ''}`}>
+        <label className={`relative ${view === 'time' || view === 'join' ? 'invisible' : ''}`}>
           <select
             className="plain"
             value={filter}
@@ -70,7 +83,7 @@ export function Header({ filter, onFilter, liveCount, stream, view, onView }: Pr
           </select>
           <ChevronDown className="muted pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2" />
         </label>
-        {personalEnabled() && <NotifyButton />}
+        {personal && view !== 'join' && <NotifyButton userId={userId} />}
         <span
           className="muted inline-flex items-center gap-2 text-sm tabular-nums whitespace-nowrap"
           title={`${label} · ${liveCount}`}

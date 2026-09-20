@@ -2,6 +2,7 @@ import { lazy, Suspense, useMemo, useState } from 'react'
 import { Cycler } from './components/Cycler'
 import { FootageCard } from './components/FootageCard'
 import { Header } from './components/Header'
+import { JoinCard } from './components/JoinCard'
 import { Loader } from './components/Loader'
 import type { Pin } from './components/globe/Globe'
 import { ArchiveCard } from './components/time/ArchiveCard'
@@ -9,6 +10,7 @@ import { TimeControls } from './components/time/TimeControls'
 import { LIVE, mediaUrl, useCameras, useFeed, useStream } from './lib/api'
 import { ARCHIVE_CAMS, availableCams, camHasYear, describeMoment, frameUrl } from './lib/archive'
 import { EVENT_LABEL, FILTER_LABEL, matchesFilter, type Filter } from './lib/events'
+import { useUser } from './lib/user'
 import { useMoment, useView, type View } from './lib/view'
 
 const Globe = lazy(() => import('./components/globe/Globe').then((m) => ({ default: m.Globe })))
@@ -23,6 +25,7 @@ export default function App() {
   const [view, setView] = useView()
   const [moment, setMoment] = useMoment()
   const cameras = useCameras()
+  const user = useUser()
   const [filter, setFilter] = useState<Filter>('all')
   const [index, setIndex] = useState(0)
   const [hover, setHover] = useState(false)
@@ -117,9 +120,14 @@ export default function App() {
         stream={stream}
         view={view}
         onView={onView}
+        userId={user?.id}
       />
 
-      {view === 'broadcast' ? (
+      {view === 'join' ? (
+        <main className="mx-auto flex w-full max-w-[1100px] flex-1 flex-col justify-center px-6 pb-10">
+          <JoinCard />
+        </main>
+      ) : view === 'broadcast' ? (
         <main
           className="mx-auto flex w-full max-w-[1100px] flex-1 flex-col justify-center gap-2 px-6 pb-10"
           onMouseEnter={() => setHover(true)}

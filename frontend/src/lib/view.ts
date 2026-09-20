@@ -1,11 +1,12 @@
 import { useCallback, useMemo, useSyncExternalStore } from 'react'
 
-export type View = 'broadcast' | 'globe' | 'time'
+export type View = 'broadcast' | 'globe' | 'time' | 'join'
 
-/** Hash route: `#/globe` ↔ globe, `#/time[/YYYY-MM-DDTHH:MM]` ↔ time travel, else broadcast. */
+/** Hash route: `#/globe` ↔ globe, `#/time[/YYYY-MM-DDTHH:MM]` ↔ time travel, `#/join` ↔ you, else broadcast. */
 export function viewFromHash(hash: string): View {
   const path = hash.replace(/^#\/?/, '')
   if (path === 'globe') return 'globe'
+  if (path === 'join') return 'join'
   if (path === 'time' || path.startsWith('time/')) return 'time'
   return 'broadcast'
 }
@@ -57,7 +58,7 @@ export function useView(): [View, (v: View) => void] {
     () => 'broadcast' as View,
   )
   const setView = useCallback((v: View) => {
-    setHash(v === 'globe' ? '#/globe' : v === 'time' ? '#/time' : '', false)
+    setHash(v === 'broadcast' ? '' : `#/${v}`, false)
   }, [])
   return [view, setView]
 }
