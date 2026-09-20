@@ -1,5 +1,7 @@
 # Camera query → fetch → verify → route (plan for the "after preprocessing" half)
 
+Diagram: `query-routing-schema.svg` (same style as `preprocessing-schema.svg`).
+
 Scope: everything that happens **after** `cameras.parquet` / `camera_samples.parquet`
 exist (see `preprocessing-plan.md`, `preprocessing-schema.svg`). Input is an
 `Event` from the weather backend; output is either a `Footage` envelope the
