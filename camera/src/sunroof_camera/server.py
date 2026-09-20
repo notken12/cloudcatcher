@@ -279,12 +279,14 @@ def create_app(
     async def post_event(ev: WeatherEvent) -> FootageResult:
         return await handle(ev)
 
-    def stored_results(limit: int = 1000) -> list[tuple[FootageResult, EventRef]]:
+    def stored_results(
+        limit: int = 1000, run_time: str | None = None
+    ) -> list[tuple[FootageResult, EventRef]]:
         """Footage the cron/watcher resolved into the store for the latest run, rarest first."""
         if st.db is None:
             return []
         out = []
-        for ev in edb.list_events(st.db, None, None, limit):
+        for ev in edb.list_events(st.db, None, run_time, limit):
             if not ev.get("footage"):
                 continue
             res = FootageResult.model_validate(ev["footage"])
@@ -306,9 +308,11 @@ def create_app(
     def find_result(event_id: str) -> tuple[FootageResult, EventRef | None] | None:
         if event_id in st.results:
             return st.results[event_id], None
-        for res, ref in stored_results():
-            if res.event_id == event_id:
-                return res, ref
+        runs = [None] + (edb.runs_with_footage(st.db) if st.db is not None else [])
+        for rt in runs:
+            for res, ref in stored_results(run_time=rt):
+                if res.event_id == event_id:
+                    return res, ref
         return None
 
     @app.get("/feed")
@@ -324,6 +328,17 @@ def create_app(
             if res.footage and res.event_id not in seen:
                 seen.add(res.event_id)
                 rows.append(with_event(res.footage[0], ref))
+        if rows or st.db is None:
+            return rows
+        # Fallback: nothing verified in the current run (night, no cameras in range) —
+        # serve the newest earlier run that did have verified sights rather than an empty page.
+        for rt in edb.runs_with_footage(st.db):
+            for res, ref in stored_results(run_time=rt):
+                if res.footage and res.event_id not in seen:
+                    seen.add(res.event_id)
+                    rows.append(with_event(res.footage[0], ref))
+            if rows:
+                break
         return rows
 
     @app.get("/events/{event_id}/footage")
