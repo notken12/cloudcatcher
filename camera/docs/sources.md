@@ -122,3 +122,27 @@ Probed while looking for CARS shell-page states, Japan/Australia, and UK/NL/NO. 
 | Japan: NEXCO E/C/W, MLIT regional "道路カメラ" | 404 / HTML-only / rejects non-JP UA; no JSON catalog found | later (Windy covers JP with a key) |
 
 Net: catalog ~29k → ~38k rows, 42 keyless sources. Still empty: South America, Africa, Middle East, India, mainland China, Australia outside QLD (NSW key-gated, rest blocked), Japan.
+
+## US expansion — Sep 2026 (after PR #19)
+
+Second pass over US states not on the CARS platform, plus city/regional DOTs.
+
+| Source | Probe result | Verdict |
+|---|---|---|
+| Delaware DelDOT `tmc.deldot.gov/json/videocamera.json` | keyless JSON, 360 cams, lat/lon, open Wowza HLS (`m3u8s`), no JPEG | **added** `deldot.py` (+358, ffmpeg frame; ~20% of streams time out per probe) |
+| Alabama ALGO Traffic `api.algotraffic.com/v4.0/Cameras` | keyless JSON (v2/v3 404), 620 cams, `direction` word, `snapshotImageUrl` JPEG + Wowza CDN HLS | **added** `algo.py` (+609) |
+| Seattle Travelers `web.seattle.gov/Travelers/api/Map/Data?zoomId=13&type=2` | keyless clustered JSON, 389 SDOT + 264 WSDOT Puget Sound cams; bare filenames resolve on `seattle.gov/trafficcams/images/` and `images.wsdot.wa.gov/nw/` | **added** `seattle.py` (+649) — the only keyless WSDOT footage |
+| Austin `data.austintexas.gov/resource/b4k4-adkb.json` | Socrata, 1,005 cams (817 `TURNED_ON`), `screenshot_address` JPEG, public domain; ~20% return a shared placeholder (health probe flags them) | **added** `austin.py` (+817) |
+| Travel Midwest `travelmidwest.com/lmiga/cameras.json` | keyless GeoJSON, 529 IL sites × up to 4 directional views, full-size JPEG | **added** `travelmidwest.py` (+1,398) |
+| Connecticut CTroads `ctroads.org/List/GetData/Cameras` | CARS list endpoint open, 347 sites, real 10 KB JPEGs (no placeholder) | **added** to `cars_list.PORTALS` (+347) |
+| Maryland CHART `chartexp1.sha.maryland.gov/.../getCameraMapDataJSON.do` | keyless JSON, 552 cams, but the only frame path is HLS on `strmr*.sha.maryland.gov`, which times out from outside MD's CDN allow-list | later (retry from US-East egress) |
+| NYC DOT `webcams.nyctmc.org/api/cameras` | 900+ cams with `imageUrl`, but the server sends an incomplete TLS chain (missing intermediate) → `CERTIFICATE_VERIFY_FAILED` | later (pin the intermediate; do not disable verification) |
+| Georgia 511 | list endpoint still open (4,331) — unchanged, ~85% placeholder | skip |
+| Ohio OHGO `publicapi.ohgo.com` | `401 API key required` (free) | needs key |
+| Colorado COtrip, Virginia 511, Tennessee SmartWay, Kentucky GoKY, Arkansas IDrive, Hawaii GoAkamai, Missouri Traveler | SPA shells; no list/graphql route found on the usual paths | later (XHR inspection in a browser) |
+| Texas DriveTexas `/api/...` | 500; TxDOT ITS `its.txdot.gov` redirects to 404 | skip (Austin + Houston TranStar HTML remain) |
+| Montana, Wyoming, SD, ND, NM, MS, SC, RI, OK, WV | 404 on list/api paths; RI connection refused | later |
+| Weather Underground / weather.com webcams, Bay Area 511 | 401, key required | needs key |
+| USFS visibility cams `fsvisimages.com`, Mt Washington Obs, Michigan MiDrive `/camera` | nginx default page / 403 / 404 | dead or moved |
+
+Net: +4.2k US rows (catalog ~42.5k), 48 keyless sources. New US states with footage: DE, AL, CT, IL (Chicago corridor), TX (Austin), WA (Seattle/Puget Sound).

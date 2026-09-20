@@ -161,7 +161,7 @@ Secrets: `WINDY_API_KEY` etc. via environment or a git-ignored `.env` only; neve
 |---|---|---|---|---|---|
 | `caltrans` | ~3,300 | text 88% | – | last 12 frames | 12 district JSONs, JPEG + HLS |
 | `cars_ny` / `cars_on` | ~1,800 / ~1,400 | text ~50-70% | – | – | 511 portals; NY optional `NY511_API_KEY` |
-| `cars_fl` `cars_ut` `cars_pa` `cars_nc` `cars_az` `cars_nv` `cars_id` `cars_wi` `cars_ne6` `cars_la` `cars_ak` `cars_ab` `cars_ns` `cars_nb` `cars_nl` `cars_yt` | ~14,000 total (FL 4.9k, UT 2.1k, PA 1.4k, NC 1.1k) | text 0–100% (`direction` + view description) | – | – | keyless `/List/GetData/Cameras` on every CARS 511 portal; video-only sites return a 15 KB placeholder PNG that `fetch_frame` rejects. Georgia (4.3k) excluded: ~85% placeholder + auth-walled HLS |
+| `cars_fl` `cars_ut` `cars_pa` `cars_nc` `cars_az` `cars_nv` `cars_id` `cars_wi` `cars_ne6` `cars_ct` `cars_la` `cars_ak` `cars_ab` `cars_ns` `cars_nb` `cars_nl` `cars_yt` | ~14,000 total (FL 4.9k, UT 2.1k, PA 1.4k, NC 1.1k) | text 0–100% (`direction` + view description) | – | – | keyless `/List/GetData/Cameras` on every CARS 511 portal; video-only sites return a 15 KB placeholder PNG that `fetch_frame` rejects. Georgia (4.3k) excluded: ~85% placeholder + auth-walled HLS |
 | `cars_mn` `cars_ia` `cars_ma` `cars_ne` `cars_in` `cars_ie` | ~4,600 (MN 1.7k, IA 1.0k, IN/NE ~650, MA 300, Ireland 230) | text (view title) | – | – | CARS portals whose list endpoint is a React shell; `cars_gql.py` calls the OneWeb `/api/graphql` `mapFeaturesQuery` with a state-wide bbox at zoom 15 -> JPEG poster + public HLS. Kansas skipped (`url=null` views) |
 | `tw_tdx` | ~2,770 | text (`RoadDirection`) | – | – | Taiwan MOTC TDX highway (JPEG) + freeway (MJPEG; `fetch_frame` pulls the first frame) CCTV, 1-min, needs a browser UA |
 | `no_vegvesen` | ~840 | – | – | – | Statens vegvesen road-weather sites: altitude, `status`, HLS; NLOD 2.0; mountain passes (Sognefjellet 1,413 m) + Finnmark for aurora |
@@ -175,6 +175,11 @@ Secrets: `WINDY_API_KEY` etc. via environment or a git-ignored `.env` only; neve
 | `iceland` | ~480 | text (is) | yes | – | Vegagerðin |
 | `fotowebcam` | ~340 | catalog (`direction`, `sector`=hfov) | yes | 10-min archive, years | best quality/attribution |
 | `tripcheck` | ~1,150 | filename suffix (NB/SW…) 47% | – | – | Oregon DOT: Cascades, coast, Gorge |
+| `travelmidwest` | ~1,400 | `direction` letter 99% | – | – | Illinois DOT / Chicago corridor, one row per directional view, keyless GeoJSON |
+| `austin` | ~820 | – | – | – | City of Austin CCTV (Socrata, public domain); ~20% placeholder frames, flagged by the health probe |
+| `seattle` | ~650 | – | – | – | Seattle Travelers map: SDOT + WSDOT Puget Sound JPEGs (the only keyless WSDOT footage) |
+| `al_algo` | ~610 | `direction` 96% | – | – | Alabama ALGO Traffic v4 API: JPEG snapshot + public HLS |
+| `deldot` | ~360 | – | – | – | Delaware DOT, HLS only (ffmpeg frame) |
 | `drivebc` | ~1,040 | `orientation` 100% + elevation | – | ReplayTheDay | British Columbia passes, PNG frames |
 | `nzta` | ~250 | `direction` 99% | – | – | New Zealand state highways, CC BY 4.0 |
 | `hk_td` | ~1,010 | text ("- Eastbound" suffix) ~78% | – | – | Hong Kong Transport Dept snapshots, 2-min, data.gov.hk |
@@ -184,7 +189,7 @@ Secrets: `WINDY_API_KEY` etc. via environment or a git-ignored `.env` only; neve
 | `windy` | ~1k/country | text from title | – | embed player day/month/year | needs `WINDY_API_KEY`; offset ≤1000/free tier |
 | `manual` | yaml | – | – | – | hand-picked: UAF Poker Flat + IRF Kiruna all-sky (aurora, `night_ok`) |
 
-`uv run sunroof-camera refresh` builds every keyless source in ~3 min (~38k rows; the CARS portals are paged 100 at a time).
+`uv run sunroof-camera refresh` builds every keyless source in ~3 min (~42k rows; the CARS portals are paged 100 at a time).
 
 ## Demo cameras & sample queries
 

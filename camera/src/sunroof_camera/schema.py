@@ -172,6 +172,7 @@ def upsert(base: pd.DataFrame, new: pd.DataFrame) -> pd.DataFrame:
     new = coerce(new).set_index("id")
     old = coerce(base).set_index("id")
     keep = old.loc[old.index.intersection(new.index), health_cols]
-    new.loc[keep.index, health_cols] = keep
+    new["health"] = new["health"].astype(object)
+    new.loc[keep.index, health_cols] = keep.astype({"health": object})
     merged = pd.concat([old.drop(index=new.index, errors="ignore"), new])
     return coerce(merged.reset_index())

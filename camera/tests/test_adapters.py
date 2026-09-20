@@ -10,9 +10,12 @@ import pandas as pd
 
 from sunroof_camera.ingest.build import dedupe_views, merge_shards
 from sunroof_camera.ingest.sources import (
+    algo,
+    austin,
     caltrans,
     cars_gql,
     cars_list,
+    deldot,
     digitraffic,
     drivebc,
     fotowebcam,
@@ -21,13 +24,15 @@ from sunroof_camera.ingest.sources import (
     nzta,
     panomax,
     qld,
+    seattle,
     singapore,
     taiwan,
     tfl,
+    travelmidwest,
     tripcheck,
     vegvesen,
 )
-from sunroof_camera.schema import Camera, to_frame, write_parquet
+from sunroof_camera.schema import Camera, to_frame, upsert, write_parquet
 
 
 def _client(payloads: dict[str, object]) -> httpx.AsyncClient:
@@ -491,3 +496,163 @@ def test_vegvesen_status_altitude_and_naming():
         c.name == "E6 Aisaroaivi (Skaidi)" and c.alt_m == 237.7 and c.stream_url.endswith(".m3u8")
     )
     assert (c.lat, c.lon) == (70.28, 24.1) and c.heading_conf == "unknown"
+
+
+def test_deldot_hls_enabled_filter():
+    def cam(cid, enabled=True, status="Active", urls=True):
+        return {
+            "id": cid,
+            "title": f"DE 1 @ {cid}",
+            "lat": 38.99,
+            "lon": -75.44,
+            "enabled": enabled,
+            "status": status,
+            "urls": {"m3u8s": f"https://video.deldot.gov:443/live/{cid}.stream/playlist.m3u8"}
+            if urls
+            else {},
+        }
+
+    cams = _run(
+        deldot.DelDOTAdapter(),
+        {
+            "videocamera.json": {
+                "videoCameras": [
+                    cam("KCAM001"),
+                    cam("KCAM002", enabled=False),
+                    cam("KCAM003", status="Inactive"),
+                    cam("KCAM004", urls=False),
+                ]
+            }
+        },
+    )
+    assert [c.id for c in cams] == ["deldot:KCAM001"]
+    assert cams[0].source_kind == "hls" and cams[0].stream_url.endswith(
+        "KCAM001.stream/playlist.m3u8"
+    )
+    assert cams[0].image_url is None and cams[0].heading_conf == "unknown"
+
+
+def test_algo_public_only_and_direction():
+    def cam(cid, direction, access="Public"):
+        return {
+            "id": cid,
+            "accessLevel": access,
+            "location": {
+                "latitude": 30.5,
+                "longitude": -88.2,
+                "direction": direction,
+                "displayRouteDesignator": "I-10",
+                "displayCrossStreet": "McDonald Rd",
+                "city": "Mobile",
+            },
+            "snapshotImageUrl": f"https://api.algotraffic.com/v4/Cameras/{cid}/snapshot.jpg",
+            "playbackUrls": {"hls": f"https://cdn/{cid}/playlist.m3u8"},
+            "permLink": f"https://www.algotraffic.com?cameraId={cid}",
+        }
+
+    cams = _run(
+        algo.AlgoTrafficAdapter(),
+        {"v4.0/Cameras": [cam(1, "East"), cam(2, "Any"), cam(3, "North", access="ALDOT")]},
+    )
+    assert [c.id for c in cams] == ["al_algo:1", "al_algo:2"]
+    assert cams[0].azimuth_deg == 90 and cams[0].heading_conf == "text"
+    assert cams[0].name == "I-10 @ McDonald Rd (Mobile)"
+    assert cams[0].stream_url == "https://cdn/1/playlist.m3u8"
+    assert cams[1].azimuth_deg is None and cams[1].heading_conf == "unknown"
+
+
+def test_seattle_image_host_per_type_and_dedupe():
+    payload = {
+        "Features": [
+            {
+                "PointCoordinate": [47.52, -122.39],
+                "Cameras": [
+                    {
+                        "Id": "CMR-0112",
+                        "Description": "Fauntleroy",
+                        "ImageUrl": "f.jpg",
+                        "Type": "sdot",
+                    },
+                    {
+                        "Id": "SR99Raye",
+                        "Description": "SR-99",
+                        "ImageUrl": "099vc03415.jpg",
+                        "Type": "wsdot",
+                    },
+                    {"Id": "X1", "Description": "other", "ImageUrl": "x.jpg", "Type": "port"},
+                ],
+            },
+            {
+                "PointCoordinate": [47.6, -122.3],
+                "Cameras": [
+                    {"Id": "CMR-0112", "Description": "dup", "ImageUrl": "f.jpg", "Type": "sdot"}
+                ],
+            },
+        ]
+    }
+    cams = _run(seattle.SeattleTravelersAdapter(), {"Travelers/api": payload})
+    assert [c.id for c in cams] == ["seattle:sdot:CMR-0112", "seattle:wsdot:SR99Raye"]
+    assert cams[0].image_url == "https://www.seattle.gov/trafficcams/images/f.jpg"
+    assert cams[1].image_url == "https://images.wsdot.wa.gov/nw/099vc03415.jpg"
+    assert cams[0].lat == 47.52 and cams[0].lon == -122.39
+
+
+def test_austin_status_filter():
+    def row(cid, status="TURNED_ON", img=True):
+        return {
+            "camera_id": cid,
+            "location_name": f"cam {cid}",
+            "camera_status": status,
+            "screenshot_address": f"https://cctv.austinmobility.io/image/{cid}.jpg"
+            if img
+            else None,
+            "location": {"type": "Point", "coordinates": [-97.69, 30.35]},
+        }
+
+    cams = _run(
+        austin.AustinCCTVAdapter(),
+        {"b4k4-adkb.json": [row("1"), row("2", status="TURNED_OFF"), row("3", img=False)]},
+    )
+    assert [c.id for c in cams] == ["austin:1"]
+    assert (
+        cams[0].lat == 30.35
+        and cams[0].lon == -97.69
+        and cams[0].license.startswith("Public Domain")
+    )
+
+
+def test_travelmidwest_one_row_per_view():
+    payload = {
+        "features": [
+            {
+                "type": "Feature",
+                "geometry": {"type": "Point", "coordinates": [-89.0, 40.5]},
+                "properties": {
+                    "id": "IL-IDOTD4-5003",
+                    "description": "I-55 at I-39",
+                    "urls": [
+                        {"direction": "E", "url": "https://cctv/e.jpg"},
+                        {"direction": "NONE", "url": "https://cctv/x.jpg"},
+                        {"direction": "W", "url": None},
+                    ],
+                },
+            }
+        ]
+    }
+    cams = _run(travelmidwest.TravelMidwestAdapter(), {"cameras.json": payload})
+    assert [c.id for c in cams] == [
+        "travelmidwest:IL-IDOTD4-5003:E",
+        "travelmidwest:IL-IDOTD4-5003:NONE",
+    ]
+    assert cams[0].azimuth_deg == 90 and cams[0].name == "I-55 at I-39 — E"
+    assert cams[1].azimuth_deg is None and cams[1].name == "I-55 at I-39"
+
+
+def test_upsert_keeps_probed_health_across_category_sets():
+    mk = lambda cid, health: Camera(  # noqa: E731
+        id=cid, source="deldot", source_kind="hls", name=cid, lat=39.0, lon=-75.0, health=health
+    )
+    base = to_frame([mk("deldot:a", "live"), mk("deldot:b", "dead")])
+    new = to_frame([mk("deldot:a", "unverified"), mk("deldot:c", "unverified")])
+    out = upsert(base, new).set_index("id")["health"].astype(str)
+    assert out.to_dict() == {"deldot:b": "dead", "deldot:a": "live", "deldot:c": "unverified"}
