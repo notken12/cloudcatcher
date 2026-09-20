@@ -9,6 +9,7 @@ from __future__ import annotations
 import asyncio
 import io
 import logging
+import os
 import time
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
@@ -17,7 +18,7 @@ import httpx
 import pandas as pd
 from PIL import Image
 
-from . import gates, quality, vlm
+from . import gates, quality, solar, vlm
 from .fetch import fetch_burst, fetch_frame, row_to_camera
 from .footage import (
     CameraInfo,
@@ -225,6 +226,20 @@ def _passes(v: Verdict, ev_type: str, prof: EventProfile) -> bool:
     return _vlm_reject(v, ev_type, prof) is None
 
 
+def is_night_for(ev: WeatherEvent, prof: EventProfile, at: datetime) -> float | None:
+    """Solar elevation at the event if the event should be skipped as night, else None."""
+    if prof.night_below_deg is None:
+        return None
+    el, _ = solar.sun_position_deg(ev.lat, ev.lon, at)
+    el = float(el)
+    return el if el < prof.night_below_deg else None
+
+
+def vlm_top_n(prof: EventProfile, k: int) -> int:
+    n = int(os.environ.get("SUNROOF_VLM_TOP_N", prof.vlm_top_n))
+    return max(n, 1) if n > 0 else max(2 * k, 1)  # <=0 disables the cut (old 2k behaviour)
+
+
 async def resolve_footage(
     ev: WeatherEvent,
     catalog: Catalog,
@@ -240,6 +255,14 @@ async def resolve_footage(
     now = ev.t_start if (ev.replay and ev.t_start) else _now()
     prof = profile(ev.type)
     res = FootageResult(event_id=ev.id, status="NO_CAMERAS_IN_RANGE")
+
+    # ⓪ night: daytime-only types are not worth a single fetch after civil twilight
+    if not ignore_night and (el := is_night_for(ev, prof, ev.t_start or now)) is not None:
+        res.status = "CAMERAS_DARK"
+        res.note = f"night at the event (sun {el:.0f}°); {ev.type} is a daytime type"
+        res.retry_after_s = 3600
+        res.elapsed_s = time.monotonic() - t0
+        return res
 
     # ① which cameras
     hits = catalog.find_cameras(_to_query_event(ev, ignore_night), k=k * prof.fetch_mult)
@@ -274,7 +297,6 @@ async def resolve_footage(
     _dedupe_phash(cands)
     good = [c for c in cands if c.rejected is None and c.gate is not None and c.gate.ok]
     good.sort(key=lambda c: -c.score)
-    good = good[: 2 * k]
     res.passed_gates = len(good)
     if not good:
         res.rejected = [c.rejected for c in cands if c.rejected]
@@ -284,20 +306,40 @@ async def resolve_footage(
         res.elapsed_s = time.monotonic() - t0
         return res
 
+    # ②b CV pre-gate + rank-then-cut (design doc §4.2): decide which frames the VLM sees.
+    # Both only remove VLM calls; whatever survives is still judged by the VLM.
+    if prof.min_sky_share > 0:
+        for c in good:
+            f = c.gate.features if c.gate else None
+            if f is not None and f.sky_share < prof.min_sky_share:
+                c.rejected = Rejected(
+                    camera_id=c.cam.id,
+                    stage="cv",
+                    reason=f"cv: sky_share {f.sky_share:.2f} < {prof.min_sky_share} (no sky in view)",
+                )
+        good = [c for c in good if c.rejected is None]
+    b = vlm.backend()
+    top_n = vlm_top_n(prof, k) if b is not None else max(2 * k, 1)
+    for c in good[top_n:]:
+        c.rejected = Rejected(
+            camera_id=c.cam.id, stage="cv", reason=f"cv: ranked below top-{top_n} by Q"
+        )
+    good = good[:top_n]
+    res.cv_skipped = sum(1 for c in cands if c.rejected and c.rejected.stage == "cv")
+    if not good:
+        res.rejected = [c.rejected for c in cands if c.rejected]
+        res.status = "EVENT_NOT_VISIBLE"
+        res.retry_after_s = prof.retry_after_s
+        res.elapsed_s = time.monotonic() - t0
+        return res
+
     # ③ VLM
     remaining = max(deadline_s - (time.monotonic() - t0), 1.0)
     judged = False
-    b = vlm.backend()
     if b is not None:
         # local CPU models take ~30-100 s/frame and serialise requests, so judge only the
         # best-ranked candidates, `parallel` at a time, with at least `min_budget_s`
         sem = asyncio.Semaphore(b.parallel)
-        if b.parallel < len(good):
-            for c in good[max(k, b.parallel) :]:
-                c.rejected = Rejected(
-                    camera_id=c.cam.id, stage="vlm", reason="vlm: not judged (slow backend)"
-                )
-            good = good[: max(k, b.parallel)]
 
         async def _one(c: _Candidate) -> None:
             async with sem:
