@@ -15,6 +15,37 @@ function clampDate(date: string, year: number, today: string): string {
   return next > today ? today : next
 }
 
+/** Lets the browser hold half-typed dates (e.g. year "0002") and only reports in-range ones. */
+function DateInput({
+  value,
+  min,
+  max,
+  onValid,
+}: {
+  value: string
+  min: string
+  max: string
+  onValid: (date: string) => void
+}) {
+  const [typed, setTyped] = useState<{ base: string; text: string } | null>(null)
+  const text = typed?.base === value ? typed.text : value
+  return (
+    <input
+      type="date"
+      className="plain"
+      min={min}
+      max={max}
+      value={text}
+      onChange={(e) => {
+        const v = e.target.value
+        setTyped({ base: value, text: v })
+        if (v >= min && v <= max) onValid(v)
+      }}
+      aria-label="Date"
+    />
+  )
+}
+
 /**
  * Year slider → day picker → local time-of-day slider. Slider drags edit a local
  * draft and commit after a pause, so a scrub doesn't fire 25 image requests per pixel.
@@ -59,17 +90,11 @@ export function TimeControls({ moment, onChange, status }: Props) {
         <span className="w-10 text-right font-semibold tabular-nums">{year}</span>
       </label>
 
-      <input
-        type="date"
-        className="plain"
+      <DateInput
+        value={draft.date}
         min={`${ARCHIVE_FIRST_YEAR}-01-01`}
         max={today}
-        value={draft.date}
-        onChange={(e) => {
-          const v = e.target.value
-          if (v >= `${ARCHIVE_FIRST_YEAR}-01-01` && v <= today) setDraft({ ...draft, date: v })
-        }}
-        aria-label="Date"
+        onValid={(date) => setDraft({ ...draft, date })}
       />
 
       <label className="flex min-w-[220px] flex-1 items-center gap-3">
