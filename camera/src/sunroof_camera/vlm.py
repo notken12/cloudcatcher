@@ -3,7 +3,7 @@
 Any OpenAI-chat-compatible vision endpoint, structured (pydantic) answer. Backend is chosen
 by env:
 
-    OPENAI_API_KEY                 -> api.openai.com, gpt-4o-mini (detail=low, ~$0.0001/frame)
+    OPENAI_API_KEY                 -> api.openai.com, gpt-4o-mini (detail=low, ~$0.0005/frame)
     GROQ_API_KEY                   -> api.groq.com (free tier, ~1 s/frame), qwen/qwen3.8-27b
     SUNROOF_VLM_BASE_URL           -> e.g. http://127.0.0.1:11434/v1 (Ollama), vLLM, OpenRouter
     SUNROOF_VLM_MODEL[_LARGE]      -> model ids; _LARGE enables escalation on unsure verdicts
