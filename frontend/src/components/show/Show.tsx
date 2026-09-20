@@ -25,8 +25,11 @@ export function Show({ footage, cameras, sun, onExit }: Props) {
   return (
     <section
       className="show"
-      onClick={onExit}
-      aria-label="Story mode — click or press any key to exit"
+      onClick={(e) => {
+        if (!e.isTrusted || (e.target as HTMLElement).closest('.globe')) return
+        onExit()
+      }}
+      aria-label="Story mode — click or press Esc to exit"
     >
       {footage ? (
         <div key={key} className="show-media">

@@ -16,7 +16,7 @@ pnpm test && pnpm lint && pnpm build
 
 Four layouts, toggled in the header or keys `1–4`: broadcast (default), globe (`#/globe`),
 time travel (`#/time`, e.g. `#/time/2023-06-15T18:00`) and story mode (`#/show`, full
-screen, 8 s a sight, any key exits; starts itself after 90 s idle on broadcast).
+screen, 8 s a sight, Esc or any printable key exits, ←/→ step; starts itself after 90 s idle on broadcast).
 `←/→` cycle sights, `?` lists shortcuts.
 The globe needs `GET /cameras.geojson` from the backend for the camera dots; in
 fixture mode it uses `src/fixtures/cameras.json` (synthetic points, not real cameras).

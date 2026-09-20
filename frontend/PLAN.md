@@ -297,7 +297,7 @@ All on top of the existing pieces, no new dependencies:
   `<img>` swaps at 6 fps, scrub slider. No video decoding.
 - **Story mode** `#/show`: full-bleed footage with a slow Ken Burns drift,
   caption rising in, inverted-colour globe inset flying to the camera, 8 s a
-  sight; any input exits. Starts itself after 90 s idle on broadcast (booth).
+  sight; Esc, click or any printable key exits (not F11/modifiers). Starts itself after 90 s idle on broadcast (booth).
 - Keyboard (`←/→`, `1–4`, `space`, `?`), share link, OG/Twitter tags,
   content-shaped skeleton while `/feed` loads.
 
