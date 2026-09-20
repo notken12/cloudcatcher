@@ -69,6 +69,32 @@ freshness vs cadence, uniform / blown-out / dark, pHash de-dupe, sharpness) →
 `vlm.judge` (one structured verdict per frame) → top-`k` `Footage`. Without any VLM
 backend the service still runs and returns gate-passed frames marked `verified: false`.
 
+### Event store + `GET /events` (`events_db.py`, `match.py`)
+
+The weather reanalysis job pushes its events into a SQLite file; cameras are matched by
+the cron step, not at query time; the API only reads:
+
+```
+weather run  ──► events.json ──► sunroof-camera import-events out/events.json --db data/events.db
+                                 (or: from sunroof_camera.events_db import connect, upsert_run)
+cron         ──► sunroof-camera match --db data/events.db [--resolve]     # ranks cameras, optional footage
+API          ──► sunroof-camera serve --db data/events.db                 # GET /events?type=&time=&limit=20
+```
+
+`GET /events` → up to 20 events as known at the latest run ≤ `time` (default: latest run),
+sorted by `rank_score = 0.6·rarity + 0.4·severity` desc, each with
+`cameras: [{rank, camera_id, name, lat, lon, distance_km, bearing_deg, score, media{kind,src,refresh_s},
+page_url, health, why, status, verified, frame_ts}]` (the cron's ranking for that run) and
+`footage: FootageResult | null` if the resolver ran.
+
+Tables: `events` (stable uuid, `time` = last analysis, latest values), `event_observations`
+(one row per event per run → `?time=` looks back), `event_cameras`, `event_footage`.
+Merge rule on import: same type, seen < 2 h ago, centre within `max(radius_km, MERGE_KM[type])`
+→ the old uuid is updated; otherwise a new one. Weather `type: "storm"` maps to `thunderstorm`,
+`score` → `severity`; missing `rarity` falls back to `RARITY_PRIOR[type]`. `serve --db` also
+polls the file (`--watch-db-s`, default 30) and matches/resolves any run the cron did not, and
+`--fake-events --db` drives fake events through the same import → match → footage path.
+
 ### VLM backends (`vlm.py`)
 
 All backends speak the OpenAI chat-completions API, so switching is env-only:

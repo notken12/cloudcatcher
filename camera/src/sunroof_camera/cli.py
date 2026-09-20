@@ -99,6 +99,12 @@ def serve(
     ignore_night: bool = typer.Option(
         False, help="demo: skip the solar night gate and accept dark frames"
     ),
+    db: Path | None = typer.Option(
+        None, help="SQLite event store (events_db.py); enables GET /events and the db watcher"
+    ),
+    watch_db_s: float = typer.Option(
+        30.0, help="poll --db for unmatched runs every N s (0 = rely on `match` cron only)"
+    ),
 ):
     """Run the camera service + sandbox page (see server.py for endpoints)."""
     from .server import run
@@ -112,7 +118,60 @@ def serve(
         k=k,
         deadline_s=deadline_s,
         ignore_night=ignore_night,
+        db=db,
+        watch_db_s=watch_db_s,
     )
+
+
+@app.command("import-events")
+def import_events(
+    path: Path = typer.Argument(..., help="weather/events.py output (events.json)"),
+    db: Path = Path("data/events.db"),
+):
+    """Merge one weather analysis run (events.json) into the SQLite store."""
+    from . import events_db as edb
+
+    conn = edb.connect(db)
+    ids = edb.import_events_json(conn, path)
+    typer.echo(f"{len(ids)} events merged into {db} (run {edb.run_time_at(conn, None)})")
+
+
+@app.command()
+def match(
+    db: Path = Path("data/events.db"),
+    catalog: Path = Path("data/cameras.parquet"),
+    k: int = 5,
+    resolve: bool = typer.Option(False, help="also fetch/gate/VLM the top events -> event_footage"),
+    resolve_top: int = 5,
+    deadline_s: float = 30.0,
+    ignore_night: bool = False,
+    run_time: str | None = typer.Option(None, help="ISO run to match; default latest"),
+):
+    """Cron step after `import-events`: rank cameras per new event -> event_cameras."""
+    from . import events_db as edb
+    from .ingest.base import make_client
+    from .match import match_run
+    from .resolve import FrameCache
+
+    async def go():
+        conn = edb.connect(db)
+        async with make_client(timeout=15.0) as http:
+            return await match_run(
+                conn,
+                Catalog.load(catalog),
+                run_time,
+                k=k,
+                resolve=resolve,
+                resolve_top=resolve_top,
+                http=http,
+                cache=FrameCache(),
+                deadline_s=deadline_s,
+                ignore_night=ignore_night,
+            )
+
+    results = asyncio.run(go())
+    for r in results:
+        typer.echo(f"{r.event_id[:8]} {r.status} footage={len(r.footage)}")
 
 
 @app.command()
