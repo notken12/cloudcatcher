@@ -59,6 +59,7 @@ def create_app(
     fake_period_s: float = 90.0,
     k: int = 3,
     deadline_s: float = 30.0,
+    ignore_night: bool = False,
 ) -> FastAPI:
     st = State(catalog_path, verdict_log)
 
@@ -86,6 +87,7 @@ def create_app(
                 k=k,
                 deadline_s=deadline_s,
                 verdict_log=st.verdict_log,
+                ignore_night=ignore_night,
             )
         st.results[ev.id] = res
         st.results.move_to_end(ev.id)

@@ -89,8 +89,9 @@ def _now() -> datetime:
     return datetime.now(timezone.utc)
 
 
-def _to_query_event(ev: WeatherEvent) -> Event:
+def _to_query_event(ev: WeatherEvent, ignore_night: bool = False) -> Event:
     return Event(
+        ignore_night=ignore_night,
         type=ev.type,
         lat=ev.lat,
         lon=ev.lon,
@@ -126,6 +127,7 @@ async def _fetch_and_gate(
     ev: WeatherEvent,
     cache: FrameCache,
     now: datetime,
+    ignore_night: bool = False,
 ) -> None:
     ts = ev.t_start if ev.replay else None
     try:
@@ -146,7 +148,7 @@ async def _fetch_and_gate(
         refresh_s=c.cam.refresh_s,
         now=now,
         max_age_s=None if ev.replay else min(prof.max_age_mult * c.cam.refresh_s, prof.max_age_s),
-        allow_night=prof.allow_night_frames or c.cam.night_ok,
+        allow_night=prof.allow_night_frames or c.cam.night_ok or ignore_night,
         last_sha1=prev.sha1 if prev else None,
         last_phash=prev.phash if prev else None,
     )
@@ -215,6 +217,7 @@ async def resolve_footage(
     deadline_s: float = 30.0,
     proxy_base: str = "",
     verdict_log: str | None = None,
+    ignore_night: bool = False,
 ) -> FootageResult:
     t0 = time.monotonic()
     now = ev.t_start if (ev.replay and ev.t_start) else _now()
@@ -222,7 +225,7 @@ async def resolve_footage(
     res = FootageResult(event_id=ev.id, status="NO_CAMERAS_IN_RANGE")
 
     # ① which cameras
-    hits = catalog.find_cameras(_to_query_event(ev), k=k * prof.fetch_mult)
+    hits = catalog.find_cameras(_to_query_event(ev, ignore_night), k=k * prof.fetch_mult)
     res.candidates = len(hits)
     if hits.empty:
         # distinguish "nothing nearby" from "nearby but filtered out (night / heading)"
@@ -237,7 +240,10 @@ async def resolve_footage(
 
     # ② fetch + cheap gates, concurrently, under the deadline
     budget = deadline_s * 0.6
-    tasks = [asyncio.create_task(_fetch_and_gate(c, http, prof, ev, cache, now)) for c in cands]
+    tasks = [
+        asyncio.create_task(_fetch_and_gate(c, http, prof, ev, cache, now, ignore_night))
+        for c in cands
+    ]
     done, pending = await asyncio.wait(tasks, timeout=budget)
     for t in pending:
         t.cancel()

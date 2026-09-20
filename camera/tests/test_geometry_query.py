@@ -129,3 +129,11 @@ def test_aurora_requires_night():
             "id"
         ]
     ) == ["b"]
+
+
+def test_ignore_night_skips_solar_gate():
+    cat = Catalog(_cams())
+    midnight = datetime(2026, 12, 1, 7, 0, tzinfo=timezone.utc)
+    ev = Event(type="thunderstorm", lat=40.0, lon=-104.3, radius_km=5, t=midnight)
+    assert "a" not in set(cat.find_cameras(ev, k=10)["id"])  # not night_ok
+    assert "a" in set(cat.find_cameras(ev.model_copy(update={"ignore_night": True}), k=10)["id"])

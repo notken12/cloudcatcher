@@ -57,7 +57,7 @@ def test_vlm_backend_selection(monkeypatch):
     vlm.backend.cache_clear()
     b = vlm.backend()
     assert b and b.base_url == vlm.GROQ_URL and b.model == vlm.GROQ_MODEL
-    assert b.api_key == "gsk-test" and b.parallel == 4 and b.min_budget_s == 0
+    assert b.api_key == "gsk-test" and b.parallel == 2 and b.min_budget_s == 0
 
     monkeypatch.setenv("SUNROOF_VLM_BACKEND", "off")
     vlm.backend.cache_clear()

@@ -70,9 +70,9 @@ def backend() -> Backend | None:
             native_schema=True,
         )
     url = env("SUNROOF_VLM_BASE_URL")
-    default_model = OLLAMA_MODEL
+    default_model, default_parallel = OLLAMA_MODEL, "4"
     if not url and env("GROQ_API_KEY"):
-        url, default_model = GROQ_URL, GROQ_MODEL
+        url, default_model, default_parallel = GROQ_URL, GROQ_MODEL, "2"  # free tier 429s above ~2
     if not url:
         try:  # zero-config local fallback
             httpx.get(OLLAMA_URL.removesuffix("/v1") + "/api/tags", timeout=0.5).raise_for_status()
@@ -81,13 +81,15 @@ def backend() -> Backend | None:
             return None
     model = env("SUNROOF_VLM_MODEL", default_model)
     local = "127.0.0.1" in url or "localhost" in url
+    if local:
+        default_parallel = "1"
     return Backend(
         url,
         env("SUNROOF_VLM_API_KEY") or env("GROQ_API_KEY") or env("OPENAI_API_KEY") or "local",
         model,
         env("SUNROOF_VLM_MODEL_LARGE", model),
         native_schema=False,
-        parallel=int(env("SUNROOF_VLM_PARALLEL", "1" if local else "4")),
+        parallel=int(env("SUNROOF_VLM_PARALLEL", default_parallel)),
         min_budget_s=float(env("SUNROOF_VLM_BUDGET_S", "150" if local else "0")),
     )
 

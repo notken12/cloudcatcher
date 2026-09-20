@@ -79,6 +79,9 @@ def serve(
     fake_period_s: float = 90.0,
     k: int = 3,
     deadline_s: float = 30.0,
+    ignore_night: bool = typer.Option(
+        False, help="demo: skip the solar night gate and accept dark frames"
+    ),
 ):
     """Run the camera service + sandbox page (see server.py for endpoints)."""
     from .server import run
@@ -91,6 +94,7 @@ def serve(
         fake_period_s=fake_period_s,
         k=k,
         deadline_s=deadline_s,
+        ignore_night=ignore_night,
     )
 
 
@@ -102,6 +106,7 @@ def resolve(
     radius_km: float = 10,
     k: int = 3,
     deadline_s: float = 30.0,
+    ignore_night: bool = False,
     catalog: Path = Path("data/cameras.parquet"),
     save_frames: Path | None = typer.Option(None, help="dir to dump the chosen JPEGs"),
 ):
@@ -115,7 +120,13 @@ def resolve(
         cache = FrameCache()
         async with make_client(timeout=15.0) as http:
             res = await resolve_footage(
-                ev, Catalog.load(catalog), http, cache, k=k, deadline_s=deadline_s
+                ev,
+                Catalog.load(catalog),
+                http,
+                cache,
+                k=k,
+                deadline_s=deadline_s,
+                ignore_night=ignore_night,
             )
         if save_frames:
             save_frames.mkdir(parents=True, exist_ok=True)

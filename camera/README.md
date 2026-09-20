@@ -17,6 +17,10 @@ uv run sunroof-camera serve --fake-events     # camera service + sandbox page on
 uv run sunroof-camera resolve thunderstorm --lat 67.6 --lon=-164 --radius-km 20   # one-shot FootageResult JSON
 ```
 
+Night in the US/Alaska (where the FAA cams are) makes daytime events return `CAMERAS_DARK`.
+To exercise the pipeline anyway: `SUNROOF_VLM_BACKEND=off uv run sunroof-camera serve --fake-events --ignore-night`
+(skips the solar gate and the dark-frame gate; with the VLM on, it will correctly reject night frames as `EVENT_NOT_VISIBLE`).
+
 ## Camera service (query → gate → VLM → route)
 
 Design: `docs/query-and-routing-plan.md` + `docs/query-routing-schema.svg`.
