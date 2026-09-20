@@ -5,6 +5,10 @@ session; the same script becomes `camera/ingest/healthcheck.py` later). Status
 codes are real, not copied from the docs. "Heading" = whether the catalog gives
 us camera azimuth for free (this matters a lot — see `preprocessing-plan.md`).
 
+**Machine-readable ledger:** `source-probes.yaml` (same directory) has one entry per
+probed source with `status` (added / needs_key / rejected / retry / later / never), the
+observed HTTP result, the reason, and how to re-probe. Re-check rejections from there.
+
 Legend: **L** live frame, **H** history/archive, **N** usable at night,
 **HLS** video stream (needs a player or a frame grab via ffmpeg).
 
@@ -109,10 +113,11 @@ Probed while looking for CARS shell-page states, Japan/Australia, and UK/NL/NO. 
 | Estonia Tark tee `api/v1/import/public/tap/stations/road-camera/*` | endpoint exists, returned `[]` during probe | retry later |
 | Lithuania eismoinfo | backend has weather-conditions service only; cameras not exposed | skip |
 | Slovenia promet.si, Spain DGT infocar, Scotland, Wales | HTML / 302 / 404 | later (HTML scrape) |
-| Australia: QLD `api.qldtraffic.qld.gov.au` | `403 Missing Authentication Token` (free key) | Tier 2, needs key |
+| Australia: QLD `api.qldtraffic.qld.gov.au` | REST API `403` without key, **but** the qldtraffic map loads `data.qldtraffic.qld.gov.au/webcameras.geojson` keyless: 136 cams, compass `direction`, 1-min JPEG, CC BY 4.0 | **added** `qld.py` (+136) |
 | Australia: NSW Live Traffic | `401` (free key) | Tier 2, needs key |
 | Australia: SA, TAS | Cloudflare 403 | skip |
-| Australia: WA Main Roads, NT | map apps; WA `trafficmap` is traffic counts, camera API behind OWIN auth | skip |
+| Australia: WA Main Roads, NT | map apps; WA `trafficmap` is traffic counts, camera API behind OWIN auth; NT roadreport has no cameras | skip |
+| Australia: VIC VicTraffic, ACT | connection failed / 403 from US egress | retry from AU egress |
 | Japan: NEXCO E/C/W, MLIT regional "道路カメラ" | 404 / HTML-only / rejects non-JP UA; no JSON catalog found | later (Windy covers JP with a key) |
 
-Net: catalog ~29k → ~38k rows, 41 keyless sources. Still empty: South America, Africa, Middle East, India, mainland China, Australia (key-gated), Japan.
+Net: catalog ~29k → ~38k rows, 42 keyless sources. Still empty: South America, Africa, Middle East, India, mainland China, Australia outside QLD (NSW key-gated, rest blocked), Japan.
