@@ -1,0 +1,40 @@
+[project]
+name = "sunroof-camera"
+version = "0.1.0"
+description = "Camera catalog + sky-coverage query for the sunroof weather-watching app"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas>=2.2",
+    "pyarrow>=16",
+    "numpy>=1.26",
+    "pydantic>=2.7",
+    "httpx[http2]>=0.27",
+    "pyyaml>=6",
+    "timezonefinder>=6.5",
+    "typer>=0.12",
+    "pillow>=10",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.5"]
+
+[project.scripts]
+sunroof-camera = "sunroof_camera.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sunroof_camera"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["B008", "B905", "E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
