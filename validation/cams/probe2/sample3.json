@@ -1,0 +1,32 @@
+[
+ {
+  "name": "Axis-MtAukum1",
+  "lat": 38.57387,
+  "lng": -120.72698,
+  "state": "CA",
+  "county": "eldorado",
+  "img": "https://prod.weathernode.net/data/img/2148/2026/09/20/Mt_Aukum_1_1789866305_1546.jpg",
+  "src": "Mt_Aukum_1",
+  "pan": 199.9
+ },
+ {
+  "name": "Axis-CoonHollow2",
+  "lat": 38.72343,
+  "lng": -120.80836,
+  "state": "CA",
+  "county": "eldorado",
+  "img": "https://prod.weathernode.net/data/img/1906/2026/09/20/Coon_Hollow_2_1789866301_4330.jpg",
+  "src": "Coon_Hollow_2",
+  "pan": 132.4
+ },
+ {
+  "name": "Axis-MtElizabeth2",
+  "lat": 38.06302,
+  "lng": -120.24731,
+  "state": "CA",
+  "county": "Tuolumne",
+  "img": "https://prod.weathernode.net/data/img/2160/2026/09/20/Mt_Elizabeth_2_1789866302_3796.jpg",
+  "src": "Mt_Elizabeth_2",
+  "pan": 248.8
+ }
+]

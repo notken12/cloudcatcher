@@ -10,6 +10,7 @@ Run modules from the repo root with `uv run python -m camera_ken.<module> ...`.
 | `faa_weathercams.py` | sites/cameras/last-13-images for weathercams.faa.gov | needs browser UA; exact `cameraBearing`; 8-10 min cadence; no archive beyond 13 frames; none in the Plains |
 | `windy.py` | Windy v3 nearby/region queries, full-size image URL, scraped day/month archive | `WINDY_API_KEY` env; 93% traffic cams (13% see sky), `meteo/landscape` cams 88% see sky; no heading field |
 | `phenocam.py` | site list, live filter, image lists, local-time filename parsing | only US still archive (30 min, 2008→); ~20% of sites see sky; filenames in standard time (mostly) |
+| `alertcalifornia.py` | official feed + latest-frame URL, heading/FOV, freshness | CA only; ~2 min; near-IR night vision; CC BY-NC-ND display-only |
 | `sky_fraction.py` | SegFormer sky mask / fraction + exposure sanity | daytime only; cache per camera |
 | `colour_index.py` | warm-hue chroma in the sky mask (sunset quality proxy) | ranked the West-Coast evening correctly |
 | `build_phenocam_whitelist.py` | scores all live CONUS PhenoCam sites | 89 of 449 have ≥20% sky; output in `validation/cams/phenocam_whitelist/` |

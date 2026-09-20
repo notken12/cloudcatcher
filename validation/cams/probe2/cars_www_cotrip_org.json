@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <script>
+            ;(async () => {
+                try {
+                    const configUrl = "main".endsWith("-stage")
+                        ? `https://511.cotrip.org/configs/main.json?v=1.7.2`
+                        : `https://511.cotrip.org/configs/main.json?v=1.7.2`
+                    const configData = await fetch(configUrl)
+                    window.cr_config = await configData.json()
+                    // Resolve the initial UI language (query param wins over
+                    // stored preference) so Google Maps renders its own chrome
+                    // (attribution, Terms, keyboard shortcuts, POI labels) in
+                    // the user's language. Mirrors src/utils/i18n/languageStorage.
+                    var crLang = "en"
+                    try {
+                        var supported = ["en", "es", "vi", "fr-CA"]
+                        var fromQuery = new URLSearchParams(
+                            window.location.search,
+                        ).get("lang")
+                        var stored = null
+                        try {
+                            stored = localStorage.getItem("511x:language")
+                        } catch (e) {}
+                        if (fromQuery && supported.indexOf(fromQuery) !== -1) {
+                            crLang = fromQuery
+                        } else if (stored && supported.indexOf(stored) !== -1) {
+                            crLang = stored
+                        }
+                    } catch (e) {}
+                    if (window.cr_config?.map?.googleMapKey) {
+                        var isEmbeddedElectron = /\bElectron\//i.test(
+                            navigator.userAgent,
+                        )
+                        var crMapIds = [
+                            window.cr_config.map.googleMapIdVector,
+                            window.cr_config.map.googleMapIdRaster,
+                            // @deprecated Prefer googleMapIdVector / googleMapIdRaster (MN/PGC).
+                            window.cr_config.map.googleMapId,
+                        ].filter(Boolean)
+                        ;((g) => {
+                            var h,
+                                a,
+                                k,
+                                p = "The Google Maps JavaScript API",
+                                c = "google",
+                                l = "importLibrary",
+                                q = "__ib__",
+                                m = document,
+                                b = window
+                            b = b[c] || (b[c] = {})
+                            var d = b.maps || (b.maps = {}),
+                                r = new Set(),
+                                e = new URLSearchParams(),
+                                u = () =>
+                                    h ||
+                                    (h = new Promise(async (f, n) => {
+                                        await (a = m.createElement("script"))
+                                        e.set("libraries", [...r] + "")
+                                        for (k in g)
+                                            e.set(
+                                                k.replace(
+                                                    /[A-Z]/g,
+                                                    (t) =>
+                                                        "_" +
+                                                        t[0].toLowerCase(),
+                                                ),
+                                                g[k],
+                                            )
+                                        e.set("callback", c + ".maps." + q)
+                                        a.src =
+                                            `https://maps.${c}apis.com/maps/api/js?` +
+                                            e
+                                        d[q] = f
+                                        a.onerror = () =>
+                                            (h = n(
+                                                Error(p + " could not load."),
+                                            ))
+                                        a.nonce =
+                                            m.querySelector("script[nonce]")
+                                                ?.nonce || ""
+                                        m.head.append(a)
+                                    }))
+                            d[l]
+                                ? console.warn(
+                                      p + " only loads once. Ignoring:",
+                                      g,
+                                  )
+                                : (d[l] = (f, ...n) =>
+                                      r.add(f) && u().then(() => d[l](f, ...n)))
+                        })({
+                            key: window.cr_config.map.googleMapKey,
+                            libraries: ["maps", "marker", "core"],
+                            version: window.cr_config.map.version,
+                            ...(crMapIds.length && !isEmbeddedElectron
+                                ? { mapIds: crMapIds }
+                                : {}),
+                            language: crLang,
+                        })
+                    }
+                } catch (e) {
+                    // Noop
+                    console.log(e)
+                }
+            })()
+        </script>
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-G221BGV94P"
+        ></script>
+        <script>
+            window.dataLayer = window.dataLayer || []
+            function gtag() {
+                dataLayer.push(arguments)
+            }
+            gtag("js", new Date())
+
+            gtag("config", "G-G221BGV94P")
+        </script>
+
+        <meta charset="utf-8" />
+        <meta name="robots" content="noindex, nofollow">
+        <meta name="description" content="Reports regarding traffic incidents, winter road conditions, traffic cameras, active and planned construction, etc." />
+        <title>COtrip Traveler Information</title>
+
+        <base href="/" />
+
+        <meta name="color-scheme" content="light" />
+        <meta
+            name="viewport"
+            content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0"
+        />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+
+        <link rel="manifest" href="/site.webmanifest" />
+
+        <link rel="shortcut icon" type="image/png" href="/favicon.ico" />
+        <meta name="application-name" content="COtrip Traveler Information" />
+        <!-- add to homescreen for ios -->
+        <meta
+            name="apple-itunes-app"
+            content="app-id=id1582530559, app-argument=https://apps.apple.com/us/app/cotrip-planner/id1582530559"
+        />
+        <meta name="mobile-web-app-capable" content="no" />
+        <meta name="apple-mobile-web-app-title" content="COtrip Traveler Information" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="version" content="1.7.2" />
+        <style>
+            /* HTML: <div class="loader"></div> */
+            .loader-page {
+                position: absolute;
+                height: 100vh;
+                width: 100vw;
+                background: #fcfcfc;
+                color: #333;
+                align-items: center;
+                justify-content: center;
+                display: none;
+            }
+
+            .loader-page.show {
+                display: flex;
+            }
+
+            .loader {
+                width: 60px;
+                aspect-ratio: 4;
+                --_g: no-repeat
+                    radial-gradient(circle closest-side, #000 90%, #0000);
+                background:
+                    var(--_g) 0% 50%,
+                    var(--_g) 50% 50%,
+                    var(--_g) 100% 50%;
+                background-size: calc(100% / 3) 100%;
+                animation: l7 1s infinite linear;
+            }
+
+            @keyframes l7 {
+                33% {
+                    background-size:
+                        calc(100% / 3) 0%,
+                        calc(100% / 3) 100%,
+                        calc(100% / 3) 100%;
+                }
+
+                50% {
+                    background-size:
+                        calc(100% / 3) 100%,
+                        calc(100% / 3) 0%,
+                        calc(100% / 3) 100%;
+                }
+
+                66% {
+                    background-size:
+                        calc(100% / 3) 100%,
+                        calc(100% / 3) 100%,
+                        calc(100% / 3) 0%;
+                }
+            }
+        </style>
+      <script type="module" crossorigin src="/assets/index-hXmcli-I.js"></script>
+      <link rel="modulepreload" crossorigin href="/assets/ionic-D1oEvTEi.js">
+      <link rel="modulepreload" crossorigin href="/assets/turf-BBlpNEO9.js">
+      <link rel="modulepreload" crossorigin href="/assets/deckgl-B1aHDa3P.js">
+      <link rel="modulepreload" crossorigin href="/assets/videojs-B1T6Qf5l.js">
+      <link rel="stylesheet" crossorigin href="/assets/index-CztCBC3h.css">
+      <script type="module">import.meta.url;import("_").catch(()=>1);(async function*(){})().next();window.__vite_is_modern_browser=true</script>
+      <script type="module">!function(){if(window.__vite_is_modern_browser)return;console.warn("vite: loading legacy chunks, syntax error above and the same error below should be ignored");var e=document.getElementById("vite-legacy-polyfill"),n=document.createElement("script");n.src=e.src,n.onload=function(){System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))},document.body.appendChild(n)}();</script>
+    </head>
+
+    <body>
+        <div id="root"></div>
+        <div id="loadingPage" class="loader-page">
+            <div>
+                <div class="loader"></div>
+                <p id="loadingText">Loading</p>
+            </div>
+        </div>
+        <script>
+            const urlParams = new URLSearchParams(window.location.search)
+            if (urlParams.has("route")) {
+                document.querySelector(".loader-page")?.classList.add("show")
+            }
+            ;(function () {
+                var loadingStrings = {
+                    en: "Loading",
+                    es: "Cargando",
+                    vi: "Đang tải",
+                }
+                var lang = "en"
+                var fromQuery = urlParams.get("lang")
+                var stored = null
+                try {
+                    stored = localStorage.getItem("511x:language")
+                } catch (e) {}
+                if (stored) {
+                    stored = stored.replace(/^"|"$/g, "")
+                }
+                if (fromQuery && loadingStrings[fromQuery]) {
+                    lang = fromQuery
+                } else if (stored && loadingStrings[stored]) {
+                    lang = stored
+                }
+                var loadingTextEl = document.getElementById("loadingText")
+                if (loadingTextEl) {
+                    loadingTextEl.textContent = loadingStrings[lang]
+                }
+            })()
+        </script>
+      <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
+      <script nomodule crossorigin id="vite-legacy-polyfill" src="/assets/polyfills-legacy-BdbQM1q2.js"></script>
+      <script nomodule crossorigin id="vite-legacy-entry" data-src="/assets/index-legacy-DM7v4YdO.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
+    </body>
+</html>
