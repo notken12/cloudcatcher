@@ -1,0 +1,199 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1000" viewBox="0 0 1500 1000" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#555"/>
+    </marker>
+    <marker id="arrd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#9a9aa0"/>
+    </marker>
+  </defs>
+  <rect width="1500" height="1000" fill="#fbfbfd"/>
+  <text x="40" y="52" font-size="26" font-weight="700" fill="#1d1d1f">Sunroof · frontend — one object in, three renderers out, a globe on top later</text>
+  <text x="40" y="78" font-size="14" fill="#6e6e73">Web SPA (Vite + React 19 + TS + Tailwind). Talks only to the camera backend. Never touches a camera host directly.</text>
+
+  <!-- ===== Backend column ===== -->
+  <rect x="40" y="110" width="330" height="560" rx="18" fill="#f2f2f7" stroke="#d1d1d6"/>
+  <text x="60" y="140" font-size="15" font-weight="700" fill="#1d1d1f">sunroof/camera backend (FastAPI)</text>
+  <text x="60" y="160" font-size="12" fill="#6e6e73">owned by the two camera Devins — read-only for us</text>
+
+  <rect x="60" y="180" width="290" height="70" rx="12" fill="#ffffff" stroke="#c7c7cc"/>
+  <text x="76" y="205" font-size="14" font-weight="700" fill="#1d1d1f">GET /feed</text>
+  <text x="76" y="225" font-size="12" fill="#6e6e73">ranked Footage[] across all active events</text>
+  <text x="76" y="241" font-size="12" fill="#6e6e73">poll 60 s · fixture fallback if VITE_API_BASE unset</text>
+
+  <rect x="60" y="265" width="290" height="55" rx="12" fill="#ffffff" stroke="#c7c7cc"/>
+  <text x="76" y="290" font-size="14" font-weight="700" fill="#1d1d1f">GET /events/{id}/footage</text>
+  <text x="76" y="308" font-size="12" fill="#6e6e73">all candidates for one event (globe drill-down)</text>
+
+  <rect x="60" y="335" width="290" height="70" rx="12" fill="#ffffff" stroke="#c7c7cc"/>
+  <text x="76" y="360" font-size="14" font-weight="700" fill="#1d1d1f">GET /stream  (SSE)</text>
+  <text x="76" y="380" font-size="12" fill="#6e6e73">footage.new / footage.replaced / footage.expired</text>
+  <text x="76" y="396" font-size="12" fill="#6e6e73">→ invalidate query keys, never mutate UI</text>
+
+  <rect x="60" y="420" width="290" height="70" rx="12" fill="#ffffff" stroke="#c7c7cc"/>
+  <text x="76" y="445" font-size="14" font-weight="700" fill="#1d1d1f">GET /proxy/{camera}/…</text>
+  <text x="76" y="465" font-size="12" fill="#6e6e73">frames, HLS playlists, posters — same origin,</text>
+  <text x="76" y="481" font-size="12" fill="#6e6e73">CORS-free, camera URLs hidden</text>
+
+  <rect x="60" y="505" width="290" height="55" rx="12" fill="#ffffff" stroke="#c7c7cc" stroke-dasharray="5 4"/>
+  <text x="76" y="530" font-size="14" font-weight="700" fill="#1d1d1f">GET /cameras.geojson   (asked for)</text>
+  <text x="76" y="548" font-size="12" fill="#6e6e73">lat/lon of every catalog camera → globe dots</text>
+
+  <rect x="60" y="580" width="290" height="70" rx="12" fill="#fff4e0" stroke="#e0b878"/>
+  <text x="76" y="605" font-size="13" font-weight="700" fill="#1d1d1f">asked of backend: join event fields</text>
+  <text x="76" y="623" font-size="12" fill="#6e6e73">event.type · event.place · event.rarity</text>
+  <text x="76" y="639" font-size="12" fill="#6e6e73">so the card needs no second request</text>
+
+  <!-- ===== The contract ===== -->
+  <rect x="430" y="110" width="300" height="560" rx="18" fill="#e8f1fb" stroke="#b6cfe8"/>
+  <text x="450" y="140" font-size="15" font-weight="700" fill="#1d1d1f">The one object: Footage</text>
+  <text x="450" y="160" font-size="12" fill="#6e6e73">src/lib/types.ts — mirrors backend, no adapters</text>
+  <g font-size="12.5" fill="#1d1d1f" font-family="Menlo, Consolas, monospace">
+    <text x="450" y="192">{</text>
+    <text x="466" y="212">event_id, camera_id, rank,</text>
+    <text x="466" y="232">verified: boolean,</text>
+    <text x="466" y="252">media: {</text>
+    <text x="482" y="272">kind: 'image'|'hls'|'iframe',</text>
+    <text x="482" y="292">src, poster?, refresh_s?,</text>
+    <text x="482" y="312">expires_at?, width?, height?</text>
+    <text x="466" y="332">},</text>
+    <text x="466" y="352">verdict?: { event_visible,</text>
+    <text x="482" y="372">confidence, quality, caption },</text>
+    <text x="466" y="392">why: string,</text>
+    <text x="466" y="412">camera: { name, provider, lat,</text>
+    <text x="482" y="432">lon, bearing?, source_url },</text>
+    <text x="466" y="452">frame_ts, hold_until,</text>
+    <text x="466" y="472">event: { type, place?, rarity?,</text>
+    <text x="482" y="492">lat, lon, t0, t1 }</text>
+    <text x="450" y="512">}</text>
+  </g>
+  <rect x="450" y="535" width="260" height="115" rx="12" fill="#ffffff" stroke="#b6cfe8"/>
+  <text x="466" y="558" font-size="13" font-weight="700" fill="#1d1d1f">Why this matters</text>
+  <text x="466" y="578" font-size="12" fill="#6e6e73">Card, cycler, globe pin, evidence</text>
+  <text x="466" y="594" font-size="12" fill="#6e6e73">panel all take the same prop. Adding</text>
+  <text x="466" y="610" font-size="12" fill="#6e6e73">the globe = a new consumer, not a</text>
+  <text x="466" y="626" font-size="12" fill="#6e6e73">new data path. media.kind is the</text>
+  <text x="466" y="642" font-size="12" fill="#6e6e73">only switch in the whole UI.</text>
+
+  <!-- ===== App column ===== -->
+  <rect x="790" y="110" width="670" height="560" rx="18" fill="#f2f2f7" stroke="#d1d1d6"/>
+  <text x="810" y="140" font-size="15" font-weight="700" fill="#1d1d1f">frontend SPA — iteration 1 (now)</text>
+  <text x="810" y="160" font-size="12" fill="#6e6e73">light, neutral, Helvetica; the imagery is the UI</text>
+
+  <!-- data layer -->
+  <rect x="810" y="180" width="300" height="120" rx="12" fill="#ffffff" stroke="#c7c7cc"/>
+  <text x="826" y="205" font-size="14" font-weight="700" fill="#1d1d1f">src/lib/api.ts</text>
+  <text x="826" y="225" font-size="12" fill="#6e6e73">useFeed()   → TanStack Query ['feed']</text>
+  <text x="826" y="243" font-size="12" fill="#6e6e73">useStream() → EventSource, invalidates keys</text>
+  <text x="826" y="261" font-size="12" fill="#6e6e73">mediaUrl()  → prefixes API_BASE for /proxy/…</text>
+  <text x="826" y="283" font-size="12" fill="#1d1d1f" font-weight="700">no API_BASE ⇒ fixtures/feed.json (offline demo)</text>
+
+  <rect x="1130" y="180" width="310" height="120" rx="12" fill="#ffffff" stroke="#c7c7cc"/>
+  <text x="1146" y="205" font-size="14" font-weight="700" fill="#1d1d1f">src/lib/events.ts · time.ts</text>
+  <text x="1146" y="225" font-size="12" fill="#6e6e73">filter chips: all · sunrise · sunset · storms …</text>
+  <text x="1146" y="243" font-size="12" fill="#6e6e73">fog + undercast → one chip; colors per type</text>
+  <text x="1146" y="261" font-size="12" fill="#6e6e73">still  → “frame 05:11 UTC · 37 min ago”</text>
+  <text x="1146" y="279" font-size="12" fill="#6e6e73">stream → “delay ≈ 30 s” — never bare “live”</text>
+
+  <!-- App / Header -->
+  <rect x="810" y="320" width="630" height="52" rx="12" fill="#ffffff" stroke="#c7c7cc"/>
+  <text x="826" y="342" font-size="14" font-weight="700" fill="#1d1d1f">App.tsx  +  Header.tsx</text>
+  <text x="826" y="360" font-size="12" fill="#6e6e73">filter → visible = feed.filter(type).slice(0,4) → current;  header: title · event select · fixture/live/SSE dot</text>
+
+  <!-- Cycler -->
+  <rect x="810" y="385" width="200" height="60" rx="12" fill="#ffffff" stroke="#c7c7cc"/>
+  <text x="826" y="408" font-size="14" font-weight="700" fill="#1d1d1f">Cycler.tsx</text>
+  <text x="826" y="426" font-size="12" fill="#6e6e73">auto-advance 20 s, pauses on</text>
+  <text x="826" y="440" font-size="12" fill="#6e6e73">hover, a11y dots</text>
+
+  <!-- FootageCard -->
+  <rect x="1025" y="385" width="415" height="60" rx="12" fill="#ffffff" stroke="#c7c7cc"/>
+  <text x="1041" y="408" font-size="14" font-weight="700" fill="#1d1d1f">FootageCard.tsx   (props: { footage: Footage })</text>
+  <text x="1041" y="426" font-size="12" fill="#6e6e73">hero media · type chip · place · time/delay · VLM caption ·</text>
+  <text x="1041" y="440" font-size="12" fill="#6e6e73">1-line “what is this” · attribution · verified · why-this-camera</text>
+
+  <!-- Renderers -->
+  <rect x="810" y="470" width="630" height="180" rx="12" fill="#ffffff" stroke="#c7c7cc"/>
+  <text x="826" y="493" font-size="14" font-weight="700" fill="#1d1d1f">media/FootageMedia.tsx — switch (footage.media.kind)</text>
+
+  <rect x="826" y="508" width="195" height="125" rx="10" fill="#eaf6ea" stroke="#9fcf9f"/>
+  <text x="840" y="530" font-size="13" font-weight="700" fill="#1d1d1f">'image' → ImageMedia</text>
+  <text x="840" y="550" font-size="11.5" fill="#6e6e73">&lt;img&gt; re-fetched every refresh_s</text>
+  <text x="840" y="566" font-size="11.5" fill="#6e6e73">cache-bust ?t=…, preload, keep</text>
+  <text x="840" y="582" font-size="11.5" fill="#6e6e73">old frame until new one loads</text>
+  <text x="840" y="606" font-size="11.5" fill="#1d1d1f">IEM, Windy, DOT stills, IRF</text>
+  <text x="840" y="622" font-size="11.5" fill="#1d1d1f">(~90 % of the catalog)</text>
+
+  <rect x="1036" y="508" width="195" height="125" rx="10" fill="#fdf1e6" stroke="#e8b98f"/>
+  <text x="1050" y="530" font-size="13" font-weight="700" fill="#1d1d1f">'hls' → HlsMedia</text>
+  <text x="1050" y="550" font-size="11.5" fill="#6e6e73">&lt;video&gt; native HLS on Safari,</text>
+  <text x="1050" y="566" font-size="11.5" fill="#6e6e73">lazy hls.js elsewhere; muted,</text>
+  <text x="1050" y="582" font-size="11.5" fill="#6e6e73">autoplay; poster on fatal error</text>
+  <text x="1050" y="606" font-size="11.5" fill="#1d1d1f">DOT / 511 streams, Skyline,</text>
+  <text x="1050" y="622" font-size="11.5" fill="#1d1d1f">proxied .m3u8</text>
+
+  <rect x="1246" y="508" width="178" height="125" rx="10" fill="#f3eaf8" stroke="#c9a6dc"/>
+  <text x="1260" y="530" font-size="13" font-weight="700" fill="#1d1d1f">'iframe' → IframeMedia</text>
+  <text x="1260" y="550" font-size="11.5" fill="#6e6e73">poster first, click to open</text>
+  <text x="1260" y="566" font-size="11.5" fill="#6e6e73">the third-party player</text>
+  <text x="1260" y="582" font-size="11.5" fill="#6e6e73">allow=autoplay;fullscreen</text>
+  <text x="1260" y="606" font-size="11.5" fill="#1d1d1f">Panomax, YouTube, feratel</text>
+  <text x="1260" y="622" font-size="11.5" fill="#1d1d1f">(not verifiable → unverified)</text>
+
+  <!-- arrows backend → contract → app -->
+  <line x1="350" y1="215" x2="430" y2="215" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="350" y1="292" x2="430" y2="292" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="350" y1="370" x2="430" y2="370" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M730 240 C 760 240, 770 240, 810 240" stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+  <text x="742" y="230" font-size="11" fill="#6e6e73">JSON</text>
+  <path d="M205 490 L 205 690 C 205 705, 215 705, 230 705 L 1100 705 C 1120 705, 1125 700, 1125 685 L 1125 650" stroke="#9a9aa0" stroke-width="1.5" fill="none" stroke-dasharray="5 4" marker-end="url(#arrd)"/>
+  <text x="400" y="722" font-size="11" fill="#6e6e73">/proxy/… bytes go straight to &lt;img&gt; / &lt;video&gt; / &lt;iframe&gt; src</text>
+  <line x1="960" y1="300" x2="960" y2="320" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="960" y1="372" x2="960" y2="385" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="1232" y1="372" x2="1232" y2="385" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="1232" y1="445" x2="1232" y2="470" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ===== Iteration 2: globe ===== -->
+  <rect x="40" y="730" width="900" height="230" rx="18" fill="#eef4ee" stroke="#b9d3b9"/>
+  <text x="60" y="760" font-size="15" font-weight="700" fill="#1d1d1f">iteration 2 — the globe (react-globe.gl / three.js) · same Footage, new consumer</text>
+  <rect x="60" y="780" width="270" height="160" rx="12" fill="#ffffff" stroke="#b9d3b9"/>
+  <text x="76" y="803" font-size="13" font-weight="700" fill="#1d1d1f">layers</text>
+  <text x="76" y="823" font-size="12" fill="#6e6e73">pointsData  = all cameras (WebGL, 1e4+ ok)</text>
+  <text x="76" y="841" font-size="12" fill="#6e6e73">ringsData   = event centers, colored by type</text>
+  <text x="76" y="859" font-size="12" fill="#6e6e73">htmlElements = ≤50 thumbnail pins from /feed</text>
+  <text x="76" y="877" font-size="12" fill="#6e6e73">arcsData    = camera → event sightline (why)</text>
+  <text x="76" y="900" font-size="12" fill="#1d1d1f">auto-rotate; pause on hover; day/night texture</text>
+  <text x="76" y="918" font-size="12" fill="#1d1d1f">from frame_ts</text>
+
+  <rect x="350" y="780" width="270" height="160" rx="12" fill="#ffffff" stroke="#b9d3b9"/>
+  <text x="366" y="803" font-size="13" font-weight="700" fill="#1d1d1f">interaction → hero</text>
+  <text x="366" y="823" font-size="12" fill="#6e6e73">click pin  → setSelected(footage)</text>
+  <text x="366" y="841" font-size="12" fill="#6e6e73">FootageCard slides in as a side panel;</text>
+  <text x="366" y="859" font-size="12" fill="#6e6e73">Cycler keeps driving when nothing is selected</text>
+  <text x="366" y="877" font-size="12" fill="#6e6e73">click ring → /events/{id}/footage list</text>
+  <text x="366" y="900" font-size="12" fill="#1d1d1f">layout flips from “centered card” to</text>
+  <text x="366" y="918" font-size="12" fill="#1d1d1f">“globe + card”; the card itself is unchanged</text>
+
+  <rect x="640" y="780" width="280" height="160" rx="12" fill="#ffffff" stroke="#b9d3b9"/>
+  <text x="656" y="803" font-size="13" font-weight="700" fill="#1d1d1f">why web, not React Native</text>
+  <text x="656" y="823" font-size="12" fill="#6e6e73">• hls.js / &lt;iframe&gt; / EventSource are free in</text>
+  <text x="656" y="839" font-size="12" fill="#6e6e73">  a browser; each is a native module in RN</text>
+  <text x="656" y="857" font-size="12" fill="#6e6e73">• three.js globe is mature on web; expo-gl</text>
+  <text x="656" y="873" font-size="12" fill="#6e6e73">  + react-three-fiber on RN is fragile</text>
+  <text x="656" y="891" font-size="12" fill="#6e6e73">• demo lives on a laptop/projector, not a phone</text>
+  <text x="656" y="909" font-size="12" fill="#6e6e73">• Vite static build ⇒ FastAPI can serve it,</text>
+  <text x="656" y="925" font-size="12" fill="#6e6e73">  one origin, one deploy</text>
+
+  <!-- ===== Iteration 3 ===== -->
+  <rect x="960" y="730" width="500" height="230" rx="18" fill="#f7f0e6" stroke="#dcc5a5"/>
+  <text x="980" y="760" font-size="15" font-weight="700" fill="#1d1d1f">iteration 3 — depth, if time</text>
+  <text x="980" y="790" font-size="12.5" fill="#1d1d1f">• evidence drawer: frame + VLM verdict + gate stats +</text>
+  <text x="980" y="808" font-size="12.5" fill="#1d1d1f">  weather trigger (“why we think this is real”)</text>
+  <text x="980" y="832" font-size="12.5" fill="#1d1d1f">• rarity badge from event.rarity; “first mammatus</text>
+  <text x="980" y="850" font-size="12.5" fill="#1d1d1f">  over Denver in 40 days”</text>
+  <text x="980" y="874" font-size="12.5" fill="#1d1d1f">• share link /e/{event_id} (hash route, no SSR needed)</text>
+  <text x="980" y="898" font-size="12.5" fill="#1d1d1f">• PWA manifest so it installs as a kiosk / screensaver</text>
+  <text x="980" y="922" font-size="12.5" fill="#1d1d1f">• timeline scrubber over hold_until → replay a sunset</text>
+
+  <text x="40" y="985" font-size="11" fill="#9a9aa0">Legend: solid arrows = HTTP JSON · dashed = media bytes / not-yet-built · colored renderer boxes match the event chip palette in index.css</text>
+</svg>
