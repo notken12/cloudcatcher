@@ -57,11 +57,13 @@ export function useStream(): StreamState {
     const es = new EventSource(`${API_BASE}/stream`)
     es.onopen = () => setState('open')
     es.onerror = () => setState('closed')
-    es.onmessage = (e) => {
+    const onFootage = (e: MessageEvent<string>) => {
       const msg = JSON.parse(e.data) as StreamMessage
       void qc.invalidateQueries({ queryKey: ['feed'] })
       void qc.invalidateQueries({ queryKey: ['footage', msg.event_id] })
     }
+    es.onmessage = onFootage
+    es.addEventListener('footage', onFootage)
     return () => es.close()
   }, [qc])
   return state

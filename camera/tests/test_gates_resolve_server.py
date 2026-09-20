@@ -385,9 +385,17 @@ async def test_server_routes(tmp_path, patched_fetch, monkeypatch):
             fr = await c.get(f"/proxy/frame/{cam_id}")
             assert fr.status_code == 200 and fr.headers["content-type"] == "image/jpeg"
             assert fr.content[:2] == b"\xff\xd8" and "X-Frame-Ts" in fr.headers
-            assert (await c.get("/feed")).json()[0]["event_id"] == "e1"
-            assert (await c.get("/events/e1/footage")).status_code == 200
+            feed = (await c.get("/feed")).json()
+            assert len(feed) == 1 and feed[0]["event_id"] == "e1" and feed[0]["rank"] == 1
+            assert feed[0]["event"]["type"] == "thunderstorm"
+            assert feed[0]["event"]["place"] and feed[0]["event"]["lat"] == STORM.lat
+            rows = (await c.get("/events/e1/footage")).json()
+            assert [f["rank"] for f in rows] == list(range(1, len(rows) + 1))
+            assert (await c.get("/events/e1/result")).json()["status"] == "FOOTAGE_FOUND"
             assert (await c.get("/events/nope/footage")).status_code == 404
+            gj = (await c.get("/cameras.geojson")).json()
+            assert gj["type"] == "FeatureCollection" and len(gj["features"]) == 3
+            assert gj["features"][0]["geometry"]["type"] == "Point"
             assert (await c.get("/proxy/frame/nope")).status_code == 404
 
 

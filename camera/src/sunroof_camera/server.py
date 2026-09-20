@@ -7,19 +7,25 @@ Endpoints
     GET  /events?type=&time=&limit=20   events from the SQLite store (--db), rarest/most severe
                                  first, each with its cron-matched ranked cameras + footage
     POST /events                 WeatherEvent -> FootageResult (also pushed on /stream)
-    GET  /feed                   latest FootageResult per event, newest first
-    GET  /events/{id}/footage    one FootageResult
+    GET  /feed                   frontend contract: best Footage per event with footage (each
+                                 carries `event{type,lat,lon,place,rarity,severity}`), newest first;
+                                 in-memory results first, then the store's latest run (--db)
+    GET  /events/{id}/footage    Footage[] for one event (all ranks)
+    GET  /events/{id}/result     the full FootageResult (statuses, rejections)
+    GET  /cameras.geojson        Point per catalog camera (id, source, health) for the globe
     GET  /stream                 SSE: `footage` (FootageResult JSON) and `ping`
     GET  /proxy/frame/{cam_id}   the verified JPEG (cached); frontend never talks to cameras
     GET  /proxy/history/{cam_id}?ts=   archive JPEG at an instant (fotowebcam / phenocam / iem);
                                  ts carries the camera's UTC offset, e.g. 2023-06-15T18:00-06:00
-    GET  /                       sandbox page (static/index.html)
+    GET  /sandbox                sandbox page (static/index.html); also / unless --frontend DIR
+                                 mounts the built SPA (frontend/dist) there — one origin, no CORS
 """
 
 from __future__ import annotations
 
 import asyncio
 import io
+import json
 import logging
 import sqlite3
 from collections import OrderedDict
@@ -30,13 +36,14 @@ from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import FileResponse, Response, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 from PIL import Image
 
 from . import events_db as edb
 from . import vlm
 from .archive import archive_time, camera_from_id
 from .fetch import fetch_frame, row_to_camera
-from .footage import FootageResult, WeatherEvent
+from .footage import EventRef, Footage, FootageResult, WeatherEvent, place_label
 from .ingest.base import make_client
 from .query import Catalog
 from .resolve import FrameCache, resolve_footage
@@ -111,6 +118,7 @@ def create_app(
     ignore_night: bool = False,
     db: Path | None = None,
     watch_db_s: float = 30.0,
+    frontend: Path | None = None,
 ) -> FastAPI:
     st = State(catalog_path, verdict_log, db)
 
@@ -211,15 +219,92 @@ def create_app(
     async def post_event(ev: WeatherEvent) -> FootageResult:
         return await handle(ev)
 
-    @app.get("/feed")
-    async def feed() -> list[FootageResult]:
-        return list(reversed(st.results.values()))
+    def stored_results(limit: int = 1000) -> list[tuple[FootageResult, EventRef]]:
+        """Footage the cron/watcher resolved into the store for the latest run, rarest first."""
+        if st.db is None:
+            return []
+        out = []
+        for ev in edb.list_events(st.db, None, None, limit):
+            if not ev.get("footage"):
+                continue
+            res = FootageResult.model_validate(ev["footage"])
+            ref = EventRef(
+                type=ev["type"],
+                lat=ev["lat"],
+                lon=ev["lon"],
+                radius_km=ev["radius_km"] or 10.0,
+                place=place_label(ev["lat"], ev["lon"]),
+                rarity=ev["rarity"],
+                severity=ev["severity"],
+            )
+            out.append((res, ref))
+        return out
 
-    @app.get("/events/{event_id}/footage", response_model=FootageResult)
-    async def event_footage(event_id: str) -> FootageResult:
-        if event_id not in st.results:
+    def with_event(f: Footage, ref: EventRef) -> Footage:
+        return f if f.event is not None else f.model_copy(update={"event": ref})
+
+    def find_result(event_id: str) -> tuple[FootageResult, EventRef | None] | None:
+        if event_id in st.results:
+            return st.results[event_id], None
+        for res, ref in stored_results():
+            if res.event_id == event_id:
+                return res, ref
+        return None
+
+    @app.get("/feed")
+    async def feed() -> list[Footage]:
+        """One card per event that has footage: rank-1 frame, `event` joined in."""
+        seen: set[str] = set()
+        rows: list[Footage] = []
+        for res in reversed(st.results.values()):
+            if res.footage:
+                seen.add(res.event_id)
+                rows.append(res.footage[0])
+        for res, ref in stored_results():
+            if res.footage and res.event_id not in seen:
+                seen.add(res.event_id)
+                rows.append(with_event(res.footage[0], ref))
+        return rows
+
+    @app.get("/events/{event_id}/footage")
+    async def event_footage(event_id: str) -> list[Footage]:
+        hit = find_result(event_id)
+        if hit is None:
             raise HTTPException(404)
-        return st.results[event_id]
+        res, ref = hit
+        return [with_event(f, ref) if ref else f for f in res.footage]
+
+    @app.get("/events/{event_id}/result", response_model=FootageResult)
+    async def event_result(event_id: str) -> FootageResult:
+        hit = find_result(event_id)
+        if hit is None:
+            raise HTTPException(404)
+        return hit[0]
+
+    @app.get("/cameras.geojson")
+    async def cameras_geojson() -> Response:
+        assert st.catalog is not None
+        df = st.catalog.df
+        feats = [
+            {
+                "type": "Feature",
+                "geometry": {"type": "Point", "coordinates": [round(lon, 4), round(lat, 4)]},
+                "properties": {"id": cid, "source": src, "health": health},
+            }
+            for cid, src, health, lat, lon in zip(
+                df["id"].astype(str),
+                df["source"].astype(str),
+                df["health"].astype(str),
+                df["lat"].astype(float),
+                df["lon"].astype(float),
+            )
+        ]
+        body = json.dumps({"type": "FeatureCollection", "features": feats}, separators=(",", ":"))
+        return Response(
+            body,
+            media_type="application/geo+json",
+            headers={"Cache-Control": "public, max-age=3600"},
+        )
 
     @app.get("/stream")
     async def stream(request: Request) -> StreamingResponse:
@@ -308,9 +393,15 @@ def create_app(
             headers={"Cache-Control": "public, max-age=86400", "X-Frame-Url": url},
         )
 
-    @app.get("/")
-    async def index() -> FileResponse:
+    @app.get("/sandbox")
+    async def sandbox() -> FileResponse:
         return FileResponse(STATIC / "index.html")
+
+    if frontend is None:
+
+        @app.get("/")
+        async def index() -> FileResponse:
+            return FileResponse(STATIC / "index.html")
 
     @app.get("/health")
     async def health() -> dict:
@@ -321,6 +412,11 @@ def create_app(
             "vlm": vlm.describe() if vlm.available() else None,
             "vlm_usage": vlm.USAGE.as_dict(),
         }
+
+    if frontend is not None:
+        if not (frontend / "index.html").is_file():
+            raise FileNotFoundError(f"--frontend {frontend}: no index.html (run `pnpm build`)")
+        app.mount("/", StaticFiles(directory=frontend, html=True), name="frontend")
 
     return app
 
