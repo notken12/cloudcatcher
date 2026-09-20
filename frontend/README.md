@@ -10,6 +10,7 @@ Design + reasoning live in [PLAN.md](./PLAN.md); architecture in [docs/frontend-
 pnpm install
 pnpm dev            # fixture mode — no backend needed
 VITE_API_BASE=http://localhost:8000 pnpm dev   # live against the camera backend
+VITE_API_BASE=/ pnpm build                     # same-origin build for `sunroof-camera serve --frontend frontend/dist`
 pnpm test && pnpm lint && pnpm build
 ```
 
