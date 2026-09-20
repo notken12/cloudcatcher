@@ -13,10 +13,13 @@ dependencies = [
     "timezonefinder>=6.5",
     "typer>=0.12",
     "pillow>=10",
+    "fastapi>=0.111",
+    "uvicorn>=0.30",
+    "openai>=1.40",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8", "ruff>=0.5"]
+dev = ["pytest>=8", "pytest-asyncio>=0.23", "ruff>=0.5", "httpx>=0.27"]
 
 [project.scripts]
 sunroof-camera = "sunroof_camera.cli:app"
@@ -38,3 +41,4 @@ ignore = ["B008", "B905", "E501"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+asyncio_mode = "auto"

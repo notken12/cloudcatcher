@@ -11,7 +11,40 @@ uv run sunroof-camera refresh                  # adapters -> data/shards/*.parqu
 uv run sunroof-camera describe                 # counts by source / heading_conf / night_ok / health
 uv run sunroof-camera find thunderstorm --lat 39.7 --lon=-104.9 --radius-km 20
 uv run pytest
+
+uv run sunroof-camera refresh --source faa    # 3.5k FAA WeatherCams, no key, ~3 s
+uv run sunroof-camera serve --fake-events     # camera service + sandbox page on http://127.0.0.1:8080
+uv run sunroof-camera resolve thunderstorm --lat 67.6 --lon=-164 --radius-km 20   # one-shot FootageResult JSON
 ```
+
+## Camera service (query → gate → VLM → route)
+
+Design: `docs/query-and-routing-plan.md` + `docs/query-routing-schema.svg`.
+The weather backend posts a `WeatherEvent` and gets a `FootageResult` back
+(`src/sunroof_camera/footage.py` is the contract for both the backend and the frontend):
+
+```
+POST /events                {"id":"…","type":"thunderstorm","lat":..,"lon":..,"radius_km":20}
+  -> {"status": "FOOTAGE_FOUND" | "NO_CAMERAS_IN_RANGE" | "CAMERAS_DARK" | "ALL_STALE"
+                | "EVENT_NOT_VISIBLE" | "NO_FOOTAGE_FOUND" | "TIMEOUT",
+      "footage": [Footage…], "rejected": [...], "retry_after_s": ...}
+GET  /stream                SSE, one `footage` event per FootageResult (what the sandbox page consumes)
+GET  /feed, /events/{id}/footage, /proxy/frame/{camera_id}, /health
+```
+
+`Footage.media` is `{kind: image|hls|iframe, src, refresh_s}` — the frontend renders
+that and never talks to cameras directly; `frame_ts` + `ts_source`
+(`source_api` / `exif` / `last_modified` / `fetch_time`) say how trustworthy the timestamp is.
+
+Pipeline per event (`resolve.py`): `Catalog.find_cameras` → concurrent fetch of `k×3`
+candidates → `gates.check_frame` (bytes/magic/decode, placeholder + frozen-frame SHA-1,
+freshness vs cadence, uniform / blown-out / dark, pHash de-dupe, sharpness) →
+`vlm.judge` (OpenAI structured output, `gpt-4o-mini` with one escalation to `gpt-4o`)
+→ top-`k` `Footage`. Without `OPENAI_API_KEY` the service still runs and returns
+gate-passed frames marked `verified: false`.
+
+Environment: `OPENAI_API_KEY` (VLM gate; optional), `SUNROOF_VLM_MODEL` /
+`SUNROOF_VLM_MODEL_LARGE` (overrides), `WINDY_API_KEY` (only for the Windy source).
 
 ## For the backend / other Devin: the contract
 
