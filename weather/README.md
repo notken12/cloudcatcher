@@ -9,6 +9,7 @@ with `uv run python -m weather.<module>`.
 | `mrms.py` | MRMS composite reflectivity / PrecipRate / ProbSevere | 2-min, 1.5 MB CONUS files, archive 2020-10→; ProbSevere objects are the ready-made event record |
 | `glm.py` | GLM flashes | 20-s files, ~4 s lag; goes16 before 2025-04-07, goes19 after |
 | `goes_abi.py` | ABI L2 (band 13 CONUS, ACHAC cloud-top height) + lat/lon→pixel | `ACHTC` does not exist on GOES-19 |
+| `goes_cloud.py` | COD optical depth + ACHAC cloud-top height sampled at a site | COD DQF is a bitmask; HT NaN = clear. Sees cirrus HRRR misses (REPORT §3.15) |
 | `hrrr.py` | byte-range cloud subset from the .idx, `CloudGrid` sampler | 10 MB / ~1 s; base/top NaN for thin cirrus; mask off-grid points |
 | `nws.py` | live alerts (User-Agent required) and IEM VTEC archive | api.weather.gov has no history |
 | `spc.py` | SPC daily / yearly storm reports | yearly times are CST |
