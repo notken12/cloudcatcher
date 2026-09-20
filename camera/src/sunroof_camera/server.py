@@ -14,6 +14,8 @@ Endpoints
     GET  /proxy/history/{cam_id}?ts=   archive JPEG at an instant (fotowebcam / phenocam / iem);
                                  ts carries the camera's UTC offset, e.g. 2023-06-15T18:00-06:00
     GET  /                       sandbox page (static/index.html)
+    /push/*, /users/*            Web Push subscriptions + user preferences (push.py); every
+                                 FOOTAGE_FOUND result fans out to subscribers, throttled
 """
 
 from __future__ import annotations
@@ -31,14 +33,16 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import FileResponse, Response, StreamingResponse
 from PIL import Image
+from pydantic import BaseModel, Field
 
 from . import events_db as edb
+from . import push as pushmod
 from . import vlm
 from .archive import archive_time, camera_from_id
 from .fetch import fetch_frame, row_to_camera
 from .footage import FootageResult, WeatherEvent
 from .ingest.base import make_client
-from .query import Catalog
+from .query import Catalog, EventType
 from .resolve import FrameCache, resolve_footage
 
 log = logging.getLogger(__name__)
@@ -81,6 +85,25 @@ class HistoryCache:
             self._d.popitem(last=False)
 
 
+class SubscribeBody(BaseModel):
+    subscription: dict
+    user_id: str | None = None
+
+
+class EndpointBody(BaseModel):
+    endpoint: str
+
+
+class UserBody(BaseModel):
+    name: str = Field(min_length=1, max_length=60)
+    email: str | None = Field(None, max_length=120)
+    likes: list[EventType] = []
+
+
+class PrefsBody(BaseModel):
+    likes: list[EventType]
+
+
 class State:
     def __init__(self, catalog_path: Path, verdict_log: Path | None, db: Path | None = None):
         self.catalog_path = catalog_path
@@ -95,6 +118,8 @@ class State:
         self.lock = asyncio.Lock()
         self.handle: Callable[[WeatherEvent], Awaitable[FootageResult]] | None = None
         self.match_pending: Callable[[str | None], Awaitable[list[FootageResult]]] | None = None
+        self.push: pushmod.Notifier | None = None
+        self.push_tasks: set[asyncio.Task] = set()
 
     def publish(self, kind: str, data: str) -> None:
         for q in list(self.subscribers):
@@ -111,8 +136,15 @@ def create_app(
     ignore_night: bool = False,
     db: Path | None = None,
     watch_db_s: float = 30.0,
+    push_db: Path | None = None,
+    push_key: Path = Path("data/vapid.pem"),
+    public_url: str | None = None,
 ) -> FastAPI:
     st = State(catalog_path, verdict_log, db)
+    if push_db is not None:
+        st.push = pushmod.Notifier(
+            pushmod.PushStore(push_db), pushmod.load_vapid(push_key), public_url
+        )
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
@@ -139,6 +171,10 @@ def create_app(
         while len(st.results) > 50:
             st.results.popitem(last=False)
         st.publish("footage", res.model_dump_json())
+        if st.push is not None:
+            t = asyncio.create_task(st.push.notify(res))
+            st.push_tasks.add(t)
+            t.add_done_callback(st.push_tasks.discard)
         log.info(
             "event %s (%s): %s — %d/%d candidates fetched, %d passed gates, %d vlm calls, %.1fs",
             res.event_id,
@@ -305,6 +341,46 @@ def create_app(
             headers={"Cache-Control": "public, max-age=86400", "X-Frame-Url": url},
         )
 
+    def push_on() -> pushmod.Notifier:
+        if st.push is None:
+            raise HTTPException(503, "server started without --push-db")
+        return st.push
+
+    @app.get("/push/vapid-public-key")
+    async def vapid_public_key() -> dict:
+        return {"key": pushmod.public_key_b64(push_on().vapid)}
+
+    @app.post("/push/subscribe", status_code=201)
+    async def push_subscribe(body: SubscribeBody) -> dict:
+        n = push_on()
+        sub = body.subscription
+        if not isinstance(sub.get("endpoint"), str) or "keys" not in sub:
+            raise HTTPException(422, "not a PushSubscription")
+        n.store.subscribe(sub, body.user_id)
+        return {"ok": True, "subscriptions": n.store.count()}
+
+    @app.post("/push/unsubscribe")
+    async def push_unsubscribe(body: EndpointBody) -> dict:
+        return {"removed": push_on().store.unsubscribe(body.endpoint)}
+
+    @app.post("/users", status_code=201)
+    async def create_user(body: UserBody) -> dict:
+        return push_on().store.create_user(body.name, body.email, list(dict.fromkeys(body.likes)))
+
+    @app.get("/users/{user_id}")
+    async def get_user(user_id: str) -> dict:
+        u = push_on().store.get_user(user_id)
+        if u is None:
+            raise HTTPException(404)
+        return u
+
+    @app.put("/users/{user_id}/prefs")
+    async def set_prefs(user_id: str, body: PrefsBody) -> dict:
+        u = push_on().store.set_likes(user_id, list(dict.fromkeys(body.likes)))
+        if u is None:
+            raise HTTPException(404)
+        return u
+
     @app.get("/")
     async def index() -> FileResponse:
         return FileResponse(STATIC / "index.html")
@@ -317,6 +393,15 @@ def create_app(
             "db": edb.run_time_at(st.db, None) if st.db is not None else None,
             "vlm": vlm.describe() if vlm.available() else None,
             "vlm_usage": vlm.USAGE.as_dict(),
+            "push": (
+                {
+                    "subscriptions": st.push.store.count(),
+                    "sent": st.push.sent,
+                    "failed": st.push.failed,
+                }
+                if st.push is not None
+                else None
+            ),
         }
 
     return app

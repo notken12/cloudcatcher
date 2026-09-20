@@ -107,6 +107,24 @@ Merge rule on import: same type, seen < 2 h ago, centre within `max(radius_km, M
 polls the file (`--watch-db-s`, default 30) and matches/resolves any run the cron did not, and
 `--fake-events --db` drives fake events through the same import → match → footage path.
 
+### Web Push + users (`push.py`)
+
+Every `FOOTAGE_FOUND` result that `serve` publishes on `/stream` is also fanned out as a
+Web Push notification (`pywebpush`, VAPID) to the devices in `--push-db`
+(default `data/push.sqlite`; tables `users`, `subscriptions`, `sends`). The VAPID private
+key is created on first start at `--push-key` (default `data/vapid.pem`) — keep it: rotating
+it invalidates every subscription. `--public-url https://…` makes notification images and
+links absolute.
+
+Routes: `GET /push/vapid-public-key`, `POST /push/subscribe {subscription, user_id?}`,
+`POST /push/unsubscribe {endpoint}`, `POST /users {name, email?, likes}`,
+`GET /users/{id}`, `PUT /users/{id}/prefs {likes}`. `/health` reports `push` counters.
+
+Send policy, per device: only liked types once a user has likes (anonymous devices get
+everything); at most one push per 3 h (1.5 h for a liked type); never the same event
+twice; TTL 20 min so stale pushes are dropped rather than delivered late; 404/410
+endpoints are deleted. Payload: `"🌌 Aurora dancing right now" / "<camera> — <VLM caption>"`.
+
 ### VLM backends (`vlm.py`)
 
 All backends speak the OpenAI chat-completions API, so switching is env-only:

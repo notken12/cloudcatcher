@@ -1,7 +1,9 @@
-import { ChevronDown, Clapperboard, Earth, History, Tv } from 'lucide-react'
+import { ChevronDown, Clapperboard, Earth, History, Tv, UserRound } from 'lucide-react'
 import type { StreamState } from '../lib/api'
 import { FILTER_LABEL, FILTERS, type Filter } from '../lib/events'
+import { personalEnabled } from '../lib/personal'
 import type { View } from '../lib/view'
+import { NotifyButton } from './NotifyButton'
 
 interface Props {
   filter: Filter
@@ -11,9 +13,20 @@ interface Props {
   view: View
   onView: (v: View) => void
   onHelp: () => void
+  userId?: string
 }
 
-export function Header({ filter, onFilter, liveCount, stream, view, onView, onHelp }: Props) {
+export function Header({
+  filter,
+  onFilter,
+  liveCount,
+  stream,
+  view,
+  onView,
+  onHelp,
+  userId,
+}: Props) {
+  const personal = personalEnabled()
   const dot =
     stream === 'open'
       ? 'bg-emerald-500 pulse'
@@ -62,8 +75,19 @@ export function Header({ filter, onFilter, liveCount, stream, view, onView, onHe
             <Clapperboard className="h-4 w-4" aria-hidden />
             <span className="sr-only">Story mode</span>
           </button>
+          {personal && (
+            <button
+              type="button"
+              aria-pressed={view === 'join'}
+              onClick={() => onView('join')}
+              title="You"
+            >
+              <UserRound className="h-4 w-4" aria-hidden />
+              <span className="sr-only">You</span>
+            </button>
+          )}
         </div>
-        <label className={`relative ${view === 'time' ? 'hidden' : ''}`}>
+        <label className={`relative ${view === 'time' || view === 'join' ? 'hidden' : ''}`}>
           <select
             className="plain"
             value={filter}
@@ -78,6 +102,7 @@ export function Header({ filter, onFilter, liveCount, stream, view, onView, onHe
           </select>
           <ChevronDown className="muted pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2" />
         </label>
+        {personal && view !== 'join' && <NotifyButton userId={userId} />}
         <span
           className="muted inline-flex items-center gap-2 text-sm tabular-nums whitespace-nowrap"
           title={`${label} · ${liveCount}`}

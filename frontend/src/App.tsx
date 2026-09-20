@@ -3,6 +3,7 @@ import { Cycler } from './components/Cycler'
 import { FootageCard } from './components/FootageCard'
 import { Header } from './components/Header'
 import { Help } from './components/Help'
+import { JoinCard } from './components/JoinCard'
 import { Loader } from './components/Loader'
 import { SkeletonCard } from './components/Skeleton'
 import type { Pin } from './components/globe/Globe'
@@ -15,6 +16,9 @@ import { EVENT_LABEL, FILTER_LABEL, matchesFilter, type Filter } from './lib/eve
 import { duskiness, subsolar } from './lib/sun'
 import { relative } from './lib/time'
 import { stepMoment, useMoment, useView, type View } from './lib/view'
+import { useUser } from './lib/user'
+import { dwellMs, prioritize } from './lib/prioritize'
+import type { EventType } from './lib/types'
 
 const Globe = lazy(() => import('./components/globe/Globe').then((m) => ({ default: m.Globe })))
 
@@ -37,6 +41,7 @@ function useSun() {
   }, [])
   return sun
 }
+const NO_LIKES: EventType[] = []
 
 export default function App() {
   const feed = useFeed()
@@ -44,6 +49,7 @@ export default function App() {
   const [view, setView] = useView()
   const [moment, setMoment] = useMoment()
   const cameras = useCameras()
+  const user = useUser()
   const [filter, setFilter] = useState<Filter>('all')
   const [index, setIndex] = useState(0)
   const [hover, setHover] = useState(false)
@@ -51,9 +57,14 @@ export default function App() {
   const [help, setHelp] = useState(false)
   const sun = useSun()
 
+  const likes = user?.likes ?? NO_LIKES
   const filtered = useMemo(
-    () => (feed.data ?? []).filter((f) => matchesFilter(f.event.type, filter)),
-    [feed.data, filter],
+    () =>
+      prioritize(
+        (feed.data ?? []).filter((f) => matchesFilter(f.event.type, filter)),
+        likes,
+      ),
+    [feed.data, filter, likes],
   )
   const visible = filtered.slice(0, view === 'broadcast' ? HERO_SLOTS : PIN_SLOTS)
   const onFilter = (f: Filter) => {
@@ -200,7 +211,7 @@ export default function App() {
       index={index}
       onChange={setIndex}
       paused={hover || playing}
-      periodMs={view === 'time' ? 8_000 : undefined}
+      periodMs={view === 'time' ? 8_000 : dwellMs(current, likes, 20_000)}
     />
   )
 
@@ -214,10 +225,15 @@ export default function App() {
         view={view}
         onView={onView}
         onHelp={() => setHelp(true)}
+        userId={user?.id}
       />
       {help && <Help onClose={() => setHelp(false)} />}
 
-      {view === 'broadcast' ? (
+      {view === 'join' ? (
+        <main className="mx-auto flex w-full max-w-[1100px] flex-1 flex-col justify-center px-6 pb-10">
+          <JoinCard />
+        </main>
+      ) : view === 'broadcast' ? (
         <main
           className="mx-auto flex w-full max-w-[1100px] flex-1 flex-col justify-center gap-2 px-6 pb-10"
           onMouseEnter={() => setHover(true)}

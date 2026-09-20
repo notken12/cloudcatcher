@@ -28,3 +28,23 @@ go through `GET /proxy/history/{camera_id}?ts=…&w=…` (PhenoCam needs it).
 In time travel, Play advances the local clock 30 min every 2 s (every camera passes
 through dusk together), `share` copies the link, and `24 h` on the card plays that
 camera's whole day (≤48 frames, preloaded).
+
+## iOS app (PWA) + notifications
+
+The same build is an installable web app: `public/manifest.webmanifest`, Apple meta
+tags in `index.html`, and a push-only service worker `public/sw.js`. On iPhone
+(iOS 16.4+): open the site in Safari → Share → **Add to Home Screen** → launch from
+the icon. Only then does iOS allow Web Push, so everything personal is gated on
+that installed ("standalone") mode and the anonymous desktop/projector view is
+unchanged:
+
+- **You** (`#/join`) — name, optional email, and the sights you love. Fixture mode
+  keeps the account on the device (`localStorage`); live mode `POST /users`.
+- **Bell** — asks for notification permission and `POST /push/subscribe`s the
+  device (tied to the user if registered).
+- Liked sights come first in the feed and linger 1.5× longer in the broadcast.
+
+To see this on a desktop browser append `?personal` to the URL (or run with
+`VITE_PERSONAL=1`). Push needs the backend started with its VAPID key
+(`sunroof-camera serve …`, see [camera/README](../camera/README.md)) and, for
+real phones, a public **https** origin (a Cloudflare/ngrok tunnel is enough).

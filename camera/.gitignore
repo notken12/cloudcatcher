@@ -7,3 +7,5 @@ __pycache__/
 .pytest_cache/
 .env
 data/*.jsonl
+data/push.sqlite*
+data/vapid.pem

@@ -1,13 +1,14 @@
 import { useCallback, useMemo, useSyncExternalStore } from 'react'
 
-export type View = 'broadcast' | 'globe' | 'time' | 'show'
+export type View = 'broadcast' | 'globe' | 'time' | 'show' | 'join'
 
 /** Hash route: `#/globe` ↔ globe, `#/time[/YYYY-MM-DDTHH:MM]` ↔ time travel, `#/show` ↔ story
- *  mode (full-screen auto-play), else broadcast. */
+ *  mode (full-screen auto-play), `#/join` ↔ you, else broadcast. */
 export function viewFromHash(hash: string): View {
   const path = hash.replace(/^#\/?/, '')
   if (path === 'globe') return 'globe'
   if (path === 'show') return 'show'
+  if (path === 'join') return 'join'
   if (path === 'time' || path.startsWith('time/')) return 'time'
   return 'broadcast'
 }
