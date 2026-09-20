@@ -81,3 +81,40 @@ Secrets: `WINDY_API_KEY` etc. via environment only; never in the repo.
 | `manual` | yaml | – | – | – | hand-picked (all-sky, YouTube) |
 
 `uv run sunroof-camera refresh` builds every keyless source in ~10 s (~12k rows).
+
+## Demo cameras & sample queries
+
+Known-good rows (frames verified live, Sep 2026) to hard-code into demos/tests:
+
+| id | where | why it's a good demo |
+|---|---|---|
+| `panomax:17` Edelweißspitze | 47.124, 12.831, 2,570 m | 360° Alpine panorama, `night_ok`, 10-min history API |
+| `panomax:7` Großglockner Kaiser-Franz-Josefs-Höhe | 47.07, 12.75 | glacier panorama, lenticular/sunset showcase |
+| `fotowebcam:adlersruhe` | 47.070, 12.702, 3,454 m | az 275°, hfov 113°; 10-min archive back years (`history_template`) |
+| `alertca:Mt_Tamalpais_East` / `alertca:Mt_Diablo_West` | SF Bay ridge tops | exact pan heading, fog/undercast over the Bay |
+| `caltrans:d3:37` Hwy 50 @ Hwy 89 South Lake Tahoe | 38.913, -120.005 | DOT cam with last-12-frames history |
+| `ndbc:41002` BuoyCAM South Hatteras | 31.74, -74.96 | 6-panel 360° strip at sea, sunrise/storms offshore |
+| `iceland:7001:hellisheidi_1.jpg` Hellisheiði W | 64.018, -21.343 | Iceland road cam, aurora candidate |
+| `digitraffic:C0150301` Inkoo | 60.054, 23.996 | Finland, 24 h history API, CC BY 4.0 |
+| `phenocam:alfacada` Ebro Delta | 40.68, 0.84 | archive to 2000s at 30 min, S-facing |
+
+Ready-to-run queries (`--t` is UTC, omit for now):
+
+```bash
+# Alpine sunset: Panomax panoramas around Großglockner, sun az≈276°
+uv run sunroof-camera find sunset      --lat 47.07 --lon 12.70   --radius-km 5  --t 2026-09-20T17:30:00
+# lenticulars over the Hohe Tauern (annulus 16–80 km for a 6 km cloud)
+uv run sunroof-camera find lenticular  --lat 47.2  --lon 12.9    --radius-km 10
+# Central Valley anvil seen from Bay Area ridge cams (33–150 km annulus)
+uv run sunroof-camera find thunderstorm --lat 37.5 --lon=-121.5  --radius-km 20
+# Golden Gate fog at 08:00 PDT -> ALERTCalifornia ridge cams
+uv run sunroof-camera find fog         --lat 37.8  --lon=-122.45 --radius-km 5  --t 2026-09-20T15:00:00
+# rainbow over South Lake Tahoe, 17:30 PDT (antisolar az≈77° -> E-facing Caltrans cams)
+uv run sunroof-camera find rainbow     --lat 38.9  --lon=-120.0  --radius-km 5  --t 2026-09-21T00:30:00
+# aurora over Iceland at local midnight -> night_ok Vegagerðin cams
+uv run sunroof-camera find aurora      --lat 64.5  --lon=-21.0   --radius-km 100 --t 2026-09-20T23:30:00
+# sunrise on the Gulf of Finland
+uv run sunroof-camera find sunrise     --lat 60.05 --lon 24.0    --radius-km 5  --t 2026-09-21T04:00:00
+```
+
+Same thing from Python: `find_cameras(Event("sunset", 47.07, 12.70, 5, t), k=10)`.
