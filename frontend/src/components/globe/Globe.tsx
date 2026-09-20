@@ -229,7 +229,7 @@ export function Globe({ cameras, pins, selectedId, onSelect, sun, dusk = 0 }: Pr
         style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.6s' }}
         aria-hidden
       />
-      <div className="pointer-events-none absolute inset-0">
+      <div className="pointer-events-none absolute inset-0 isolate">
         {pins.map((f) => {
           const thumb = f.thumb && !broken.has(f.thumb) ? f.thumb : null
           return (
