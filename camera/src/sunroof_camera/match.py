@@ -101,7 +101,7 @@ async def match_run(
         return []
     pending = edb.unmatched(conn, rt)
     results: list[FootageResult] = []
-    for i, obs in enumerate(pending):
+    for obs in pending:
         ev = to_weather_event(obs)
         q = Event(
             type=ev.type,
@@ -113,7 +113,7 @@ async def match_run(
         )
         cands = cat.find_cameras(q, k)
         rows = _camera_rows(cands)
-        if resolve and i < resolve_top and rows and http is not None:
+        if resolve and len(results) < resolve_top and rows and http is not None:
             res = await resolve_footage(
                 ev,
                 cat,

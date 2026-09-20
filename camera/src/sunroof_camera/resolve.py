@@ -22,6 +22,7 @@ from . import gates, quality, solar, vlm
 from .fetch import fetch_burst, fetch_frame, row_to_camera
 from .footage import (
     CameraInfo,
+    EventRef,
     Footage,
     FootageResult,
     Media,
@@ -428,6 +429,7 @@ async def resolve_footage(
             Footage(
                 event_id=ev.id,
                 event_type=ev.type,
+                event=EventRef.from_event(ev),
                 camera_id=c.cam.id,
                 rank=rank,
                 verified=verified,

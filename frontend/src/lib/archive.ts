@@ -1,4 +1,4 @@
-import { API_BASE } from './api'
+import { API_BASE, LIVE } from './api'
 import type { Moment } from './view'
 import cams from '../fixtures/archive-cams.json'
 
@@ -27,7 +27,7 @@ export const ARCHIVE_CAMS = cams as ArchiveCam[]
 
 /** Cameras usable right now: all with a backend, only the directly loadable ones without. */
 export function availableCams(): ArchiveCam[] {
-  return API_BASE ? ARCHIVE_CAMS : ARCHIVE_CAMS.filter((c) => c.direct)
+  return LIVE ? ARCHIVE_CAMS : ARCHIVE_CAMS.filter((c) => c.direct)
 }
 
 /** Whole-hour offset from longitude (solar time); DST/zone borders are ±1 h off, which the
@@ -64,10 +64,10 @@ function isoWithOffset(m: Moment, lon: number): string {
 
 /** URL of the frame at `m` (camera-local), or null if this camera can't be shown offline. */
 export function frameUrl(cam: ArchiveCam, m: Moment, width?: number): string | null {
-  if (API_BASE) {
+  if (LIVE) {
     const q = new URLSearchParams({ ts: isoWithOffset(m, cam.lon) })
     if (width) q.set('w', String(width))
-    return `${API_BASE.replace(/\/$/, '')}/proxy/history/${encodeURIComponent(cam.id)}?${q}`
+    return `${API_BASE}/proxy/history/${encodeURIComponent(cam.id)}?${q}`
   }
   if (!cam.direct) return null
   return strftime(cam.direct, localInstant(cam, m))

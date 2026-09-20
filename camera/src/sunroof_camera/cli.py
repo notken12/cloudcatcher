@@ -105,6 +105,9 @@ def serve(
     watch_db_s: float = typer.Option(
         30.0, help="poll --db for unmatched runs every N s (0 = rely on `match` cron only)"
     ),
+    frontend: Path | None = typer.Option(
+        None, help="serve the built SPA (frontend/dist) at /; sandbox page moves to /sandbox"
+    ),
 ):
     """Run the camera service + sandbox page (see server.py for endpoints)."""
     from .server import run
@@ -120,6 +123,7 @@ def serve(
         ignore_night=ignore_night,
         db=db,
         watch_db_s=watch_db_s,
+        frontend=frontend,
     )
 
 

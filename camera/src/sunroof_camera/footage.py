@@ -81,11 +81,40 @@ class CameraInfo(BaseModel):
     bearing_to_event: float
 
 
+class EventRef(BaseModel):
+    """The event a Footage row belongs to, denormalised so a card never fetches /events/{id}."""
+
+    type: EventType
+    lat: float
+    lon: float
+    radius_km: float
+    place: str | None = Field(None, description="human label; coordinates when no name is known")
+    rarity: float | None = None
+    severity: float | None = None
+
+    @classmethod
+    def from_event(cls, ev: WeatherEvent) -> EventRef:
+        return cls(
+            type=ev.type,
+            lat=ev.lat,
+            lon=ev.lon,
+            radius_km=ev.radius_km,
+            place=place_label(ev.lat, ev.lon),
+            rarity=ev.rarity,
+            severity=ev.severity,
+        )
+
+
+def place_label(lat: float, lon: float) -> str:
+    return f"{abs(lat):.1f}°{'N' if lat >= 0 else 'S'} {abs(lon):.1f}°{'E' if lon >= 0 else 'W'}"
+
+
 class Footage(BaseModel):
     """Universal envelope: same shape for every camera source and every event type."""
 
     event_id: str
     event_type: EventType
+    event: EventRef | None = None
     camera_id: str
     rank: int
     verified: bool = Field(description="VLM said the target event is visible")
