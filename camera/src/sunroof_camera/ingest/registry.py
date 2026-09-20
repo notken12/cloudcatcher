@@ -16,6 +16,7 @@ from .sources.iceland import IcelandAdapter
 from .sources.iem import IEMAdapter
 from .sources.manual import ManualAdapter
 from .sources.ndbc import NDBCAdapter
+from .sources.nsw_maritime import NSWMaritimeAdapter
 from .sources.nzta import NZTAAdapter
 from .sources.panomax import PanomaxAdapter
 from .sources.phenocam import PhenoCamAdapter
@@ -53,6 +54,7 @@ ADAPTERS: dict[str, type] = {
         HongKongTDAdapter,
         SingaporeLTAAdapter,
         QLDTrafficAdapter,
+        NSWMaritimeAdapter,
         TaiwanTDXAdapter,
         TfLJamCamAdapter,
         VegvesenAdapter,

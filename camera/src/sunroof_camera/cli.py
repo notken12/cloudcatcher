@@ -62,6 +62,23 @@ def find(
 
 
 @app.command()
+def health(
+    source: list[str] = typer.Option(None, help="adapter names; default all"),
+    sample: int | None = typer.Option(None, help="probe a random subset of N cameras"),
+    tier: str | None = typer.Option(
+        None, help="only cameras with this health: live|stale|dead|unverified"
+    ),
+    concurrency: int = 64,
+    data_dir: Path = Path("data"),
+):
+    """Fetch one frame per camera -> data/health_log.parquet -> health columns in cameras.parquet."""
+    from .health import probe
+
+    res = asyncio.run(probe(data_dir, source or None, sample, tier, concurrency))
+    typer.echo(res["reason"].str.split(":").str[0].value_counts().to_string())
+
+
+@app.command()
 def describe(catalog: Path = Path("data/cameras.parquet")):
     """Row counts by source / heading_conf / night_ok / health."""
     df = Catalog.load(catalog).df

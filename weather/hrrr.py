@@ -4,9 +4,10 @@ import datetime as dt
 import os
 
 import numpy as np
-from scipy.spatial import cKDTree
+from scipy.spatial import KDTree
 
 from common.geo import distance_km
+from weather.cloud_columns import LAYER_BOUNDS, LAYER_NAMES, OPACITY_VEC, CloudColumns
 from weather.grib import read_first_message, read_messages
 from weather.s3 import client, get_bytes
 
@@ -99,7 +100,7 @@ class CloudGrid:
         messages = read_messages(path)
         self.fields = {name: messages[key].ravel() for name, key in FIELD_KEYS.items() if key in messages}
         self.points = np.c_[lats.ravel(), lons.ravel()]
-        self.tree = cKDTree(self.points)
+        self.tree = KDTree(self.points)
         self.spacing_deg = float(np.abs(np.diff(lons[lons.shape[0] // 2, :2])).max()) or 0.03
 
     def sample(self, name: str, lats, lons) -> np.ndarray:
@@ -114,9 +115,37 @@ class CloudGrid:
         return float(np.nanmean(self.fields[name][inside]))
 
 
+def terrain_km(grid: CloudGrid, lats, lons) -> np.ndarray:
+    """Surface height in km; off-grid points take the mean of the on-grid ones."""
+    orog = grid.sample("orog", lats, lons) / 1000.0
+    return np.nan_to_num(orog, nan=float(np.nanmean(orog)))
+
+
+class HrrrCloudField:
+    """Cloud columns from HRRR layer cover. Each band's cloud fills the band, narrowed by cloud base/top when
+    they fall inside it; the sun-lit underside is the cloud ceiling (the deck, not the lowest scrap of cloud)."""
+
+    def __init__(self, grid: CloudGrid):
+        self.grid = grid
+
+    def columns(self, lats, lons) -> CloudColumns:
+        cover = np.stack(
+            [np.clip(np.nan_to_num(self.grid.sample(name, lats, lons)) / 100.0, 0, 1) for name in LAYER_NAMES], axis=-1
+        )
+        base, top, ceil = (self.grid.sample(name, lats, lons) / 1000.0 for name in ("base", "top", "ceil"))
+        low, high, underside = np.empty_like(cover), np.empty_like(cover), np.empty_like(cover)
+        for li, (band_lo, band_hi) in enumerate(LAYER_BOUNDS):
+            low[:, li] = np.where((base >= band_lo) & (base < band_hi), base, band_lo)
+            underside[:, li] = np.where((ceil >= band_lo) & (ceil < band_hi), ceil, low[:, li])
+            high[:, li] = np.where((top > band_lo) & (top <= band_hi), top, band_hi)
+        opacity = np.broadcast_to(OPACITY_VEC, cover.shape)
+        return CloudColumns(cover, opacity, low, high, underside, terrain_km(self.grid, lats, lons))
+
+
 if __name__ == "__main__":
     now = dt.datetime.now(dt.UTC)
     run = latest_run(now, 1)
+    assert run is not None, "no HRRR run uploaded in the last 8 hours"
     key = key_for(run, 1)
     path = download_subset(key, "/tmp/hrrr")
     grid = CloudGrid(path)
