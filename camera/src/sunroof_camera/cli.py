@@ -101,6 +101,7 @@ def resolve(
     lon: float = typer.Option(...),
     radius_km: float = 10,
     k: int = 3,
+    deadline_s: float = 30.0,
     catalog: Path = Path("data/cameras.parquet"),
     save_frames: Path | None = typer.Option(None, help="dir to dump the chosen JPEGs"),
 ):
@@ -113,7 +114,9 @@ def resolve(
         ev = WeatherEvent(id=f"cli-{type}", type=type, lat=lat, lon=lon, radius_km=radius_km)
         cache = FrameCache()
         async with make_client(timeout=15.0) as http:
-            res = await resolve_footage(ev, Catalog.load(catalog), http, cache, k=k)
+            res = await resolve_footage(
+                ev, Catalog.load(catalog), http, cache, k=k, deadline_s=deadline_s
+            )
         if save_frames:
             save_frames.mkdir(parents=True, exist_ok=True)
             for f in res.footage:

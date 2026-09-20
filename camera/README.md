@@ -39,12 +39,31 @@ that and never talks to cameras directly; `frame_ts` + `ts_source`
 Pipeline per event (`resolve.py`): `Catalog.find_cameras` → concurrent fetch of `k×3`
 candidates → `gates.check_frame` (bytes/magic/decode, placeholder + frozen-frame SHA-1,
 freshness vs cadence, uniform / blown-out / dark, pHash de-dupe, sharpness) →
-`vlm.judge` (OpenAI structured output, `gpt-4o-mini` with one escalation to `gpt-4o`)
-→ top-`k` `Footage`. Without `OPENAI_API_KEY` the service still runs and returns
-gate-passed frames marked `verified: false`.
+`vlm.judge` (one structured verdict per frame) → top-`k` `Footage`. Without any VLM
+backend the service still runs and returns gate-passed frames marked `verified: false`.
 
-Environment: `OPENAI_API_KEY` (VLM gate; optional), `SUNROOF_VLM_MODEL` /
-`SUNROOF_VLM_MODEL_LARGE` (overrides), `WINDY_API_KEY` (only for the Windy source).
+### VLM backends (`vlm.py`)
+
+All backends speak the OpenAI chat-completions API, so switching is env-only:
+
+| setup | env | model |
+|---|---|---|
+| OpenAI (hosted, ~2 s/frame) | `OPENAI_API_KEY` | `gpt-4o-mini`, escalates to `gpt-4o` |
+| local Ollama (auto-detected on `127.0.0.1:11434`) | none — `ollama pull qwen2.5vl:3b` | `qwen2.5vl:3b` |
+| any OpenAI-compatible server (vLLM, OpenRouter, remote Ollama) | `SUNROOF_VLM_BASE_URL`, `SUNROOF_VLM_API_KEY` | `SUNROOF_VLM_MODEL` |
+| disabled (CI / offline) | `SUNROOF_VLM_BACKEND=off` | — |
+
+Overrides: `SUNROOF_VLM_MODEL` / `SUNROOF_VLM_MODEL_LARGE`, `SUNROOF_VLM_PARALLEL`
+(concurrent calls; default 1 for localhost, 4 for other custom URLs, 8 for OpenAI),
+`SUNROOF_VLM_BUDGET_S` (minimum time given to the VLM stage; default 150 s on
+localhost so a CPU-only model gets at least one verdict). OpenAI uses native
+structured output; open models get a JSON example prompt and the reply is
+validated by the same Pydantic model. Expect ~30–100 s/frame for Qwen2.5-VL-3B on
+8 CPU cores (a few seconds on any GPU); with a serial backend only the top `k`
+gate-passed candidates are judged, and if no verdict arrives in time the frames
+are still served as `verified: false`. `/health` reports the active backend.
+
+Other environment: `WINDY_API_KEY` (only for the Windy source).
 
 ## For the backend / other Devin: the contract
 
