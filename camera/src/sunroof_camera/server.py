@@ -67,6 +67,7 @@ def create_app(
     async def lifespan(app: FastAPI):
         st.catalog = Catalog.load(st.catalog_path)
         log.info("catalog: %d cameras from %s", len(st.catalog.df), st.catalog_path)
+        log.info("vlm: %s", vlm.describe())  # raises here on a misconfigured backend
         task = (
             asyncio.create_task(_fake_loop(st, fake_period_s, ignore_night))
             if fake_events
