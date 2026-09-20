@@ -65,7 +65,10 @@ export function TimeControls({ moment, onChange, status }: Props) {
         min={`${ARCHIVE_FIRST_YEAR}-01-01`}
         max={today}
         value={draft.date}
-        onChange={(e) => e.target.value && setDraft({ ...draft, date: e.target.value })}
+        onChange={(e) => {
+          const v = e.target.value
+          if (v >= `${ARCHIVE_FIRST_YEAR}-01-01` && v <= today) setDraft({ ...draft, date: v })
+        }}
         aria-label="Date"
       />
 

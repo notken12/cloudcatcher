@@ -38,7 +38,7 @@ export default function App() {
   }
   const onView = (v: View) => {
     setView(v)
-    setIndex(0)
+    if ((v === 'time') !== (view === 'time')) setIndex(0)
   }
   const current = visible[Math.min(index, visible.length - 1)]
 
