@@ -309,6 +309,54 @@ production logs.
 Artifacts (not committed): `bench/report.md`, per-type contact sheets (`sunset_yes.jpg`,
 `thunderstorm_partial.jpg`, `lost_sunset_sky_share_0.1.jpg`, …), `results.jsonl`, `verdicts.jsonl`.
 
+### 4.3 Event → camera: the pick is deterministic, and it now learns per camera
+
+The choice among suitable cameras/frames was three ranked stages already (catalog score → gate-
+adjusted score → VLM verdict × Q). The replay exposed what geometry cannot see: **which cameras
+actually deliver**. Of 40 confirmed sunsets, 33 came from two IEM cameras (`iem:KCCI-034` Big
+Creek Marina 21/40 asked, `iem:KCCI-027` ISU Ag Farm 13/19), while `phenocam:arsbrooks10` — same
+type, same geometry class — was asked 33 times for 2 hits. Nothing in the catalog row
+(`sky_frac`, heading, source prior) separates them.
+
+So the second commit adds a **camera track record** (`track.py`, Stage E made concrete):
+
+* every VLM verdict is folded into a per-(camera, type) Beta posterior of *P(event visible when
+  asked)* — `yes` = 1, `partial` = ½ — shrunk towards the type-wide base rate with 4 pseudo-obs.
+  It is rebuilt from `verdicts.jsonl` at startup (`Catalog.load(..., verdict_log=)`) and updated
+  in memory after every event, so the live server and the cron `match` step learn continuously.
+* `Catalog.find_cameras` multiplies the catalog score by a bounded factor
+  `clip(1 + 0.35·log(p/p₀)·(1−e^{−n/6}), 0.75, 1.35)` and appends `track x1.23` to `reason`.
+  An unknown camera is exactly neutral; nothing is ever *excluded* by history (a dud can still
+  win when it is the only camera in range, and one confirmed frame lifts it again).
+* the in-event best-frame pick is `pick_score` (resolve.py):
+  `confidence × (yes 1.0 | partial 0.7) × (0.5+0.5·Q) × (0.8+0.05·vlm_quality) × (0.9+0.1·catalog) × track`.
+  Presence dominates; Q (replay-calibrated) and the VLM's 1-5 decide the look; geometry/freshness
+  and track record break ties. This replaces the old `confidence × (0.5+0.5·Q)`.
+* `sunroof-camera track [--type]` prints the shortlist of cameras with confirmed sightings.
+
+Night: daytime types are skipped *before* any fetch when the sun is below −6° at the event
+(−12° for sunrise/sunset, to keep the afterglow); aurora and lightning are exempt (§4.2, commit 1).
+
+**Demo shortlist from the replay** (what the VLM accepted, ordered by hits then Q; frames in the
+`sunset_yes` / `thunderstorm_yes` / `sunrise_yes` contact sheets):
+
+| camera | type | asked → yes | mean Q | note |
+|---|---|---|---|---|
+| `iem:KCCI-034` Big Creek Marina, Polk City IA (az 268°) | sunset | 40 → 21 | 0.40 | sun setting over the lake, boats in the foreground — the most photogenic and most reliable view in the whole sample; live in the IEM KCCI network today |
+| `iem:KCCI-027` ISU Ag Farm, Ames IA (az 282°) | sunset | 19 → 13 | 0.51 | highest hit rate; open horizon, strong colour, lens flare on clear evenings |
+| `phenocam:harvardhemlock2` Harvard Forest MA (az 225°) | sunset | 2 → 2 | 0.52 | fisheye over the canopy, warm rim light |
+| `phenocam:uiefsorghum` U. Illinois Energy Farm | thunderstorm | 5 → 1 | 0.80 | rain shaft + dark base over the field, best Q of any positive |
+| `phenocam:NEON.D10.STER.DP1.00033` Sterling CO tower | thunderstorm | 12 → 1 | 0.66 | shelf cloud across the plains |
+| `phenocam:archboldavir` / `archboldpnot` Archbold FL | sunrise | 1 → 1 each | 0.56–0.64 | pastel Florida sunrises; the site has four near-identical cams, dedupe keeps one |
+| `iem:KCCI-008` | sunrise | 1 → 1 | 0.46 | Iowa TV cam, warm horizon |
+
+Aurora: 80 events on Kp≥7 nights, no accepted frame — the archive cameras face the wrong way or
+are not `night_ok`; for an aurora demo use the `night_ok` all-sky/Nordic rows in the README table
+(`manual:irf-kiruna-allsky`, `no_vegvesen:2000065_1`, `iceland:*`) rather than anything measured here.
+
+Caveat: `data/cameras.parquet` shipped without the `iem`/`phenocam` shards; run
+`sunroof-camera refresh --source iem --source phenocam` once (≈1 min) so these cameras exist live.
+
 ---
 
 ## 5. Sources

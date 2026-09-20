@@ -205,6 +205,20 @@ async def _judge(c: _Candidate, ev: WeatherEvent, prof: EventProfile, cache: Fra
     c.verdict = v
 
 
+def pick_score(c: _Candidate, track_mult: float = 1.0) -> float:
+    """Which VLM-passing frame is *the* frame for this event (design doc §4.3).
+
+    Presence first: confidence, 'yes' over 'partial'. Then look: deterministic Q (calibrated on
+    the replay), the VLM's own 1-5 look rating, and finally the catalog score (geometry/freshness)
+    and the camera's track record as tie-breakers, so ties go to the camera that has shown this
+    event before."""
+    v = c.verdict
+    assert v is not None
+    vis = 1.0 if v.event_visible == "yes" else 0.7
+    look = (0.5 + 0.5 * c.q) * (0.8 + 0.05 * v.quality)
+    return v.confidence * vis * look * (0.9 + 0.1 * min(float(c.row["score"]), 1.0)) * track_mult
+
+
 def _vlm_reject(v: Verdict, ev_type: str, prof: EventProfile) -> str | None:
     """Per-type acceptance rules on the VLM verdict; None = passes."""
     if not v.usable:
@@ -351,9 +365,13 @@ async def resolve_footage(
             t.cancel()
         res.vlm_calls = sum(1 for c in good if c.verdict is not None)
         judged = res.vlm_calls > 0
-        if verdict_log:
-            for c in good:
-                if c.verdict and c.frame and c.gate:
+        for c in good:
+            if c.verdict and c.frame and c.gate:
+                if catalog.track is not None:
+                    catalog.track.record(
+                        c.cam.id, ev.type, c.verdict.event_visible, c.q, c.verdict.quality
+                    )
+                if verdict_log:
                     vlm.log_verdict(
                         verdict_log,
                         c.cam.id,
@@ -374,8 +392,16 @@ async def resolve_footage(
     footage: list[Footage] = []
     if judged:
         passed = [c for c in good if c.verdict and _passes(c.verdict, ev.type, prof)]
-        # VLM confidence decides presence; the deterministic Q decides which passing frame looks best
-        passed.sort(key=lambda c: -(c.verdict.confidence * (0.5 + 0.5 * c.q)))  # type: ignore[union-attr]
+        passed.sort(
+            key=lambda c: (
+                -pick_score(
+                    c,
+                    catalog.track.multiplier(c.cam.id, ev.type)
+                    if catalog.track is not None
+                    else 1.0,
+                )
+            )
+        )
         for c in good:
             if c not in passed:
                 if c.verdict is None:

@@ -15,6 +15,7 @@ from . import geometry as g
 from . import solar
 from .health import DEAD_AFTER
 from .schema import read_parquet
+from .track import CameraTrack
 
 EventType = Literal[
     "sunrise",
@@ -117,12 +118,15 @@ MAX_CATALOG_AGE_S = DEAD_AFTER.total_seconds()
 class Catalog:
     """Loads cameras.parquet once and answers find_cameras()."""
 
-    def __init__(self, df: pd.DataFrame):
+    def __init__(self, df: pd.DataFrame, track: CameraTrack | None = None):
         self.df = df.reset_index(drop=True)
+        self.track = track  # per-camera VLM track record; None = geometry only
 
     @classmethod
-    def load(cls, path: str | Path = "data/cameras.parquet") -> Catalog:
-        return cls(read_parquet(path))
+    def load(
+        cls, path: str | Path = "data/cameras.parquet", verdict_log: str | Path | None = None
+    ) -> Catalog:
+        return cls(read_parquet(path), CameraTrack.from_log(verdict_log) if verdict_log else None)
 
     def find_cameras(
         self, event: Event, k: int = 10, include_unverified: bool = True
@@ -230,6 +234,13 @@ class Catalog:
             df["source"].astype(str).isin(p.source_prior_boost).to_numpy(), prior + 0.1, prior
         )
         sky = np.nan_to_num(df["sky_frac"].to_numpy(dtype=float), nan=0.4)
+        track_mult = np.ones(len(df))
+        if self.track is not None and self.track.per_type.get(event.type):
+            track_mult = np.fromiter(
+                (self.track.multiplier(cid, event.type) for cid in df["id"].astype(str)),
+                dtype=float,
+                count=len(df),
+            )
         score = (
             (
                 0.35 * geo_fit
@@ -240,6 +251,14 @@ class Catalog:
             )
             * heading_mult
             * night_mult
+            * track_mult
+        )
+        reason = np.array(
+            [
+                f"{r}; track x{m:.2f}" if abs(m - 1.0) > 0.01 else r
+                for r, m in zip(reason, track_mult)
+            ],
+            dtype=object,
         )
 
         out = df.loc[ok].copy()

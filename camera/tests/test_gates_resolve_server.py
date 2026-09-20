@@ -448,3 +448,36 @@ async def test_resolve_cv_pregate_and_top_n(tmp_path, patched_fetch, monkeypatch
     assert "east1" in reasons and reasons["east1"].startswith("cv: sky_share")
     assert judged == ["east2"] and res.vlm_calls == 1 and res.cv_skipped >= 1
     assert res.status == "FOOTAGE_FOUND" and res.footage[0].camera_id == "east2"
+
+
+async def test_track_record_breaks_ties_and_learns(tmp_path, patched_fetch, monkeypatch):
+    """Two equally good 'yes' frames: the camera that has shown storms before ranks first, and
+    this event's verdicts are folded into the live track record."""
+    from sunroof_camera.track import CameraTrack
+
+    monkeypatch.setenv("SUNROOF_VLM_BACKEND", "openai")
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
+    vlm.backend.cache_clear()
+
+    async def fake_judge(c, ev, prof, cache):
+        c.verdict = vlm.Verdict(
+            usable=True, event_visible="yes", event_type_seen="thunderstorm", confidence=0.9
+        )
+
+    monkeypatch.setattr(resolve, "_judge", fake_judge)
+    patched_fetch["east1"] = jpeg(seed=3)
+    patched_fetch["east2"] = jpeg(seed=4)
+    track = CameraTrack()
+    for _ in range(10):
+        track.record("east2", "thunderstorm", "yes", 0.6, 5)
+        track.record("east1", "thunderstorm", "no")
+    cat = Catalog(Catalog.load(_catalog(tmp_path)).df, track)
+    try:
+        async with httpx.AsyncClient() as http:
+            res = await resolve.resolve_footage(STORM, cat, http, resolve.FrameCache(), k=2)
+    finally:
+        vlm.backend.cache_clear()
+    assert res.status == "FOOTAGE_FOUND"
+    assert res.footage[0].camera_id == "east2"
+    assert track.per_cam[("east2", "thunderstorm")].judged == 11
+    assert track.per_cam[("east1", "thunderstorm")].hits == 1.0
