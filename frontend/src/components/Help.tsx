@@ -12,7 +12,7 @@ const ROWS: [string, string][] = [
 export function Help({ onClose }: { onClose: () => void }) {
   return (
     <div
-      className="fixed inset-0 z-50 grid place-items-center bg-black/20 p-6"
+      className="fixed inset-0 z-[1000] grid place-items-center bg-black/20 p-6"
       onClick={onClose}
       role="dialog"
       aria-label="Keyboard shortcuts"
