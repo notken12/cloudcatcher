@@ -13,6 +13,7 @@ import { LIVE, mediaUrl, useCameras, useFeed, useStream } from './lib/api'
 import { ARCHIVE_CAMS, availableCams, camHasYear, describeMoment, frameUrl } from './lib/archive'
 import { EVENT_LABEL, FILTER_LABEL, matchesFilter, type Filter } from './lib/events'
 import { duskiness, subsolar } from './lib/sun'
+import { relative } from './lib/time'
 import { stepMoment, useMoment, useView, type View } from './lib/view'
 
 const Globe = lazy(() => import('./components/globe/Globe').then((m) => ({ default: m.Globe })))
@@ -85,7 +86,7 @@ export default function App() {
             lon: f.camera.lon,
             color: `var(--c-${f.event.type})`,
             thumb: mediaUrl(f.media.poster ?? f.media.src),
-            label: `${EVENT_LABEL[f.event.type]} · ${f.event.place ?? f.camera.name}`,
+            label: `${EVENT_LABEL[f.event.type]} · ${f.event.place ?? f.camera.name} · ${relative(f.frame_ts)}`,
           })),
     [view, archiveCams, moment, visible],
   )
