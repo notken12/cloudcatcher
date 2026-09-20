@@ -35,3 +35,11 @@ Chignik Lagoon (0.034) 1 — overcast; Knob Ridge (0.0; the *simple rule's* pick
 Ray-model top-5 mean 2.8 vs bottom-2 mean 1.5; nothing above 3/5 (a mediocre evening). Anti-solar cameras were 1–2 everywhere
 (the Lamar anti-solar 5/5 was a lit storm anvil, not a typical sunset). Small positive for the ray model, and it correctly overruled the simple rule on Knob Ridge.
 HRRR-AK input was the 00Z run's f04 (valid 04Z), i.e. 3.5–4.5 h old at sunset.
+
+## B2 re-scored with GOES as the cloud field (`west_goes_scores.json`, REPORT §3.16)
+`uv run python -m validation.sunset_goes_eval` — per site the classifier runs on the newest GOES-18 scan before sunset+15
+(01:51–02:36Z, 10 scans × ACHA2KMC + CODC ≈ 100 MB) with HRRR t01z f01 for terrain/humidity. On the 103 non-blown frames:
+ray model ρ 0.15, classifier-on-HRRR 0.23, classifier-on-GOES **0.48**; GOES top-8 = Wagontire 0.064 (colour 0.09), Mt Helen 0.059 (0.03),
+Carol Drive 0.051 (0.05), Plains 0.044 (0.14), Williams Hill 0.040 (0.02), Covelo 0.039 (0.07), Saint John Mtn 0.036 (0.03), Sutro Tower 0.034 (0.05).
+Frames checked for the outliers (`sheet_goes_fp_vs_winners.jpg`, sunset+15): Fort Bragg / Little River = fog under the deck (colour 0.000), Mt Helen = solid
+cirrostratus with a horizon sliver, Merrell Rd / Sugarloaf = clear-sky glow, Plains / Coast Life = lit altocumulus.

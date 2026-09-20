@@ -9,7 +9,8 @@ with `uv run python -m weather.<module>`.
 | `mrms.py` | MRMS composite reflectivity / PrecipRate / ProbSevere | 2-min, 1.5 MB CONUS files, archive 2020-10→; ProbSevere objects are the ready-made event record |
 | `glm.py` | GLM flashes | 20-s files, ~4 s lag; goes16 before 2025-04-07, goes19 after |
 | `goes_abi.py` | ABI L2 (band 13 CONUS, ACHAC cloud-top height) + lat/lon→pixel | `ACHTC` does not exist on GOES-19 |
-| `goes_cloud.py` | COD optical depth + ACHAC cloud-top height sampled at a site | COD DQF is a bitmask; HT NaN = clear. Sees cirrus HRRR misses (REPORT §3.15) |
+| `goes_cloud.py` | `GoesCloudField`: ACHA2KM cloud-top height + COD (both 2 km) as the classifier's cloud columns | COD DQF is a bitmask; HT NaN = clear. Sees the cirrus HRRR misses (REPORT §3.15-16) |
+| `cloud_columns.py` | the cloud seam: `CloudColumns` (cover/opacity/envelope per band) + layer constants | implemented by `hrrr.HrrrCloudField` and `goes_cloud.GoesCloudField` |
 | `hrrr.py` | byte-range cloud subset from the .idx, `CloudGrid` sampler | 10 MB / ~1 s; base/top NaN for thin cirrus; mask off-grid points |
 | `nws.py` | live alerts (User-Agent required) and IEM VTEC archive | api.weather.gov has no history |
 | `spc.py` | SPC daily / yearly storm reports | yearly times are CST |
@@ -17,7 +18,7 @@ with `uv run python -m weather.<module>`.
 | `sun.py` | astral wrappers | |
 | `sunset_rules.py` | simple mid/high-over-site + clear-ray rule | |
 | `sunset_rays.py` | Sunsethue-style ray model | implemented, **not validated** (ρ≈0 on one evening) |
-| `sunset_quality.py` | Sunsethue-whitepaper two-phase classifier (reflection-potential fan + view-ray fan + humidity/duration post-processing) | verified on the Lamar 5/5 frame; **not yet wired into detection** |
+| `sunset_quality.py` | Sunsethue-whitepaper two-phase classifier (reflection-potential fan + view-ray fan + humidity/duration post-processing) on any `CloudField` | wired into `--sites` on the GOES field; validation in `validation/sunset_goes_eval.py` |
 | `sunset_scan.py` | score a site list against a subset | `uv run python -m weather.sunset_scan subset.grib2 sites.json out.json` |
 | `swpc_aurora.py` | SWPC OVATION / 1-min Kp / RTSW solar wind / hemispheric power | live-only |
 | `events.py` | event detector: storms + optional aurora + per-site scores | see below |
@@ -32,8 +33,11 @@ uv run python -m weather.events --out out/events.json [--when 2026-09-20T04:30Z]
 Writes `events.json` atomically every run (or every `--loop` seconds). `--when` replays an instant
 from the S3 archives (ProbSevere back to 2020-10, HRRR to 2014; OVATION is live-only, so `--aurora`
 with `--when` scores current space weather). `--sites sites.json` (`[{id, lat, lon}]`) additionally
-writes `site_scores.json` next to `--out`: per site the sunset score at its next sunset+15 min
-(existing ray model), the nearest storm event (km, bearing), and the aurora rule — join on `id`.
+writes `site_scores.json` next to `--out`: per site the sunset score at its next sunset+15 min,
+the nearest storm event (km, bearing), and the aurora rule — join on `id`. The sunset score comes
+from the classifier on the newest GOES scan (`model: sunset_quality/goes`) when that scan is within
+90 min before the target and covers the site (CONUS), otherwise from the HRRR ray model
+(`model: sunset_rays/hrrr`; Alaska, Hawaii, and targets further ahead).
 
 Event record:
 
