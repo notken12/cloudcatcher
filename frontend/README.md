@@ -13,8 +13,10 @@ VITE_API_BASE=http://localhost:8000 pnpm dev   # live against the camera backend
 pnpm test && pnpm lint && pnpm build
 ```
 
-Three layouts, toggled in the header: broadcast (default), globe (`#/globe`) and
-time travel (`#/time`, e.g. `#/time/2023-06-15T18:00`).
+Four layouts, toggled in the header or keys `1–4`: broadcast (default), globe (`#/globe`),
+time travel (`#/time`, e.g. `#/time/2023-06-15T18:00`) and story mode (`#/show`, full
+screen, 8 s a sight, any key exits; starts itself after 90 s idle on broadcast).
+`←/→` cycle sights, `?` lists shortcuts.
 The globe needs `GET /cameras.geojson` from the backend for the camera dots; in
 fixture mode it uses `src/fixtures/cameras.json` (synthetic points, not real cameras).
 
@@ -22,6 +24,10 @@ Time travel shows the ~25 hand-picked archive cameras in `src/fixtures/archive-c
 at a chosen date + camera-local time of day. Without a backend only the 8 with a
 direct URL template (foto-webcam.eu, IEM) load; with `VITE_API_BASE` all of them
 go through `GET /proxy/history/{camera_id}?ts=…&w=…` (PhenoCam needs it).
+
+In time travel, Play advances the local clock 30 min every 2 s (every camera passes
+through dusk together), `share` copies the link, and `24 h` on the card plays that
+camera's whole day (≤48 frames, preloaded).
 
 ## iOS app (PWA) + notifications
 

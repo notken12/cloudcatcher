@@ -1,11 +1,13 @@
 import { useCallback, useMemo, useSyncExternalStore } from 'react'
 
-export type View = 'broadcast' | 'globe' | 'time' | 'join'
+export type View = 'broadcast' | 'globe' | 'time' | 'show' | 'join'
 
-/** Hash route: `#/globe` ↔ globe, `#/time[/YYYY-MM-DDTHH:MM]` ↔ time travel, `#/join` ↔ you, else broadcast. */
+/** Hash route: `#/globe` ↔ globe, `#/time[/YYYY-MM-DDTHH:MM]` ↔ time travel, `#/show` ↔ story
+ *  mode (full-screen auto-play), `#/join` ↔ you, else broadcast. */
 export function viewFromHash(hash: string): View {
   const path = hash.replace(/^#\/?/, '')
   if (path === 'globe') return 'globe'
+  if (path === 'show') return 'show'
   if (path === 'join') return 'join'
   if (path === 'time' || path.startsWith('time/')) return 'time'
   return 'broadcast'
@@ -31,6 +33,11 @@ export function momentFromHash(hash: string): Moment | null {
   const minutes = Number(m[2]) * 60 + Number(m[3])
   if (minutes > 1439 || Number.isNaN(Date.parse(m[1]))) return null
   return { date: m[1], minutes }
+}
+
+/** `m` advanced by `step` minutes; wraps within the same day (the time-of-day slider is a ring). */
+export function stepMoment(m: Moment, step: number): Moment {
+  return { ...m, minutes: (((m.minutes + step) % 1440) + 1440) % 1440 }
 }
 
 export function momentToHash(m: Moment): string {

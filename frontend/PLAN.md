@@ -278,7 +278,40 @@ per pixel; a revisited moment is a browser cache hit.
 toggle, more archive sources (Digitraffic 24 h, Windy embeds), and the weather
 model's events for that date as an overlay when its history exists.
 
-### Iteration 4 (only if time)
+### Iteration 4 — Motion & show (done)
+
+All on top of the existing pieces, no new dependencies:
+
+- **Sunset ring**: Play in the time controls steps the shared local clock
+  30 min / 2 s (`stepMoment`, hash keeps updating → still linkable). ±1 step
+  is prefetched after each moment lands, so playback is mostly cache hits;
+  `camera` keeps a 600-entry LRU of proxied frames so the card and its pin
+  share one source fetch.
+- **Ambient globe**: `lib/sun.ts` gives the subsolar point; a 2D canvas over
+  cobe shades the night hemisphere (`drawNight`, one ellipse-bounded fill per
+  twilight step, redrawn inside the existing rAF loop). Time travel has no
+  single terminator (every camera is at the same local clock) so the whole
+  globe is tinted by `duskiness(minutes)` via cobe's colour params instead.
+  Pins pop when their frame arrives; hovering shows place · time.
+- **24 h time-lapse** on the archive card: ≤48 frames at w=640 preloaded,
+  `<img>` swaps at 6 fps, scrub slider. No video decoding.
+- **Story mode** `#/show`: full-bleed footage with a slow Ken Burns drift,
+  caption rising in, inverted-colour globe inset flying to the camera, 8 s a
+  sight; any input exits. Starts itself after 90 s idle on broadcast (booth).
+- Keyboard (`←/→`, `1–4`, `space`, `?`), share link, OG/Twitter tags,
+  content-shaped skeleton while `/feed` loads.
+
+**Visual direction from here.** The Apple-ish base (grey page, white cards,
+one accent per sight) stays because it keeps the footage the loudest thing on
+screen, but the show layout is the first step toward a darker, editorial
+register: black room, big serif-free headline, hairline progress. Candidates
+next: a sky-coloured page gradient driven by the same `duskiness` (dawn →
+day → dusk) so the whole site breathes with the time slider; a "tonight in
+numbers" strip (cameras watched, sights verified, rarest sight) above the
+hero; per-sight colour washes behind the card; a small terminator legend on
+the globe. Keep to CSS vars + one canvas — nothing per-frame in React.
+
+### Iteration 5 (only if time)
 
 - Event evidence panel under the hero (radar/satellite tile from the weather
   half, "why it's rare" text) — needs the weather half to expose a tile URL.
