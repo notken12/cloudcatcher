@@ -9,6 +9,7 @@ night logic, ranking), `docs/preprocessing-schema.svg` (one-page diagram).
 uv sync --extra dev
 uv run sunroof-camera refresh                  # adapters -> data/shards/*.parquet -> data/cameras.parquet
 uv run sunroof-camera describe                 # counts by source / heading_conf / night_ok / health
+uv run sunroof-camera health --sample 2000      # probe frames -> data/health_log.parquet -> health columns (~7 min for all 38k)
 uv run sunroof-camera find thunderstorm --lat 39.7 --lon=-104.9 --radius-km 20
 uv run pytest
 
@@ -20,6 +21,27 @@ uv run sunroof-camera resolve thunderstorm --lat 67.6 --lon=-164 --radius-km 20 
 Night in the US/Alaska (where the FAA cams are) makes daytime events return `CAMERAS_DARK`.
 To exercise the pipeline anyway: `SUNROOF_VLM_BACKEND=off uv run sunroof-camera serve --fake-events --ignore-night`
 (skips the solar gate and the dark-frame gate; with the VLM on, it will correctly reject night frames as `EVENT_NOT_VISIBLE`).
+
+## Health probe (`health.py`)
+
+`sunroof-camera health [--source X] [--sample N] [--tier stale]` fetches one frame per camera
+(64 concurrent, 6 per host, HLS via ffmpeg), runs the LLM-free gates, and appends one row per
+probe to `data/health_log.parquet`. The catalog's health columns are then *derived* from the log:
+
+| column | rule |
+|---|---|
+| `health` | `live` = last probe OK and frame age ≤ max(2·refresh_s, 15 min); `stale` = OK but old, or 1–2 failures after a success; `dead` = ≥3 consecutive failures or no success for 24 h; else `unverified` |
+| `last_frame_ts` / `last_ok_ts` | from the last OK probe (frame ts from source API / EXIF / Last-Modified when available) |
+| `fail_streak` | consecutive failed probes |
+| `night_usable_frac` | over the last 30 probes taken at solar elevation < −6°: share that passed gates with mean luminance ≥ 12 |
+| `quality_score` | 0.4 + 0.6·clip(median sharpness / 200) |
+
+Placeholder "camera unavailable" cards are caught per run: identical bytes from ≥3 cameras of one
+source (DriveBC, QLD, some CARS states do this) → failed probe. A frame byte-identical to the
+previous probe >6 h earlier with no source timestamp → `frozen`. `find_cameras` drops `dead`
+rows and weights `fresh = exp(-age / 3·refresh_s)`, so run the probe before a demo
+(`--tier unverified` first, then `--tier stale` every ~10 min). Run it at night in your region
+of interest once to get `night_usable_frac` populated for the aurora / lightning gates.
 
 ## Camera service (query → gate → VLM → route)
 
