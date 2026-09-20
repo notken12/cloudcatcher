@@ -13,6 +13,10 @@ from ..base import Frame, default_fetch_frame, fetch_image, get_json
 
 LIVE = "https://mesonet.agron.iastate.edu/geojson/webcam.geojson"
 ARCHIVE = "https://mesonet.agron.iastate.edu/json/webcam.py?ts=%Y%m%d%H%M"
+# Direct 5-minute archive frame (UTC); the JSON endpoint above does not honour `ts`.
+ARCHIVE_FRAME = (
+    "https://mesonet.agron.iastate.edu/archive/data/%Y/%m/%d/camera/{cid}/{cid}_%Y%m%d%H%M.jpg"
+)
 
 
 class IEMAdapter:
@@ -59,11 +63,5 @@ class IEMAdapter:
         if ts is None:
             return await default_fetch_frame(http, cam, None)
         cid = cam.id.split(":", 1)[1]
-        try:
-            data = await get_json(http, ts.strftime(ARCHIVE))
-        except httpx.HTTPError:
-            return None
-        for img in data.get("images", []):
-            if img.get("cid") == cid and img.get("href"):
-                return await fetch_image(http, cam, img["href"])
-        return None
+        ts = ts.replace(minute=(ts.minute // 5) * 5, second=0, microsecond=0)
+        return await fetch_image(http, cam, ts.strftime(ARCHIVE_FRAME.format(cid=cid)))

@@ -4,17 +4,35 @@ orientation, latest JPEG at /data/latest/<site>.jpg and archives back to 2000s
 
 from __future__ import annotations
 
+import re
 from datetime import datetime
 from typing import ClassVar
 
 import httpx
 
 from ...schema import Camera
-from ..base import Frame, default_fetch_frame, get_json, parse_heading_text
+from ..base import Frame, default_fetch_frame, fetch_image, get_json, parse_heading_text
 
 API = "https://phenocam.nau.edu/api/cameras/?format=json&limit=500"
 LATEST = "https://phenocam.nau.edu/data/latest/{site}.jpg"
 ARCHIVE = "https://phenocam.nau.edu/data/archive/{site}/%Y/%m/{site}_%Y_%m_%d_%H%M%S.jpg"
+# Archive filenames carry the capture second, so a frame at time t is found by listing the
+# day's browse page and taking the closest one (30-min cadence, local site time).
+BROWSE = "https://phenocam.nau.edu/webcam/browse/{site}/%Y/%m/%d/"
+_FRAME = re.compile(
+    r"/data/archive/[^/\"']+/\d{4}/\d{2}/[^/\"']+_(\d{4})_(\d{2})_(\d{2})_(\d{6})\.jpg"
+)
+
+
+def closest_frame_path(html: str, ts: datetime) -> str | None:
+    best: tuple[float, str] | None = None
+    for m in _FRAME.finditer(html):
+        y, mo, d, hms = m.groups()
+        t = datetime(int(y), int(mo), int(d), int(hms[:2]), int(hms[2:4]), int(hms[4:]))
+        dt = abs((t - ts.replace(tzinfo=None)).total_seconds())
+        if best is None or dt < best[0]:
+            best = (dt, m.group(0))
+    return best[1] if best else None
 
 
 class PhenoCamAdapter:
@@ -69,6 +87,16 @@ class PhenoCamAdapter:
     async def fetch_frame(
         self, http: httpx.AsyncClient, cam: Camera, ts: datetime | None = None
     ) -> Frame | None:
-        if ts is not None:
-            ts = ts.replace(minute=(ts.minute // 30) * 30, second=5, microsecond=0)
-        return await default_fetch_frame(http, cam, ts)
+        if ts is None:
+            return await default_fetch_frame(http, cam, None)
+        site = cam.id.split(":", 1)[1]
+        try:
+            r = await http.get(ts.strftime(BROWSE.format(site=site)))
+        except httpx.HTTPError:
+            return None
+        if r.status_code != 200:
+            return None
+        path = closest_frame_path(r.text, ts)
+        if path is None:
+            return None
+        return await fetch_image(http, cam, "https://phenocam.nau.edu" + path)

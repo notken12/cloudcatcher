@@ -11,6 +11,8 @@ Endpoints
     GET  /events/{id}/footage    one FootageResult
     GET  /stream                 SSE: `footage` (FootageResult JSON) and `ping`
     GET  /proxy/frame/{cam_id}   the verified JPEG (cached); frontend never talks to cameras
+    GET  /proxy/history/{cam_id}?ts=   archive JPEG at an instant (fotowebcam / phenocam / iem);
+                                 ts carries the camera's UTC offset, e.g. 2023-06-15T18:00-06:00
     GET  /                       sandbox page (static/index.html)
 """
 
@@ -30,6 +32,7 @@ from fastapi.responses import FileResponse, Response, StreamingResponse
 
 from . import events_db as edb
 from . import vlm
+from .archive import archive_time, camera_from_id
 from .fetch import fetch_frame, row_to_camera
 from .footage import FootageResult, WeatherEvent
 from .ingest.base import make_client
@@ -221,6 +224,35 @@ def create_app(
                 "Cache-Control": "no-store",
                 "X-Frame-Ts": cf.frame_ts.isoformat() if cf.frame_ts else "",
             },
+        )
+
+    @app.get("/proxy/history/{camera_id:path}")
+    async def proxy_history(
+        camera_id: str,
+        ts: datetime = Query(
+            ...,
+            description="ISO time with the camera's UTC offset (e.g. 2023-06-15T18:00-06:00); "
+            "naive = camera-local wall clock",
+        ),
+    ) -> Response:
+        cam = None
+        if st.catalog is not None:
+            rows = st.catalog.df.loc[st.catalog.df["id"] == camera_id]
+            if not rows.empty:
+                cam = row_to_camera(rows.iloc[0])
+        if cam is None:
+            cam = camera_from_id(camera_id)
+        if cam is None:
+            raise HTTPException(404)
+        if cam.history_kind == "none":
+            raise HTTPException(422, "camera has no archive")
+        fr = await fetch_frame(st.http, cam, archive_time(cam.source, ts))
+        if fr is None:
+            raise HTTPException(502, "archive fetch failed")
+        return Response(
+            fr.content,
+            media_type=fr.content_type or "image/jpeg",
+            headers={"Cache-Control": "public, max-age=86400", "X-Frame-Url": fr.url},
         )
 
     @app.get("/")
