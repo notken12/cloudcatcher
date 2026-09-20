@@ -66,7 +66,10 @@ validated by the same Pydantic model. Expect ~30–100 s/frame for Qwen2.5-VL-3B
 gate-passed candidates are judged, and if no verdict arrives in time the frames
 are still served as `verified: false`. `/health` reports the active backend.
 
-Other environment: `WINDY_API_KEY` (only for the Windy source).
+Other environment: `WINDY_API_KEY` (only for the Windy source), `NSW_API_KEY` (Transport for NSW).
+
+Keys are read from the environment; `camera/.env` (git-ignored) is loaded automatically on
+import — `cp .env.example .env` and fill in what you have. Existing env vars win over `.env`.
 
 ## For the backend / other Devin: the contract
 
@@ -116,7 +119,7 @@ per-host rate limiter, compass-text heading parser and a default `fetch_frame`
 for plain JPEG cameras. Hand-picked cameras (YouTube, all-sky) go in
 `data/manual.yaml`.
 
-Secrets: `WINDY_API_KEY` etc. via environment only; never in the repo.
+Secrets: `WINDY_API_KEY` etc. via environment or a git-ignored `.env` only; never in the repo.
 
 ### Sources implemented
 
