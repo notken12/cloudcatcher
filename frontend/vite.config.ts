@@ -13,6 +13,7 @@ export default defineConfig({
       '/events': 'http://localhost:8000',
       '/proxy': 'http://localhost:8000',
       '/push': 'http://localhost:8000',
+      '/users': 'http://localhost:8000',
     },
   },
   test: {
