@@ -1,0 +1,433 @@
+# Ledger of every camera source probed for the catalog, added or not.
+#
+# One entry per source. Meant to be re-checked mechanically (a later agent/job can loop
+# over `rejected` / `needs_key` / `retry` entries, re-run `probe`, and flip `status`
+# when a source becomes usable). Narrative context lives in sources.md.
+#
+# status:  added      - adapter exists (see `adapter`), rows in the catalog
+#          needs_key  - endpoint alive but wants a free key/token we don't hold
+#          rejected   - probed, unusable for the stated reason (re-probe with `probe`)
+#          retry      - probably usable, transient/incomplete result during probe
+#          later      - usable in principle but needs non-trivial work (HTML scrape etc.)
+#          never      - ToS/ethics; do not re-probe
+# probe:   what to run to re-verify. `expect` is the observation that would flip the verdict.
+# All HTTP results below were observed live on 2026-09-20 from a US datacentre egress
+# (relevant for the Cloudflare / geo-blocked entries).
+
+- id: caltrans
+  region: US-CA
+  status: added
+  adapter: caltrans.py
+  endpoint: https://cwwp2.dot.ca.gov/data/d{01..12}/cctv/cctvStatusD{01..12}.json
+  rows: ~2000
+  notes: direction field, previousImageURL history, HLS
+
+- id: alertca
+  region: US-West
+  status: added
+  adapter: alertca.py
+  endpoint: https://raw.githubusercontent.com/Deasus/firestorm-cameras/main/data/cameras.json
+  rows: ~1900
+  notes: community mirror of ALERTCalifornia catalog; many PTZ / IR
+
+- id: cars_ny
+  region: US-NY
+  status: added
+  adapter: cars.py
+  endpoint: https://511ny.org/api/getcameras?format=json&key=
+  notes: empty key accepted
+
+- id: cars_on
+  region: CA-ON
+  status: added
+  adapter: cars.py
+  endpoint: https://511on.ca/api/v2/get/cameras?format=json
+
+- id: cars_list
+  region: US/CA (FL UT PA NC AZ NV WI ID NE-511 LA AK AB NS NB NL YT)
+  status: added
+  adapter: cars_list.py
+  endpoint: https://<portal>/List/GetData/Cameras?query={...}
+  notes: map-UI list endpoint is open while /api/v2 needs a key; sequential paging (500s when concurrent)
+
+- id: cars_gql
+  region: US-MN, US-IA, US-MA, US-NE, US-IN, IE
+  status: added
+  adapter: cars_gql.py
+  endpoint: POST https://<portal>/api/graphql  (mapFeaturesQuery, zoom 15, layerSlugs normalCameras)
+  rows: ~4600
+  notes: newer OneWeb builds whose /List/GetData is a React shell
+
+- id: cars_ks
+  region: US-KS
+  status: rejected
+  endpoint: POST https://www.kandrive.gov/api/graphql
+  observed: 200, every CameraView.url = null
+  reason: no image URL exposed; video only via signed player
+  probe: same GraphQL query as cars_gql with KS bbox
+  expect: any view with non-null url
+
+- id: cars_ga
+  region: US-GA
+  status: rejected
+  endpoint: https://511ga.org/List/GetData/Cameras
+  observed: 4300 cams, ~85% identical "snapshot unavailable" PNG; HLS 401
+  reason: placeholder frames dominate; would poison the catalog
+  probe: fetch 50 random image URLs, hash
+  expect: <20% identical hashes
+
+- id: other_511_vendors
+  region: US-VA, US-TN, US-SC, US-CO, US-WV, US-ND, US-NM, US-RI, US-KY, US-MO, US-IL
+  status: later
+  observed: /api/graphql 404/405/redirect; /List/GetData shell or 404
+  reason: different vendors (Castle Rock, Iteris, Serco); need per-vendor adapters
+  probe: inspect XHR of each portal's map page
+
+- id: michigan_midrive
+  region: US-MI
+  status: later
+  endpoint: https://mdotjboss.state.mi.us/MiDrive/camera (JSON with HTML strings)
+  observed: 804 cams, image URLs embedded in HTML snippets
+  reason: needs HTML unescaping/parsing; deferred
+  probe: parse `<img src>` out of the HTML field
+
+- id: wsdot
+  region: US-WA
+  status: needs_key
+  endpoint: https://wsdot.wa.gov/Traffic/api/HighwayCameras/HighwayCamerasREST.svc/GetCamerasAsJson?AccessCode=
+  observed: 401
+  unlock: free access code at https://wsdot.wa.gov/traffic/api/
+
+- id: faa_weathercams
+  region: US-AK, US-HI, US
+  status: needs_key
+  adapter: faa.py (present, disabled without token)
+  endpoint: https://weathercams.faa.gov/api/sites
+  observed: 401 without the bearer token the SPA fetches
+  unlock: capture session token in browser; flow stability unverified
+
+- id: nps_air_webcams
+  region: US national parks
+  status: later
+  endpoint: https://www.nps.gov/subjects/air/webcams.htm (HTML)
+  reason: ~30 cams, HTML only; low priority
+
+- id: usgs_volcano
+  region: US-HI, US-WA
+  status: later
+  endpoint: https://www.usgs.gov/volcanoes/<volcano>/webcams (HTML)
+  reason: ~40 cams, HTML only
+
+- id: iem
+  region: US-Midwest
+  status: added
+  adapter: iem.py
+  endpoint: https://mesonet.agron.iastate.edu/geojson/webcam.geojson?network=...
+
+- id: ndbc
+  region: ocean
+  status: added
+  adapter: ndbc.py
+  endpoint: https://www.ndbc.noaa.gov/buoycams.php
+
+- id: phenocam
+  region: US/EU research sites
+  status: added
+  adapter: phenocam.py
+  endpoint: https://phenocam.nau.edu/api/cameras/?format=json
+
+- id: drivebc
+  region: CA-BC
+  status: added
+  adapter: drivebc.py
+
+- id: tripcheck
+  region: US-OR
+  status: added
+  adapter: tripcheck.py
+
+- id: quebec_511
+  region: CA-QC
+  status: later
+  observed: HTML/403 on probe
+  probe: inspect XHR of https://www.quebec511.info map
+
+- id: nj_511
+  region: US-NJ
+  status: rejected
+  observed: dead / 403 on probe
+  probe: GET https://511nj.org/api ... via map XHR
+
+- id: panomax
+  region: Alps
+  status: added
+  adapter: panomax.py
+  endpoint: https://api.panomax.com/1.0/maps/panomaxweb
+  notes: zeroDirection+viewAngle, nightVision flag
+
+- id: fotowebcam
+  region: Alps/DE/AT
+  status: added
+  adapter: fotowebcam.py
+  endpoint: https://www.foto-webcam.eu/webcam/ (metadata blob in HTML)
+  notes: years of archive; 1 req/s
+
+- id: digitraffic
+  region: FI
+  status: added
+  adapter: digitraffic.py
+  endpoint: https://tie.digitraffic.fi/api/weathercam/v1/stations
+  notes: Digitraffic-User header, 24h history
+
+- id: iceland
+  region: IS
+  status: added
+  adapter: iceland.py
+  endpoint: https://gagnaveita.vegagerdin.is/api/vefmyndavelar2014_1
+
+- id: no_vegvesen
+  region: NO
+  status: added
+  adapter: vegvesen.py
+  endpoint: https://road-weather-and-view.atlas.vegvesen.no/weather-information/measurement-sites
+  rows: ~840
+  notes: X-System-ID vvtraf + vendor Accept header; status OK only; NLOD 2.0. (Old webkamera.atlas.vegvesen.no is shut down.)
+
+- id: tfl
+  region: GB-London
+  status: added
+  adapter: tfl.py
+  endpoint: https://api.tfl.gov.uk/Place/Type/JamCam
+  rows: ~800
+
+- id: traffic_scotland
+  region: GB-SCT
+  status: later
+  endpoint: https://trafficscotland.org/ (HTML)
+  observed: HTML only, no JSON XHR found
+  probe: inspect map XHR
+
+- id: traffic_wales
+  region: GB-WLS
+  status: later
+  observed: 302 / HTML
+  probe: inspect https://traffic.wales map XHR
+
+- id: nl_ndw
+  region: NL
+  status: rejected
+  endpoint: https://opendata.ndw.nu/
+  observed: index lists traffic/speed/signs datasets only
+  reason: no camera dataset published; Rijkswaterstaat cams not open
+  probe: list index, grep camera|webcam
+  expect: a camera/webcam dataset
+
+- id: ee_tarktee
+  region: EE
+  status: retry
+  endpoint: https://tarktee.mnt.ee/api/v1/import/public/tap/stations/road-camera/*
+  observed: 200, empty collection []
+  probe: GET endpoint
+  expect: non-empty array
+
+- id: lt_eismoinfo
+  region: LT
+  status: rejected
+  observed: backend exposes weather-conditions only
+  reason: cameras not exposed via API
+  probe: inspect https://eismoinfo.lt XHR
+
+- id: si_promet
+  region: SI
+  status: later
+  endpoint: https://www.promet.si/ (HTML)
+  observed: HTML only
+  probe: inspect XHR
+
+- id: es_dgt
+  region: ES
+  status: later
+  endpoint: https://infocar.dgt.es/etraffic/ (HTML)
+  observed: HTML / 302
+  probe: inspect XHR
+
+- id: it_autostrade
+  region: IT
+  status: rejected
+  observed: HTML-only / 403
+  probe: inspect https://www.autostrade.it XHR
+
+- id: ch_meteoswiss
+  region: CH
+  status: rejected
+  observed: no camera product; 403 on guessed endpoints
+  reason: MeteoSwiss publishes no webcams
+
+- id: meteocam
+  region: EU
+  status: rejected
+  observed: 503 maintenance
+  probe: GET https://meteocam.net
+  expect: 200
+
+- id: yr_no_webcams
+  region: NO/global
+  status: rejected
+  observed: 410 Gone
+  reason: product discontinued
+
+- id: bergfex
+  region: AT/DE/CH
+  status: rejected
+  observed: 429 on first request; feratel iframe only
+  reason: rate-limited, embed-only
+
+- id: hk_td
+  region: HK
+  status: added
+  adapter: hongkong.py
+
+- id: sg_lta
+  region: SG
+  status: added
+  adapter: singapore.py
+  notes: only ~8 of 90 IDs live at any time; sample multiple timestamps
+
+- id: tw_tdx
+  region: TW
+  status: added
+  adapter: taiwan.py
+  endpoint: https://tdx.transportdata.tw/api/basic/v2/Road/Traffic/CCTV/{Highway,Freeway}?$format=JSON
+  rows: ~2800
+  notes: 401 unless browser-like UA; freeway = MJPEG, first-frame extraction; city datasets HLS/HTML → skipped
+
+- id: jp_nexco_mlit
+  region: JP
+  status: later
+  observed: NEXCO E/C/W and MLIT regional camera pages 404 / HTML-only / reject non-JP UA
+  reason: no JSON catalog found
+  probe: inspect XHR of each regional MLIT 道路カメラ page from a JP egress if possible
+  expect: JSON/GeoJSON with image URLs
+
+- id: nzta
+  region: NZ
+  status: added
+  adapter: nzta.py
+
+- id: trafficnz_info
+  region: NZ
+  status: rejected
+  observed: 500
+  reason: superseded by nzta adapter
+
+- id: au_qld
+  region: AU-QLD
+  status: added
+  adapter: qld.py
+  endpoint: https://data.qldtraffic.qld.gov.au/webcameras.geojson
+  rows: 136
+  notes: keyless GeoJSON used by the qldtraffic.qld.gov.au map (the api.qldtraffic REST API 403s without a key); `direction` is the true camera bearing (differs from the road-direction suffix in the description); CC BY 4.0
+
+- id: au_nsw
+  region: AU-NSW
+  status: needs_key
+  endpoint: https://api.transport.nsw.gov.au/v1/live/cameras
+  observed: 401
+  unlock: "free key from https://opendata.transport.nsw.gov.au (register -> Applications -> API key); header `Authorization: apikey <KEY>`"
+
+- id: au_vic
+  region: AU-VIC
+  status: retry
+  endpoint: https://traffic.vicroads.vic.gov.au/
+  observed: connection failed (000) from US egress
+  reason: could not reach; may be geo-blocked
+  probe: GET from an AU egress; inspect map XHR
+
+- id: au_wa
+  region: AU-WA
+  status: rejected
+  endpoint: https://www.trafficwa.wa.gov.au/ ; https://trafficmap.mainroads.wa.gov.au/
+  observed: trafficwa unreachable (000); trafficmap camera API returns OWIN auth-manager error
+  reason: camera feed behind auth
+  probe: inspect trafficmap XHR
+
+- id: au_sa
+  region: AU-SA
+  status: rejected
+  endpoint: https://traffic.sa.gov.au/
+  observed: Cloudflare 403
+  probe: GET from residential/AU egress
+  expect: 200 + camera JSON
+
+- id: au_tas
+  region: AU-TAS
+  status: rejected
+  endpoint: https://www.transport.tas.gov.au/roadreport
+  observed: Cloudflare 403
+  probe: GET from residential/AU egress
+
+- id: au_nt
+  region: AU-NT
+  status: rejected
+  endpoint: https://roadreport.nt.gov.au/
+  observed: Angular app, bundle has no camera/cctv endpoints
+  reason: site publishes road conditions, not cameras
+
+- id: au_act
+  region: AU-ACT
+  status: rejected
+  endpoint: https://www.transport.act.gov.au/
+  observed: 403
+  probe: find ACT camera page, inspect XHR
+
+- id: windy
+  region: global
+  status: added
+  adapter: windy.py
+  endpoint: https://api.windy.com/webcams/api/v3/webcams
+  notes: needs WINDY_API_KEY env; free tier offset cap 1000/country; signed URLs, resolve at display time
+
+- id: wunderground_webcams
+  region: global
+  status: rejected
+  observed: 404
+  reason: discontinued
+
+- id: snow_forecast_mountainwatch
+  region: global
+  status: rejected
+  observed: 404
+
+- id: aggregators_timeanddate_webcamtaxi_worldcam
+  region: global
+  status: rejected
+  observed: Cloudflare challenge / bad cert
+  reason: aggregators of other sources anyway
+
+- id: earthcam_surfline_instagram_snapmap
+  region: global
+  status: never
+  reason: ToS forbid scraping/embedding
+
+- id: insecam_style_lists
+  region: global
+  status: never
+  reason: unsecured cameras; ethics/policy
+
+- id: allsky_kiruna_irf
+  region: SE
+  status: added
+  adapter: manual.py (manual.yaml)
+  notes: all-sky, night only
+
+- id: allsky_uaf_poker_flat
+  region: US-AK
+  status: later
+  endpoint: https://allsky.gi.alaska.edu/
+  observed: latest frame JS-injected
+  reason: needs Playwright/JS or direct image path discovery
+
+- id: youtube_24_7_streams
+  region: global
+  status: later
+  reason: hand-picked video IDs from user; yt-dlp → ffmpeg frame; see sources.md Tier 3 list

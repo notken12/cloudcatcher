@@ -126,6 +126,7 @@ Secrets: `WINDY_API_KEY` etc. via environment only; never in the repo.
 | `tw_tdx` | ~2,770 | text (`RoadDirection`) | – | – | Taiwan MOTC TDX highway (JPEG) + freeway (MJPEG; `fetch_frame` pulls the first frame) CCTV, 1-min, needs a browser UA |
 | `no_vegvesen` | ~840 | – | – | – | Statens vegvesen road-weather sites: altitude, `status`, HLS; NLOD 2.0; mountain passes (Sognefjellet 1,413 m) + Finnmark for aurora |
 | `tfl` | ~800 | `view` text 71% | – | 10 s MP4 clip | London JamCams, 5-min, TfL Open Data licence |
+| `au_qld` | ~136 | `direction` 100% | – | – | Queensland (Brisbane–Cairns, Toowoomba range), keyless GeoJSON, 1-min JPEG, CC BY 4.0 |
 | `alertca` | ~1,800 | catalog (pan) | IR subset | – | ridge-top PTZ, firestorm mirror |
 | `digitraffic` | ~1,700 | – | yes | 24 h API | Finland, CC BY 4.0 |
 | `panomax` | ~630 | catalog (zeroDirection+viewAngle/2) | `nightVision` | recent API | Alpine panoramas |
@@ -166,6 +167,7 @@ Known-good rows (frames verified live, Sep 2026) to hard-code into demos/tests:
 | `tfl:00001.06570` Hammersmith Bridge Rd | 51.491, -0.227 | London, S-facing, 5-min JPEG + MP4 clip |
 | `tw_tdx:CCTV-N1-S-0.000-M` National Fwy 1 Keelung | 25.123, 121.736 | Taiwan, 1-min MJPEG stream, typhoon/thunderstorm demo |
 | `cars_ie:127:1733092217` N59 Maam Cross | 53.456, -9.537 | Connemara, Atlantic fronts/rainbows |
+| `au_qld:84` Murarrie – Port of Brisbane, W | -27.452, 153.114 | southern hemisphere; Brisbane summer thunderstorms, sunset over the city |
 
 Ready-to-run queries (`--t` is UTC, omit for now):
 
@@ -186,6 +188,8 @@ uv run sunroof-camera find aurora      --lat 64.5  --lon=-21.0   --radius-km 100
 uv run sunroof-camera find undercast   --lat 61.5  --lon 8.2     --radius-km 10
 # London thunderstorm: TfL JamCams within 30 km of a cell over Croydon
 uv run sunroof-camera find thunderstorm --lat 51.37 --lon=-0.10  --radius-km 5
+# Brisbane thunderstorm (S-hemisphere demo): QLD cams within the 33–150 km anvil annulus
+uv run sunroof-camera find thunderstorm --lat=-27.6 --lon 152.7  --radius-km 10
 # sunrise on the Gulf of Finland
 uv run sunroof-camera find sunrise     --lat 60.05 --lon 24.0    --radius-km 5  --t 2026-09-21T04:00:00
 ```

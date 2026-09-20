@@ -19,6 +19,7 @@ from sunroof_camera.ingest.sources import (
     hongkong,
     nzta,
     panomax,
+    qld,
     singapore,
     taiwan,
     tfl,
@@ -394,6 +395,36 @@ def test_tfl_available_filter_and_view_heading():
     assert [c.id for c in cams] == ["tfl:00001.1"]
     assert cams[0].azimuth_deg == 45 and cams[0].stream_url.endswith(".mp4")
     assert cams[0].tz == "Europe/London"
+
+
+def test_qld_geojson_direction_and_skips():
+    def feat(fid, img, direction):
+        return {
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [153.01, -27.56]},
+            "properties": {
+                "id": fid,
+                "description": f"cam {fid}",
+                "direction": direction,
+                "image_url": img,
+            },
+        }
+
+    cams = _run(
+        qld.QLDTrafficAdapter(),
+        {
+            "webcameras.geojson": {
+                "features": [
+                    feat(1, "https://cameras/a.jpg", "NorthEast"),
+                    feat(2, None, "South"),
+                    {"type": "Feature", "geometry": {}, "properties": {"id": 3, "image_url": "x"}},
+                ]
+            }
+        },
+    )
+    assert [c.id for c in cams] == ["au_qld:1"]
+    assert cams[0].azimuth_deg == 45 and cams[0].lat == -27.56 and cams[0].lon == 153.01
+    assert cams[0].tz == "Australia/Brisbane"
 
 
 def test_vegvesen_status_altitude_and_naming():

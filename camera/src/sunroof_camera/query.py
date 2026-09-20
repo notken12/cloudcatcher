@@ -100,6 +100,7 @@ SOURCE_PRIOR = {
     "no_vegvesen": 0.6,  # rural, mountain passes, altitude known
     "tw_tdx": 0.35,
     "tfl": 0.3,  # dense urban, low mount
+    "au_qld": 0.4,
     "cars_mn": 0.4,
     "cars_ia": 0.4,
     "cars_ne": 0.45,
