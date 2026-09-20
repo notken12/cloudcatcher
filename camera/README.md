@@ -70,6 +70,10 @@ Secrets: `WINDY_API_KEY` etc. via environment only; never in the repo.
 | `caltrans` | ~3,300 | text 88% | – | last 12 frames | 12 district JSONs, JPEG + HLS |
 | `cars_ny` / `cars_on` | ~1,800 / ~1,400 | text ~50-70% | – | – | 511 portals; NY optional `NY511_API_KEY` |
 | `cars_fl` `cars_ut` `cars_pa` `cars_nc` `cars_az` `cars_nv` `cars_id` `cars_wi` `cars_ne6` `cars_la` `cars_ak` `cars_ab` `cars_ns` `cars_nb` `cars_nl` `cars_yt` | ~14,000 total (FL 4.9k, UT 2.1k, PA 1.4k, NC 1.1k) | text 0–100% (`direction` + view description) | – | – | keyless `/List/GetData/Cameras` on every CARS 511 portal; video-only sites return a 15 KB placeholder PNG that `fetch_frame` rejects. Georgia (4.3k) excluded: ~85% placeholder + auth-walled HLS |
+| `cars_mn` `cars_ia` `cars_ma` `cars_ne` `cars_in` `cars_ie` | ~4,600 (MN 1.7k, IA 1.0k, IN/NE ~650, MA 300, Ireland 230) | text (view title) | – | – | CARS portals whose list endpoint is a React shell; `cars_gql.py` calls the OneWeb `/api/graphql` `mapFeaturesQuery` with a state-wide bbox at zoom 15 -> JPEG poster + public HLS. Kansas skipped (`url=null` views) |
+| `tw_tdx` | ~2,770 | text (`RoadDirection`) | – | – | Taiwan MOTC TDX highway (JPEG) + freeway (MJPEG; `fetch_frame` pulls the first frame) CCTV, 1-min, needs a browser UA |
+| `no_vegvesen` | ~840 | – | – | – | Statens vegvesen road-weather sites: altitude, `status`, HLS; NLOD 2.0; mountain passes (Sognefjellet 1,413 m) + Finnmark for aurora |
+| `tfl` | ~800 | `view` text 71% | – | 10 s MP4 clip | London JamCams, 5-min, TfL Open Data licence |
 | `alertca` | ~1,800 | catalog (pan) | IR subset | – | ridge-top PTZ, firestorm mirror |
 | `digitraffic` | ~1,700 | – | yes | 24 h API | Finland, CC BY 4.0 |
 | `panomax` | ~630 | catalog (zeroDirection+viewAngle/2) | `nightVision` | recent API | Alpine panoramas |
@@ -86,7 +90,7 @@ Secrets: `WINDY_API_KEY` etc. via environment only; never in the repo.
 | `windy` | ~1k/country | text from title | – | embed player day/month/year | needs `WINDY_API_KEY`; offset ≤1000/free tier |
 | `manual` | yaml | – | – | – | hand-picked: UAF Poker Flat + IRF Kiruna all-sky (aurora, `night_ok`) |
 
-`uv run sunroof-camera refresh` builds every keyless source in ~2 min (~29k rows; the CARS portals are paged 100 at a time).
+`uv run sunroof-camera refresh` builds every keyless source in ~3 min (~38k rows; the CARS portals are paged 100 at a time).
 
 ## Demo cameras & sample queries
 
@@ -106,6 +110,10 @@ Known-good rows (frames verified live, Sep 2026) to hard-code into demos/tests:
 | `manual:irf-kiruna-allsky` | 67.84, 20.41 | all-sky aurora camera, 1-min JPEG, `night_ok` |
 | `hk_td:H421F` Aberdeen Tunnel | 22.250, 114.176 | Hong Kong, 2-min refresh, typhoon/fog demo |
 | `cars_ak:*` / `cars_ut:*` | Alaska / Utah | 511 cams with text headings (Richardson Hwy, Wasatch) |
+| `no_vegvesen:0529029_1` F55 Sognefjellet | 61.565, 7.998, 1,413 m | highest Norwegian pass, lenticular/undercast; `no_vegvesen:2000065_1` Aisaroaivi (70.28 N) for aurora |
+| `tfl:00001.06570` Hammersmith Bridge Rd | 51.491, -0.227 | London, S-facing, 5-min JPEG + MP4 clip |
+| `tw_tdx:CCTV-N1-S-0.000-M` National Fwy 1 Keelung | 25.123, 121.736 | Taiwan, 1-min MJPEG stream, typhoon/thunderstorm demo |
+| `cars_ie:127:1733092217` N59 Maam Cross | 53.456, -9.537 | Connemara, Atlantic fronts/rainbows |
 
 Ready-to-run queries (`--t` is UTC, omit for now):
 
@@ -122,6 +130,10 @@ uv run sunroof-camera find fog         --lat 37.8  --lon=-122.45 --radius-km 5  
 uv run sunroof-camera find rainbow     --lat 38.9  --lon=-120.0  --radius-km 5  --t 2026-09-21T00:30:00
 # aurora over Iceland at local midnight -> night_ok Vegagerðin cams
 uv run sunroof-camera find aurora      --lat 64.5  --lon=-21.0   --radius-km 100 --t 2026-09-20T23:30:00
+# undercast / lenticular over Jotunheimen from Sognefjellet + Valdresflye (1.4 km passes)
+uv run sunroof-camera find undercast   --lat 61.5  --lon 8.2     --radius-km 10
+# London thunderstorm: TfL JamCams within 30 km of a cell over Croydon
+uv run sunroof-camera find thunderstorm --lat 51.37 --lon=-0.10  --radius-km 5
 # sunrise on the Gulf of Finland
 uv run sunroof-camera find sunrise     --lat 60.05 --lon 24.0    --radius-km 5  --t 2026-09-21T04:00:00
 ```

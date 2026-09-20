@@ -47,6 +47,7 @@ PORTALS: dict[str, tuple[str, str, tuple[float, float, float, float]]] = {
     "ma": ("mass511.com", "MassDOT / Mass511", (43.0, 41.1, -69.8, -73.6)),
     "ne": ("511.nebraska.gov", "Nebraska DOT / 511", (43.1, 39.9, -95.2, -104.2)),
     "in": ("511in.org", "INDOT / TrafficWise", (41.8, 37.7, -84.7, -88.1)),
+    "ie": ("traffic.tii.ie", "Transport Infrastructure Ireland", (55.5, 51.3, -5.9, -10.7)),
 }
 
 
@@ -122,7 +123,7 @@ class CarsGqlAdapter:
                         stream_url=hls,
                         page_url=f"https://{self.host}/",
                         refresh_s=120 if hls else 300,
-                        license=f"{self.attribution} 511 terms of use",
+                        license=f"{self.attribution} terms of use",
                         attribution=self.attribution,
                     )
                 )

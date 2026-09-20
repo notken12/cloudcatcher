@@ -20,7 +20,9 @@ from .sources.panomax import PanomaxAdapter
 from .sources.phenocam import PhenoCamAdapter
 from .sources.singapore import SingaporeLTAAdapter
 from .sources.taiwan import TaiwanTDXAdapter
+from .sources.tfl import TfLJamCamAdapter
 from .sources.tripcheck import TripCheckAdapter
+from .sources.vegvesen import VegvesenAdapter
 from .sources.windy import WindyAdapter
 
 ADAPTERS: dict[str, type] = {
@@ -44,6 +46,8 @@ ADAPTERS: dict[str, type] = {
         HongKongTDAdapter,
         SingaporeLTAAdapter,
         TaiwanTDXAdapter,
+        TfLJamCamAdapter,
+        VegvesenAdapter,
         *CARS_LIST_ADAPTERS,  # cars_fl, cars_ut, ... (keyless 511 list endpoint)
         *CARS_GQL_ADAPTERS,  # cars_mn, cars_ia, ... (OneWeb GraphQL portals)
         WindyAdapter,  # needs WINDY_API_KEY

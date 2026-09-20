@@ -92,3 +92,27 @@ Other embed-only catalogs worth a small manual list (each ~10 cams):
 - Rest of world: **Windy is the only scalable answer**; hand-picks for hero shots.
 - Night-capable with real signal: Digitraffic Lapland, Iceland, Panomax `nightVision`, foto-webcam long exposures, ALERTCalifornia IR, FAA Alaska, all-sky hobby nets. Expect ~15 % of the catalog to be `night_ok=true`.
 - Historical depth for backtesting: PhenoCam (2008→), IEM (2003→, with heading), foto-webcam (years), Caltrans (last 12 frames only), FAA (24 h), Digitraffic (24 h).
+
+## Expansion log — Sep 2026 (after PR #4)
+
+Probed while looking for CARS shell-page states, Japan/Australia, and UK/NL/NO. What each needed:
+
+| Source | Probe result | Verdict |
+|---|---|---|
+| CARS OneWeb portals (MN, IA, MA, NE, IN, **Ireland TII**) | `/List/GetData/Cameras` = React shell, but `POST /api/graphql` `mapFeaturesQuery` (whole-state bbox, zoom 15, `layerSlugs=["normalCameras"]`) returns every camera with poster JPEG + public HLS, keyless | **added** `cars_gql.py` (+4.6k) |
+| Kansas KanDrive | same GraphQL, every view `url=null` | skip |
+| VA, TN, SC, CO, GA, WV, ND, NM, RI, KY, MO, IL | GraphQL 404/405/redirect; different vendors (Castle Rock, Iteris, Serco) | later, per-vendor adapters |
+| Taiwan MOTC TDX `Road/Traffic/CCTV/{Highway,Freeway}` | keyless JSON if UA looks like a browser (401 otherwise); highway = JPEG, freeway = MJPEG multipart on `cctvn.freeway.gov.tw` | **added** `taiwan.py` (+2.8k), first-frame extraction; city datasets are HLS/HTML → skip |
+| Norway Statens vegvesen `road-weather-and-view.atlas.vegvesen.no` | keyless with `X-System-ID: vvtraf` + `Accept: application/vnd.svv.v1+json`; 786 sites, 893 cams, altitude, `status`, HLS; NLOD | **added** `vegvesen.py` (+840) |
+| TfL JamCams `api.tfl.gov.uk/Place/Type/JamCam` | keyless, 890 cams, `view` compass text, 5-min JPEG + 10 s MP4 | **added** `tfl.py` (+800) |
+| Netherlands NDW `opendata.ndw.nu` | no camera dataset in the open-data index (traffic/speed/signs only); Rijkswaterstaat cams are not published | skip |
+| Estonia Tark tee `api/v1/import/public/tap/stations/road-camera/*` | endpoint exists, returned `[]` during probe | retry later |
+| Lithuania eismoinfo | backend has weather-conditions service only; cameras not exposed | skip |
+| Slovenia promet.si, Spain DGT infocar, Scotland, Wales | HTML / 302 / 404 | later (HTML scrape) |
+| Australia: QLD `api.qldtraffic.qld.gov.au` | `403 Missing Authentication Token` (free key) | Tier 2, needs key |
+| Australia: NSW Live Traffic | `401` (free key) | Tier 2, needs key |
+| Australia: SA, TAS | Cloudflare 403 | skip |
+| Australia: WA Main Roads, NT | map apps; WA `trafficmap` is traffic counts, camera API behind OWIN auth | skip |
+| Japan: NEXCO E/C/W, MLIT regional "道路カメラ" | 404 / HTML-only / rejects non-JP UA; no JSON catalog found | later (Windy covers JP with a key) |
+
+Net: catalog ~29k → ~38k rows, 41 keyless sources. Still empty: South America, Africa, Middle East, India, mainland China, Australia (key-gated), Japan.
