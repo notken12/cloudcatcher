@@ -334,6 +334,15 @@
   endpoint: https://api.transport.nsw.gov.au/v1/live/cameras
   observed: 401
   unlock: "free key from https://opendata.transport.nsw.gov.au (register -> Applications -> API key); header `Authorization: apikey <KEY>`"
+  notes: parked by the user (2026-09); the whole-of-government api.nsw.gov.au catalogue does NOT carry this API, only the TfNSW Open Data Hub does
+
+- id: au_nsw_maritime
+  region: AU-NSW
+  status: added
+  adapter: nsw_maritime.py
+  endpoint: https://opendata.transport.nsw.gov.au/data/dataset/maritime-web-camera (CKAN, GeoJSON resource)
+  rows: 23
+  notes: keyless; LIVE_FEED is a widget.coastalcoms.com page embedding a public CloudFront playlist.m3u8 (1080p); coastal bars Tweed Heads–Merimbula + Lake Eucumbene; over_water, heading unknown; the sibling dataset "Webcams for Coastal Bars and Alpine Waters" is only a link to the same RMS page
 
 - id: au_vic
   region: AU-VIC

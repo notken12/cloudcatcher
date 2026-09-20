@@ -114,7 +114,8 @@ Probed while looking for CARS shell-page states, Japan/Australia, and UK/NL/NO. 
 | Lithuania eismoinfo | backend has weather-conditions service only; cameras not exposed | skip |
 | Slovenia promet.si, Spain DGT infocar, Scotland, Wales | HTML / 302 / 404 | later (HTML scrape) |
 | Australia: QLD `api.qldtraffic.qld.gov.au` | REST API `403` without key, **but** the qldtraffic map loads `data.qldtraffic.qld.gov.au/webcameras.geojson` keyless: 136 cams, compass `direction`, 1-min JPEG, CC BY 4.0 | **added** `qld.py` (+136) |
-| Australia: NSW Live Traffic | `401` (free key) | Tier 2, needs key |
+| Australia: NSW Live Traffic | `401` (free key from the TfNSW Open Data Hub, not api.nsw.gov.au) | Tier 2, needs key (parked) |
+| Australia: NSW Maritime webcams | keyless CKAN GeoJSON on the same hub; 23 coastal-bar cams whose CoastalCOMS widget embeds a public 1080p `playlist.m3u8` | **added** `nsw_maritime.py` (+23) |
 | Australia: SA, TAS | Cloudflare 403 | skip |
 | Australia: WA Main Roads, NT | map apps; WA `trafficmap` is traffic counts, camera API behind OWIN auth; NT roadreport has no cameras | skip |
 | Australia: VIC VicTraffic, ACT | connection failed / 403 from US egress | retry from AU egress |

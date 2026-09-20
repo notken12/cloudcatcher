@@ -137,6 +137,7 @@ Secrets: `WINDY_API_KEY` etc. via environment or a git-ignored `.env` only; neve
 | `no_vegvesen` | ~840 | – | – | – | Statens vegvesen road-weather sites: altitude, `status`, HLS; NLOD 2.0; mountain passes (Sognefjellet 1,413 m) + Finnmark for aurora |
 | `tfl` | ~800 | `view` text 71% | – | 10 s MP4 clip | London JamCams, 5-min, TfL Open Data licence |
 | `au_qld` | ~136 | `direction` 100% | – | – | Queensland (Brisbane–Cairns, Toowoomba range), keyless GeoJSON, 1-min JPEG, CC BY 4.0 |
+| `au_nsw_maritime` | 23 | – | – | – | NSW coastal bars + Lake Eucumbene, keyless TfNSW GeoJSON → public 1080p HLS (ffmpeg frame), over water, CC BY 4.0 |
 | `alertca` | ~1,800 | catalog (pan) | IR subset | – | ridge-top PTZ, firestorm mirror |
 | `digitraffic` | ~1,700 | – | yes | 24 h API | Finland, CC BY 4.0 |
 | `panomax` | ~630 | catalog (zeroDirection+viewAngle/2) | `nightVision` | recent API | Alpine panoramas |
@@ -178,6 +179,7 @@ Known-good rows (frames verified live, Sep 2026) to hard-code into demos/tests:
 | `tw_tdx:CCTV-N1-S-0.000-M` National Fwy 1 Keelung | 25.123, 121.736 | Taiwan, 1-min MJPEG stream, typhoon/thunderstorm demo |
 | `cars_ie:127:1733092217` N59 Maam Cross | 53.456, -9.537 | Connemara, Atlantic fronts/rainbows |
 | `au_qld:84` Murarrie – Port of Brisbane, W | -27.452, 153.114 | southern hemisphere; Brisbane summer thunderstorms, sunset over the city |
+| `au_nsw_maritime:1` Merimbula bar | -36.889, 149.919 | 1080p HLS over the Pacific: sunrise, storms offshore, rainbows |
 
 Ready-to-run queries (`--t` is UTC, omit for now):
 
@@ -200,6 +202,8 @@ uv run sunroof-camera find undercast   --lat 61.5  --lon 8.2     --radius-km 10
 uv run sunroof-camera find thunderstorm --lat 51.37 --lon=-0.10  --radius-km 5
 # Brisbane thunderstorm (S-hemisphere demo): QLD cams within the 33–150 km anvil annulus
 uv run sunroof-camera find thunderstorm --lat=-27.6 --lon 152.7  --radius-km 10
+# storm cell off the NSW south coast: Merimbula/Bermagui/Narooma 1080p HLS bar cams
+uv run sunroof-camera find thunderstorm --lat=-36.7 --lon 150.3  --radius-km 20
 # sunrise on the Gulf of Finland
 uv run sunroof-camera find sunrise     --lat 60.05 --lon 24.0    --radius-km 5  --t 2026-09-21T04:00:00
 ```
