@@ -11,6 +11,8 @@ import { LIVE, mediaUrl, useCameras, useFeed, useStream } from './lib/api'
 import { ARCHIVE_CAMS, availableCams, camHasYear, describeMoment, frameUrl } from './lib/archive'
 import { EVENT_LABEL, FILTER_LABEL, matchesFilter, type Filter } from './lib/events'
 import { useUser } from './lib/user'
+import { dwellMs, prioritize } from './lib/prioritize'
+import type { EventType } from './lib/types'
 import { useMoment, useView, type View } from './lib/view'
 
 const Globe = lazy(() => import('./components/globe/Globe').then((m) => ({ default: m.Globe })))
@@ -18,6 +20,7 @@ const Globe = lazy(() => import('./components/globe/Globe').then((m) => ({ defau
 /** Broadcast cycles the top few; the globe shows (and lets you pick) many more. */
 const HERO_SLOTS = 4
 const PIN_SLOTS = 50
+const NO_LIKES: EventType[] = []
 
 export default function App() {
   const feed = useFeed()
@@ -30,9 +33,14 @@ export default function App() {
   const [index, setIndex] = useState(0)
   const [hover, setHover] = useState(false)
 
+  const likes = user?.likes ?? NO_LIKES
   const filtered = useMemo(
-    () => (feed.data ?? []).filter((f) => matchesFilter(f.event.type, filter)),
-    [feed.data, filter],
+    () =>
+      prioritize(
+        (feed.data ?? []).filter((f) => matchesFilter(f.event.type, filter)),
+        likes,
+      ),
+    [feed.data, filter, likes],
   )
   const visible = filtered.slice(0, view === 'globe' ? PIN_SLOTS : HERO_SLOTS)
   const onFilter = (f: Filter) => {
@@ -107,7 +115,7 @@ export default function App() {
       index={index}
       onChange={setIndex}
       paused={hover}
-      periodMs={view === 'time' ? 8_000 : undefined}
+      periodMs={view === 'time' ? 8_000 : dwellMs(current, likes, 20_000)}
     />
   )
 
