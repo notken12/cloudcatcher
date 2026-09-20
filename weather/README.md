@@ -20,6 +20,7 @@ with `uv run python -m weather.<module>`.
 | `nws.py` | live alerts (User-Agent required) and IEM VTEC archive | api.weather.gov has no history |
 | `spc.py` | SPC daily / yearly storm reports | yearly times are CST |
 | `climatology.py` | Open-Meteo ERA5 percentiles | good for cloud layers, useless for precip (zero-inflated); `cape` not in archive |
+| `synop.py` | SYNOP (FM-12) surface reports from OGIMET: observed cloud **genus** (low/middle/high) and oktas at manned stations; ISD station coordinates | the only free worldwide observation of cloud type; ~4,500 genus stations per 3 h, none in the US (ASOS); one 3.5 MB world request per hour |
 | `sun.py` | astral wrappers | |
 | `sunset_rules.py` | simple mid/high-over-site + clear-ray rule | |
 | `sunset_rays.py` | Sunsethue-style ray model | implemented, **not validated** (ρ≈0 on one evening) |
@@ -49,6 +50,17 @@ GFS (`…/gfs`, everywhere). Humidity for the classifier comes from HRRR or GFS 
 West-Coast test evening the classifier scores ρ 0.48 on GOES, 0.23 on HRRR and 0.21 on GFS against
 observed colour (`validation/sunset_goes_eval.py`); Himawari is unvalidated (no colour index outside the US).
 
+**Observed cloud genus** (`synop.py`): the nearest manned SYNOP station within 150 km that reported in the
+3 h before the target attaches its observation to the score (`synop: {station, observed_at, total_oktas,
+low, middle, high, genus_factor, distance_km}`) and scales the severity by a bounded genus prior:
+×1.2 per level reporting thin or broken middle/high cloud (altocumulus, cirrus, cirrocumulus, cirrostratus
+not covering the sky), ×0.7 per level reporting an opaque layer (altostratus opacus, cirrostratus covering
+the sky, stratocumulus, stratus, fractus), clipped to 0.5–1.4; `severity = min(1, quality × factor / 0.06)`.
+The factor is physics, not fitted: no colour index exists where genus is reported (the US test frames have
+none), so it is deliberately a nudge. What SYNOP *does* validate is the fields themselves —
+`validation/synop_field_check.py` compares observer oktas and per-level presence with GFS, Himawari and
+GOES cover at the stations.
+
 Event record — a camera-side `WeatherEvent` (`camera/src/sunroof_camera/footage.py`), which the
 camera service accepts on `POST /events`; `--post http://host:port` sends each record there:
 
@@ -64,7 +76,8 @@ camera service accepts on `POST /events`; `--post http://host:port` sends each r
               "valid_time": "2026-09-20T04:30:39Z"}}
 ```
 
-`type` ∈ `thunderstorm | sunset | aurora` (camera-side `EventType` names); `severity` ∈ [0, 1];
+`type` ∈ `thunderstorm | sunset | aurora | lenticular | rare_cloud` (camera-side `EventType` names, except
+`rare_cloud`, which the camera side still has to add); `severity` ∈ [0, 1];
 `replay` is true under `--when` (the camera side then fetches archive frames at `t_start`). The
 camera service reads `id, type, lat, lon, radius_km, t_start, t_end, severity, replay` and picks
 cameras itself (for sunset: sun-facing cameras within 50 km). The remaining keys are advisory:
@@ -85,6 +98,14 @@ Rules:
   nearest `when` (≥ 40 dBZ alone flags stratiform rain: 181 blobs vs 12 on the test evening),
   `severity = (max REFC − 45)/15`, `radius_km = max(30, 14·√cells)`, ±30 min. There is no free
   global radar or lightning feed; this is a forecast, not a detection.
+- **rare_cloud** / **lenticular** — always on: every manned SYNOP station that reported, within the last
+  90 min, a genus that is a sight in itself becomes an event at the station (`radius_km` 50, valid 90 min,
+  `evidence.genus` names it, `evidence.synop` carries the whole observation). Genera and severities, from
+  their share of the world's reports: chaotic sky 1.0, cirrus from cumulonimbus 0.9, cirrocumulus 0.8,
+  altocumulus castellanus 0.8, cirrostratus covering the sky (halo weather) 0.6, cirrus uncinus 0.6;
+  altocumulus lenticularis goes out as the camera side's own `lenticular` type (0.9). A lee-wave day
+  produces one event per station in the wave train (38 over Czechia/Slovakia at 07Z on 2026-09-20); the
+  camera side needs `rare_cloud` added to its `EventType` before it will accept the six.
 - **aurora** (`--aurora`) — 0.5° lattice, 50–71° in both hemispheres, all longitudes: OVATION
   probability ≥ 20, sun elevation ≤ −6°, GFS lcc disk ≤ 30 %. `severity = min(1, probability/50)`,
   `needs_night_capable_camera = true` (all-sky/long-exposure cams only).

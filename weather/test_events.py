@@ -12,6 +12,7 @@
    Plains MT (the West-Coast test evening's 4/5 frames), as valid camera-side records.
 6. Global fields: the classifier on GFS scores Lamar; the Himawari-9 fixed grid navigates to the pixel and
    its field covers Tokyo but not Colorado.
+7. SYNOP: the FM-12 decoder reads cloud genus, and OGIMET's live feed yields genus at hundreds of stations.
 """
 import datetime as dt
 import json
@@ -103,7 +104,7 @@ def replay_mead() -> bool:
 
 REQUIRED_KEYS = {"id", "type", "lat", "lon", "radius_km", "t_start", "t_end", "severity", "replay",
                  "needs_daylight", "needs_night_capable_camera", "look_bearing_hint", "evidence"}
-EVENT_TYPES = ("thunderstorm", "sunset", "aurora")  # camera-side EventType names
+EVENT_TYPES = ("thunderstorm", "sunset", "aurora", "lenticular", "rare_cloud")  # camera-side EventType names (+ rare_cloud, to be added there)
 
 
 def valid_events(events: list[dict]) -> bool:
@@ -132,6 +133,21 @@ def sunset_sweep() -> bool:
     return ok
 
 
+def synop_genus() -> bool:
+    """The FM-12 decoder reads the 8NhCLCMCH group (Samjiyon 2026-09-20 00Z: 7/8 total cover, altocumulus translucidus
+    under cirrus fibratus, no low cloud; Key West's automated report has no genus group), and the live OGIMET feed
+    yields genus at hundreds of stations."""
+    from weather import synop
+
+    samjiyon = synop.decode("AAXX 20001 47005 32470 71801 10112 20073 38665 4//// 57002 82031 333 20053=")
+    key_west = synop.decode("AAXX 20034 72201 32966 00000 10278 20233 30132 40145 50010 90253 555 92003=")
+    ok = check("synop decode", samjiyon == (7, 0, 3, 1) and key_west is None, f"samjiyon={samjiyon} key_west={key_west}")
+    rare = synop.Report("x", "x", 0.0, 0.0, dt.datetime.now(dt.UTC), 5, 0, 4, 9).rare_genera()
+    ok &= check("synop rare genera", rare == [("rare_cloud", "cirrocumulus", 0.8), ("lenticular", "altocumulus lenticularis", 0.9)], str(rare))
+    observations = synop.reports(dt.datetime.now(dt.UTC), "/tmp/cloudcatcher-grib")
+    return ok & check("synop live feed", len(observations) >= 300, f"{len(observations)} genus reports with coordinates in the last 3 h")
+
+
 def aurora() -> bool:
     payload, _ = run_events("--when", "2026-09-20T04:40Z", "--aurora")
     ykn = [e for e in payload["events"] if e["type"] == "aurora"
@@ -141,5 +157,5 @@ def aurora() -> bool:
 
 
 if __name__ == "__main__":
-    results = [regression_lamar(), global_fields(), replay_mead(), live(), aurora(), sunset_sweep()]
+    results = [regression_lamar(), global_fields(), synop_genus(), replay_mead(), live(), aurora(), sunset_sweep()]
     sys.exit(0 if all(results) else 1)
