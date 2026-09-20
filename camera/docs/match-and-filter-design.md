@@ -5,7 +5,7 @@ implemented today, the staged plan for "is this frame worth showing", and the so
 Everything under **Sources** was checked to exist (DOI / publisher page) at the time of writing;
 accuracy numbers quoted are the papers' own, on *their* datasets — not ours.
 
-Companion docs: `query-and-routing-plan.md` (original plan), `query-routing-schema.svg`,
+Companion docs: `query-and-routing-plan.md` (original plan), `../../docs/diagrams/query-routing-schema.svg`,
 `README.md` (ops + API).
 
 ---

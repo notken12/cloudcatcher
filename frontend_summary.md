@@ -2,7 +2,7 @@
 
 What has been built in `frontend/` (three PRs on hackathon day), the libraries it uses, and why
 each design choice was made. The living design doc is `frontend/PLAN.md` (every PR points at the
-section it implements; diagram `frontend/docs/frontend-schema.svg`); `frontend/README.md` has the
+section it implements; diagram `docs/diagrams/frontend-schema.svg`); `frontend/README.md` has the
 run commands. This file is the map.
 
 ```

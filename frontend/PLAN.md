@@ -1,7 +1,7 @@
 # sunroof · frontend plan
 
 Living doc. Every later PR in this repo should point at the section it
-implements. Diagram: `docs/frontend-schema.svg`.
+implements. Diagram: `../docs/diagrams/frontend-schema.svg`.
 
 Inputs this plan was derived from: `notken12/sunroof` (`camera/README.md`,
 `camera/docs/query-and-routing-plan.md` §5 "Routing and the frontend format",
@@ -357,7 +357,7 @@ one soft `0 8px 30px rgb(0 0 0 / .08)` on the hero. No borders on media.
 ```
 frontend/
   PLAN.md                     ← this file
-  docs/frontend-schema.svg
+  ../docs/diagrams/frontend-schema.svg
   index.html
   src/
     main.tsx  App.tsx  index.css

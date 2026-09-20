@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200" font-family="Helvetica,Arial,sans-serif" font-size="12">
+<defs>
+<marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#444"/></marker>
+<marker id="r" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#c0392b"/></marker>
+<style>
+.t{font-weight:700;font-size:20px;fill:#111}
+.s{font-size:11.5px;fill:#333}
+.m{font-family:Menlo,Consolas,monospace;font-size:10.5px;fill:#222}
+.lbl{font-size:14px;fill:#555;font-style:italic}
+.sec{font-weight:700;font-size:22px;fill:#222}
+.h1{font-weight:700;font-size:24px;fill:#111}
+.h2{font-size:12.5px;fill:#555;font-style:italic}
+path.f{stroke:#444;stroke-width:1.5;fill:none;marker-end:url(#a)}
+path.no{stroke:#c0392b;stroke-width:1.5;fill:none;marker-end:url(#r);stroke-dasharray:6 3}
+</style></defs>
+<rect width="1600" height="1200" fill="#fff"/>
+<text x="28" y="50" class="h1">Sunroof · frontend — one object in, three renderers out, a globe on top later</text>
+<text x="28" y="72" class="h2">Web SPA (Vite + React 19 + TS + Tailwind). Talks only to the camera backend, never to a camera host directly.</text>
+<g transform="translate(0.0,88) scale(1.0000) translate(0,-88)">
+<rect x="28" y="88" width="1544" height="126.0" rx="10" fill="#f7f7f7" stroke="#888" stroke-width="1.2"/>
+<text x="42.0" y="118.0" class="sec" >Camera backend (FastAPI)</text>
+<rect x="42.0" y="146.0" width="288.8" height="54.0" rx="8" style="fill:#f4f4f4;stroke:#888;stroke-dasharray:5 3;stroke-width:1.4"/>
+<text x="54.0" y="180.0" class="t" >GET /feed</text>
+<rect x="348.8" y="146.0" width="288.8" height="54.0" rx="8" style="fill:#f4f4f4;stroke:#888;stroke-dasharray:5 3;stroke-width:1.4"/>
+<text x="360.8" y="180.0" class="t" >GET /events/{id}/footage</text>
+<rect x="655.6" y="146.0" width="288.8" height="54.0" rx="8" style="fill:#f4f4f4;stroke:#888;stroke-dasharray:5 3;stroke-width:1.4"/>
+<text x="667.6" y="180.0" class="t" >GET /stream (SSE)</text>
+<rect x="962.4" y="146.0" width="288.8" height="54.0" rx="8" style="fill:#f4f4f4;stroke:#888;stroke-dasharray:5 3;stroke-width:1.4"/>
+<text x="974.4" y="180.0" class="t" >GET /proxy/{camera}/…</text>
+<rect x="1269.2" y="146.0" width="288.8" height="54.0" rx="8" style="fill:#fafafa;stroke:#999;stroke-dasharray:3 3;stroke-width:1.4"/>
+<text x="1281.2" y="180.0" class="t" >GET /cameras.geojson</text>
+<rect x="28" y="253.2" width="1544" height="126.0" rx="10" fill="#f2faff" stroke="#1890ff" stroke-width="1.2"/>
+<text x="42.0" y="283.2" class="sec" >The one object: Footage</text>
+<path class="f" d="M800.0,216.0 L800.0,251.2"/>
+<text x="806.0" y="229.6" class="lbl" >JSON</text>
+<rect x="42.0" y="311.2" width="1516.0" height="54.0" rx="8" style="fill:#e6f7ff;stroke:#1890ff;stroke-width:1.4"/>
+<text x="54.0" y="345.2" class="t" >Footage</text>
+<rect x="28" y="418.4" width="1544" height="487.6" rx="10" fill="#f7f7f7" stroke="#333" stroke-width="1.2"/>
+<text x="42.0" y="448.4" class="sec" >Frontend SPA</text>
+<path class="f" d="M800.0,381.2 L800.0,416.4"/>
+<rect x="42.0" y="476.4" width="749.0" height="54.0" rx="8" style="fill:#fff;stroke:#333;stroke-width:1.4"/>
+<text x="54.0" y="510.4" class="t" >api.ts</text>
+<rect x="809.0" y="476.4" width="749.0" height="54.0" rx="8" style="fill:#fff;stroke:#333;stroke-width:1.4"/>
+<text x="821.0" y="510.4" class="t" >events.ts · time.ts</text>
+<rect x="42.0" y="566.8" width="1516.0" height="54.0" rx="8" style="fill:#fff;stroke:#333;stroke-width:1.4"/>
+<text x="54.0" y="600.8" class="t" >App.tsx + Header.tsx</text>
+<path class="f" d="M800.0,532.4 L800.0,564.8"/>
+<rect x="42.0" y="657.2" width="749.0" height="54.0" rx="8" style="fill:#fff;stroke:#333;stroke-width:1.4"/>
+<text x="54.0" y="691.2" class="t" >Cycler.tsx</text>
+<rect x="809.0" y="657.2" width="749.0" height="54.0" rx="8" style="fill:#fff;stroke:#333;stroke-width:1.4"/>
+<text x="821.0" y="691.2" class="t" >FootageCard.tsx</text>
+<path class="f" d="M800.0,622.8 L800.0,655.2"/>
+<rect x="42.0" y="747.6" width="1516.0" height="54.0" rx="8" style="fill:#fff;stroke:#333;stroke-width:1.4"/>
+<text x="54.0" y="781.6" class="t" >FootageMedia.tsx (switch on media.kind)</text>
+<path class="f" d="M800.0,713.2 L800.0,745.6"/>
+<rect x="42.0" y="838.0" width="493.3" height="54.0" rx="8" style="fill:#f0fff0;stroke:#389e0d;stroke-width:1.4"/>
+<text x="54.0" y="872.0" class="t" >ImageMedia</text>
+<rect x="553.3" y="838.0" width="493.3" height="54.0" rx="8" style="fill:#fff7e6;stroke:#d48806;stroke-width:1.4"/>
+<text x="565.3" y="872.0" class="t" >HlsMedia</text>
+<rect x="1064.7" y="838.0" width="493.3" height="54.0" rx="8" style="fill:#f9f0ff;stroke:#9254de;stroke-width:1.4"/>
+<text x="1076.7" y="872.0" class="t" >IframeMedia</text>
+<path class="f" d="M800.0,803.6 L800.0,836.0"/>
+<rect x="28" y="945.1999999999999" width="1544" height="126.0" rx="10" fill="#fafafa" stroke="#999" stroke-width="1.2"/>
+<text x="42.0" y="975.2" class="sec" >Later iterations</text>
+<rect x="42.0" y="1003.2" width="749.0" height="54.0" rx="8" style="fill:#fafafa;stroke:#999;stroke-dasharray:3 3;stroke-width:1.4"/>
+<text x="54.0" y="1037.2" class="t" >Globe</text>
+<rect x="809.0" y="1003.2" width="749.0" height="54.0" rx="8" style="fill:#fafafa;stroke:#999;stroke-dasharray:3 3;stroke-width:1.4"/>
+<text x="821.0" y="1037.2" class="t" >Depth (if time)</text>
+</g>
+</svg>

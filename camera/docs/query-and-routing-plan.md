@@ -1,9 +1,9 @@
 # Camera query → fetch → verify → route (plan for the "after preprocessing" half)
 
-Diagram: `query-routing-schema.svg` (same style as `preprocessing-schema.svg`).
+Diagram: `../../docs/diagrams/query-routing-schema.svg` (`-detailed.svg` for the annotated version).
 
 Scope: everything that happens **after** `cameras.parquet` / `camera_samples.parquet`
-exist (see `preprocessing-plan.md`, `preprocessing-schema.svg`). Input is an
+exist (see `preprocessing-plan.md`, `../../docs/diagrams/preprocessing-schema.svg`). Input is an
 `Event` from the weather backend; output is either a `Footage` envelope the
 frontend can render as-is, or a status such as `NO_FOOTAGE_FOUND` back to the
 weather backend. Written to be built in one session against the 10-row
