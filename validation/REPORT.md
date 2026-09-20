@@ -87,6 +87,12 @@ Rules I'd change: (a) sunset rule → ray model with underside lighting + anti-s
 - Storm replay of the 2024-04-26 Mead NE EF4: detection perfect (TO.W 11 km, ProbSevere 12 km, 66.5 dBZ, 106 GLM flashes) but the camera shows rain on the lens and a blown-out sky strip. Across the 9 best tornado-day candidates: 2 demo-worthy frames, 5 "storm present", 2 nothing. 197 candidate site-days exist for 2024–25 → curate offline.
 - Sunset replay: frames exist past sunset, but W-facing sky-rich deep-archive sites number ~6, sky strips are thin, and at least one camera clock runs on DST (frames mistimed by 1 h in summer). Verdict: storm replay YES, sunset replay PARTIAL — start recording FAA/Windy frames now for a live-captured sunset library.
 
+## 4c. Worldwide stack and an aurora event type — both feasible (see `global/notes.md`)
+- **Worldwide sunsets, keyless**: Open-Meteo returns low/mid/high cloud, CAPE, visibility and RH for a whole sun ray in one 0.4-s call from ICON-D2 (2 km), ICON-EU, ECMWF or GFS; `weather/openmeteo.py` plugs it into the same ray model. End-to-end check: yesterday's Zugspitze sunset scored 0.42 on ICON-D2 and foto-webcam.eu's archive shows pink underlit cirrus + alpenglow (4/5). Gotchas: the free tier counts each ray point as a call (use ~15-km spacing, ~100 cams/h; or pull DWD ICON-D2 / GFS grids directly for scale), foto-webcam archive times are local and the current day 502s.
+- **Worldwide storms** are weaker: no open Europe-wide radar (DWD only), lightning needs EUMETSAT registration (MTG-LI); otherwise it's model-based (ICON-D2 `lpi`, CAPE) + MeteoAlarm warnings + RainViewer tiles. Fine for "there is a storm", not for the ≥50 dBZ + flashes rule.
+- **Aurora**: a genuinely good live sensor chain exists at NOAA SWPC — IMAP L1 solar wind (1-min) → OVATION probability grid (5-min, ~1 h lead) → hemispheric power / Kp. `weather/swpc_aurora.py`. Rule = OVATION ≥10 % ∧ sun < −12° ∧ clear. Verified tonight: it fired at Yellowknife (26 %) and the Windy-relayed **AuroraMAX all-sky cam showed a green arc** at 04:32Z; ordinary cams beside it showed nothing. Cameras must be all-sky/long-exposure: Windy `meteo/landscape` at Tromsø 33, Reykjavik 14, Yellowknife 4 (incl. AuroraMAX), Churchill 0; UAF all-sky only serves images when dark.
+- Recommendation: add both. Sunsets/aurora go worldwide almost for free; keep storm detection CONUS-only (MRMS/GLM) unless you register for EUMETSAT.
+
 ## 5. Endpoints / URL patterns that worked (copy-paste)
 ```
 # NWS
@@ -148,6 +154,18 @@ https://api.windy.com/webcams/api/v3/webcams?regions=US.KS&categories=meteo&limi
 https://imgproxy.windy.com/_/full/plain/current/<webcamId>/original.jpg                       # 1280x720, no key (undocumented)
 https://webcams.windy.com/webcams/public/embed/player/<webcamId>/day                          # scrape  day/<id>/original/<epoch>.jpg  (24 stills, ~50 min)
 https://imgproxy.windy.com/_/full/plain/day/<webcamId>/original/<epoch>.jpg
+
+# Worldwide cloud layers (no key; ~15 km ray spacing to respect the per-point rate limit)
+https://api.open-meteo.com/v1/forecast?latitude=a,b,c&longitude=x,y,z&hourly=cloud_cover_low,cloud_cover_mid,cloud_cover_high,cape,visibility,relative_humidity_2m&models=icon_d2&past_days=1&timezone=UTC
+https://opendata.dwd.de/weather/nwp/icon-d2/grib/00/clch/            # ICON-D2 grids, bz2 GRIB per variable/hour
+https://feeds.meteoalarm.org/api/v1/warnings/feeds-germany           # CAP warnings per country
+https://api.rainviewer.com/public/weather-maps.json                  # global radar tiles
+
+# Aurora (NOAA SWPC, no key)
+https://services.swpc.noaa.gov/json/ovation_aurora_latest.json       # 1-deg probability grid, valid ~1 h ahead
+https://services.swpc.noaa.gov/json/planetary_k_index_1m.json
+https://services.swpc.noaa.gov/json/rtsw/rtsw_mag_1m.json ; rtsw_wind_1m.json
+https://services.swpc.noaa.gov/text/aurora-nowcast-hemi-power.txt
 
 # Europe-only extras
 https://www.foto-webcam.eu/webcam/<cam>/current/400.jpg ; /webcam/<cam>/YYYY/MM/DD/HHMM_la.jpg

@@ -13,6 +13,8 @@ with `uv run python -m weather.<module>`.
 | `nws.py` | live alerts (User-Agent required) and IEM VTEC archive | api.weather.gov has no history |
 | `spc.py` | SPC daily / yearly storm reports | yearly times are CST |
 | `climatology.py` | Open-Meteo ERA5 percentiles | good for cloud layers, useless for precip (zero-inflated); `cape` not in archive |
+| `openmeteo.py` | worldwide cloud layers along a sun ray (ICON-D2/ICON-EU/ECMWF/GFS), CloudGrid-compatible | free tier counts each point as a call → 15-km spacing |
+| `swpc_aurora.py` | OVATION grid, Kp, L1 solar wind, hemispheric power, aurora rule | verified against AuroraMAX all-sky cam |
 | `sun.py` | astral wrappers | |
 | `sunset_rules.py` | simple mid/high-over-site + clear-ray rule | |
 | `sunset_rays.py` | Sunsethue-style ray model | implemented, **not validated** (ρ≈0 on one evening) |
