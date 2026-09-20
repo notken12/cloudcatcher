@@ -260,23 +260,43 @@ async def resolve_footage(
 
     # ③ VLM
     remaining = max(deadline_s - (time.monotonic() - t0), 1.0)
-    if vlm.available():
-        jt = [asyncio.create_task(_judge(c, ev, prof, cache)) for c in good]
-        _, pend = await asyncio.wait(jt, timeout=remaining)
+    judged = False
+    b = vlm.backend()
+    if b is not None:
+        # local CPU models take ~30-100 s/frame and serialise requests, so judge only the
+        # best-ranked candidates, `parallel` at a time, with at least `min_budget_s`
+        sem = asyncio.Semaphore(b.parallel)
+        if b.parallel < len(good):
+            for c in good[max(k, b.parallel) :]:
+                c.rejected = Rejected(
+                    camera_id=c.cam.id, stage="vlm", reason="vlm: not judged (slow backend)"
+                )
+            good = good[: max(k, b.parallel)]
+
+        async def _one(c: _Candidate) -> None:
+            async with sem:
+                await _judge(c, ev, prof, cache)
+
+        jt = [asyncio.create_task(_one(c)) for c in good]
+        _, pend = await asyncio.wait(jt, timeout=max(remaining, b.min_budget_s))
         for t in pend:
             t.cancel()
         res.vlm_calls = sum(1 for c in good if c.verdict is not None)
+        judged = res.vlm_calls > 0
         if verdict_log:
             for c in good:
                 if c.verdict and c.frame:
                     vlm.log_verdict(verdict_log, c.cam.id, ev.type, c.verdict, c.frame.sha1)
+        if not judged:  # every call timed out / errored: degrade to gate-only rather than nothing
+            for c in good:
+                c.verdict = vlm.skipped_verdict(f"VLM ({vlm.describe()}) gave no verdict in time")
     else:
         for c in good:
-            c.verdict = vlm.skipped_verdict("VLM skipped: OPENAI_API_KEY not set")
+            c.verdict = vlm.skipped_verdict("VLM skipped: no backend (OPENAI_API_KEY or Ollama)")
 
     # ④ route
     footage: list[Footage] = []
-    if vlm.available():
+    if judged:
         passed = [c for c in good if c.verdict and _passes(c.verdict, ev.type, prof)]
         passed.sort(key=lambda c: -(c.verdict.confidence * (0.6 + 0.1 * c.verdict.quality)))  # type: ignore[union-attr]
         for c in good:
@@ -333,12 +353,12 @@ async def resolve_footage(
     res.rejected = [c.rejected for c in cands if c.rejected]
     if footage:
         res.status = "FOOTAGE_FOUND"
+    elif judged and any(c.verdict and c.verdict.event_visible != "yes" for c in good):
+        res.status = "EVENT_NOT_VISIBLE"
+        res.retry_after_s = prof.retry_after_s
     elif any(c.rejected and c.rejected.stage == "vlm" and c.verdict is None for c in good):
         res.status = "TIMEOUT"
         res.retry_after_s = 60
-    elif any(c.verdict and c.verdict.event_visible in ("partial", "unsure") for c in good):
-        res.status = "EVENT_NOT_VISIBLE"
-        res.retry_after_s = prof.retry_after_s
     else:
         res.status = "NO_FOOTAGE_FOUND"
         res.retry_after_s = prof.retry_after_s

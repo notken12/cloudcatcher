@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import asyncio
 import logging
-import os
 from collections import OrderedDict
 from collections.abc import Awaitable, Callable
 from contextlib import asynccontextmanager
@@ -25,6 +24,7 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, Response, StreamingResponse
 
+from . import vlm
 from .fetch import fetch_frame, row_to_camera
 from .footage import FootageResult, WeatherEvent
 from .ingest.base import make_client
@@ -177,7 +177,7 @@ def create_app(
         return {
             "cameras": len(st.catalog.df) if st.catalog is not None else 0,
             "results": len(st.results),
-            "vlm": bool(os.environ.get("OPENAI_API_KEY")),
+            "vlm": vlm.describe() if vlm.available() else None,
         }
 
     return app
