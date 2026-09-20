@@ -59,6 +59,7 @@ Not provided, therefore not tested: **Voloridge dataset path**, **OpenAI/Anthrop
 11. **Rarity via precip/CAPE is non-informative** for storms (zero-inflated); use it for cloud-layer fields (sunset) and for "unusual" cloud-top temperature or dBZ percentiles among *non-zero* hours only. `cape` isn't in the ERA5 archive endpoint.
 12. **Heading from frames failed** (0/2) on the day tested: overcast, and PhenoCams face N by design. Use metadata: FAA `cameraBearing` (exact) and PhenoCam `camera_orientation` (16-point compass, 60 % populated).
 13. **noaa-goes16 is empty**; **noaa-nexrad-level2 denies unsigned listing** (use unidata-nexrad-level2).
+14. **ProbSevere schema changed**: 2024-era archive files lack `COMPREF` *and* `ProbSevere/ProbHail/ProbWind/ProbTor` entirely (plus `REF10/REF20`, `EchoTop_50`, `VIL`); the severe probability lives in `PS` instead. Found wiring `weather/events.py` replay: the Mead NE EF4 object (2024-04-26 20:30Z) has no COMPREF — `MESH >= 0.5` is the closest substitute intensity gate, `PS` for `ProbSevere`.
 
 ## 4. Recommended minimal source set for the hackathon
 - **Detect storms**: MRMS `MergedReflectivityQCComposite_00.50` (2 min, 1.5 MB) + GLM `noaa-goes19` LCFA (20 s). Skip ABI unless you want a pretty picture; skip NEXRAD.

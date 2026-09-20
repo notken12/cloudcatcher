@@ -1,4 +1,4 @@
-# nimbly
+# cloudcatcher
 
 Sky-event webcam project (HackMIT): detect atmospheric events from live weather data, find public webcams looking at them,
 verify in the frame.
@@ -9,4 +9,4 @@ verify in the frame.
 - `common/geo.py` — small geo helpers shared by both.
 
 Setup: `uv sync`. Run modules from the repo root: `uv run python -m weather.mrms`, `uv run python -m camera_ken.faa_weathercams 38.34 -101.17 200`.
-Windy needs `WINDY_API_KEY` in the environment.
+Windy needs `WINDY_API_KEY` in the environment. Event detector: `uv run python -m weather.events --out out/events.json` (see `weather/README.md`).

@@ -22,6 +22,7 @@ CLOUD_FIELDS = [
     ("HGT", "cloud top"),
     ("HGT", "surface"),
     ("HPBL", "surface"),
+    ("RH", "2 m above ground"),
 ]
 
 FIELD_KEYS = {
@@ -34,6 +35,7 @@ FIELD_KEYS = {
     "top": ("gh", "cloudTop"),
     "orog": ("orog", "surface"),
     "blh": ("blh", "surface"),
+    "rh": ("2r", "heightAboveGround"),
 }
 
 
