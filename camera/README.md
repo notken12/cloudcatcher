@@ -62,3 +62,22 @@ for plain JPEG cameras. Hand-picked cameras (YouTube, all-sky) go in
 `data/manual.yaml`.
 
 Secrets: `WINDY_API_KEY` etc. via environment only; never in the repo.
+
+### Sources implemented
+
+| source | rows (Sep 2026) | heading | night | history | notes |
+|---|---|---|---|---|---|
+| `caltrans` | ~3,300 | text 88% | – | last 12 frames | 12 district JSONs, JPEG + HLS |
+| `cars_ny` / `cars_on` | ~1,800 / ~1,400 | text ~50-70% | – | – | 511 portals; NY optional `NY511_API_KEY` |
+| `alertca` | ~1,800 | catalog (pan) | IR subset | – | ridge-top PTZ, firestorm mirror |
+| `digitraffic` | ~1,700 | – | yes | 24 h API | Finland, CC BY 4.0 |
+| `panomax` | ~630 | catalog (zeroDirection+viewAngle/2) | `nightVision` | recent API | Alpine panoramas |
+| `phenocam` | ~550 | text | – | archive to 2000s, 30 min | research sites |
+| `iceland` | ~480 | text (is) | yes | – | Vegagerðin |
+| `fotowebcam` | ~340 | catalog (`direction`, `sector`=hfov) | yes | 10-min archive, years | best quality/attribution |
+| `ndbc` | ~90 | 360° strip | – | – | BuoyCAMs, found by probing `buoycam.php` |
+| `iem` | live only | catalog (`angle`) | – | per-minute archive | rows accumulate across refreshes |
+| `windy` | ~1k/country | text from title | – | embed player day/month/year | needs `WINDY_API_KEY`; offset ≤1000/free tier |
+| `manual` | yaml | – | – | – | hand-picked (all-sky, YouTube) |
+
+`uv run sunroof-camera refresh` builds every keyless source in ~10 s (~12k rows).
