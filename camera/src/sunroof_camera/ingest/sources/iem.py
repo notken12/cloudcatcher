@@ -1,0 +1,69 @@
+"""Iowa Environmental Mesonet webcams — Midwest TV/DOT cams with a pan `angle` and a deep
+per-minute archive (json/webcam.py?network=&ts=YYYYMMDDHHMM) used by storm chasers."""
+
+from __future__ import annotations
+
+from datetime import datetime
+from typing import ClassVar
+
+import httpx
+
+from ...schema import Camera
+from ..base import Frame, default_fetch_frame, fetch_image, get_json
+
+LIVE = "https://mesonet.agron.iastate.edu/geojson/webcam.geojson"
+ARCHIVE = "https://mesonet.agron.iastate.edu/json/webcam.py?ts=%Y%m%d%H%M"
+
+
+class IEMAdapter:
+    source: ClassVar[str] = "iem"
+
+    async def catalog(self, http: httpx.AsyncClient) -> list[Camera]:
+        data = await get_json(http, LIVE)
+        out: list[Camera] = []
+        for f in data["features"]:
+            p = f["properties"]
+            lon, lat = f["geometry"]["coordinates"][:2]
+            angle = p.get("angle")
+            cid = p.get("cid") or f["id"]
+            out.append(
+                Camera(
+                    id=f"iem:{cid}",
+                    source=self.source,
+                    source_kind="jpeg",
+                    name=p.get("name", cid),
+                    lat=lat,
+                    lon=lon,
+                    azimuth_deg=float(angle) if angle is not None else None,
+                    hfov_deg=55,
+                    elev_min_deg=-5,
+                    elev_max_deg=30,
+                    heading_conf="catalog" if angle is not None else "ptz",
+                    ptz=cid.startswith("KCCI") or cid.startswith("KELO"),
+                    sky_frac=0.5,
+                    image_url=p.get("imgurl") or p.get("url"),
+                    page_url=f"https://mesonet.agron.iastate.edu/current/webcam.php?cid={cid}",
+                    refresh_s=60,
+                    history_kind="api",
+                    history_template=ARCHIVE,
+                    history_depth_days=5000,
+                    license="IEM public data",
+                    attribution="Iowa Environmental Mesonet / partner TV stations",
+                )
+            )
+        return out
+
+    async def fetch_frame(
+        self, http: httpx.AsyncClient, cam: Camera, ts: datetime | None = None
+    ) -> Frame | None:
+        if ts is None:
+            return await default_fetch_frame(http, cam, None)
+        cid = cam.id.split(":", 1)[1]
+        try:
+            data = await get_json(http, ts.strftime(ARCHIVE))
+        except httpx.HTTPError:
+            return None
+        for img in data.get("images", []):
+            if img.get("cid") == cid and img.get("href"):
+                return await fetch_image(http, cam, img["href"])
+        return None

@@ -1,0 +1,8 @@
+data/*.parquet
+data/shards/
+.venv/
+__pycache__/
+*.egg-info/
+.ruff_cache/
+.pytest_cache/
+.env

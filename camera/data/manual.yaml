@@ -1,0 +1,40 @@
+# Hand-picked cameras. Each entry is a partial Camera row (see src/sunroof_camera/schema.py).
+# YouTube: embed_url = https://www.youtube.com/embed/<VIDEO_ID>; frames are grabbed with yt-dlp+ffmpeg.
+# Fill in azimuth/hfov/elev by eyeballing the stream; heading_conf: text.
+
+- source_id: uaf-poker-flat-allsky
+  name: UAF Poker Flat all-sky (aurora)
+  lat: 65.126
+  lon: -147.479
+  alt_m: 500
+  source_kind: page
+  page_url: https://allsky.gi.alaska.edu/
+  azimuth_deg: null
+  hfov_deg: 360
+  elev_min_deg: 0
+  elev_max_deg: 90
+  heading_conf: catalog
+  all_sky: true
+  night_ok: true
+  refresh_s: 60
+  license: UAF Geophysical Institute, attribution required
+  attribution: University of Alaska Fairbanks Geophysical Institute
+
+- source_id: irf-kiruna-allsky
+  name: IRF Kiruna all-sky camera (aurora)
+  lat: 67.84
+  lon: 20.41
+  alt_m: 425
+  source_kind: jpeg
+  image_url: https://www.irf.se/alis/allsky/krn/latest_medium.jpeg
+  page_url: https://www.irf.se/en/about-irf/data/all-sky-camera/
+  azimuth_deg: null
+  hfov_deg: 360
+  elev_min_deg: 0
+  elev_max_deg: 90
+  heading_conf: catalog
+  all_sky: true
+  night_ok: true
+  refresh_s: 60
+  license: Swedish Institute of Space Physics (IRF), attribution required
+  attribution: Swedish Institute of Space Physics (IRF), Kiruna
