@@ -10,6 +10,8 @@
    probability expected on 2026-09-20T04:40Z drifts; the check only requires fires=True.
 5. Sunset sweep: --sunset at 2026-09-20T02:00Z emits a sunset event within 90 km of Wagontire OR
    Plains MT (the West-Coast test evening's 4/5 frames), as valid camera-side records.
+6. Global fields: the classifier on GFS scores Lamar; the Himawari-9 fixed grid navigates to the pixel and
+   its field covers Tokyo but not Colorado.
 """
 import datetime as dt
 import json
@@ -39,15 +41,16 @@ def run_events(*args: str, timeout: int = 180) -> tuple[dict, float]:
 
 def regression_lamar() -> bool:
     import pygrib  # noqa: F401  (pygrib prints harmless ECCODES warnings)
+    from weather.cloud_grid import CloudGrid, LayerCloudField
     from weather.goes_cloud import load_field
-    from weather.hrrr import CloudGrid, HrrrCloudField, download_subset
+    from weather.grib_subset import download_subset
+    from weather.hrrr import BUCKET, CLOUD_FIELDS
     from weather.sunset_rays import score_site as rays_score
     from weather.sunset_quality import score_site as quality_score
 
-    path = download_subset("hrrr.20260920/conus/hrrr.t00z.wrfsfcf01.grib2", "/tmp/hrrr")
-    grid = CloudGrid(path)
+    grid = CloudGrid(download_subset(BUCKET, "hrrr.20260920/conus/hrrr.t00z.wrfsfcf01.grib2", "/tmp/hrrr", CLOUD_FIELDS))
     old = rays_score(grid, 38.077, -102.696, 271.8)
-    new = quality_score(HrrrCloudField(grid), 38.077, -102.696, 271.8)
+    new = quality_score(LayerCloudField(grid), 38.077, -102.696, 271.8)
     goes = load_field(dt.datetime(2026, 9, 20, 0, 48, tzinfo=dt.UTC), "noaa-goes19", grid)
     if goes is None:
         return check("regression Lamar score_site", False, "no GOES-19 scan before 2026-09-20T00:48Z")
@@ -57,6 +60,33 @@ def regression_lamar() -> bool:
     ok &= check("classifier on GOES-19 scores Lamar high", satellite["quality"] >= 0.04 and satellite["site_hcc"] >= 90,
                 f"quality={satellite['quality']} hcc={satellite['site_hcc']} scan={goes.scanned_at:%H:%M}Z")
     return check("regression Lamar score_site", ok, f"quality={old['quality']} depression={old['depression_deg']}")
+
+
+def global_fields() -> bool:
+    """GFS (the worldwide model fallback) and Himawari-9 (Asia-Pacific satellite) load and navigate: Lamar on the
+    GFS 00z f001 step (valid 01Z, the 5/5 evening) scores above the sweep threshold's half, and the Himawari grid
+    built from AHI constants lands on the file's own coordinates to the pixel."""
+    import h5py
+    from weather import gfs, himawari_cloud
+    from weather.cloud_grid import CloudGrid, LayerCloudField
+    from weather.grib_subset import download_subset
+    from weather.sunset_quality import score_site
+
+    grid = CloudGrid(download_subset(gfs.BUCKET, "gfs.20260920/00/atmos/gfs.t00z.pgrb2.0p25.f001", "/tmp/gfs", gfs.CLOUD_FIELDS))
+    lamar = score_site(LayerCloudField(grid), 38.077, -102.696, 271.8)
+    ok = check("classifier on GFS scores Lamar", lamar["quality"] >= 0.03 and lamar["site_hcc"] >= 50,
+               f"quality={lamar['quality']} hcc={lamar['site_hcc']}")
+    key = himawari_cloud.scan_key(dt.datetime(2026, 9, 20, 7, 0, tzinfo=dt.UTC))
+    if key is None:
+        return check("himawari scan available", False)
+    pixel = (1500, 1501, 800, 801)
+    with h5py.File(himawari_cloud.S3File(himawari_cloud.BUCKET, key), "r") as h:
+        lat, lon = (float(himawari_cloud.read_window(h, name, pixel)[0, 0]) for name in ("Latitude", "Longitude"))
+    row, col, inside = himawari_cloud.fixed_grid().indices([lat], [lon])
+    ok &= check("himawari navigation", bool(inside[0]) and int(row[0]) == 1500 and int(col[0]) == 800, f"pixel (1500, 800) -> ({row[0]}, {col[0]})")
+    field = himawari_cloud.load_field(dt.datetime(2026, 9, 20, 7, 0, tzinfo=dt.UTC), [35.68], [139.69], 6.0, grid)
+    ok &= check("himawari field covers Tokyo, not Lamar", field is not None and field.covers(35.68, 139.69) and not field.covers(38.077, -102.696))
+    return ok
 
 
 def replay_mead() -> bool:
@@ -111,5 +141,5 @@ def aurora() -> bool:
 
 
 if __name__ == "__main__":
-    results = [regression_lamar(), replay_mead(), live(), aurora(), sunset_sweep()]
+    results = [regression_lamar(), global_fields(), replay_mead(), live(), aurora(), sunset_sweep()]
     sys.exit(0 if all(results) else 1)
