@@ -17,6 +17,7 @@ from sunroof_camera.ingest.sources import (
     drivebc,
     fotowebcam,
     hongkong,
+    nsw_maritime,
     nzta,
     panomax,
     qld,
@@ -395,6 +396,33 @@ def test_tfl_available_filter_and_view_heading():
     assert [c.id for c in cams] == ["tfl:00001.1"]
     assert cams[0].azimuth_deg == 45 and cams[0].stream_url.endswith(".mp4")
     assert cams[0].tz == "Europe/London"
+
+
+def test_nsw_maritime_resolves_hls_from_widget():
+    def feat(fid, loc, widget):
+        return {
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [149.92, -36.89]},
+            "properties": {"WEB_CAMERA_ID": fid, "LOCATION": loc, "LIVE_FEED": widget},
+        }
+
+    cams = _run(
+        nsw_maritime.NSWMaritimeAdapter(),
+        {
+            "maritime_web_camera.geojson": {
+                "features": [
+                    feat(1, "Merimbula", "https://widget.example/video/aaa"),
+                    feat(2, "Nowhere", "https://widget.example/video/bbb"),
+                ]
+            },
+            "video/aaa": '<script>src: "https://cdn.example/cw/merimbula.stream/playlist.m3u8"</script>',
+            "video/bbb": "<html>no stream here</html>",
+        },
+    )
+    assert [c.id for c in cams] == ["au_nsw_maritime:1"]
+    assert cams[0].source_kind == "hls"
+    assert cams[0].stream_url == "https://cdn.example/cw/merimbula.stream/playlist.m3u8"
+    assert cams[0].over_water and cams[0].lat == -36.89
 
 
 def test_qld_geojson_direction_and_skips():

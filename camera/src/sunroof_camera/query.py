@@ -101,6 +101,7 @@ SOURCE_PRIOR = {
     "tw_tdx": 0.35,
     "tfl": 0.3,  # dense urban, low mount
     "au_qld": 0.4,
+    "au_nsw_maritime": 0.65,  # coastal bars, horizon + wide sky, 1080p HLS
     "cars_mn": 0.4,
     "cars_ia": 0.4,
     "cars_ne": 0.45,
