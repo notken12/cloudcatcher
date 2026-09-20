@@ -36,6 +36,7 @@ class Event(BaseModel):
     radius_km: float = Field(10.0, description="horizontal extent of the phenomenon")
     t: datetime | None = Field(None, description="time of interest; None = now")
     layer_top_m: float | None = Field(None, description="fog/undercast: top of the layer")
+    ignore_night: bool = Field(False, description="demo/testing: skip the solar night gate")
 
 
 @dataclass(frozen=True)
@@ -187,7 +188,9 @@ class Catalog:
         twilight = (sun_el <= -6) & (sun_el > -18)
         dark = sun_el <= -18
         fast = df["refresh_s"].to_numpy() <= 60
-        if p.needs_night:
+        if event.ignore_night:
+            pass
+        elif p.needs_night:
             ok &= night_ok & (sun_el < -12)
         else:
             lightning = event.type == "lightning"
