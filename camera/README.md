@@ -79,7 +79,7 @@ Secrets: `WINDY_API_KEY` etc. via environment only; never in the repo.
 | `tripcheck` | ~1,150 | filename suffix (NB/SW…) 47% | – | – | Oregon DOT: Cascades, coast, Gorge |
 | `drivebc` | ~1,040 | `orientation` 100% + elevation | – | ReplayTheDay | British Columbia passes, PNG frames |
 | `nzta` | ~250 | `direction` 99% | – | – | New Zealand state highways, CC BY 4.0 |
-| `hk_td` | ~1,010 | text ("- Eastbound" suffix) ~40% | – | – | Hong Kong Transport Dept snapshots, 2-min, data.gov.hk |
+| `hk_td` | ~1,010 | text ("- Eastbound" suffix) ~78% | – | – | Hong Kong Transport Dept snapshots, 2-min, data.gov.hk |
 | `sg_lta` | ~8 live (90 in archive) | – | – | any past minute via `?date_time=` | Singapore LTA 1080p; `image_url` empty, `fetch_frame` re-queries the API |
 | `ndbc` | ~90 | 360° strip | – | – | BuoyCAMs, found by probing `buoycam.php` |
 | `iem` | live only | catalog (`angle`) | – | per-minute archive | rows accumulate across refreshes |
