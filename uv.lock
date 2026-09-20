@@ -386,10 +386,14 @@ dependencies = [
     { name = "pygrib" },
     { name = "requests" },
     { name = "scipy" },
+    { name = "xarray" },
+]
+
+[package.optional-dependencies]
+sky = [
     { name = "torch" },
     { name = "torchvision" },
     { name = "transformers" },
-    { name = "xarray" },
 ]
 
 [package.metadata]
@@ -405,11 +409,12 @@ requires-dist = [
     { name = "pygrib", specifier = ">=2.1.8" },
     { name = "requests", specifier = ">=2.34.2" },
     { name = "scipy", specifier = ">=1.18.1" },
-    { name = "torch", specifier = ">=2.14.0" },
-    { name = "torchvision", specifier = ">=0.29.0" },
-    { name = "transformers", specifier = ">=5.17.0" },
+    { name = "torch", marker = "extra == 'sky'", specifier = ">=2.14.0" },
+    { name = "torchvision", marker = "extra == 'sky'", specifier = ">=0.29.0" },
+    { name = "transformers", marker = "extra == 'sky'", specifier = ">=5.17.0" },
     { name = "xarray", specifier = ">=2026.7.0" },
 ]
+provides-extras = ["sky"]
 
 [[package]]
 name = "colorama"
