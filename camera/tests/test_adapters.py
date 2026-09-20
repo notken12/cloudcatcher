@@ -784,3 +784,19 @@ def test_archive_camera_from_id_and_time():
     )
     assert closest_frame_path(html, datetime(2023, 6, 15, 17, 30)).endswith("165906.jpg")
     assert closest_frame_path("<html/>", datetime(2023, 6, 15)) is None
+
+
+def test_downscale_jpeg():
+    import io
+
+    from PIL import Image
+
+    from sunroof_camera.server import downscale_jpeg
+
+    buf = io.BytesIO()
+    Image.new("RGB", (1200, 675), "skyblue").save(buf, "JPEG")
+    out, ctype = downscale_jpeg(buf.getvalue(), 480)
+    assert ctype == "image/jpeg" and Image.open(io.BytesIO(out)).size == (480, 270)
+    small, _ = downscale_jpeg(buf.getvalue(), 2000)
+    assert small == buf.getvalue()
+    assert downscale_jpeg(b"not an image", 480) == (b"not an image", "image/jpeg")

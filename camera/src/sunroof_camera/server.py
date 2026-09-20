@@ -19,6 +19,7 @@ Endpoints
 from __future__ import annotations
 
 import asyncio
+import io
 import logging
 import sqlite3
 from collections import OrderedDict
@@ -29,6 +30,7 @@ from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import FileResponse, Response, StreamingResponse
+from PIL import Image
 
 from . import events_db as edb
 from . import vlm
@@ -41,6 +43,21 @@ from .resolve import FrameCache, resolve_footage
 
 log = logging.getLogger(__name__)
 STATIC = Path(__file__).parent / "static"
+
+
+def downscale_jpeg(content: bytes, width: int) -> tuple[bytes, str]:
+    """Shrink to `width` px (JPEG q=80); passes non-image bytes through untouched."""
+    try:
+        im = Image.open(io.BytesIO(content))
+        im.load()
+    except (OSError, ValueError):
+        return content, "image/jpeg"
+    if im.width > width:
+        im = im.convert("RGB").resize((width, round(im.height * width / im.width)))
+        buf = io.BytesIO()
+        im.save(buf, "JPEG", quality=80)
+        return buf.getvalue(), "image/jpeg"
+    return content, f"image/{(im.format or 'jpeg').lower()}"
 
 
 class State:
@@ -234,6 +251,7 @@ def create_app(
             description="ISO time with the camera's UTC offset (e.g. 2023-06-15T18:00-06:00); "
             "naive = camera-local wall clock",
         ),
+        w: int | None = Query(None, ge=64, le=2048, description="downscale to this width"),
     ) -> Response:
         cam = None
         if st.catalog is not None:
@@ -249,9 +267,12 @@ def create_app(
         fr = await fetch_frame(st.http, cam, archive_time(cam.source, ts))
         if fr is None:
             raise HTTPException(502, "archive fetch failed")
+        content, ctype = fr.content, fr.content_type or "image/jpeg"
+        if w is not None:
+            content, ctype = await asyncio.to_thread(downscale_jpeg, content, w)
         return Response(
-            fr.content,
-            media_type=fr.content_type or "image/jpeg",
+            content,
+            media_type=ctype,
             headers={"Cache-Control": "public, max-age=86400", "X-Frame-Url": fr.url},
         )
 
