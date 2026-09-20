@@ -1,8 +1,18 @@
 """VLM gate: "is the target event type visible in this frame?" (plan §5).
 
-OpenAI mini-tier vision model with a structured (pydantic) answer. Frames are downscaled to
-≤768 px before upload and sent with `detail: low` — one call is ~100 input tokens of image.
-Without `OPENAI_API_KEY` the gate is skipped and footage goes out with `verified=False`.
+Any OpenAI-chat-compatible vision endpoint, structured (pydantic) answer. Backend is chosen
+by env:
+
+    OPENAI_API_KEY                 -> api.openai.com, gpt-4o-mini (+ gpt-4o escalation)
+    GROQ_API_KEY                   -> api.groq.com (free tier, ~1 s/frame), qwen/qwen3.8-27b
+    SUNROOF_VLM_BASE_URL           -> e.g. http://127.0.0.1:11434/v1 (Ollama), vLLM, OpenRouter
+    SUNROOF_VLM_MODEL[_LARGE]      -> model ids; default qwen2.5vl:3b for a local base_url
+    SUNROOF_VLM_API_KEY            -> key for the custom base_url (Ollama ignores it)
+    SUNROOF_VLM_BACKEND=off        -> disable the gate entirely (CI, offline)
+
+If neither key nor base_url is set but Ollama answers on localhost:11434, it's used automatically.
+Frames are downscaled to ≤768 px before upload (~100 image tokens on OpenAI). Without any
+backend the gate is skipped and footage goes out with `verified=False`.
 """
 
 from __future__ import annotations
@@ -12,18 +22,78 @@ import io
 import json
 import logging
 import os
+from dataclasses import dataclass
 from datetime import datetime, timezone
+from functools import lru_cache
 from typing import Literal
 
+import httpx
 from PIL import Image
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError
 
 from .footage import Verdict
 
 log = logging.getLogger(__name__)
 
-DEFAULT_MODEL = os.environ.get("SUNROOF_VLM_MODEL", "gpt-4o-mini")
-ESCALATION_MODEL = os.environ.get("SUNROOF_VLM_MODEL_LARGE", "gpt-4o")
+OLLAMA_URL = "http://127.0.0.1:11434/v1"
+OLLAMA_MODEL = "qwen2.5vl:3b"
+GROQ_URL = "https://api.groq.com/openai/v1"
+GROQ_MODEL = "qwen/qwen3.8-27b"
+
+
+@dataclass(frozen=True)
+class Backend:
+    base_url: str | None  # None -> api.openai.com
+    api_key: str
+    model: str
+    model_large: str
+    native_schema: bool  # server enforces json_schema (OpenAI); else json_object + validate
+    parallel: int = 8  # concurrent calls; a CPU Ollama serialises anyway, so 1 there
+    min_budget_s: float = 0  # floor for the VLM wait (local CPU models need ~30-45 s/frame)
+
+    @property
+    def name(self) -> str:
+        return "openai" if self.base_url is None else self.base_url
+
+
+@lru_cache(maxsize=1)
+def backend() -> Backend | None:
+    env = os.environ.get
+    if env("SUNROOF_VLM_BACKEND", "").lower() == "off":
+        return None
+    if env("OPENAI_API_KEY") and not env("SUNROOF_VLM_BASE_URL"):
+        return Backend(
+            None,
+            env("OPENAI_API_KEY", ""),
+            env("SUNROOF_VLM_MODEL", "gpt-4o-mini"),
+            env("SUNROOF_VLM_MODEL_LARGE", "gpt-4o"),
+            native_schema=True,
+        )
+    url = env("SUNROOF_VLM_BASE_URL")
+    default_model, default_parallel = OLLAMA_MODEL, "4"
+    if not url and env("GROQ_API_KEY"):
+        url, default_model, default_parallel = GROQ_URL, GROQ_MODEL, "2"  # free tier 429s above ~2
+    if not url:
+        try:  # zero-config local fallback
+            httpx.get(OLLAMA_URL.removesuffix("/v1") + "/api/tags", timeout=0.5).raise_for_status()
+            url = OLLAMA_URL
+        except httpx.HTTPError:
+            return None
+    model = env("SUNROOF_VLM_MODEL", default_model)
+    local = "127.0.0.1" in url or "localhost" in url
+    if local:
+        default_parallel = "1"
+    return Backend(
+        url,
+        env("SUNROOF_VLM_API_KEY") or env("GROQ_API_KEY") or env("OPENAI_API_KEY") or "local",
+        model,
+        env("SUNROOF_VLM_MODEL_LARGE", model),
+        native_schema=False,
+        parallel=int(env("SUNROOF_VLM_PARALLEL", default_parallel)),
+        min_budget_s=float(env("SUNROOF_VLM_BUDGET_S", "150" if local else "0")),
+    )
+
+
 EVENT_TYPES = (
     "sunrise sunset thunderstorm lightning mammatus lenticular fog undercast aurora rainbow"
 ).split()
@@ -47,12 +117,17 @@ class _Answer(BaseModel):
     quality: int = Field(ge=1, le=5, description="how good this frame would look on screen")
     caption: str = Field(description="<= 12 words")
     burned_in_time: str | None = Field(
-        description="timestamp text burned into the image, verbatim, else null"
+        default=None, description="timestamp text burned into the image, verbatim, else null"
     )
 
 
 def available() -> bool:
-    return bool(os.environ.get("OPENAI_API_KEY"))
+    return backend() is not None
+
+
+def describe() -> str:
+    b = backend()
+    return f"{b.name} / {b.model}" if b else "none"
 
 
 def _prep(content: bytes, max_side: int = 768) -> str:
@@ -72,6 +147,60 @@ def _prompt(event_type: str, definition: str, context: str) -> str:
     )
 
 
+def _schema_hint(event_type: str) -> str:
+    # a compact example beats the full JSON schema for small open models (fewer tokens, fewer
+    # missing fields)
+    example = {
+        "usable": True,
+        "sky_visible": 0.5,
+        "night": False,
+        "event_visible": "yes|partial|no|unsure",
+        "event_type_seen": f"{event_type}|none|other",
+        "confidence": 0.0,
+        "quality": 3,
+        "caption": "<= 12 words",
+        "burned_in_time": None,
+    }
+    return (
+        "Reply with only a JSON object with exactly these keys (quality 1-5, confidence 0-1):\n"
+        + json.dumps(example, separators=(",", ":"))
+    )
+
+
+def _messages(b: Backend, event_type: str, definition: str, context: str, b64: str) -> list:
+    text = _prompt(event_type, definition, context)
+    if not b.native_schema:
+        text += "\n\n" + _schema_hint(event_type)
+    image = {"url": f"data:image/jpeg;base64,{b64}"}
+    if b.base_url is None:
+        image["detail"] = "low"
+    return [
+        {"role": "system", "content": SYSTEM},
+        {
+            "role": "user",
+            "content": [
+                {"type": "text", "text": text},
+                {"type": "image_url", "image_url": image},
+            ],
+        },
+    ]
+
+
+def _parse_loose(text: str) -> _Answer | None:
+    """Small open models sometimes wrap JSON in ```fences or prose; dig it out and validate."""
+    start, end = text.find("{"), text.rfind("}")
+    if start < 0 or end <= start:
+        return None
+    try:
+        return _Answer.model_validate_json(text[start : end + 1])
+    except ValidationError as e:
+        err = e.errors()[0]
+        log.warning(
+            "vlm answer failed validation at %s: %s | %s", err["loc"], err["msg"], text[:300]
+        )
+        return None
+
+
 async def judge(
     content: bytes,
     event_type: str,
@@ -81,47 +210,47 @@ async def judge(
     allow_escalation: bool = True,
 ) -> Verdict | None:
     """One structured verdict for one frame, or None if the VLM is unavailable / errored."""
-    if not available():
+    b = backend()
+    if b is None:
         return None
     from openai import AsyncOpenAI  # imported lazily so the package works without the SDK
 
-    client = AsyncOpenAI()
-    model = model or DEFAULT_MODEL
-    b64 = _prep(content)
+    client = AsyncOpenAI(base_url=b.base_url, api_key=b.api_key, timeout=max(120, b.min_budget_s))
+    model = model or b.model
+    b64 = _prep(content, 768 if b.native_schema else 512)
+    messages = _messages(b, event_type, definition, context, b64)
     try:
-        resp = await client.beta.chat.completions.parse(
-            model=model,
-            temperature=0,
-            max_tokens=200,
-            messages=[
-                {"role": "system", "content": SYSTEM},
-                {
-                    "role": "user",
-                    "content": [
-                        {"type": "text", "text": _prompt(event_type, definition, context)},
-                        {
-                            "type": "image_url",
-                            "image_url": {"url": f"data:image/jpeg;base64,{b64}", "detail": "low"},
-                        },
-                    ],
-                },
-            ],
-            response_format=_Answer,
-        )
+        if b.native_schema:
+            resp = await client.beta.chat.completions.parse(
+                model=model,
+                temperature=0,
+                max_tokens=200,
+                messages=messages,
+                response_format=_Answer,
+            )
+            ans = resp.choices[0].message.parsed
+        else:
+            resp = await client.chat.completions.create(
+                model=model,
+                temperature=0,
+                max_tokens=300,
+                messages=messages,
+                response_format={"type": "json_object"},
+            )
+            ans = _parse_loose(resp.choices[0].message.content or "")
     except Exception as e:  # noqa: BLE001 - network / API errors are all "no verdict"
-        log.warning("vlm call failed: %s", e)
+        log.warning("vlm call failed (%s): %s", b.name, e)
         return None
-    ans = resp.choices[0].message.parsed
     if ans is None:
         return None
     v = Verdict(**ans.model_dump(), model=model)
     hard = event_type in ("mammatus", "lenticular", "aurora")
     if (
         allow_escalation
-        and model != ESCALATION_MODEL
+        and model != b.model_large
         and (v.event_visible == "unsure" or (hard and v.confidence < 0.6))
     ):
-        return await judge(content, event_type, definition, context, ESCALATION_MODEL, False)
+        return await judge(content, event_type, definition, context, b.model_large, False)
     return v
 
 

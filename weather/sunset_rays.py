@@ -6,14 +6,11 @@ Validated on one evening only (rho ~ 0 against camera colour, see validation/REP
 import numpy as np
 
 from common.geo import point_along
+from weather.cloud_columns import EARTH_RADIUS_KM, LAYERS, OPACITY, TROPOPAUSE_KM
 from weather.hrrr import CloudGrid
 
-EARTH_RADIUS_KM = 6371.0
-TROPOPAUSE_KM = 13.5
 STEP_KM = 3.0
 CLOUD_COHERENCE_KM = 20.0
-LAYERS = [("lcc", 0.0, 3.5, 0.35), ("mcc", 3.5, 8.0, 0.8), ("hcc", 8.0, 13.5, 1.0)]
-OPACITY = {"lcc": 1.0, "mcc": 0.8, "hcc": 0.4}
 DEPRESSIONS_DEG = (0, 1, 2, 3, 4)
 VIEW_ELEVATIONS_DEG = np.arange(1, 46, 1.5)
 HORIZON_ELEVATIONS_DEG = (0.5, 1.0, 1.5)

@@ -12,7 +12,7 @@ import numpy as np
 import pytest
 from PIL import Image
 
-from sunroof_camera import gates, resolve
+from sunroof_camera import gates, resolve, vlm
 from sunroof_camera.footage import WeatherEvent
 from sunroof_camera.ingest.base import Frame
 from sunroof_camera.ingest.sources.faa import camera_row
@@ -20,6 +20,60 @@ from sunroof_camera.query import Catalog
 from sunroof_camera.schema import Camera, to_frame, write_parquet
 
 NOW = datetime(2026, 7, 1, 20, 0, tzinfo=timezone.utc)  # daytime over Colorado
+
+
+@pytest.fixture(autouse=True)
+def no_vlm(monkeypatch):
+    """Tests never talk to a VLM (a local Ollama would otherwise be auto-detected)."""
+    monkeypatch.setenv("SUNROOF_VLM_BACKEND", "off")
+    vlm.backend.cache_clear()
+    yield
+    vlm.backend.cache_clear()
+
+
+def test_vlm_backend_selection(monkeypatch):
+    monkeypatch.delenv("SUNROOF_VLM_BACKEND")
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
+    vlm.backend.cache_clear()
+    b = vlm.backend()
+    assert b and b.base_url is None and b.native_schema and b.model == "gpt-4o-mini"
+    monkeypatch.setenv("SUNROOF_VLM_BASE_URL", "http://vllm:8000/v1")
+    monkeypatch.setenv("SUNROOF_VLM_MODEL", "Qwen/Qwen2.5-VL-7B-Instruct")
+    vlm.backend.cache_clear()
+    b = vlm.backend()
+    assert b and b.base_url == "http://vllm:8000/v1" and not b.native_schema
+    assert b.model == b.model_large == "Qwen/Qwen2.5-VL-7B-Instruct"
+    assert b.parallel == 4 and b.min_budget_s == 0
+
+    monkeypatch.setenv("SUNROOF_VLM_BASE_URL", "http://localhost:11434/v1")
+    monkeypatch.delenv("SUNROOF_VLM_MODEL")
+    vlm.backend.cache_clear()
+    b = vlm.backend()
+    assert b and b.model == vlm.OLLAMA_MODEL and b.parallel == 1 and b.min_budget_s == 150
+
+    monkeypatch.delenv("SUNROOF_VLM_BASE_URL")
+    monkeypatch.delenv("OPENAI_API_KEY")
+    monkeypatch.setenv("GROQ_API_KEY", "gsk-test")
+    vlm.backend.cache_clear()
+    b = vlm.backend()
+    assert b and b.base_url == vlm.GROQ_URL and b.model == vlm.GROQ_MODEL
+    assert b.api_key == "gsk-test" and b.parallel == 2 and b.min_budget_s == 0
+
+    monkeypatch.setenv("SUNROOF_VLM_BACKEND", "off")
+    vlm.backend.cache_clear()
+    assert vlm.backend() is None and not vlm.available() and vlm.describe() == "none"
+
+
+def test_vlm_loose_parse():
+    good = (
+        '```json\n{"usable":true,"sky_visible":0.6,"night":false,"event_visible":"yes",'
+        '"event_type_seen":"thunderstorm","confidence":0.8,"quality":4,"caption":"anvil",'
+        '"burned_in_time":null}\n```'
+    )
+    a = vlm._parse_loose(good)
+    assert a and a.event_visible == "yes" and a.confidence == 0.8
+    assert vlm._parse_loose("no json here") is None
+    assert vlm._parse_loose('{"usable": true}') is None  # missing fields -> no verdict
 
 
 def jpeg(w=640, h=480, mean=120, noise=40, seed=0, gradient=0.0) -> bytes:

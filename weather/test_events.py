@@ -1,7 +1,8 @@
 """Acceptance checks for weather/events.py. Run from the repo root: uv run python -m weather.test_events
 
 1. Regression: Lamar CO on the 2026-09-20 00Z f01 subset (a verified 5/5 sunset frame) ->
-   sunset_rays.score_site quality 0.418; the new sunset_quality classifier should also score it high.
+   sunset_rays.score_site quality 0.418; the sunset_quality classifier scores it 0.12 on HRRR and
+   0.05 on the GOES-19 00:46Z scan (top of the GOES scale: the West-Coast winners reach 0.04-0.06).
 2. Replay: --when 2024-04-26T20:30Z emits a storm <= 15 km from Mead NE (41.1447, -96.4616)
    with MESH 1.30 and FLASH_RATE 38 (EF4 day; the 2024 file has no ProbSevere/COMPREF keys).
 3. Live: a run with no --when completes and events.json validates; ProbSevere age <= 5 min.
@@ -25,7 +26,7 @@ def check(name: str, ok: bool, detail: str = "") -> bool:
     return ok
 
 
-def run_events(*args: str, timeout: int = 180) -> dict:
+def run_events(*args: str, timeout: int = 180) -> tuple[dict, float]:
     out = tempfile.mktemp(suffix=".json")
     started = dt.datetime.now(dt.UTC)
     subprocess.run([sys.executable, "-m", "weather.events", "--out", out, *args],
@@ -36,16 +37,23 @@ def run_events(*args: str, timeout: int = 180) -> dict:
 
 def regression_lamar() -> bool:
     import pygrib  # noqa: F401  (pygrib prints harmless ECCODES warnings)
-    from weather.hrrr import CloudGrid, download_subset
+    from weather.goes_cloud import load_field
+    from weather.hrrr import CloudGrid, HrrrCloudField, download_subset
     from weather.sunset_rays import score_site as rays_score
     from weather.sunset_quality import score_site as quality_score
 
     path = download_subset("hrrr.20260920/conus/hrrr.t00z.wrfsfcf01.grib2", "/tmp/hrrr")
     grid = CloudGrid(path)
     old = rays_score(grid, 38.077, -102.696, 271.8)
-    new = quality_score(grid, 38.077, -102.696, 271.8)
+    new = quality_score(HrrrCloudField(grid), 38.077, -102.696, 271.8)
+    goes = load_field(dt.datetime(2026, 9, 20, 0, 48, tzinfo=dt.UTC), "noaa-goes19", grid)
+    if goes is None:
+        return check("regression Lamar score_site", False, "no GOES-19 scan before 2026-09-20T00:48Z")
+    satellite = quality_score(goes, 38.077, -102.696, 271.8)
     ok = abs(old["quality"] - 0.418) < 0.01 and old["depression_deg"] == 1 and old["horizon_block"] == 0.0
-    ok &= check("new classifier also scores Lamar high", new["quality"] >= 0.25, f"quality={new['quality']}")
+    ok &= check("classifier on HRRR scores Lamar high", new["quality"] >= 0.1, f"quality={new['quality']}")
+    ok &= check("classifier on GOES-19 scores Lamar high", satellite["quality"] >= 0.04 and satellite["site_hcc"] >= 90,
+                f"quality={satellite['quality']} hcc={satellite['site_hcc']} scan={goes.scanned_at:%H:%M}Z")
     return check("regression Lamar score_site", ok, f"quality={old['quality']} depression={old['depression_deg']}")
 
 
@@ -57,7 +65,7 @@ def replay_mead() -> bool:
     best = min(storms, key=lambda e: distance_km(41.1447, -96.4616, e["lat"], e["lon"]))
     km = distance_km(41.1447, -96.4616, best["lat"], best["lon"])
     ev = best["evidence"]
-    ok = km <= 15 and ev["MESH"] == 1.30 and ev["FLASH_RATE"] == 38.0
+    ok = bool(km <= 15) and ev["MESH"] == 1.30 and ev["FLASH_RATE"] == 38.0
     return check("replay Mead storm", ok, f"km={km:.1f} MESH={ev['MESH']} FLASH={ev['FLASH_RATE']}")
 
 

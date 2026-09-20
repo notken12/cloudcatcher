@@ -62,6 +62,23 @@ def find(
 
 
 @app.command()
+def health(
+    source: list[str] = typer.Option(None, help="adapter names; default all"),
+    sample: int | None = typer.Option(None, help="probe a random subset of N cameras"),
+    tier: str | None = typer.Option(
+        None, help="only cameras with this health: live|stale|dead|unverified"
+    ),
+    concurrency: int = 64,
+    data_dir: Path = Path("data"),
+):
+    """Fetch one frame per camera -> data/health_log.parquet -> health columns in cameras.parquet."""
+    from .health import probe
+
+    res = asyncio.run(probe(data_dir, source or None, sample, tier, concurrency))
+    typer.echo(res["reason"].str.split(":").str[0].value_counts().to_string())
+
+
+@app.command()
 def describe(catalog: Path = Path("data/cameras.parquet")):
     """Row counts by source / heading_conf / night_ok / health."""
     df = Catalog.load(catalog).df
@@ -79,6 +96,9 @@ def serve(
     fake_period_s: float = 90.0,
     k: int = 3,
     deadline_s: float = 30.0,
+    ignore_night: bool = typer.Option(
+        False, help="demo: skip the solar night gate and accept dark frames"
+    ),
 ):
     """Run the camera service + sandbox page (see server.py for endpoints)."""
     from .server import run
@@ -91,6 +111,7 @@ def serve(
         fake_period_s=fake_period_s,
         k=k,
         deadline_s=deadline_s,
+        ignore_night=ignore_night,
     )
 
 
@@ -101,6 +122,8 @@ def resolve(
     lon: float = typer.Option(...),
     radius_km: float = 10,
     k: int = 3,
+    deadline_s: float = 30.0,
+    ignore_night: bool = False,
     catalog: Path = Path("data/cameras.parquet"),
     save_frames: Path | None = typer.Option(None, help="dir to dump the chosen JPEGs"),
 ):
@@ -113,7 +136,15 @@ def resolve(
         ev = WeatherEvent(id=f"cli-{type}", type=type, lat=lat, lon=lon, radius_km=radius_km)
         cache = FrameCache()
         async with make_client(timeout=15.0) as http:
-            res = await resolve_footage(ev, Catalog.load(catalog), http, cache, k=k)
+            res = await resolve_footage(
+                ev,
+                Catalog.load(catalog),
+                http,
+                cache,
+                k=k,
+                deadline_s=deadline_s,
+                ignore_night=ignore_night,
+            )
         if save_frames:
             save_frames.mkdir(parents=True, exist_ok=True)
             for f in res.footage:

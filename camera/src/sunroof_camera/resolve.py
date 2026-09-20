@@ -89,8 +89,9 @@ def _now() -> datetime:
     return datetime.now(timezone.utc)
 
 
-def _to_query_event(ev: WeatherEvent) -> Event:
+def _to_query_event(ev: WeatherEvent, ignore_night: bool = False) -> Event:
     return Event(
+        ignore_night=ignore_night,
         type=ev.type,
         lat=ev.lat,
         lon=ev.lon,
@@ -126,6 +127,7 @@ async def _fetch_and_gate(
     ev: WeatherEvent,
     cache: FrameCache,
     now: datetime,
+    ignore_night: bool = False,
 ) -> None:
     ts = ev.t_start if ev.replay else None
     try:
@@ -146,7 +148,7 @@ async def _fetch_and_gate(
         refresh_s=c.cam.refresh_s,
         now=now,
         max_age_s=None if ev.replay else min(prof.max_age_mult * c.cam.refresh_s, prof.max_age_s),
-        allow_night=prof.allow_night_frames or c.cam.night_ok,
+        allow_night=prof.allow_night_frames or c.cam.night_ok or ignore_night,
         last_sha1=prev.sha1 if prev else None,
         last_phash=prev.phash if prev else None,
     )
@@ -215,6 +217,7 @@ async def resolve_footage(
     deadline_s: float = 30.0,
     proxy_base: str = "",
     verdict_log: str | None = None,
+    ignore_night: bool = False,
 ) -> FootageResult:
     t0 = time.monotonic()
     now = ev.t_start if (ev.replay and ev.t_start) else _now()
@@ -222,7 +225,7 @@ async def resolve_footage(
     res = FootageResult(event_id=ev.id, status="NO_CAMERAS_IN_RANGE")
 
     # ① which cameras
-    hits = catalog.find_cameras(_to_query_event(ev), k=k * prof.fetch_mult)
+    hits = catalog.find_cameras(_to_query_event(ev, ignore_night), k=k * prof.fetch_mult)
     res.candidates = len(hits)
     if hits.empty:
         # distinguish "nothing nearby" from "nearby but filtered out (night / heading)"
@@ -237,7 +240,10 @@ async def resolve_footage(
 
     # ② fetch + cheap gates, concurrently, under the deadline
     budget = deadline_s * 0.6
-    tasks = [asyncio.create_task(_fetch_and_gate(c, http, prof, ev, cache, now)) for c in cands]
+    tasks = [
+        asyncio.create_task(_fetch_and_gate(c, http, prof, ev, cache, now, ignore_night))
+        for c in cands
+    ]
     done, pending = await asyncio.wait(tasks, timeout=budget)
     for t in pending:
         t.cancel()
@@ -260,23 +266,43 @@ async def resolve_footage(
 
     # ③ VLM
     remaining = max(deadline_s - (time.monotonic() - t0), 1.0)
-    if vlm.available():
-        jt = [asyncio.create_task(_judge(c, ev, prof, cache)) for c in good]
-        _, pend = await asyncio.wait(jt, timeout=remaining)
+    judged = False
+    b = vlm.backend()
+    if b is not None:
+        # local CPU models take ~30-100 s/frame and serialise requests, so judge only the
+        # best-ranked candidates, `parallel` at a time, with at least `min_budget_s`
+        sem = asyncio.Semaphore(b.parallel)
+        if b.parallel < len(good):
+            for c in good[max(k, b.parallel) :]:
+                c.rejected = Rejected(
+                    camera_id=c.cam.id, stage="vlm", reason="vlm: not judged (slow backend)"
+                )
+            good = good[: max(k, b.parallel)]
+
+        async def _one(c: _Candidate) -> None:
+            async with sem:
+                await _judge(c, ev, prof, cache)
+
+        jt = [asyncio.create_task(_one(c)) for c in good]
+        _, pend = await asyncio.wait(jt, timeout=max(remaining, b.min_budget_s))
         for t in pend:
             t.cancel()
         res.vlm_calls = sum(1 for c in good if c.verdict is not None)
+        judged = res.vlm_calls > 0
         if verdict_log:
             for c in good:
                 if c.verdict and c.frame:
                     vlm.log_verdict(verdict_log, c.cam.id, ev.type, c.verdict, c.frame.sha1)
+        if not judged:  # every call timed out / errored: degrade to gate-only rather than nothing
+            for c in good:
+                c.verdict = vlm.skipped_verdict(f"VLM ({vlm.describe()}) gave no verdict in time")
     else:
         for c in good:
-            c.verdict = vlm.skipped_verdict("VLM skipped: OPENAI_API_KEY not set")
+            c.verdict = vlm.skipped_verdict("VLM skipped: no backend (OPENAI_API_KEY or Ollama)")
 
     # ④ route
     footage: list[Footage] = []
-    if vlm.available():
+    if judged:
         passed = [c for c in good if c.verdict and _passes(c.verdict, ev.type, prof)]
         passed.sort(key=lambda c: -(c.verdict.confidence * (0.6 + 0.1 * c.verdict.quality)))  # type: ignore[union-attr]
         for c in good:
@@ -333,12 +359,12 @@ async def resolve_footage(
     res.rejected = [c.rejected for c in cands if c.rejected]
     if footage:
         res.status = "FOOTAGE_FOUND"
+    elif judged and any(c.verdict and c.verdict.event_visible != "yes" for c in good):
+        res.status = "EVENT_NOT_VISIBLE"
+        res.retry_after_s = prof.retry_after_s
     elif any(c.rejected and c.rejected.stage == "vlm" and c.verdict is None for c in good):
         res.status = "TIMEOUT"
         res.retry_after_s = 60
-    elif any(c.verdict and c.verdict.event_visible in ("partial", "unsure") for c in good):
-        res.status = "EVENT_NOT_VISIBLE"
-        res.retry_after_s = prof.retry_after_s
     else:
         res.status = "NO_FOOTAGE_FOUND"
         res.retry_after_s = prof.retry_after_s

@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import asyncio
 import logging
-import os
 from collections import OrderedDict
 from collections.abc import Awaitable, Callable
 from contextlib import asynccontextmanager
@@ -25,6 +24,7 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, Response, StreamingResponse
 
+from . import vlm
 from .fetch import fetch_frame, row_to_camera
 from .footage import FootageResult, WeatherEvent
 from .ingest.base import make_client
@@ -59,6 +59,7 @@ def create_app(
     fake_period_s: float = 90.0,
     k: int = 3,
     deadline_s: float = 30.0,
+    ignore_night: bool = False,
 ) -> FastAPI:
     st = State(catalog_path, verdict_log)
 
@@ -86,6 +87,7 @@ def create_app(
                 k=k,
                 deadline_s=deadline_s,
                 verdict_log=st.verdict_log,
+                ignore_night=ignore_night,
             )
         st.results[ev.id] = res
         st.results.move_to_end(ev.id)
@@ -177,7 +179,7 @@ def create_app(
         return {
             "cameras": len(st.catalog.df) if st.catalog is not None else 0,
             "results": len(st.results),
-            "vlm": bool(os.environ.get("OPENAI_API_KEY")),
+            "vlm": vlm.describe() if vlm.available() else None,
         }
 
     return app

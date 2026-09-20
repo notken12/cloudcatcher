@@ -77,6 +77,9 @@ def parse_heading_text(text: str | None) -> float | None:
     m = re.search(r"\b([nsew])b\b", t)  # NB/SB/EB/WB (bound)
     if m:
         return COMPASS_8[m.group(1).upper()]
+    m = re.search(r"\b(north|south)[ -]?(east|west)\b", t)  # "North East", "south-west"
+    if m:
+        return COMPASS_8[m.group(1)[0].upper() + m.group(2)[0].upper()]
     for word, key in _WORDS.items():
         if word.rstrip("_") in t:
             return COMPASS_8[key]

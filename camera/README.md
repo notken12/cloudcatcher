@@ -9,6 +9,7 @@ night logic, ranking), `docs/preprocessing-schema.svg` (one-page diagram).
 uv sync --extra dev
 uv run sunroof-camera refresh                  # adapters -> data/shards/*.parquet -> data/cameras.parquet
 uv run sunroof-camera describe                 # counts by source / heading_conf / night_ok / health
+uv run sunroof-camera health --sample 2000      # probe frames -> data/health_log.parquet -> health columns (~7 min for all 38k)
 uv run sunroof-camera find thunderstorm --lat 39.7 --lon=-104.9 --radius-km 20
 uv run pytest
 
@@ -16,6 +17,31 @@ uv run sunroof-camera refresh --source faa    # 3.5k FAA WeatherCams, no key, ~3
 uv run sunroof-camera serve --fake-events     # camera service + sandbox page on http://127.0.0.1:8080
 uv run sunroof-camera resolve thunderstorm --lat 67.6 --lon=-164 --radius-km 20   # one-shot FootageResult JSON
 ```
+
+Night in the US/Alaska (where the FAA cams are) makes daytime events return `CAMERAS_DARK`.
+To exercise the pipeline anyway: `SUNROOF_VLM_BACKEND=off uv run sunroof-camera serve --fake-events --ignore-night`
+(skips the solar gate and the dark-frame gate; with the VLM on, it will correctly reject night frames as `EVENT_NOT_VISIBLE`).
+
+## Health probe (`health.py`)
+
+`sunroof-camera health [--source X] [--sample N] [--tier stale]` fetches one frame per camera
+(64 concurrent, 6 per host, HLS via ffmpeg), runs the LLM-free gates, and appends one row per
+probe to `data/health_log.parquet`. The catalog's health columns are then *derived* from the log:
+
+| column | rule |
+|---|---|
+| `health` | `live` = last probe OK and frame age ≤ max(2·refresh_s, 15 min); `stale` = OK but old, or 1–2 failures after a success; `dead` = ≥3 consecutive failures or no success for 24 h; else `unverified` |
+| `last_frame_ts` / `last_ok_ts` | from the last OK probe (frame ts from source API / EXIF / Last-Modified when available) |
+| `fail_streak` | consecutive failed probes |
+| `night_usable_frac` | over the last 30 probes taken at solar elevation < −6°: share that passed gates with mean luminance ≥ 12 |
+| `quality_score` | 0.4 + 0.6·clip(median sharpness / 200) |
+
+Placeholder "camera unavailable" cards are caught per run: identical bytes from ≥3 cameras of one
+source (DriveBC, QLD, some CARS states do this) → failed probe. A frame byte-identical to the
+previous probe >6 h earlier with no source timestamp → `frozen`. `find_cameras` drops `dead`
+rows and weights `fresh = exp(-age / 3·refresh_s)`, so run the probe before a demo
+(`--tier unverified` first, then `--tier stale` every ~10 min). Run it at night in your region
+of interest once to get `night_usable_frac` populated for the aurora / lightning gates.
 
 ## Camera service (query → gate → VLM → route)
 
@@ -39,12 +65,37 @@ that and never talks to cameras directly; `frame_ts` + `ts_source`
 Pipeline per event (`resolve.py`): `Catalog.find_cameras` → concurrent fetch of `k×3`
 candidates → `gates.check_frame` (bytes/magic/decode, placeholder + frozen-frame SHA-1,
 freshness vs cadence, uniform / blown-out / dark, pHash de-dupe, sharpness) →
-`vlm.judge` (OpenAI structured output, `gpt-4o-mini` with one escalation to `gpt-4o`)
-→ top-`k` `Footage`. Without `OPENAI_API_KEY` the service still runs and returns
-gate-passed frames marked `verified: false`.
+`vlm.judge` (one structured verdict per frame) → top-`k` `Footage`. Without any VLM
+backend the service still runs and returns gate-passed frames marked `verified: false`.
 
-Environment: `OPENAI_API_KEY` (VLM gate; optional), `SUNROOF_VLM_MODEL` /
-`SUNROOF_VLM_MODEL_LARGE` (overrides), `WINDY_API_KEY` (only for the Windy source).
+### VLM backends (`vlm.py`)
+
+All backends speak the OpenAI chat-completions API, so switching is env-only:
+
+| setup | env | model |
+|---|---|---|
+| OpenAI (hosted, ~2 s/frame) | `OPENAI_API_KEY` | `gpt-4o-mini`, escalates to `gpt-4o` |
+| **Groq (hosted, free tier, ~0.5–1 s/frame) — current default for dev/demo** | `GROQ_API_KEY` ([console.groq.com/keys](https://console.groq.com/keys)) | `qwen/qwen3.8-27b` |
+| local Ollama (auto-detected on `127.0.0.1:11434`) | none — `ollama pull qwen2.5vl:3b` | `qwen2.5vl:3b` |
+| any OpenAI-compatible server (vLLM, OpenRouter, remote Ollama) | `SUNROOF_VLM_BASE_URL`, `SUNROOF_VLM_API_KEY` | `SUNROOF_VLM_MODEL` |
+| disabled (CI / offline) | `SUNROOF_VLM_BACKEND=off` | — |
+
+Precedence: `off` > `OPENAI_API_KEY` > `SUNROOF_VLM_BASE_URL` > `GROQ_API_KEY` > local Ollama.
+
+Overrides: `SUNROOF_VLM_MODEL` / `SUNROOF_VLM_MODEL_LARGE`, `SUNROOF_VLM_PARALLEL`
+(concurrent calls; default 1 for localhost, 4 for other custom URLs, 8 for OpenAI),
+`SUNROOF_VLM_BUDGET_S` (minimum time given to the VLM stage; default 150 s on
+localhost so a CPU-only model gets at least one verdict). OpenAI uses native
+structured output; open models get a JSON example prompt and the reply is
+validated by the same Pydantic model. Expect ~30–100 s/frame for Qwen2.5-VL-3B on
+8 CPU cores (a few seconds on any GPU); with a serial backend only the top `k`
+gate-passed candidates are judged, and if no verdict arrives in time the frames
+are still served as `verified: false`. `/health` reports the active backend.
+
+Other environment: `WINDY_API_KEY` (only for the Windy source), `NSW_API_KEY` (Transport for NSW).
+
+Keys are read from the environment; `camera/.env` (git-ignored) is loaded automatically on
+import — `cp .env.example .env` and fill in what you have. Existing env vars win over `.env`.
 
 ## For the backend / other Devin: the contract
 
@@ -94,7 +145,7 @@ per-host rate limiter, compass-text heading parser and a default `fetch_frame`
 for plain JPEG cameras. Hand-picked cameras (YouTube, all-sky) go in
 `data/manual.yaml`.
 
-Secrets: `WINDY_API_KEY` etc. via environment only; never in the repo.
+Secrets: `WINDY_API_KEY` etc. via environment or a git-ignored `.env` only; never in the repo.
 
 ### Sources implemented
 
@@ -103,6 +154,12 @@ Secrets: `WINDY_API_KEY` etc. via environment only; never in the repo.
 | `caltrans` | ~3,300 | text 88% | – | last 12 frames | 12 district JSONs, JPEG + HLS |
 | `cars_ny` / `cars_on` | ~1,800 / ~1,400 | text ~50-70% | – | – | 511 portals; NY optional `NY511_API_KEY` |
 | `cars_fl` `cars_ut` `cars_pa` `cars_nc` `cars_az` `cars_nv` `cars_id` `cars_wi` `cars_ne6` `cars_la` `cars_ak` `cars_ab` `cars_ns` `cars_nb` `cars_nl` `cars_yt` | ~14,000 total (FL 4.9k, UT 2.1k, PA 1.4k, NC 1.1k) | text 0–100% (`direction` + view description) | – | – | keyless `/List/GetData/Cameras` on every CARS 511 portal; video-only sites return a 15 KB placeholder PNG that `fetch_frame` rejects. Georgia (4.3k) excluded: ~85% placeholder + auth-walled HLS |
+| `cars_mn` `cars_ia` `cars_ma` `cars_ne` `cars_in` `cars_ie` | ~4,600 (MN 1.7k, IA 1.0k, IN/NE ~650, MA 300, Ireland 230) | text (view title) | – | – | CARS portals whose list endpoint is a React shell; `cars_gql.py` calls the OneWeb `/api/graphql` `mapFeaturesQuery` with a state-wide bbox at zoom 15 -> JPEG poster + public HLS. Kansas skipped (`url=null` views) |
+| `tw_tdx` | ~2,770 | text (`RoadDirection`) | – | – | Taiwan MOTC TDX highway (JPEG) + freeway (MJPEG; `fetch_frame` pulls the first frame) CCTV, 1-min, needs a browser UA |
+| `no_vegvesen` | ~840 | – | – | – | Statens vegvesen road-weather sites: altitude, `status`, HLS; NLOD 2.0; mountain passes (Sognefjellet 1,413 m) + Finnmark for aurora |
+| `tfl` | ~800 | `view` text 71% | – | 10 s MP4 clip | London JamCams, 5-min, TfL Open Data licence |
+| `au_qld` | ~136 | `direction` 100% | – | – | Queensland (Brisbane–Cairns, Toowoomba range), keyless GeoJSON, 1-min JPEG, CC BY 4.0 |
+| `au_nsw_maritime` | 23 | – | – | – | NSW coastal bars + Lake Eucumbene, keyless TfNSW GeoJSON → public 1080p HLS (ffmpeg frame), over water, CC BY 4.0 |
 | `alertca` | ~1,800 | catalog (pan) | IR subset | – | ridge-top PTZ, firestorm mirror |
 | `digitraffic` | ~1,700 | – | yes | 24 h API | Finland, CC BY 4.0 |
 | `panomax` | ~630 | catalog (zeroDirection+viewAngle/2) | `nightVision` | recent API | Alpine panoramas |
@@ -119,7 +176,7 @@ Secrets: `WINDY_API_KEY` etc. via environment only; never in the repo.
 | `windy` | ~1k/country | text from title | – | embed player day/month/year | needs `WINDY_API_KEY`; offset ≤1000/free tier |
 | `manual` | yaml | – | – | – | hand-picked: UAF Poker Flat + IRF Kiruna all-sky (aurora, `night_ok`) |
 
-`uv run sunroof-camera refresh` builds every keyless source in ~2 min (~29k rows; the CARS portals are paged 100 at a time).
+`uv run sunroof-camera refresh` builds every keyless source in ~3 min (~38k rows; the CARS portals are paged 100 at a time).
 
 ## Demo cameras & sample queries
 
@@ -139,6 +196,12 @@ Known-good rows (frames verified live, Sep 2026) to hard-code into demos/tests:
 | `manual:irf-kiruna-allsky` | 67.84, 20.41 | all-sky aurora camera, 1-min JPEG, `night_ok` |
 | `hk_td:H421F` Aberdeen Tunnel | 22.250, 114.176 | Hong Kong, 2-min refresh, typhoon/fog demo |
 | `cars_ak:*` / `cars_ut:*` | Alaska / Utah | 511 cams with text headings (Richardson Hwy, Wasatch) |
+| `no_vegvesen:0529029_1` F55 Sognefjellet | 61.565, 7.998, 1,413 m | highest Norwegian pass, lenticular/undercast; `no_vegvesen:2000065_1` Aisaroaivi (70.28 N) for aurora |
+| `tfl:00001.06570` Hammersmith Bridge Rd | 51.491, -0.227 | London, S-facing, 5-min JPEG + MP4 clip |
+| `tw_tdx:CCTV-N1-S-0.000-M` National Fwy 1 Keelung | 25.123, 121.736 | Taiwan, 1-min MJPEG stream, typhoon/thunderstorm demo |
+| `cars_ie:127:1733092217` N59 Maam Cross | 53.456, -9.537 | Connemara, Atlantic fronts/rainbows |
+| `au_qld:84` Murarrie – Port of Brisbane, W | -27.452, 153.114 | southern hemisphere; Brisbane summer thunderstorms, sunset over the city |
+| `au_nsw_maritime:1` Merimbula bar | -36.889, 149.919 | 1080p HLS over the Pacific: sunrise, storms offshore, rainbows |
 
 Ready-to-run queries (`--t` is UTC, omit for now):
 
@@ -155,6 +218,14 @@ uv run sunroof-camera find fog         --lat 37.8  --lon=-122.45 --radius-km 5  
 uv run sunroof-camera find rainbow     --lat 38.9  --lon=-120.0  --radius-km 5  --t 2026-09-21T00:30:00
 # aurora over Iceland at local midnight -> night_ok Vegagerðin cams
 uv run sunroof-camera find aurora      --lat 64.5  --lon=-21.0   --radius-km 100 --t 2026-09-20T23:30:00
+# undercast / lenticular over Jotunheimen from Sognefjellet + Valdresflye (1.4 km passes)
+uv run sunroof-camera find undercast   --lat 61.5  --lon 8.2     --radius-km 10
+# London thunderstorm: TfL JamCams within 30 km of a cell over Croydon
+uv run sunroof-camera find thunderstorm --lat 51.37 --lon=-0.10  --radius-km 5
+# Brisbane thunderstorm (S-hemisphere demo): QLD cams within the 33–150 km anvil annulus
+uv run sunroof-camera find thunderstorm --lat=-27.6 --lon 152.7  --radius-km 10
+# storm cell off the NSW south coast: Merimbula/Bermagui/Narooma 1080p HLS bar cams
+uv run sunroof-camera find thunderstorm --lat=-36.7 --lon 150.3  --radius-km 20
 # sunrise on the Gulf of Finland
 uv run sunroof-camera find sunrise     --lat 60.05 --lon 24.0    --radius-km 5  --t 2026-09-21T04:00:00
 ```
