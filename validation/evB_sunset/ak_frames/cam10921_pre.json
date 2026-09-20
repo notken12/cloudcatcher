@@ -1,0 +1,18 @@
+{
+  "success": true,
+  "count": 2,
+  "payload": [
+    {
+      "cameraId": 10921,
+      "imageFilename": "10921-1789871833311.jpg",
+      "imageUri": "https://images.wcams-static.faa.gov/webimages/260/20/10921-1789871833311.jpg",
+      "imageDatetime": "2026-09-20T02:37:19.314Z"
+    },
+    {
+      "cameraId": 10921,
+      "imageFilename": "10921-1789871317496.jpg",
+      "imageUri": "https://images.wcams-static.faa.gov/webimages/260/20/10921-1789871317496.jpg",
+      "imageDatetime": "2026-09-20T02:28:47.553Z"
+    }
+  ]
+}

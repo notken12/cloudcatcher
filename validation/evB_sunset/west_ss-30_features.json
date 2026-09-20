@@ -1,0 +1,1742 @@
+[
+ {
+  "cameraId": 12727,
+  "site": "UCSB Campus",
+  "color": 0.0019,
+  "q": 0.017,
+  "tex": 4.63,
+  "cloudfrac": 0.48,
+  "hz_cloud": 0.212,
+  "blown": 0.367
+ },
+ {
+  "cameraId": 13990,
+  "site": "Walker Ridge",
+  "color": 0.0112,
+  "q": 0.077,
+  "tex": 5.81,
+  "cloudfrac": 0.944,
+  "hz_cloud": 0.726,
+  "blown": 0.228
+ },
+ {
+  "cameraId": 13397,
+  "site": "Notch Butte",
+  "color": 0.0727,
+  "q": 0.0,
+  "tex": 4.29,
+  "cloudfrac": 0.518,
+  "hz_cloud": 0.228,
+  "blown": 0.148
+ },
+ {
+  "cameraId": 12817,
+  "site": "Fort Jones",
+  "color": 0.0007,
+  "q": 0.203,
+  "tex": 5.56,
+  "cloudfrac": 0.993,
+  "hz_cloud": 1.0,
+  "blown": 0.671
+ },
+ {
+  "cameraId": 13333,
+  "site": "Millers Ranch",
+  "color": 0.0008,
+  "q": 0.028,
+  "tex": 8.08,
+  "cloudfrac": 0.924,
+  "hz_cloud": 0.923,
+  "blown": 0.036
+ },
+ {
+  "cameraId": 12702,
+  "site": "Avalon",
+  "color": 0.0044,
+  "q": 0.131,
+  "tex": 5.37,
+  "cloudfrac": 0.902,
+  "hz_cloud": 0.407,
+  "blown": 0.34
+ },
+ {
+  "cameraId": 12548,
+  "site": "Barry Ridge Kneeland",
+  "color": 0.0672,
+  "q": 0.515,
+  "tex": 7.72,
+  "cloudfrac": 0.473,
+  "hz_cloud": 0.158,
+  "blown": 0.003
+ },
+ {
+  "cameraId": 11287,
+  "site": "Grand Forks",
+  "color": 0.0063,
+  "q": 0.0,
+  "tex": 3.97,
+  "cloudfrac": 0.506,
+  "hz_cloud": 0.871,
+  "blown": 0.031
+ },
+ {
+  "cameraId": 13704,
+  "site": "Sutro Tower",
+  "color": 0.0533,
+  "q": 0.031,
+  "tex": 4.35,
+  "cloudfrac": 0.999,
+  "hz_cloud": 1.0,
+  "blown": 0.65
+ },
+ {
+  "cameraId": 13767,
+  "site": "Anderson",
+  "color": 0.0003,
+  "q": 0.003,
+  "tex": 4.58,
+  "cloudfrac": 0.97,
+  "hz_cloud": 0.893,
+  "blown": 0.323
+ },
+ {
+  "cameraId": 13075,
+  "site": "Star Nevada",
+  "color": 0.0199,
+  "q": 0.0,
+  "tex": 4.07,
+  "cloudfrac": 0.374,
+  "hz_cloud": 1.0,
+  "blown": 0.003
+ },
+ {
+  "cameraId": 13576,
+  "site": "Deer Park",
+  "color": 0.036,
+  "q": 0.113,
+  "tex": 3.11,
+  "cloudfrac": 0.797,
+  "hz_cloud": 0.858,
+  "blown": 0.007
+ },
+ {
+  "cameraId": 12888,
+  "site": "New York Peak",
+  "color": 0.0066,
+  "q": 0.001,
+  "tex": 2.77,
+  "cloudfrac": 0.982,
+  "hz_cloud": 1.0,
+  "blown": 0.652
+ },
+ {
+  "cameraId": 13868,
+  "site": "Ruch",
+  "color": 0.0143,
+  "q": 0.265,
+  "tex": 5.92,
+  "cloudfrac": 0.668,
+  "hz_cloud": 0.795,
+  "blown": 0.17
+ },
+ {
+  "cameraId": 13695,
+  "site": "Stoney Ridge",
+  "color": 0.0234,
+  "q": 0.049,
+  "tex": 4.1,
+  "cloudfrac": 0.299,
+  "hz_cloud": 0.002,
+  "blown": 0.163
+ },
+ {
+  "cameraId": 12610,
+  "site": "Oak Ridge",
+  "color": 0.0218,
+  "q": 0.063,
+  "tex": 5.23,
+  "cloudfrac": 0.674,
+  "hz_cloud": 0.157,
+  "blown": 0.136
+ },
+ {
+  "cameraId": 13566,
+  "site": "Sea Ranch Airport",
+  "color": 0.0,
+  "q": 0.093,
+  "tex": 7.72,
+  "cloudfrac": 0.845,
+  "hz_cloud": 0.729,
+  "blown": 0.003
+ },
+ {
+  "cameraId": 12833,
+  "site": "Mt Lewis",
+  "color": 0.0,
+  "q": 0.0,
+  "tex": 3.95,
+  "cloudfrac": 0.849,
+  "hz_cloud": 1.0,
+  "blown": 0.428
+ },
+ {
+  "cameraId": 12574,
+  "site": "Otay Mtn",
+  "color": 0.0032,
+  "q": 0.016,
+  "tex": 5.05,
+  "cloudfrac": 0.782,
+  "hz_cloud": 1.0,
+  "blown": 0.023
+ },
+ {
+  "cameraId": 12965,
+  "site": "Seaside Airport",
+  "color": 0.0207,
+  "q": 0.0,
+  "tex": 5.72,
+  "cloudfrac": 0.865,
+  "hz_cloud": 0.652,
+  "blown": 0.067
+ },
+ {
+  "cameraId": 12537,
+  "site": "Chino Hills",
+  "color": 0.0,
+  "q": 0.039,
+  "tex": 2.39,
+  "cloudfrac": 0.998,
+  "hz_cloud": 1.0,
+  "blown": 0.826
+ },
+ {
+  "cameraId": 13297,
+  "site": "Highland Peak",
+  "color": 0.0462,
+  "q": 0.121,
+  "tex": 3.31,
+  "cloudfrac": 0.996,
+  "hz_cloud": 1.0,
+  "blown": 0.761
+ },
+ {
+  "cameraId": 13525,
+  "site": "Christmas Valley",
+  "color": 0.0,
+  "q": 0.108,
+  "tex": 14.24,
+  "cloudfrac": 0.972,
+  "hz_cloud": 0.962,
+  "blown": 0.002
+ },
+ {
+  "cameraId": 13034,
+  "site": "Reno-Stead",
+  "color": 0.0049,
+  "q": 0.011,
+  "tex": 3.35,
+  "cloudfrac": 0.701,
+  "hz_cloud": 0.527,
+  "blown": 0.098
+ },
+ {
+  "cameraId": 13717,
+  "site": "Healdsburg",
+  "color": 0.0005,
+  "q": 0.082,
+  "tex": 4.74,
+  "cloudfrac": 0.989,
+  "hz_cloud": 0.961,
+  "blown": 0.75
+ },
+ {
+  "cameraId": 13329,
+  "site": "Eighmy",
+  "color": 0.0006,
+  "q": 0.143,
+  "tex": 5.49,
+  "cloudfrac": 0.598,
+  "hz_cloud": 0.999,
+  "blown": 0.005
+ },
+ {
+  "cameraId": 13493,
+  "site": "Satus Peak Lookout",
+  "color": 0.0021,
+  "q": 0.001,
+  "tex": 4.28,
+  "cloudfrac": 0.651,
+  "hz_cloud": 0.631,
+  "blown": 0.002
+ },
+ {
+  "cameraId": 13780,
+  "site": "Angwin",
+  "color": 0.0226,
+  "q": 0.114,
+  "tex": 3.03,
+  "cloudfrac": 0.945,
+  "hz_cloud": 0.981,
+  "blown": 0.0
+ },
+ {
+  "cameraId": 12793,
+  "site": "Peterson Butte",
+  "color": 0.0004,
+  "q": 0.042,
+  "tex": 3.9,
+  "cloudfrac": 0.989,
+  "hz_cloud": 0.901,
+  "blown": 0.494
+ },
+ {
+  "cameraId": 12571,
+  "site": "Mammoth Mtn",
+  "color": 0.0,
+  "q": 0.0,
+  "tex": 4.5,
+  "cloudfrac": 0.991,
+  "hz_cloud": 0.995,
+  "blown": 0.562
+ },
+ {
+  "cameraId": 13750,
+  "site": "Ten Mile",
+  "color": 0.0,
+  "q": 0.113,
+  "tex": 2.75,
+  "cloudfrac": 0.944,
+  "hz_cloud": 0.798,
+  "blown": 0.001
+ },
+ {
+  "cameraId": 12672,
+  "site": "Signal Peak",
+  "color": 0.0187,
+  "q": 0.079,
+  "tex": 3.43,
+  "cloudfrac": 0.648,
+  "hz_cloud": 0.43,
+  "blown": 0.345
+ },
+ {
+  "cameraId": 13321,
+  "site": "Happy Camp",
+  "color": 0.0002,
+  "q": 0.057,
+  "tex": 4.12,
+  "cloudfrac": 0.999,
+  "hz_cloud": 1.0,
+  "blown": 0.717
+ },
+ {
+  "cameraId": 11021,
+  "site": "Hope",
+  "color": 0.0019,
+  "q": 0.0,
+  "tex": 3.36,
+  "cloudfrac": 0.229,
+  "hz_cloud": 0.479,
+  "blown": 0.019
+ },
+ {
+  "cameraId": 13236,
+  "site": "Shafer Butte",
+  "color": 0.0307,
+  "q": 0.0,
+  "tex": 9.01,
+  "cloudfrac": 0.943,
+  "hz_cloud": 0.919,
+  "blown": 0.17
+ },
+ {
+  "cameraId": 12776,
+  "site": "Hamaker",
+  "color": 0.0,
+  "q": 0.201,
+  "tex": 2.02,
+  "cloudfrac": 0.998,
+  "hz_cloud": 1.0,
+  "blown": 0.954
+ },
+ {
+  "cameraId": 12899,
+  "site": "Fortynine Mtn",
+  "color": 0.0004,
+  "q": 0.009,
+  "tex": 4.9,
+  "cloudfrac": 0.99,
+  "hz_cloud": 1.0,
+  "blown": 0.647
+ },
+ {
+  "cameraId": 13304,
+  "site": "Hayfork Divide",
+  "color": 0.0004,
+  "q": 0.172,
+  "tex": 7.32,
+  "cloudfrac": 0.904,
+  "hz_cloud": 0.797,
+  "blown": 0.209
+ },
+ {
+  "cameraId": 10977,
+  "site": "Powell River",
+  "color": 0.0156,
+  "q": 0.034,
+  "tex": 4.21,
+  "cloudfrac": 0.199,
+  "hz_cloud": 0.101,
+  "blown": 0.023
+ },
+ {
+  "cameraId": 10993,
+  "site": "West Vancouver",
+  "color": 0.0023,
+  "q": 0.024,
+  "tex": 6.1,
+  "cloudfrac": 0.642,
+  "hz_cloud": 0.762,
+  "blown": 0.02
+ },
+ {
+  "cameraId": 13485,
+  "site": "Auburn",
+  "color": 0.0189,
+  "q": 0.004,
+  "tex": 4.12,
+  "cloudfrac": 0.799,
+  "hz_cloud": 0.0,
+  "blown": 0.588
+ },
+ {
+  "cameraId": 12907,
+  "site": "Inskip Hill",
+  "color": 0.0,
+  "q": 0.062,
+  "tex": 3.81,
+  "cloudfrac": 0.995,
+  "hz_cloud": 1.0,
+  "blown": 0.687
+ },
+ {
+  "cameraId": 12685,
+  "site": "Weed",
+  "color": 0.0,
+  "q": 0.137,
+  "tex": 7.69,
+  "cloudfrac": 0.973,
+  "hz_cloud": 0.824,
+  "blown": 0.432
+ },
+ {
+  "cameraId": 12698,
+  "site": "Talega",
+  "color": 0.0025,
+  "q": 0.08,
+  "tex": 3.43,
+  "cloudfrac": 0.58,
+  "hz_cloud": 0.005,
+  "blown": 0.238
+ },
+ {
+  "cameraId": 13030,
+  "site": "Dyer Mtn",
+  "color": 0.028,
+  "q": 0.055,
+  "tex": 4.1,
+  "cloudfrac": 0.515,
+  "hz_cloud": 0.976,
+  "blown": 0.002
+ },
+ {
+  "cameraId": 13628,
+  "site": "Mt Jackson West",
+  "color": 0.0009,
+  "q": 0.107,
+  "tex": 5.41,
+  "cloudfrac": 0.994,
+  "hz_cloud": 0.999,
+  "blown": 0.582
+ },
+ {
+  "cameraId": 13374,
+  "site": "Mt Zion",
+  "color": 0.028,
+  "q": 0.036,
+  "tex": 4.56,
+  "cloudfrac": 0.993,
+  "hz_cloud": 1.0,
+  "blown": 0.439
+ },
+ {
+  "cameraId": 12801,
+  "site": "Bryant Mtn",
+  "color": 0.0037,
+  "q": 0.143,
+  "tex": 6.11,
+  "cloudfrac": 0.573,
+  "hz_cloud": 0.921,
+  "blown": 0.003
+ },
+ {
+  "cameraId": 12813,
+  "site": "Wild Frontier",
+  "color": 0.0345,
+  "q": 0.238,
+  "tex": 8.31,
+  "cloudfrac": 0.856,
+  "hz_cloud": 0.688,
+  "blown": 0.002
+ },
+ {
+  "cameraId": 13938,
+  "site": "Packer John Mtn",
+  "color": 0.0007,
+  "q": 0.008,
+  "tex": 6.48,
+  "cloudfrac": 0.998,
+  "hz_cloud": 1.0,
+  "blown": 0.744
+ },
+ {
+  "cameraId": 13584,
+  "site": "Fort Bragg",
+  "color": 0.0,
+  "q": 0.111,
+  "tex": 3.47,
+  "cloudfrac": 0.994,
+  "hz_cloud": 0.999,
+  "blown": 0.001
+ },
+ {
+  "cameraId": 12756,
+  "site": "Pine Mtn",
+  "color": 0.0001,
+  "q": 0.217,
+  "tex": 3.72,
+  "cloudfrac": 0.997,
+  "hz_cloud": 1.0,
+  "blown": 0.7
+ },
+ {
+  "cameraId": 13272,
+  "site": "Timber Mtn",
+  "color": 0.0007,
+  "q": 0.072,
+  "tex": 8.18,
+  "cloudfrac": 0.974,
+  "hz_cloud": 0.614,
+  "blown": 0.317
+ },
+ {
+  "cameraId": 12768,
+  "site": "Beaty Butte",
+  "color": 0.0013,
+  "q": 0.059,
+  "tex": 5.16,
+  "cloudfrac": 0.988,
+  "hz_cloud": 0.967,
+  "blown": 0.566
+ },
+ {
+  "cameraId": 12924,
+  "site": "Prairie Peak",
+  "color": 0.0,
+  "q": 0.075,
+  "tex": 4.27,
+  "cloudfrac": 0.993,
+  "hz_cloud": 1.0,
+  "blown": 0.693
+ },
+ {
+  "cameraId": 11776,
+  "site": "Garry Point (Richmond)",
+  "color": 0.013,
+  "q": 0.042,
+  "tex": 1.36,
+  "cloudfrac": 0.004,
+  "hz_cloud": 0.003,
+  "blown": 0.005
+ },
+ {
+  "cameraId": 12655,
+  "site": "Bell Canyon",
+  "color": 0.0038,
+  "q": 0.068,
+  "tex": 3.14,
+  "cloudfrac": 0.992,
+  "hz_cloud": 0.988,
+  "blown": 0.791
+ },
+ {
+  "cameraId": 13824,
+  "site": "Coon Hollow",
+  "color": 0.0137,
+  "q": 0.032,
+  "tex": 4.73,
+  "cloudfrac": 0.984,
+  "hz_cloud": 0.959,
+  "blown": 0.282
+ },
+ {
+  "cameraId": 13500,
+  "site": "Barnabe Peak",
+  "color": 0.0084,
+  "q": 0.043,
+  "tex": 2.95,
+  "cloudfrac": 1.0,
+  "hz_cloud": 1.0,
+  "blown": 0.667
+ },
+ {
+  "cameraId": 13513,
+  "site": "Little River Airport",
+  "color": 0.0,
+  "q": 0.072,
+  "tex": 2.73,
+  "cloudfrac": 0.992,
+  "hz_cloud": 0.996,
+  "blown": 0.001
+ },
+ {
+  "cameraId": 13393,
+  "site": "Sugarloaf Ridge",
+  "color": 0.1468,
+  "q": 0.117,
+  "tex": 4.33,
+  "cloudfrac": 0.861,
+  "hz_cloud": 0.632,
+  "blown": 0.532
+ },
+ {
+  "cameraId": 13848,
+  "site": "Duncan Peak Lookout",
+  "color": 0.0105,
+  "q": 0.038,
+  "tex": 5.2,
+  "cloudfrac": 0.725,
+  "hz_cloud": 1.0,
+  "blown": 0.077
+ },
+ {
+  "cameraId": 12876,
+  "site": "Pearl",
+  "color": 0.036,
+  "q": 0.0,
+  "tex": 4.4,
+  "cloudfrac": 0.511,
+  "hz_cloud": 0.417,
+  "blown": 0.021
+ },
+ {
+  "cameraId": 12764,
+  "site": "Rhinehart Butte",
+  "color": 0.0002,
+  "q": 0.023,
+  "tex": 4.9,
+  "cloudfrac": 0.991,
+  "hz_cloud": 1.0,
+  "blown": 0.563
+ },
+ {
+  "cameraId": 13336,
+  "site": "Patton Hill",
+  "color": 0.001,
+  "q": 0.337,
+  "tex": 10.29,
+  "cloudfrac": 0.946,
+  "hz_cloud": 0.965,
+  "blown": 0.22
+ },
+ {
+  "cameraId": 13713,
+  "site": "Williams Hill",
+  "color": 0.0199,
+  "q": 0.084,
+  "tex": 6.17,
+  "cloudfrac": 0.79,
+  "hz_cloud": 0.279,
+  "blown": 0.145
+ },
+ {
+  "cameraId": 12521,
+  "site": "Mesa Grande",
+  "color": 0.0094,
+  "q": 0.037,
+  "tex": 2.46,
+  "cloudfrac": 0.996,
+  "hz_cloud": 1.0,
+  "blown": 0.909
+ },
+ {
+  "cameraId": 12664,
+  "site": "Carol Drive Santa Clara",
+  "color": 0.0483,
+  "q": 0.137,
+  "tex": 5.95,
+  "cloudfrac": 0.721,
+  "hz_cloud": 0.035,
+  "blown": 0.092
+ },
+ {
+  "cameraId": 13465,
+  "site": "Williams Glider Port",
+  "color": 0.0651,
+  "q": 0.042,
+  "tex": 7.26,
+  "cloudfrac": 0.308,
+  "hz_cloud": 0.197,
+  "blown": 0.057
+ },
+ {
+  "cameraId": 12410,
+  "site": "Truckee Airport",
+  "color": 0.0534,
+  "q": 0.027,
+  "tex": 3.7,
+  "cloudfrac": 0.734,
+  "hz_cloud": 0.961,
+  "blown": 0.107
+ },
+ {
+  "cameraId": 12555,
+  "site": "Cameron Park Airport",
+  "color": 0.0657,
+  "q": 0.04,
+  "tex": 4.37,
+  "cloudfrac": 0.879,
+  "hz_cloud": 0.845,
+  "blown": 0.162
+ },
+ {
+  "cameraId": 12734,
+  "site": "Girard Ridge",
+  "color": 0.0,
+  "q": 0.107,
+  "tex": 5.43,
+  "cloudfrac": 0.992,
+  "hz_cloud": null,
+  "blown": 0.903
+ },
+ {
+  "cameraId": 12841,
+  "site": "Yellow Peak",
+  "color": 0.0012,
+  "q": 0.057,
+  "tex": 4.62,
+  "cloudfrac": 0.989,
+  "hz_cloud": 0.989,
+  "blown": 0.324
+ },
+ {
+  "cameraId": 12681,
+  "site": "Sulphur Mtn Willet",
+  "color": 0.0135,
+  "q": 0.019,
+  "tex": 4.14,
+  "cloudfrac": 0.903,
+  "hz_cloud": 0.335,
+  "blown": 0.037
+ },
+ {
+  "cameraId": 12515,
+  "site": "Merrell Rd",
+  "color": 0.1656,
+  "q": 0.042,
+  "tex": 3.62,
+  "cloudfrac": 0.553,
+  "hz_cloud": 0.0,
+  "blown": 0.002
+ },
+ {
+  "cameraId": 12797,
+  "site": "Cave Junction",
+  "color": 0.0015,
+  "q": 0.609,
+  "tex": 9.45,
+  "cloudfrac": 0.934,
+  "hz_cloud": 0.988,
+  "blown": 0.049
+ },
+ {
+  "cameraId": 12619,
+  "site": "Wolfback Ridge",
+  "color": 0.0719,
+  "q": 0.141,
+  "tex": 3.74,
+  "cloudfrac": 0.6,
+  "hz_cloud": 0.158,
+  "blown": 0.331
+ },
+ {
+  "cameraId": 12591,
+  "site": "Ballard Ridge",
+  "color": 0.0004,
+  "q": 0.037,
+  "tex": 6.3,
+  "cloudfrac": 0.979,
+  "hz_cloud": 0.999,
+  "blown": 0.309
+ },
+ {
+  "cameraId": 13588,
+  "site": "Willits Airport",
+  "color": 0.0352,
+  "q": 0.1,
+  "tex": 3.82,
+  "cloudfrac": 0.923,
+  "hz_cloud": 0.999,
+  "blown": 0.0
+ },
+ {
+  "cameraId": 13276,
+  "site": "High Divide",
+  "color": 0.0003,
+  "q": 0.321,
+  "tex": 5.16,
+  "cloudfrac": 0.991,
+  "hz_cloud": 1.0,
+  "blown": 0.677
+ },
+ {
+  "cameraId": 13930,
+  "site": "Lafayette Dunsyre ",
+  "color": 0.0373,
+  "q": 0.141,
+  "tex": 3.9,
+  "cloudfrac": 0.939,
+  "hz_cloud": 0.537,
+  "blown": 0.918
+ },
+ {
+  "cameraId": 13461,
+  "site": "Buckingham Peak",
+  "color": 0.0078,
+  "q": 0.052,
+  "tex": 6.08,
+  "cloudfrac": 0.772,
+  "hz_cloud": 0.137,
+  "blown": 0.315
+ },
+ {
+  "cameraId": 13880,
+  "site": "Shelter Cove",
+  "color": 0.0579,
+  "q": 0.297,
+  "tex": 6.41,
+  "cloudfrac": 0.769,
+  "hz_cloud": 0.67,
+  "blown": 0.002
+ },
+ {
+  "cameraId": 12748,
+  "site": "Harness Mtn",
+  "color": 0.0007,
+  "q": 0.288,
+  "tex": 6.61,
+  "cloudfrac": 0.992,
+  "hz_cloud": 0.999,
+  "blown": 0.375
+ },
+ {
+  "cameraId": 13180,
+  "site": "St Joe Baldy",
+  "color": 0.0259,
+  "q": 0.002,
+  "tex": 7.03,
+  "cloudfrac": 0.873,
+  "hz_cloud": 0.95,
+  "blown": 0.247
+ },
+ {
+  "cameraId": 13555,
+  "site": "Sea Ranch Lodge",
+  "color": 0.108,
+  "q": 0.091,
+  "tex": 6.48,
+  "cloudfrac": 0.889,
+  "hz_cloud": 1.0,
+  "blown": 0.019
+ },
+ {
+  "cameraId": 12707,
+  "site": "Plowshare Peak",
+  "color": 0.0366,
+  "q": 0.022,
+  "tex": 3.21,
+  "cloudfrac": 0.708,
+  "hz_cloud": 0.284,
+  "blown": 0.003
+ },
+ {
+  "cameraId": 13164,
+  "site": "Jordan Butte",
+  "color": 0.0055,
+  "q": 0.01,
+  "tex": 4.09,
+  "cloudfrac": 0.995,
+  "hz_cloud": 1.0,
+  "blown": 0.797
+ },
+ {
+  "cameraId": 12616,
+  "site": "Black Mtn Boundary",
+  "color": 0.021,
+  "q": 0.0,
+  "tex": 5.32,
+  "cloudfrac": 0.713,
+  "hz_cloud": 0.768,
+  "blown": 0.009
+ },
+ {
+  "cameraId": 12809,
+  "site": "Fish Creek Rim",
+  "color": 0.0289,
+  "q": 0.034,
+  "tex": 5.28,
+  "cloudfrac": 0.457,
+  "hz_cloud": 0.986,
+  "blown": 0.002
+ },
+ {
+  "cameraId": 12848,
+  "site": "Fox Mtn",
+  "color": 0.0001,
+  "q": 0.0,
+  "tex": 3.86,
+  "cloudfrac": 0.991,
+  "hz_cloud": 1.0,
+  "blown": 0.557
+ },
+ {
+  "cameraId": 13579,
+  "site": "Hopland",
+  "color": 0.0001,
+  "q": 0.059,
+  "tex": 5.94,
+  "cloudfrac": 0.96,
+  "hz_cloud": 0.838,
+  "blown": 0.274
+ },
+ {
+  "cameraId": 12844,
+  "site": "Angel Peak",
+  "color": 0.007,
+  "q": 0.0,
+  "tex": 4.47,
+  "cloudfrac": 0.633,
+  "hz_cloud": 1.0,
+  "blown": 0.07
+ },
+ {
+  "cameraId": 13756,
+  "site": "Gold Beach",
+  "color": 0.0,
+  "q": 0.118,
+  "tex": 0.79,
+  "cloudfrac": 0.983,
+  "hz_cloud": 0.932,
+  "blown": 0.0
+ },
+ {
+  "cameraId": 12635,
+  "site": "Saint John Mtn",
+  "color": 0.0343,
+  "q": 0.094,
+  "tex": 4.46,
+  "cloudfrac": 0.917,
+  "hz_cloud": 0.754,
+  "blown": 0.609
+ },
+ {
+  "cameraId": 12860,
+  "site": "Pilot Peak",
+  "color": 0.0004,
+  "q": 0.0,
+  "tex": 3.74,
+  "cloudfrac": 0.259,
+  "hz_cloud": 0.998,
+  "blown": 0.002
+ },
+ {
+  "cameraId": 13140,
+  "site": "Marzano Peak",
+  "color": 0.0001,
+  "q": 0.0,
+  "tex": 7.01,
+  "cloudfrac": 0.993,
+  "hz_cloud": 0.988,
+  "blown": 0.509
+ },
+ {
+  "cameraId": 12675,
+  "site": "Santiago Peak CalOES",
+  "color": 0.0179,
+  "q": 0.053,
+  "tex": 6.73,
+  "cloudfrac": 0.881,
+  "hz_cloud": 0.991,
+  "blown": 0.317
+ },
+ {
+  "cameraId": 13964,
+  "site": "Station 10 Bodega Bay",
+  "color": 0.0167,
+  "q": 0.074,
+  "tex": 3.13,
+  "cloudfrac": 0.772,
+  "hz_cloud": 0.617,
+  "blown": 0.034
+ },
+ {
+  "cameraId": 13243,
+  "site": "Powell Butte",
+  "color": 0.0035,
+  "q": 0.151,
+  "tex": 8.56,
+  "cloudfrac": 0.927,
+  "hz_cloud": 0.574,
+  "blown": 0.065
+ },
+ {
+  "cameraId": 13855,
+  "site": "Potosi",
+  "color": 0.0033,
+  "q": 0.0,
+  "tex": 4.47,
+  "cloudfrac": 0.862,
+  "hz_cloud": 1.0,
+  "blown": 0.338
+ },
+ {
+  "cameraId": 13453,
+  "site": "Leek Springs",
+  "color": 0.0062,
+  "q": 0.02,
+  "tex": 4.4,
+  "cloudfrac": 0.95,
+  "hz_cloud": 1.0,
+  "blown": 0.443
+ },
+ {
+  "cameraId": 13901,
+  "site": "Ukiah",
+  "color": 0.0484,
+  "q": 0.059,
+  "tex": 3.74,
+  "cloudfrac": 0.993,
+  "hz_cloud": 1.0,
+  "blown": 0.0
+ },
+ {
+  "cameraId": 14129,
+  "site": "Sacramento Mather Airport",
+  "color": 0.0289,
+  "q": 0.054,
+  "tex": 2.72,
+  "cloudfrac": 0.179,
+  "hz_cloud": 0.614,
+  "blown": 0.007
+ },
+ {
+  "cameraId": 12716,
+  "site": "Mt San Miguel",
+  "color": 0.0002,
+  "q": 0.017,
+  "tex": 2.95,
+  "cloudfrac": 0.991,
+  "hz_cloud": 0.999,
+  "blown": 0.834
+ },
+ {
+  "cameraId": 13871,
+  "site": "Ashland",
+  "color": 0.0228,
+  "q": 0.23,
+  "tex": 6.82,
+  "cloudfrac": 0.51,
+  "hz_cloud": 0.829,
+  "blown": 0.132
+ },
+ {
+  "cameraId": 12740,
+  "site": "Mojave Air and Space Port",
+  "color": 0.0061,
+  "q": 0.023,
+  "tex": 6.42,
+  "cloudfrac": 0.68,
+  "hz_cloud": 0.0,
+  "blown": 0.308
+ },
+ {
+  "cameraId": 12710,
+  "site": "Dangermond",
+  "color": 0.0,
+  "q": 0.009,
+  "tex": 0.79,
+  "cloudfrac": 1.0,
+  "hz_cloud": 1.0,
+  "blown": 0.989
+ },
+ {
+  "cameraId": 13025,
+  "site": "Callaghan Peak",
+  "color": 0.0277,
+  "q": 0.0,
+  "tex": 6.85,
+  "cloudfrac": 0.764,
+  "hz_cloud": 0.027,
+  "blown": 0.058
+ },
+ {
+  "cameraId": 13052,
+  "site": "Carson City",
+  "color": 0.0091,
+  "q": 0.007,
+  "tex": 4.02,
+  "cloudfrac": 0.651,
+  "hz_cloud": 0.983,
+  "blown": 0.06
+ },
+ {
+  "cameraId": 12987,
+  "site": "Lamoille",
+  "color": 0.0103,
+  "q": 0.009,
+  "tex": 5.85,
+  "cloudfrac": 0.958,
+  "hz_cloud": 0.853,
+  "blown": 0.163
+ },
+ {
+  "cameraId": 13457,
+  "site": "Willows Glenn Airport",
+  "color": 0.0709,
+  "q": 0.06,
+  "tex": 3.71,
+  "cloudfrac": 0.448,
+  "hz_cloud": 0.377,
+  "blown": 0.041
+ },
+ {
+  "cameraId": 13886,
+  "site": "Brookings Airport",
+  "color": 0.0,
+  "q": 0.158,
+  "tex": 3.29,
+  "cloudfrac": 0.987,
+  "hz_cloud": 0.99,
+  "blown": 0.002
+ },
+ {
+  "cameraId": 12891,
+  "site": "Bald Mtn",
+  "color": 0.0002,
+  "q": 0.003,
+  "tex": 4.97,
+  "cloudfrac": 0.76,
+  "hz_cloud": 1.0,
+  "blown": 0.218
+ },
+ {
+  "cameraId": 12804,
+  "site": "Hornbrook",
+  "color": 0.0004,
+  "q": 0.404,
+  "tex": 11.11,
+  "cloudfrac": 0.962,
+  "hz_cloud": 0.774,
+  "blown": 0.298
+ },
+ {
+  "cameraId": 13821,
+  "site": "Signal Peak Lookout",
+  "color": 0.0021,
+  "q": 0.009,
+  "tex": 4.57,
+  "cloudfrac": 0.99,
+  "hz_cloud": 0.995,
+  "blown": 0.45
+ },
+ {
+  "cameraId": 13410,
+  "site": "Walnut Grove",
+  "color": 0.0,
+  "q": 0.071,
+  "tex": 3.8,
+  "cloudfrac": 0.994,
+  "hz_cloud": 1.0,
+  "blown": 0.718
+ },
+ {
+  "cameraId": 13640,
+  "site": "Clearlake",
+  "color": 0.0485,
+  "q": 0.044,
+  "tex": 6.53,
+  "cloudfrac": 0.851,
+  "hz_cloud": 0.602,
+  "blown": 0.037
+ },
+ {
+  "cameraId": 13040,
+  "site": "Pierce County",
+  "color": 0.0487,
+  "q": 0.0,
+  "tex": 4.58,
+  "cloudfrac": 0.768,
+  "hz_cloud": 0.111,
+  "blown": 0.098
+ },
+ {
+  "cameraId": 13216,
+  "site": "Snag Hill",
+  "color": 0.0003,
+  "q": 0.045,
+  "tex": 4.08,
+  "cloudfrac": 0.994,
+  "hz_cloud": 1.0,
+  "blown": 0.589
+ },
+ {
+  "cameraId": 13175,
+  "site": "Fairview Peak",
+  "color": 0.0002,
+  "q": 0.0,
+  "tex": 5.0,
+  "cloudfrac": 0.916,
+  "hz_cloud": 0.997,
+  "blown": 0.446
+ },
+ {
+  "cameraId": 13529,
+  "site": "Garberville Airport",
+  "color": 0.0216,
+  "q": 0.267,
+  "tex": 7.0,
+  "cloudfrac": 0.407,
+  "hz_cloud": 0.976,
+  "blown": 0.002
+ },
+ {
+  "cameraId": 13876,
+  "site": "Tudor",
+  "color": 0.0003,
+  "q": 0.053,
+  "tex": 5.63,
+  "cloudfrac": 0.894,
+  "hz_cloud": 0.609,
+  "blown": 0.239
+ },
+ {
+  "cameraId": 13386,
+  "site": "Bunch Grass Lookout",
+  "color": 0.0004,
+  "q": 0.078,
+  "tex": 4.54,
+  "cloudfrac": 0.991,
+  "hz_cloud": 1.0,
+  "blown": 0.569
+ },
+ {
+  "cameraId": 12825,
+  "site": "Mahogany",
+  "color": 0.0107,
+  "q": 0.002,
+  "tex": 6.77,
+  "cloudfrac": 0.721,
+  "hz_cloud": 0.998,
+  "blown": 0.046
+ },
+ {
+  "cameraId": 11069,
+  "site": "Crowsnest Pass",
+  "color": 0.0159,
+  "q": 0.0,
+  "tex": 5.2,
+  "cloudfrac": 0.243,
+  "hz_cloud": 0.658,
+  "blown": 0.021
+ },
+ {
+  "cameraId": 12760,
+  "site": "Marys Peak",
+  "color": 0.0008,
+  "q": 0.035,
+  "tex": 4.98,
+  "cloudfrac": 0.99,
+  "hz_cloud": 0.999,
+  "blown": 0.739
+ },
+ {
+  "cameraId": 13530,
+  "site": "Coast Life Support",
+  "color": 0.1031,
+  "q": 0.105,
+  "tex": 4.94,
+  "cloudfrac": 0.63,
+  "hz_cloud": 0.297,
+  "blown": 0.018
+ },
+ {
+  "cameraId": 13915,
+  "site": "Covelo",
+  "color": 0.0719,
+  "q": 0.113,
+  "tex": 5.79,
+  "cloudfrac": 0.845,
+  "hz_cloud": 0.711,
+  "blown": 0.034
+ },
+ {
+  "cameraId": 12652,
+  "site": "Parkfield",
+  "color": 0.0929,
+  "q": 0.147,
+  "tex": 6.3,
+  "cloudfrac": 0.8,
+  "hz_cloud": 0.238,
+  "blown": 0.04
+ },
+ {
+  "cameraId": 14163,
+  "site": "Corning Municipal Airport",
+  "color": 0.0731,
+  "q": 0.097,
+  "tex": 3.97,
+  "cloudfrac": 0.426,
+  "hz_cloud": 0.47,
+  "blown": 0.034
+ },
+ {
+  "cameraId": 13741,
+  "site": "Orland Airport",
+  "color": 0.0753,
+  "q": 0.06,
+  "tex": 3.49,
+  "cloudfrac": 0.377,
+  "hz_cloud": 0.565,
+  "blown": 0.052
+ },
+ {
+  "cameraId": 13184,
+  "site": "Cline Butte",
+  "color": 0.0001,
+  "q": 0.152,
+  "tex": 5.09,
+  "cloudfrac": 0.991,
+  "hz_cloud": 0.989,
+  "blown": 0.751
+ },
+ {
+  "cameraId": 13341,
+  "site": "Glenada",
+  "color": 0.0,
+  "q": 0.045,
+  "tex": 4.41,
+  "cloudfrac": 0.812,
+  "hz_cloud": 0.003,
+  "blown": 0.106
+ },
+ {
+  "cameraId": 12525,
+  "site": "Barham",
+  "color": 0.0826,
+  "q": 0.131,
+  "tex": 2.8,
+  "cloudfrac": 0.99,
+  "hz_cloud": 0.974,
+  "blown": 0.739
+ },
+ {
+  "cameraId": 12648,
+  "site": "Siller Bros Tower",
+  "color": 0.0001,
+  "q": 0.039,
+  "tex": 4.92,
+  "cloudfrac": 0.548,
+  "hz_cloud": 0.783,
+  "blown": 0.003
+ },
+ {
+  "cameraId": 13907,
+  "site": "Lakeport",
+  "color": 0.0266,
+  "q": 0.055,
+  "tex": 4.44,
+  "cloudfrac": 0.825,
+  "hz_cloud": 0.629,
+  "blown": 0.03
+ },
+ {
+  "cameraId": 12895,
+  "site": "Rogue Valley Manor",
+  "color": 0.0036,
+  "q": 0.275,
+  "tex": 7.31,
+  "cloudfrac": 0.991,
+  "hz_cloud": 0.999,
+  "blown": 0.604
+ },
+ {
+  "cameraId": 12856,
+  "site": "Black Mtn",
+  "color": 0.005,
+  "q": 0.0,
+  "tex": 6.71,
+  "cloudfrac": 0.99,
+  "hz_cloud": 0.99,
+  "blown": 0.366
+ },
+ {
+  "cameraId": 11349,
+  "site": "Vancouver Intl",
+  "color": 0.0217,
+  "q": 0.035,
+  "tex": 2.57,
+  "cloudfrac": 0.523,
+  "hz_cloud": 0.783,
+  "blown": 0.057
+ },
+ {
+  "cameraId": 13737,
+  "site": "Sutter Buttes",
+  "color": 0.0732,
+  "q": 0.036,
+  "tex": 2.26,
+  "cloudfrac": 0.618,
+  "hz_cloud": 0.0,
+  "blown": 0.598
+ },
+ {
+  "cameraId": 12869,
+  "site": "Bennett Mtn",
+  "color": 0.0001,
+  "q": 0.0,
+  "tex": 5.66,
+  "cloudfrac": 0.478,
+  "hz_cloud": 1.0,
+  "blown": 0.006
+ },
+ {
+  "cameraId": 12780,
+  "site": "Buxton",
+  "color": 0.0008,
+  "q": 0.001,
+  "tex": 4.99,
+  "cloudfrac": 0.98,
+  "hz_cloud": 0.936,
+  "blown": 0.371
+ },
+ {
+  "cameraId": 12533,
+  "site": "Butler Hill",
+  "color": 0.0256,
+  "q": 0.024,
+  "tex": 4.66,
+  "cloudfrac": 0.53,
+  "hz_cloud": 0.014,
+  "blown": 0.217
+ },
+ {
+  "cameraId": 12837,
+  "site": "Eagle Peak",
+  "color": 0.0,
+  "q": 0.005,
+  "tex": 4.65,
+  "cloudfrac": 0.965,
+  "hz_cloud": 1.0,
+  "blown": 0.506
+ },
+ {
+  "cameraId": 12913,
+  "site": "Ella Mtn",
+  "color": 0.0475,
+  "q": 0.0,
+  "tex": 5.72,
+  "cloudfrac": 0.902,
+  "hz_cloud": 0.886,
+  "blown": 0.15
+ },
+ {
+  "cameraId": 13636,
+  "site": "Duncan Mills",
+  "color": 0.0281,
+  "q": 0.084,
+  "tex": 4.47,
+  "cloudfrac": 0.98,
+  "hz_cloud": 0.977,
+  "blown": 0.003
+ },
+ {
+  "cameraId": 13260,
+  "site": "Henkle Butte",
+  "color": 0.0432,
+  "q": 0.376,
+  "tex": 8.9,
+  "cloudfrac": 0.77,
+  "hz_cloud": 0.995,
+  "blown": 0.017
+ },
+ {
+  "cameraId": 13044,
+  "site": "Tacoma Narrows",
+  "color": 0.0504,
+  "q": 0.003,
+  "tex": 3.75,
+  "cloudfrac": 0.679,
+  "hz_cloud": 0.275,
+  "blown": 0.142
+ },
+ {
+  "cameraId": 13123,
+  "site": "Queen Bee",
+  "color": 0.0006,
+  "q": 0.0,
+  "tex": 5.43,
+  "cloudfrac": 0.976,
+  "hz_cloud": 1.0,
+  "blown": 0.583
+ },
+ {
+  "cameraId": 13228,
+  "site": "Big Lookout",
+  "color": 0.0056,
+  "q": 0.032,
+  "tex": 6.25,
+  "cloudfrac": 0.976,
+  "hz_cloud": 1.0,
+  "blown": 0.439
+ },
+ {
+  "cameraId": 12820,
+  "site": "Fiddler",
+  "color": 0.0005,
+  "q": 0.488,
+  "tex": 5.42,
+  "cloudfrac": 0.994,
+  "hz_cloud": 1.0,
+  "blown": 0.568
+ },
+ {
+  "cameraId": 12918,
+  "site": "Cave Mtn",
+  "color": 0.0025,
+  "q": 0.0,
+  "tex": 5.64,
+  "cloudfrac": 0.876,
+  "hz_cloud": 0.998,
+  "blown": 0.358
+ },
+ {
+  "cameraId": 12640,
+  "site": "Oven Lid",
+  "color": 0.0013,
+  "q": 0.089,
+  "tex": 5.3,
+  "cloudfrac": 0.717,
+  "hz_cloud": 0.734,
+  "blown": 0.003
+ },
+ {
+  "cameraId": 12660,
+  "site": "Buffalo Bump",
+  "color": 0.0016,
+  "q": 0.066,
+  "tex": 3.87,
+  "cloudfrac": 0.992,
+  "hz_cloud": 0.987,
+  "blown": 0.575
+ },
+ {
+  "cameraId": 13256,
+  "site": "McCully Mtn",
+  "color": 0.0084,
+  "q": 0.012,
+  "tex": 4.65,
+  "cloudfrac": 0.891,
+  "hz_cloud": 0.732,
+  "blown": 0.195
+ },
+ {
+  "cameraId": 12603,
+  "site": "Templeton",
+  "color": 0.0077,
+  "q": 0.045,
+  "tex": 9.46,
+  "cloudfrac": 0.753,
+  "hz_cloud": 0.157,
+  "blown": 0.132
+ },
+ {
+  "cameraId": 12723,
+  "site": "Mt Oso",
+  "color": 0.0056,
+  "q": 0.08,
+  "tex": 3.12,
+  "cloudfrac": 0.854,
+  "hz_cloud": 0.348,
+  "blown": 0.609
+ },
+ {
+  "cameraId": 13518,
+  "site": "Middletown",
+  "color": 0.0475,
+  "q": 0.071,
+  "tex": 6.65,
+  "cloudfrac": 0.883,
+  "hz_cloud": 0.91,
+  "blown": 0.005
+ },
+ {
+  "cameraId": 12559,
+  "site": "Concow Mtn",
+  "color": 0.0052,
+  "q": 0.058,
+  "tex": 4.79,
+  "cloudfrac": 0.508,
+  "hz_cloud": 0.684,
+  "blown": 0.002
+ },
+ {
+  "cameraId": 12628,
+  "site": "Mebane",
+  "color": 0.0049,
+  "q": 0.061,
+  "tex": 3.86,
+  "cloudfrac": 0.586,
+  "hz_cloud": 0.567,
+  "blown": 0.002
+ },
+ {
+  "cameraId": 13196,
+  "site": "Deer",
+  "color": 0.0202,
+  "q": 0.0,
+  "tex": 4.81,
+  "cloudfrac": 0.481,
+  "hz_cloud": 0.853,
+  "blown": 0.007
+ },
+ {
+  "cameraId": 12852,
+  "site": "Prospect Peak",
+  "color": 0.0747,
+  "q": 0.0,
+  "tex": 5.14,
+  "cloudfrac": 0.929,
+  "hz_cloud": 0.697,
+  "blown": 0.045
+ },
+ {
+  "cameraId": 13220,
+  "site": "Dolly Varden",
+  "color": 0.0009,
+  "q": 0.013,
+  "tex": 4.57,
+  "cloudfrac": 0.922,
+  "hz_cloud": 1.0,
+  "blown": 0.372
+ },
+ {
+  "cameraId": 13378,
+  "site": "Fort Sage",
+  "color": 0.0,
+  "q": 0.005,
+  "tex": 5.7,
+  "cloudfrac": 0.973,
+  "hz_cloud": 0.996,
+  "blown": 0.329
+ },
+ {
+  "cameraId": 12552,
+  "site": "Mt Helen",
+  "color": 0.0348,
+  "q": 0.047,
+  "tex": 5.72,
+  "cloudfrac": 0.63,
+  "hz_cloud": 0.214,
+  "blown": 0.308
+ },
+ {
+  "cameraId": 13359,
+  "site": "Orcutt",
+  "color": 0.0,
+  "q": 0.015,
+  "tex": 3.14,
+  "cloudfrac": 0.995,
+  "hz_cloud": 0.996,
+  "blown": 0.718
+ },
+ {
+  "cameraId": 12789,
+  "site": "Wagontire",
+  "color": 0.0909,
+  "q": 0.047,
+  "tex": 7.62,
+  "cloudfrac": 0.762,
+  "hz_cloud": 0.923,
+  "blown": 0.057
+ },
+ {
+  "cameraId": 13363,
+  "site": "Topanga Peak",
+  "color": 0.0067,
+  "q": 0.035,
+  "tex": 3.76,
+  "cloudfrac": 0.714,
+  "hz_cloud": 0.779,
+  "blown": 0.017
+ },
+ {
+  "cameraId": 13509,
+  "site": "Shaniko",
+  "color": 0.0046,
+  "q": 0.176,
+  "tex": 5.8,
+  "cloudfrac": 0.584,
+  "hz_cloud": 1.0,
+  "blown": 0.02
+ },
+ {
+  "cameraId": 13071,
+  "site": "Riddle",
+  "color": 0.0005,
+  "q": 0.017,
+  "tex": 4.91,
+  "cloudfrac": 0.989,
+  "hz_cloud": 0.996,
+  "blown": 0.715
+ },
+ {
+  "cameraId": 12828,
+  "site": "Midas Peak",
+  "color": 0.0014,
+  "q": 0.0,
+  "tex": 7.73,
+  "cloudfrac": 0.935,
+  "hz_cloud": 0.761,
+  "blown": 0.474
+ },
+ {
+  "cameraId": 13489,
+  "site": "Santa Rosa 2",
+  "color": 0.0133,
+  "q": 0.133,
+  "tex": 4.47,
+  "cloudfrac": 0.738,
+  "hz_cloud": 0.905,
+  "blown": 0.142
+ },
+ {
+  "cameraId": 12731,
+  "site": "Sites",
+  "color": 0.0011,
+  "q": 0.12,
+  "tex": 5.54,
+  "cloudfrac": 0.977,
+  "hz_cloud": 0.94,
+  "blown": 0.442
+ }
+]

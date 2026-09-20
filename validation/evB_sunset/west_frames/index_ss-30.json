@@ -1,0 +1,1046 @@
+[
+ {
+  "cameraId": 12727,
+  "file": "west_frames/12727_ss-30_0133Z.jpg",
+  "t": "2026-09-20T01:33:00.629Z",
+  "dmin": 3.1
+ },
+ {
+  "cameraId": 13990,
+  "file": "west_frames/13990_ss-30_0138Z.jpg",
+  "t": "2026-09-20T01:38:20.030Z",
+  "dmin": 3.0
+ },
+ {
+  "cameraId": 13397,
+  "file": "west_frames/13397_ss-30_0114Z.jpg",
+  "t": "2026-09-20T01:14:45.378Z",
+  "dmin": 4.9
+ },
+ {
+  "cameraId": 12817,
+  "file": "west_frames/12817_ss-30_0138Z.jpg",
+  "t": "2026-09-20T01:38:46.293Z",
+  "dmin": 4.6
+ },
+ {
+  "cameraId": 13333,
+  "file": "west_frames/13333_ss-30_0138Z.jpg",
+  "t": "2026-09-20T01:38:57.234Z",
+  "dmin": 2.3
+ },
+ {
+  "cameraId": 12702,
+  "file": "west_frames/12702_ss-30_0119Z.jpg",
+  "t": "2026-09-20T01:19:05.211Z",
+  "dmin": 4.6
+ },
+ {
+  "cameraId": 12548,
+  "file": "west_frames/12548_ss-30_0153Z.jpg",
+  "t": "2026-09-20T01:53:22.816Z",
+  "dmin": 5.8
+ },
+ {
+  "cameraId": 11287,
+  "file": "west_frames/11287_ss-30_0123Z.jpg",
+  "t": "2026-09-20T01:23:48.381Z",
+  "dmin": 3.5
+ },
+ {
+  "cameraId": 13704,
+  "file": "west_frames/13704_ss-30_0137Z.jpg",
+  "t": "2026-09-20T01:37:31.437Z",
+  "dmin": 3.4
+ },
+ {
+  "cameraId": 13767,
+  "file": "west_frames/13767_ss-30_0135Z.jpg",
+  "t": "2026-09-20T01:35:56.378Z",
+  "dmin": 3.4
+ },
+ {
+  "cameraId": 13075,
+  "file": "west_frames/13075_ss-30_0127Z.jpg",
+  "t": "2026-09-20T01:27:04.095Z",
+  "dmin": 2.7
+ },
+ {
+  "cameraId": 13576,
+  "file": "west_frames/13576_ss-30_0144Z.jpg",
+  "t": "2026-09-20T01:44:29.605Z",
+  "dmin": 3.3
+ },
+ {
+  "cameraId": 12888,
+  "file": "west_frames/12888_ss-30_0125Z.jpg",
+  "t": "2026-09-20T01:25:40.623Z",
+  "dmin": 1.2
+ },
+ {
+  "cameraId": 13868,
+  "file": "west_frames/13868_ss-30_0147Z.jpg",
+  "t": "2026-09-20T01:47:42.177Z",
+  "dmin": 3.6
+ },
+ {
+  "cameraId": 13695,
+  "file": "west_frames/13695_ss-30_0136Z.jpg",
+  "t": "2026-09-20T01:36:51.235Z",
+  "dmin": 1.0
+ },
+ {
+  "cameraId": 12610,
+  "file": "west_frames/12610_ss-30_0146Z.jpg",
+  "t": "2026-09-20T01:46:16.083Z",
+  "dmin": 1.8
+ },
+ {
+  "cameraId": 13566,
+  "file": "west_frames/13566_ss-30_0140Z.jpg",
+  "t": "2026-09-20T01:40:33.251Z",
+  "dmin": 4.4
+ },
+ {
+  "cameraId": 12833,
+  "file": "west_frames/12833_ss-30_0121Z.jpg",
+  "t": "2026-09-20T01:21:08.913Z",
+  "dmin": 2.1
+ },
+ {
+  "cameraId": 12574,
+  "file": "west_frames/12574_ss-30_0115Z.jpg",
+  "t": "2026-09-20T01:15:07.714Z",
+  "dmin": 2.5
+ },
+ {
+  "cameraId": 12965,
+  "file": "west_frames/12965_ss-30_0144Z.jpg",
+  "t": "2026-09-20T01:44:15.484Z",
+  "dmin": 4.2
+ },
+ {
+  "cameraId": 12537,
+  "file": "west_frames/12537_ss-30_0118Z.jpg",
+  "t": "2026-09-20T01:18:20.047Z",
+  "dmin": 3.1
+ },
+ {
+  "cameraId": 13297,
+  "file": "west_frames/13297_ss-30_0134Z.jpg",
+  "t": "2026-09-20T01:34:57.698Z",
+  "dmin": 3.4
+ },
+ {
+  "cameraId": 13525,
+  "file": "west_frames/13525_ss-30_0135Z.jpg",
+  "t": "2026-09-20T01:35:30.620Z",
+  "dmin": 0.6
+ },
+ {
+  "cameraId": 13034,
+  "file": "west_frames/13034_ss-30_0134Z.jpg",
+  "t": "2026-09-20T01:34:29.338Z",
+  "dmin": 3.5
+ },
+ {
+  "cameraId": 13717,
+  "file": "west_frames/13717_ss-30_0146Z.jpg",
+  "t": "2026-09-20T01:46:46.032Z",
+  "dmin": 4.1
+ },
+ {
+  "cameraId": 13329,
+  "file": "west_frames/13329_ss-30_0137Z.jpg",
+  "t": "2026-09-20T01:37:10.175Z",
+  "dmin": 3.9
+ },
+ {
+  "cameraId": 13493,
+  "file": "west_frames/13493_ss-30_0137Z.jpg",
+  "t": "2026-09-20T01:37:18.838Z",
+  "dmin": 1.4
+ },
+ {
+  "cameraId": 13780,
+  "file": "west_frames/13780_ss-30_0143Z.jpg",
+  "t": "2026-09-20T01:43:22.824Z",
+  "dmin": 2.4
+ },
+ {
+  "cameraId": 12793,
+  "file": "west_frames/12793_ss-30_0147Z.jpg",
+  "t": "2026-09-20T01:47:04.626Z",
+  "dmin": 2.8
+ },
+ {
+  "cameraId": 12571,
+  "file": "west_frames/12571_ss-30_0130Z.jpg",
+  "t": "2026-09-20T01:30:57.737Z",
+  "dmin": 3.7
+ },
+ {
+  "cameraId": 13750,
+  "file": "west_frames/13750_ss-30_0145Z.jpg",
+  "t": "2026-09-20T01:45:31.441Z",
+  "dmin": 0.3
+ },
+ {
+  "cameraId": 12672,
+  "file": "west_frames/12672_ss-30_0125Z.jpg",
+  "t": "2026-09-20T01:25:09.200Z",
+  "dmin": 3.5
+ },
+ {
+  "cameraId": 13321,
+  "file": "west_frames/13321_ss-30_0133Z.jpg",
+  "t": "2026-09-20T01:33:22.111Z",
+  "dmin": 2.9
+ },
+ {
+  "cameraId": 11021,
+  "file": "west_frames/11021_ss-30_0142Z.jpg",
+  "t": "2026-09-20T01:42:42.191Z",
+  "dmin": 3.0
+ },
+ {
+  "cameraId": 13236,
+  "file": "west_frames/13236_ss-30_0116Z.jpg",
+  "t": "2026-09-20T01:16:47.240Z",
+  "dmin": 0.1
+ },
+ {
+  "cameraId": 12776,
+  "file": "west_frames/12776_ss-30_0134Z.jpg",
+  "t": "2026-09-20T01:34:15.464Z",
+  "dmin": 5.6
+ },
+ {
+  "cameraId": 12899,
+  "file": "west_frames/12899_ss-30_0137Z.jpg",
+  "t": "2026-09-20T01:37:31.379Z",
+  "dmin": 6.0
+ },
+ {
+  "cameraId": 13304,
+  "file": "west_frames/13304_ss-30_0148Z.jpg",
+  "t": "2026-09-20T01:48:36.634Z",
+  "dmin": 4.6
+ },
+ {
+  "cameraId": 10977,
+  "file": "west_frames/10977_ss-30_0153Z.jpg",
+  "t": "2026-09-20T01:53:21.951Z",
+  "dmin": 1.5
+ },
+ {
+  "cameraId": 10993,
+  "file": "west_frames/10993_ss-30_0151Z.jpg",
+  "t": "2026-09-20T01:51:19.267Z",
+  "dmin": 4.9
+ },
+ {
+  "cameraId": 13485,
+  "file": "west_frames/13485_ss-30_0147Z.jpg",
+  "t": "2026-09-20T01:47:02.670Z",
+  "dmin": 5.0
+ },
+ {
+  "cameraId": 12907,
+  "file": "west_frames/12907_ss-30_0137Z.jpg",
+  "t": "2026-09-20T01:37:08.506Z",
+  "dmin": 2.2
+ },
+ {
+  "cameraId": 12685,
+  "file": "west_frames/12685_ss-30_0141Z.jpg",
+  "t": "2026-09-20T01:41:14.025Z",
+  "dmin": 0.2
+ },
+ {
+  "cameraId": 12698,
+  "file": "west_frames/12698_ss-30_0121Z.jpg",
+  "t": "2026-09-20T01:21:07.517Z",
+  "dmin": 0.8
+ },
+ {
+  "cameraId": 13030,
+  "file": "west_frames/13030_ss-30_0136Z.jpg",
+  "t": "2026-09-20T01:36:34.649Z",
+  "dmin": 0.9
+ },
+ {
+  "cameraId": 13628,
+  "file": "west_frames/13628_ss-30_0138Z.jpg",
+  "t": "2026-09-20T01:38:08.460Z",
+  "dmin": 4.9
+ },
+ {
+  "cameraId": 13374,
+  "file": "west_frames/13374_ss-30_0128Z.jpg",
+  "t": "2026-09-20T01:28:48.148Z",
+  "dmin": 5.0
+ },
+ {
+  "cameraId": 12801,
+  "file": "west_frames/12801_ss-30_0136Z.jpg",
+  "t": "2026-09-20T01:36:51.479Z",
+  "dmin": 0.2
+ },
+ {
+  "cameraId": 12813,
+  "file": "west_frames/12813_ss-30_0146Z.jpg",
+  "t": "2026-09-20T01:46:18.588Z",
+  "dmin": 1.1
+ },
+ {
+  "cameraId": 13938,
+  "file": "west_frames/13938_ss-30_0113Z.jpg",
+  "t": "2026-09-20T01:13:06.840Z",
+  "dmin": 3.6
+ },
+ {
+  "cameraId": 13584,
+  "file": "west_frames/13584_ss-30_0143Z.jpg",
+  "t": "2026-09-20T01:43:44.191Z",
+  "dmin": 2.9
+ },
+ {
+  "cameraId": 12756,
+  "file": "west_frames/12756_ss-30_0138Z.jpg",
+  "t": "2026-09-20T01:38:21.238Z",
+  "dmin": 2.5
+ },
+ {
+  "cameraId": 13272,
+  "file": "west_frames/13272_ss-30_0138Z.jpg",
+  "t": "2026-09-20T01:38:14.360Z",
+  "dmin": 1.2
+ },
+ {
+  "cameraId": 12768,
+  "file": "west_frames/12768_ss-30_0128Z.jpg",
+  "t": "2026-09-20T01:28:49.685Z",
+  "dmin": 0.5
+ },
+ {
+  "cameraId": 12924,
+  "file": "west_frames/12924_ss-30_0146Z.jpg",
+  "t": "2026-09-20T01:46:11.310Z",
+  "dmin": 0.6
+ },
+ {
+  "cameraId": 11776,
+  "file": "west_frames/11776_ss-30_0145Z.jpg",
+  "t": "2026-09-20T01:45:21.794Z",
+  "dmin": 1.1
+ },
+ {
+  "cameraId": 12655,
+  "file": "west_frames/12655_ss-30_0116Z.jpg",
+  "t": "2026-09-20T01:16:48.046Z",
+  "dmin": 3.8
+ },
+ {
+  "cameraId": 13824,
+  "file": "west_frames/13824_ss-30_0132Z.jpg",
+  "t": "2026-09-20T01:32:08.623Z",
+  "dmin": 2.4
+ },
+ {
+  "cameraId": 13500,
+  "file": "west_frames/13500_ss-30_0145Z.jpg",
+  "t": "2026-09-20T01:45:31.341Z",
+  "dmin": 3.5
+ },
+ {
+  "cameraId": 13513,
+  "file": "west_frames/13513_ss-30_0144Z.jpg",
+  "t": "2026-09-20T01:44:51.728Z",
+  "dmin": 1.5
+ },
+ {
+  "cameraId": 13393,
+  "file": "west_frames/13393_ss-30_0137Z.jpg",
+  "t": "2026-09-20T01:37:34.314Z",
+  "dmin": 2.5
+ },
+ {
+  "cameraId": 13848,
+  "file": "west_frames/13848_ss-30_0133Z.jpg",
+  "t": "2026-09-20T01:33:27.531Z",
+  "dmin": 0.1
+ },
+ {
+  "cameraId": 12876,
+  "file": "west_frames/12876_ss-30_0119Z.jpg",
+  "t": "2026-09-20T01:19:07.419Z",
+  "dmin": 0.7
+ },
+ {
+  "cameraId": 12764,
+  "file": "west_frames/12764_ss-30_0118Z.jpg",
+  "t": "2026-09-20T01:18:14.472Z",
+  "dmin": 3.0
+ },
+ {
+  "cameraId": 13336,
+  "file": "west_frames/13336_ss-30_0143Z.jpg",
+  "t": "2026-09-20T01:43:56.601Z",
+  "dmin": 2.2
+ },
+ {
+  "cameraId": 13713,
+  "file": "west_frames/13713_ss-30_0130Z.jpg",
+  "t": "2026-09-20T01:30:41.251Z",
+  "dmin": 4.1
+ },
+ {
+  "cameraId": 12521,
+  "file": "west_frames/12521_ss-30_0115Z.jpg",
+  "t": "2026-09-20T01:15:00.696Z",
+  "dmin": 2.4
+ },
+ {
+  "cameraId": 12664,
+  "file": "west_frames/12664_ss-30_0139Z.jpg",
+  "t": "2026-09-20T01:39:54.262Z",
+  "dmin": 1.5
+ },
+ {
+  "cameraId": 13465,
+  "file": "west_frames/13465_ss-30_0144Z.jpg",
+  "t": "2026-09-20T01:44:09.301Z",
+  "dmin": 4.3
+ },
+ {
+  "cameraId": 12410,
+  "file": "west_frames/12410_ss-30_0130Z.jpg",
+  "t": "2026-09-20T01:30:27.822Z",
+  "dmin": 1.5
+ },
+ {
+  "cameraId": 12555,
+  "file": "west_frames/12555_ss-30_0131Z.jpg",
+  "t": "2026-09-20T01:31:28.255Z",
+  "dmin": 3.8
+ },
+ {
+  "cameraId": 12734,
+  "file": "west_frames/12734_ss-30_0135Z.jpg",
+  "t": "2026-09-20T01:35:48.237Z",
+  "dmin": 5.1
+ },
+ {
+  "cameraId": 12841,
+  "file": "west_frames/12841_ss-30_0134Z.jpg",
+  "t": "2026-09-20T01:34:23.515Z",
+  "dmin": 4.0
+ },
+ {
+  "cameraId": 12681,
+  "file": "west_frames/12681_ss-30_0128Z.jpg",
+  "t": "2026-09-20T01:28:47.656Z",
+  "dmin": 1.5
+ },
+ {
+  "cameraId": 12515,
+  "file": "west_frames/12515_ss-30_0133Z.jpg",
+  "t": "2026-09-20T01:33:45.819Z",
+  "dmin": 1.7
+ },
+ {
+  "cameraId": 12797,
+  "file": "west_frames/12797_ss-30_0149Z.jpg",
+  "t": "2026-09-20T01:49:06.288Z",
+  "dmin": 2.6
+ },
+ {
+  "cameraId": 12619,
+  "file": "west_frames/12619_ss-30_0143Z.jpg",
+  "t": "2026-09-20T01:43:56.521Z",
+  "dmin": 2.8
+ },
+ {
+  "cameraId": 12591,
+  "file": "west_frames/12591_ss-30_0132Z.jpg",
+  "t": "2026-09-20T01:32:24.195Z",
+  "dmin": 2.8
+ },
+ {
+  "cameraId": 13588,
+  "file": "west_frames/13588_ss-30_0145Z.jpg",
+  "t": "2026-09-20T01:45:11.818Z",
+  "dmin": 0.3
+ },
+ {
+  "cameraId": 13276,
+  "file": "west_frames/13276_ss-30_0147Z.jpg",
+  "t": "2026-09-20T01:47:45.550Z",
+  "dmin": 0.4
+ },
+ {
+  "cameraId": 13930,
+  "file": "west_frames/13930_ss-30_0139Z.jpg",
+  "t": "2026-09-20T01:39:20.444Z",
+  "dmin": 0.1
+ },
+ {
+  "cameraId": 13461,
+  "file": "west_frames/13461_ss-30_0149Z.jpg",
+  "t": "2026-09-20T01:49:17.858Z",
+  "dmin": 6.9
+ },
+ {
+  "cameraId": 13880,
+  "file": "west_frames/13880_ss-30_0148Z.jpg",
+  "t": "2026-09-20T01:48:47.807Z",
+  "dmin": 1.0
+ },
+ {
+  "cameraId": 12748,
+  "file": "west_frames/12748_ss-30_0145Z.jpg",
+  "t": "2026-09-20T01:45:56.919Z",
+  "dmin": 1.3
+ },
+ {
+  "cameraId": 13180,
+  "file": "west_frames/13180_ss-30_0120Z.jpg",
+  "t": "2026-09-20T01:20:31.087Z",
+  "dmin": 1.7
+ },
+ {
+  "cameraId": 13555,
+  "file": "west_frames/13555_ss-30_0146Z.jpg",
+  "t": "2026-09-20T01:46:35.721Z",
+  "dmin": 1.6
+ },
+ {
+  "cameraId": 12707,
+  "file": "west_frames/12707_ss-30_0127Z.jpg",
+  "t": "2026-09-20T01:27:44.206Z",
+  "dmin": 3.1
+ },
+ {
+  "cameraId": 13164,
+  "file": "west_frames/13164_ss-30_0133Z.jpg",
+  "t": "2026-09-20T01:33:00.629Z",
+  "dmin": 1.1
+ },
+ {
+  "cameraId": 12616,
+  "file": "west_frames/12616_ss-30_0119Z.jpg",
+  "t": "2026-09-20T01:19:45.980Z",
+  "dmin": 1.2
+ },
+ {
+  "cameraId": 12809,
+  "file": "west_frames/12809_ss-30_0127Z.jpg",
+  "t": "2026-09-20T01:27:04.095Z",
+  "dmin": 4.6
+ },
+ {
+  "cameraId": 12848,
+  "file": "west_frames/12848_ss-30_0123Z.jpg",
+  "t": "2026-09-20T01:23:39.306Z",
+  "dmin": 6.3
+ },
+ {
+  "cameraId": 13579,
+  "file": "west_frames/13579_ss-30_0143Z.jpg",
+  "t": "2026-09-20T01:43:44.604Z",
+  "dmin": 0.1
+ },
+ {
+  "cameraId": 12844,
+  "file": "west_frames/12844_ss-30_0111Z.jpg",
+  "t": "2026-09-20T01:11:53.999Z",
+  "dmin": 1.3
+ },
+ {
+  "cameraId": 13756,
+  "file": "west_frames/13756_ss-30_0152Z.jpg",
+  "t": "2026-09-20T01:52:28.692Z",
+  "dmin": 2.8
+ },
+ {
+  "cameraId": 12635,
+  "file": "west_frames/12635_ss-30_0137Z.jpg",
+  "t": "2026-09-20T01:37:19.476Z",
+  "dmin": 4.9
+ },
+ {
+  "cameraId": 12860,
+  "file": "west_frames/12860_ss-30_0118Z.jpg",
+  "t": "2026-09-20T01:18:31.067Z",
+  "dmin": 4.6
+ },
+ {
+  "cameraId": 13140,
+  "file": "west_frames/13140_ss-30_0123Z.jpg",
+  "t": "2026-09-20T01:23:36.502Z",
+  "dmin": 0.2
+ },
+ {
+  "cameraId": 12675,
+  "file": "west_frames/12675_ss-30_0115Z.jpg",
+  "t": "2026-09-20T01:15:27.099Z",
+  "dmin": 5.1
+ },
+ {
+  "cameraId": 13964,
+  "file": "west_frames/13964_ss-30_0139Z.jpg",
+  "t": "2026-09-20T01:39:48.974Z",
+  "dmin": 3.5
+ },
+ {
+  "cameraId": 13243,
+  "file": "west_frames/13243_ss-30_0137Z.jpg",
+  "t": "2026-09-20T01:37:24.102Z",
+  "dmin": 1.1
+ },
+ {
+  "cameraId": 13855,
+  "file": "west_frames/13855_ss-30_0114Z.jpg",
+  "t": "2026-09-20T01:14:05.965Z",
+  "dmin": 1.3
+ },
+ {
+  "cameraId": 13453,
+  "file": "west_frames/13453_ss-30_0133Z.jpg",
+  "t": "2026-09-20T01:33:26.760Z",
+  "dmin": 1.1
+ },
+ {
+  "cameraId": 13901,
+  "file": "west_frames/13901_ss-30_0145Z.jpg",
+  "t": "2026-09-20T01:45:33.077Z",
+  "dmin": 1.4
+ },
+ {
+  "cameraId": 14129,
+  "file": "west_frames/14129_ss-30_0137Z.jpg",
+  "t": "2026-09-20T01:37:53.778Z",
+  "dmin": 1.5
+ },
+ {
+  "cameraId": 12716,
+  "file": "west_frames/12716_ss-30_0118Z.jpg",
+  "t": "2026-09-20T01:18:38.638Z",
+  "dmin": 0.6
+ },
+ {
+  "cameraId": 13871,
+  "file": "west_frames/13871_ss-30_0144Z.jpg",
+  "t": "2026-09-20T01:44:38.485Z",
+  "dmin": 2.1
+ },
+ {
+  "cameraId": 12740,
+  "file": "west_frames/12740_ss-30_0122Z.jpg",
+  "t": "2026-09-20T01:22:10.899Z",
+  "dmin": 1.1
+ },
+ {
+  "cameraId": 12710,
+  "file": "west_frames/12710_ss-30_0131Z.jpg",
+  "t": "2026-09-20T01:31:44.095Z",
+  "dmin": 0.6
+ },
+ {
+  "cameraId": 13025,
+  "file": "west_frames/13025_ss-30_0114Z.jpg",
+  "t": "2026-09-20T01:14:05.722Z",
+  "dmin": 5.2
+ },
+ {
+  "cameraId": 13052,
+  "file": "west_frames/13052_ss-30_0134Z.jpg",
+  "t": "2026-09-20T01:34:52.086Z",
+  "dmin": 4.6
+ },
+ {
+  "cameraId": 12987,
+  "file": "west_frames/12987_ss-30_0110Z.jpg",
+  "t": "2026-09-20T01:10:37.927Z",
+  "dmin": 3.9
+ },
+ {
+  "cameraId": 13457,
+  "file": "west_frames/13457_ss-30_0139Z.jpg",
+  "t": "2026-09-20T01:39:26.034Z",
+  "dmin": 0.9
+ },
+ {
+  "cameraId": 13886,
+  "file": "west_frames/13886_ss-30_0153Z.jpg",
+  "t": "2026-09-20T01:53:05.145Z",
+  "dmin": 4.0
+ },
+ {
+  "cameraId": 12891,
+  "file": "west_frames/12891_ss-30_0129Z.jpg",
+  "t": "2026-09-20T01:29:04.051Z",
+  "dmin": 0.3
+ },
+ {
+  "cameraId": 12804,
+  "file": "west_frames/12804_ss-30_0140Z.jpg",
+  "t": "2026-09-20T01:40:07.893Z",
+  "dmin": 2.0
+ },
+ {
+  "cameraId": 13821,
+  "file": "west_frames/13821_ss-30_0133Z.jpg",
+  "t": "2026-09-20T01:33:27.526Z",
+  "dmin": 3.4
+ },
+ {
+  "cameraId": 13410,
+  "file": "west_frames/13410_ss-30_0137Z.jpg",
+  "t": "2026-09-20T01:37:20.908Z",
+  "dmin": 0.1
+ },
+ {
+  "cameraId": 13640,
+  "file": "west_frames/13640_ss-30_0144Z.jpg",
+  "t": "2026-09-20T01:44:58.858Z",
+  "dmin": 3.1
+ },
+ {
+  "cameraId": 13040,
+  "file": "west_frames/13040_ss-30_0140Z.jpg",
+  "t": "2026-09-20T01:40:04.837Z",
+  "dmin": 2.2
+ },
+ {
+  "cameraId": 13216,
+  "file": "west_frames/13216_ss-30_0135Z.jpg",
+  "t": "2026-09-20T01:35:21.206Z",
+  "dmin": 0.4
+ },
+ {
+  "cameraId": 13175,
+  "file": "west_frames/13175_ss-30_0128Z.jpg",
+  "t": "2026-09-20T01:28:49.094Z",
+  "dmin": 4.8
+ },
+ {
+  "cameraId": 13529,
+  "file": "west_frames/13529_ss-30_0143Z.jpg",
+  "t": "2026-09-20T01:43:17.676Z",
+  "dmin": 3.5
+ },
+ {
+  "cameraId": 13876,
+  "file": "west_frames/13876_ss-30_0139Z.jpg",
+  "t": "2026-09-20T01:39:26.028Z",
+  "dmin": 1.6
+ },
+ {
+  "cameraId": 13386,
+  "file": "west_frames/13386_ss-30_0140Z.jpg",
+  "t": "2026-09-20T01:40:36.041Z",
+  "dmin": 1.8
+ },
+ {
+  "cameraId": 12825,
+  "file": "west_frames/12825_ss-30_0121Z.jpg",
+  "t": "2026-09-20T01:21:05.159Z",
+  "dmin": 0.1
+ },
+ {
+  "cameraId": 11069,
+  "file": "west_frames/11069_ss-30_0112Z.jpg",
+  "t": "2026-09-20T01:12:04.027Z",
+  "dmin": 0.3
+ },
+ {
+  "cameraId": 12760,
+  "file": "west_frames/12760_ss-30_0144Z.jpg",
+  "t": "2026-09-20T01:44:46.733Z",
+  "dmin": 2.0
+ },
+ {
+  "cameraId": 13530,
+  "file": "west_frames/13530_ss-30_0147Z.jpg",
+  "t": "2026-09-20T01:47:39.331Z",
+  "dmin": 2.3
+ },
+ {
+  "cameraId": 13915,
+  "file": "west_frames/13915_ss-30_0145Z.jpg",
+  "t": "2026-09-20T01:45:27.282Z",
+  "dmin": 1.0
+ },
+ {
+  "cameraId": 12652,
+  "file": "west_frames/12652_ss-30_0137Z.jpg",
+  "t": "2026-09-20T01:37:01.840Z",
+  "dmin": 4.7
+ },
+ {
+  "cameraId": 14163,
+  "file": "west_frames/14163_ss-30_0143Z.jpg",
+  "t": "2026-09-20T01:43:44.471Z",
+  "dmin": 3.6
+ },
+ {
+  "cameraId": 13741,
+  "file": "west_frames/13741_ss-30_0143Z.jpg",
+  "t": "2026-09-20T01:43:23.945Z",
+  "dmin": 3.4
+ },
+ {
+  "cameraId": 13184,
+  "file": "west_frames/13184_ss-30_0133Z.jpg",
+  "t": "2026-09-20T01:33:35.567Z",
+  "dmin": 4.0
+ },
+ {
+  "cameraId": 13341,
+  "file": "west_frames/13341_ss-30_0149Z.jpg",
+  "t": "2026-09-20T01:49:08.114Z",
+  "dmin": 0.5
+ },
+ {
+  "cameraId": 12525,
+  "file": "west_frames/12525_ss-30_0139Z.jpg",
+  "t": "2026-09-20T01:39:18.633Z",
+  "dmin": 2.6
+ },
+ {
+  "cameraId": 12648,
+  "file": "west_frames/12648_ss-30_0137Z.jpg",
+  "t": "2026-09-20T01:37:01.761Z",
+  "dmin": 0.8
+ },
+ {
+  "cameraId": 13907,
+  "file": "west_frames/13907_ss-30_0144Z.jpg",
+  "t": "2026-09-20T01:44:32.748Z",
+  "dmin": 1.6
+ },
+ {
+  "cameraId": 12895,
+  "file": "west_frames/12895_ss-30_0138Z.jpg",
+  "t": "2026-09-20T01:38:28.924Z",
+  "dmin": 4.9
+ },
+ {
+  "cameraId": 12856,
+  "file": "west_frames/12856_ss-30_0109Z.jpg",
+  "t": "2026-09-20T01:09:28.299Z",
+  "dmin": 1.5
+ },
+ {
+  "cameraId": 11349,
+  "file": "west_frames/11349_ss-30_0141Z.jpg",
+  "t": "2026-09-20T01:41:52.896Z",
+  "dmin": 4.5
+ },
+ {
+  "cameraId": 13737,
+  "file": "west_frames/13737_ss-30_0134Z.jpg",
+  "t": "2026-09-20T01:34:35.880Z",
+  "dmin": 4.1
+ },
+ {
+  "cameraId": 12869,
+  "file": "west_frames/12869_ss-30_0111Z.jpg",
+  "t": "2026-09-20T01:11:45.062Z",
+  "dmin": 2.2
+ },
+ {
+  "cameraId": 12780,
+  "file": "west_frames/12780_ss-30_0145Z.jpg",
+  "t": "2026-09-20T01:45:43.736Z",
+  "dmin": 0.4
+ },
+ {
+  "cameraId": 12533,
+  "file": "west_frames/12533_ss-30_0126Z.jpg",
+  "t": "2026-09-20T01:26:07.050Z",
+  "dmin": 0.9
+ },
+ {
+  "cameraId": 12837,
+  "file": "west_frames/12837_ss-30_0130Z.jpg",
+  "t": "2026-09-20T01:30:33.589Z",
+  "dmin": 1.7
+ },
+ {
+  "cameraId": 12913,
+  "file": "west_frames/12913_ss-30_0105Z.jpg",
+  "t": "2026-09-20T01:05:06.070Z",
+  "dmin": 3.8
+ },
+ {
+  "cameraId": 13636,
+  "file": "west_frames/13636_ss-30_0142Z.jpg",
+  "t": "2026-09-20T01:42:49.479Z",
+  "dmin": 0.6
+ },
+ {
+  "cameraId": 13260,
+  "file": "west_frames/13260_ss-30_0137Z.jpg",
+  "t": "2026-09-20T01:37:10.069Z",
+  "dmin": 1.2
+ },
+ {
+  "cameraId": 13044,
+  "file": "west_frames/13044_ss-30_0140Z.jpg",
+  "t": "2026-09-20T01:40:30.942Z",
+  "dmin": 2.9
+ },
+ {
+  "cameraId": 13123,
+  "file": "west_frames/13123_ss-30_0125Z.jpg",
+  "t": "2026-09-20T01:25:03.352Z",
+  "dmin": 2.2
+ },
+ {
+  "cameraId": 13228,
+  "file": "west_frames/13228_ss-30_0124Z.jpg",
+  "t": "2026-09-20T01:24:57.096Z",
+  "dmin": 3.3
+ },
+ {
+  "cameraId": 12820,
+  "file": "west_frames/12820_ss-30_0149Z.jpg",
+  "t": "2026-09-20T01:49:05.767Z",
+  "dmin": 2.1
+ },
+ {
+  "cameraId": 12918,
+  "file": "west_frames/12918_ss-30_0108Z.jpg",
+  "t": "2026-09-20T01:08:18.807Z",
+  "dmin": 1.5
+ },
+ {
+  "cameraId": 12640,
+  "file": "west_frames/12640_ss-30_0144Z.jpg",
+  "t": "2026-09-20T01:44:24.319Z",
+  "dmin": 1.7
+ },
+ {
+  "cameraId": 12660,
+  "file": "west_frames/12660_ss-30_0120Z.jpg",
+  "t": "2026-09-20T01:20:31.875Z",
+  "dmin": 0.6
+ },
+ {
+  "cameraId": 13256,
+  "file": "west_frames/13256_ss-30_0145Z.jpg",
+  "t": "2026-09-20T01:45:46.131Z",
+  "dmin": 2.7
+ },
+ {
+  "cameraId": 12603,
+  "file": "west_frames/12603_ss-30_0137Z.jpg",
+  "t": "2026-09-20T01:37:29.938Z",
+  "dmin": 3.5
+ },
+ {
+  "cameraId": 12723,
+  "file": "west_frames/12723_ss-30_0136Z.jpg",
+  "t": "2026-09-20T01:36:23.341Z",
+  "dmin": 0.2
+ },
+ {
+  "cameraId": 13518,
+  "file": "west_frames/13518_ss-30_0144Z.jpg",
+  "t": "2026-09-20T01:44:44.741Z",
+  "dmin": 3.0
+ },
+ {
+  "cameraId": 12559,
+  "file": "west_frames/12559_ss-30_0137Z.jpg",
+  "t": "2026-09-20T01:37:29.939Z",
+  "dmin": 0.1
+ },
+ {
+  "cameraId": 12628,
+  "file": "west_frames/12628_ss-30_0126Z.jpg",
+  "t": "2026-09-20T01:26:07.039Z",
+  "dmin": 0.5
+ },
+ {
+  "cameraId": 13196,
+  "file": "west_frames/13196_ss-30_0118Z.jpg",
+  "t": "2026-09-20T01:18:29.861Z",
+  "dmin": 4.7
+ },
+ {
+  "cameraId": 12852,
+  "file": "west_frames/12852_ss-30_0115Z.jpg",
+  "t": "2026-09-20T01:15:46.186Z",
+  "dmin": 0.3
+ },
+ {
+  "cameraId": 13220,
+  "file": "west_frames/13220_ss-30_0106Z.jpg",
+  "t": "2026-09-20T01:06:48.002Z",
+  "dmin": 3.1
+ },
+ {
+  "cameraId": 13378,
+  "file": "west_frames/13378_ss-30_0129Z.jpg",
+  "t": "2026-09-20T01:29:32.434Z",
+  "dmin": 1.9
+ },
+ {
+  "cameraId": 12552,
+  "file": "west_frames/12552_ss-30_0132Z.jpg",
+  "t": "2026-09-20T01:32:57.617Z",
+  "dmin": 2.4
+ },
+ {
+  "cameraId": 13359,
+  "file": "west_frames/13359_ss-30_0135Z.jpg",
+  "t": "2026-09-20T01:35:31.220Z",
+  "dmin": 2.9
+ },
+ {
+  "cameraId": 12789,
+  "file": "west_frames/12789_ss-30_0131Z.jpg",
+  "t": "2026-09-20T01:31:16.885Z",
+  "dmin": 0.5
+ },
+ {
+  "cameraId": 13363,
+  "file": "west_frames/13363_ss-30_0127Z.jpg",
+  "t": "2026-09-20T01:27:23.361Z",
+  "dmin": 2.3
+ },
+ {
+  "cameraId": 13509,
+  "file": "west_frames/13509_ss-30_0132Z.jpg",
+  "t": "2026-09-20T01:32:54.010Z",
+  "dmin": 3.1
+ },
+ {
+  "cameraId": 13071,
+  "file": "west_frames/13071_ss-30_0126Z.jpg",
+  "t": "2026-09-20T01:26:25.866Z",
+  "dmin": 0.3
+ },
+ {
+  "cameraId": 12828,
+  "file": "west_frames/12828_ss-30_0123Z.jpg",
+  "t": "2026-09-20T01:23:20.301Z",
+  "dmin": 4.3
+ },
+ {
+  "cameraId": 13489,
+  "file": "west_frames/13489_ss-30_0144Z.jpg",
+  "t": "2026-09-20T01:44:13.683Z",
+  "dmin": 1.8
+ },
+ {
+  "cameraId": 12731,
+  "file": "west_frames/12731_ss-30_0133Z.jpg",
+  "t": "2026-09-20T01:33:29.560Z",
+  "dmin": 7.2
+ }
+]

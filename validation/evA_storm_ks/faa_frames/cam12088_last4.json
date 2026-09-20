@@ -1,0 +1,30 @@
+{
+  "success": true,
+  "count": 4,
+  "payload": [
+    {
+      "cameraId": 12088,
+      "imageFilename": "12088-1789871713207.jpg",
+      "imageUri": "https://images.wcams-static.faa.gov/webimages/572/20/12088-1789871713207.jpg",
+      "imageDatetime": "2026-09-20T02:35:42.849Z"
+    },
+    {
+      "cameraId": 12088,
+      "imageFilename": "12088-1789871152431.jpg",
+      "imageUri": "https://images.wcams-static.faa.gov/webimages/572/20/12088-1789871152431.jpg",
+      "imageDatetime": "2026-09-20T02:26:09.215Z"
+    },
+    {
+      "cameraId": 12088,
+      "imageFilename": "12088-1789870642274.jpg",
+      "imageUri": "https://images.wcams-static.faa.gov/webimages/572/20/12088-1789870642274.jpg",
+      "imageDatetime": "2026-09-20T02:17:44.949Z"
+    },
+    {
+      "cameraId": 12088,
+      "imageFilename": "12088-1789870147237.jpg",
+      "imageUri": "https://images.wcams-static.faa.gov/webimages/572/20/12088-1789870147237.jpg",
+      "imageDatetime": "2026-09-20T02:09:19.503Z"
+    }
+  ]
+}

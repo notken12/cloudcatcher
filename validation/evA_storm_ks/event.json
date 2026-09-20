@@ -1,0 +1,24 @@
+{
+  "event_id": "evA_storm_ks",
+  "type": "severe_thunderstorm",
+  "lat": 38.342, "lon": -101.171, "radius_km": 150,
+  "t_start": "2026-09-20T00:48:00Z", "t_end": "2026-09-20T03:00:00Z",
+  "evidence": {
+    "nws_alert": "Severe Thunderstorm Warning, Wichita County KS, sent 2026-09-19T21:29-05:00 (02:29Z), centroid (38.524,-101.392)",
+    "mrms_composite_refl": {"file": "MRMS_MergedReflectivityQCComposite_00.50_20260920-023041.grib2", "valid": "02:30:41Z", "fetched_at": "02:32:50Z", "age_min": 2.2, "upload_lag_min": 0.8, "peak_dbz": 66.5, "px_ge50dbz_in_cell": 600},
+    "glm_lightning": {"bucket": "noaa-goes19", "files": 15, "window": "02:29:00Z-02:34:00Z", "upload_lag_s": 4, "flashes_within_50km": 315, "flashes_full_disk": 5864},
+    "abi_c13_bt": {"file": "OR_ABI-L2-CMIPC-M6C13_G19_s20262630231174", "scan_start": "02:31:17Z", "upload": "02:34:37Z", "min_bt_K_32km": 207.9, "min_bt_C": -65.2}
+  },
+  "rarity": {"source": "open-meteo ERA5 archive 2016-2026 (Voloridge path not provided)", "var": "precipitation mm/h", "clim_window": "DOY 263±15, 23-05Z, n=1920", "clim_p99": 1.9, "clim_max": 8.8, "observed_mrms_14km_mean": 33.1, "percentile": 100.0, "note": "zero-inflated distribution (p95=0); z-score meaningless; use exceedance of nonzero hours instead"},
+  "cameras": {
+    "phenocam_within_150km": 0, "phenocam_within_300km": 3,
+    "faa_within_200km": 8, "faa_fresh_lt_15min": 7,
+    "windy": "no key (403)",
+    "sky_filter_pass": 3, "top_cams": ["faa:12144 Lamar CO East brg100", "faa:12087 Burlington CO East brg88", "faa:12088 Burlington CO South brg160"]
+  },
+  "verify": {
+    "live_frame_02:31Z": {"visible": false, "score": 1, "reason": "night; no lightning captured in still frames; 136km away"},
+    "archive_frame_00:48Z": {"visible": true, "score": 5, "reason": "sunset-lit mammatus under storm anvil; 60dBZ cell at bearing 100 = camera bearing 100, 59km"},
+    "archive_frame_00:56Z": {"visible": true, "score": 3, "reason": "mammatus still present, golden light gone (<8 min window)"}
+  }
+}

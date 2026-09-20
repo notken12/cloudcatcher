@@ -1,0 +1,17 @@
+[
+ {
+  "id": "LAA_lamar",
+  "lat": 38.077,
+  "lon": -102.696,
+  "az": 271.8,
+  "quality": 0.418,
+  "delta_deg": 1,
+  "horizon_block": 0.0,
+  "site_lcc": 0,
+  "site_mcc": 27,
+  "site_hcc": 93,
+  "site_base_km": 7.6,
+  "site_ceil_km": 10.2,
+  "site_top_km": 11.0
+ }
+]

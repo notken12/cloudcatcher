@@ -1,0 +1,5198 @@
+[
+ {
+  "file": "west_frames/10973_ss+15_0233Z.jpg",
+  "cameraId": 10973,
+  "sky_frac": 0.599,
+  "top_lum": 177.2
+ },
+ {
+  "file": "west_frames/10974_ss+15_0232Z.jpg",
+  "cameraId": 10974,
+  "sky_frac": 0.683,
+  "top_lum": 115.1
+ },
+ {
+  "file": "west_frames/10975_ss+15_0231Z.jpg",
+  "cameraId": 10975,
+  "sky_frac": 0.63,
+  "top_lum": 81.5
+ },
+ {
+  "file": "west_frames/10976_ss+15_0231Z.jpg",
+  "cameraId": 10976,
+  "sky_frac": 0.643,
+  "top_lum": 122.5
+ },
+ {
+  "file": "west_frames/10977_ss+15_0234Z.jpg",
+  "cameraId": 10977,
+  "sky_frac": 0.683,
+  "top_lum": 41.9
+ },
+ {
+  "file": "west_frames/10981_ss+15_0235Z.jpg",
+  "cameraId": 10981,
+  "sky_frac": 0.821,
+  "top_lum": 74.8
+ },
+ {
+  "file": "west_frames/10982_ss+15_0235Z.jpg",
+  "cameraId": 10982,
+  "sky_frac": 0.732,
+  "top_lum": 87.4
+ },
+ {
+  "file": "west_frames/10983_ss+15_0234Z.jpg",
+  "cameraId": 10983,
+  "sky_frac": 0.629,
+  "top_lum": 119.6
+ },
+ {
+  "file": "west_frames/10986_ss+15_0233Z.jpg",
+  "cameraId": 10986,
+  "sky_frac": 0.709,
+  "top_lum": 101.5
+ },
+ {
+  "file": "west_frames/10987_ss+15_0232Z.jpg",
+  "cameraId": 10987,
+  "sky_frac": 0.573,
+  "top_lum": 101.3
+ },
+ {
+  "file": "west_frames/10988_ss+15_0233Z.jpg",
+  "cameraId": 10988,
+  "sky_frac": 0.668,
+  "top_lum": 69.4
+ },
+ {
+  "file": "west_frames/10992_ss+15_0231Z.jpg",
+  "cameraId": 10992,
+  "sky_frac": 0.501,
+  "top_lum": 164.5
+ },
+ {
+  "file": "west_frames/10993_ss+15_0230Z.jpg",
+  "cameraId": 10993,
+  "sky_frac": 0.356,
+  "top_lum": 151.6
+ },
+ {
+  "file": "west_frames/11004_ss+15_0235Z.jpg",
+  "cameraId": 11004,
+  "sky_frac": 0.628,
+  "top_lum": 121.5
+ },
+ {
+  "file": "west_frames/11005_ss+15_0234Z.jpg",
+  "cameraId": 11005,
+  "sky_frac": 0.363,
+  "top_lum": 180.4
+ },
+ {
+  "file": "west_frames/11020_ss+15_0224Z.jpg",
+  "cameraId": 11020,
+  "sky_frac": 0.354,
+  "top_lum": 156.4
+ },
+ {
+  "file": "west_frames/11021_ss+15_0225Z.jpg",
+  "cameraId": 11021,
+  "sky_frac": 0.554,
+  "top_lum": 61.2
+ },
+ {
+  "file": "west_frames/11024_ss+15_0213Z.jpg",
+  "cameraId": 11024,
+  "sky_frac": 0.55,
+  "top_lum": 107.8
+ },
+ {
+  "file": "west_frames/11025_ss+15_0213Z.jpg",
+  "cameraId": 11025,
+  "sky_frac": 0.548,
+  "top_lum": 127.5
+ },
+ {
+  "file": "west_frames/11051_ss+15_0234Z.jpg",
+  "cameraId": 11051,
+  "sky_frac": 0.584,
+  "top_lum": 132.4
+ },
+ {
+  "file": "west_frames/11052_ss+15_0235Z.jpg",
+  "cameraId": 11052,
+  "sky_frac": 0.449,
+  "top_lum": 174.2
+ },
+ {
+  "file": "west_frames/11068_ss+15_0152Z.jpg",
+  "cameraId": 11068,
+  "sky_frac": 0.722,
+  "top_lum": 90.3
+ },
+ {
+  "file": "west_frames/11069_ss+15_0155Z.jpg",
+  "cameraId": 11069,
+  "sky_frac": 0.716,
+  "top_lum": 69.5
+ },
+ {
+  "file": "west_frames/11286_ss+15_0213Z.jpg",
+  "cameraId": 11286,
+  "sky_frac": 0.874,
+  "top_lum": 89.6
+ },
+ {
+  "file": "west_frames/11287_ss+15_0215Z.jpg",
+  "cameraId": 11287,
+  "sky_frac": 0.645,
+  "top_lum": 63.0
+ },
+ {
+  "file": "west_frames/11288_ss+15_0213Z.jpg",
+  "cameraId": 11288,
+  "sky_frac": 0.44,
+  "top_lum": 122.6
+ },
+ {
+  "file": "west_frames/11289_ss+15_0213Z.jpg",
+  "cameraId": 11289,
+  "sky_frac": 0.63,
+  "top_lum": 98.1
+ },
+ {
+  "file": "west_frames/11347_ss+15_0233Z.jpg",
+  "cameraId": 11347,
+  "sky_frac": 0.622,
+  "top_lum": 27.9
+ },
+ {
+  "file": "west_frames/11348_ss+15_0230Z.jpg",
+  "cameraId": 11348,
+  "sky_frac": 0.516,
+  "top_lum": 42.7
+ },
+ {
+  "file": "west_frames/11349_ss+15_0233Z.jpg",
+  "cameraId": 11349,
+  "sky_frac": 0.559,
+  "top_lum": 89.1
+ },
+ {
+  "file": "west_frames/11350_ss+15_0232Z.jpg",
+  "cameraId": 11350,
+  "sky_frac": 0.573,
+  "top_lum": 67.9
+ },
+ {
+  "file": "west_frames/11488_ss+15_0233Z.jpg",
+  "cameraId": 11488,
+  "sky_frac": 0.591,
+  "top_lum": 96.5
+ },
+ {
+  "file": "west_frames/11489_ss+15_0233Z.jpg",
+  "cameraId": 11489,
+  "sky_frac": 0.699,
+  "top_lum": 51.0
+ },
+ {
+  "file": "west_frames/11776_ss+15_0234Z.jpg",
+  "cameraId": 11776,
+  "sky_frac": 0.702,
+  "top_lum": 62.0
+ },
+ {
+  "file": "west_frames/11783_ss+15_0224Z.jpg",
+  "cameraId": 11783,
+  "sky_frac": 0.354,
+  "top_lum": 160.3
+ },
+ {
+  "file": "west_frames/11786_ss+15_0212Z.jpg",
+  "cameraId": 11786,
+  "sky_frac": 0.666,
+  "top_lum": 127.0
+ },
+ {
+  "file": "west_frames/11787_ss+15_0212Z.jpg",
+  "cameraId": 11787,
+  "sky_frac": 0.707,
+  "top_lum": 50.8
+ },
+ {
+  "file": "west_frames/11809_ss+15_0233Z.jpg",
+  "cameraId": 11809,
+  "sky_frac": 0.552,
+  "top_lum": 126.9
+ },
+ {
+  "file": "west_frames/11810_ss+15_0242Z.jpg",
+  "cameraId": 11810,
+  "sky_frac": 0.785,
+  "top_lum": 80.3
+ },
+ {
+  "file": "west_frames/12028_ss+15_0156Z.jpg",
+  "cameraId": 12028,
+  "sky_frac": 0.57,
+  "top_lum": 141.6
+ },
+ {
+  "file": "west_frames/12029_ss+15_0153Z.jpg",
+  "cameraId": 12029,
+  "sky_frac": 0.736,
+  "top_lum": 163.3
+ },
+ {
+  "file": "west_frames/12030_ss+15_0153Z.jpg",
+  "cameraId": 12030,
+  "sky_frac": 0.707,
+  "top_lum": 155.2
+ },
+ {
+  "file": "west_frames/12060_ss+15_0156Z.jpg",
+  "cameraId": 12060,
+  "sky_frac": 0.617,
+  "top_lum": 124.5
+ },
+ {
+  "file": "west_frames/12061_ss+15_0156Z.jpg",
+  "cameraId": 12061,
+  "sky_frac": 0.64,
+  "top_lum": 166.0
+ },
+ {
+  "file": "west_frames/12062_ss+15_0156Z.jpg",
+  "cameraId": 12062,
+  "sky_frac": 0.482,
+  "top_lum": 186.7
+ },
+ {
+  "file": "west_frames/12361_ss+15_0223Z.jpg",
+  "cameraId": 12361,
+  "sky_frac": 0.6,
+  "top_lum": 187.1
+ },
+ {
+  "file": "west_frames/12362_ss+15_0213Z.jpg",
+  "cameraId": 12362,
+  "sky_frac": 0.714,
+  "top_lum": 173.8
+ },
+ {
+  "file": "west_frames/12391_ss+15_0152Z.jpg",
+  "cameraId": 12391,
+  "sky_frac": 0.802,
+  "top_lum": 135.8
+ },
+ {
+  "file": "west_frames/12392_ss+15_0156Z.jpg",
+  "cameraId": 12392,
+  "sky_frac": 0.693,
+  "top_lum": 169.7
+ },
+ {
+  "file": "west_frames/12393_ss+15_0157Z.jpg",
+  "cameraId": 12393,
+  "sky_frac": 0.705,
+  "top_lum": 161.8
+ },
+ {
+  "file": "west_frames/12394_ss+15_0150Z.jpg",
+  "cameraId": 12394,
+  "sky_frac": 0.877,
+  "top_lum": 104.4
+ },
+ {
+  "file": "west_frames/12410_ss+15_0215Z.jpg",
+  "cameraId": 12410,
+  "sky_frac": 0.618,
+  "top_lum": 201.0
+ },
+ {
+  "file": "west_frames/12411_ss+15_0222Z.jpg",
+  "cameraId": 12411,
+  "sky_frac": 0.61,
+  "top_lum": 188.4
+ },
+ {
+  "file": "west_frames/12435_ss+15_0155Z.jpg",
+  "cameraId": 12435,
+  "sky_frac": 0.704,
+  "top_lum": 139.6
+ },
+ {
+  "file": "west_frames/12436_ss+15_0157Z.jpg",
+  "cameraId": 12436,
+  "sky_frac": 0.668,
+  "top_lum": 147.0
+ },
+ {
+  "file": "west_frames/12437_ss+15_0153Z.jpg",
+  "cameraId": 12437,
+  "sky_frac": 0.632,
+  "top_lum": 148.5
+ },
+ {
+  "file": "west_frames/12438_ss+15_0157Z.jpg",
+  "cameraId": 12438,
+  "sky_frac": 0.717,
+  "top_lum": 133.1
+ },
+ {
+  "file": "west_frames/12512_ss+15_0218Z.jpg",
+  "cameraId": 12512,
+  "sky_frac": 0.491,
+  "top_lum": 147.6
+ },
+ {
+  "file": "west_frames/12513_ss+15_0218Z.jpg",
+  "cameraId": 12513,
+  "sky_frac": 0.477,
+  "top_lum": 152.7
+ },
+ {
+  "file": "west_frames/12515_ss+15_0213Z.jpg",
+  "cameraId": 12515,
+  "sky_frac": 0.563,
+  "top_lum": 160.1
+ },
+ {
+  "file": "west_frames/12516_ss+15_0217Z.jpg",
+  "cameraId": 12516,
+  "sky_frac": 0.561,
+  "top_lum": 171.3
+ },
+ {
+  "file": "west_frames/12517_ss+15_0232Z.jpg",
+  "cameraId": 12517,
+  "sky_frac": 0.498,
+  "top_lum": 175.2
+ },
+ {
+  "file": "west_frames/12518_ss+15_0225Z.jpg",
+  "cameraId": 12518,
+  "sky_frac": 0.442,
+  "top_lum": 222.8
+ },
+ {
+  "file": "west_frames/12519_ss+15_0206Z.jpg",
+  "cameraId": 12519,
+  "sky_frac": 0.459,
+  "top_lum": 85.3
+ },
+ {
+  "file": "west_frames/12520_ss+15_0207Z.jpg",
+  "cameraId": 12520,
+  "sky_frac": 0.459,
+  "top_lum": 71.0
+ },
+ {
+  "file": "west_frames/12521_ss+15_0207Z.jpg",
+  "cameraId": 12521,
+  "sky_frac": 0.572,
+  "top_lum": 215.6
+ },
+ {
+  "file": "west_frames/12522_ss+15_0206Z.jpg",
+  "cameraId": 12522,
+  "sky_frac": 0.418,
+  "top_lum": 188.7
+ },
+ {
+  "file": "west_frames/12523_ss+15_0230Z.jpg",
+  "cameraId": 12523,
+  "sky_frac": 0.6,
+  "top_lum": 133.6
+ },
+ {
+  "file": "west_frames/12524_ss+15_0230Z.jpg",
+  "cameraId": 12524,
+  "sky_frac": 0.577,
+  "top_lum": 125.4
+ },
+ {
+  "file": "west_frames/12525_ss+15_0230Z.jpg",
+  "cameraId": 12525,
+  "sky_frac": 0.681,
+  "top_lum": 141.6
+ },
+ {
+  "file": "west_frames/12526_ss+15_0231Z.jpg",
+  "cameraId": 12526,
+  "sky_frac": 0.754,
+  "top_lum": 108.3
+ },
+ {
+  "file": "west_frames/12527_ss+15_0207Z.jpg",
+  "cameraId": 12527,
+  "sky_frac": 0.547,
+  "top_lum": 169.8
+ },
+ {
+  "file": "west_frames/12528_ss+15_0206Z.jpg",
+  "cameraId": 12528,
+  "sky_frac": 0.552,
+  "top_lum": 207.8
+ },
+ {
+  "file": "west_frames/12529_ss+15_0215Z.jpg",
+  "cameraId": 12529,
+  "sky_frac": 0.993,
+  "top_lum": 134.3
+ },
+ {
+  "file": "west_frames/12530_ss+15_0214Z.jpg",
+  "cameraId": 12530,
+  "sky_frac": 0.94,
+  "top_lum": 118.3
+ },
+ {
+  "file": "west_frames/12531_ss+15_0215Z.jpg",
+  "cameraId": 12531,
+  "sky_frac": 0.908,
+  "top_lum": 120.7
+ },
+ {
+  "file": "west_frames/12532_ss+15_0215Z.jpg",
+  "cameraId": 12532,
+  "sky_frac": 0.489,
+  "top_lum": 171.2
+ },
+ {
+  "file": "west_frames/12533_ss+15_0216Z.jpg",
+  "cameraId": 12533,
+  "sky_frac": 0.555,
+  "top_lum": 168.7
+ },
+ {
+  "file": "west_frames/12534_ss+15_0203Z.jpg",
+  "cameraId": 12534,
+  "sky_frac": 0.462,
+  "top_lum": 161.2
+ },
+ {
+  "file": "west_frames/12535_ss+15_0204Z.jpg",
+  "cameraId": 12535,
+  "sky_frac": 0.515,
+  "top_lum": 135.2
+ },
+ {
+  "file": "west_frames/12536_ss+15_0202Z.jpg",
+  "cameraId": 12536,
+  "sky_frac": 0.459,
+  "top_lum": 141.0
+ },
+ {
+  "file": "west_frames/12537_ss+15_0203Z.jpg",
+  "cameraId": 12537,
+  "sky_frac": 0.503,
+  "top_lum": 249.6
+ },
+ {
+  "file": "west_frames/12542_ss+15_0223Z.jpg",
+  "cameraId": 12542,
+  "sky_frac": 0.485,
+  "top_lum": 185.3
+ },
+ {
+  "file": "west_frames/12543_ss+15_0225Z.jpg",
+  "cameraId": 12543,
+  "sky_frac": 0.517,
+  "top_lum": 156.6
+ },
+ {
+  "file": "west_frames/12544_ss+15_0224Z.jpg",
+  "cameraId": 12544,
+  "sky_frac": 0.54,
+  "top_lum": 185.9
+ },
+ {
+  "file": "west_frames/12545_ss+15_0236Z.jpg",
+  "cameraId": 12545,
+  "sky_frac": 0.623,
+  "top_lum": 148.9
+ },
+ {
+  "file": "west_frames/12546_ss+15_0236Z.jpg",
+  "cameraId": 12546,
+  "sky_frac": 0.514,
+  "top_lum": 130.5
+ },
+ {
+  "file": "west_frames/12547_ss+15_0236Z.jpg",
+  "cameraId": 12547,
+  "sky_frac": 0.48,
+  "top_lum": 132.4
+ },
+ {
+  "file": "west_frames/12548_ss+15_0236Z.jpg",
+  "cameraId": 12548,
+  "sky_frac": 0.741,
+  "top_lum": 164.0
+ },
+ {
+  "file": "west_frames/12549_ss+15_0223Z.jpg",
+  "cameraId": 12549,
+  "sky_frac": 0.478,
+  "top_lum": 141.2
+ },
+ {
+  "file": "west_frames/12550_ss+15_0223Z.jpg",
+  "cameraId": 12550,
+  "sky_frac": 0.434,
+  "top_lum": 131.9
+ },
+ {
+  "file": "west_frames/12551_ss+15_0223Z.jpg",
+  "cameraId": 12551,
+  "sky_frac": 0.467,
+  "top_lum": 176.4
+ },
+ {
+  "file": "west_frames/12552_ss+15_0224Z.jpg",
+  "cameraId": 12552,
+  "sky_frac": 0.428,
+  "top_lum": 208.8
+ },
+ {
+  "file": "west_frames/12554_ss+15_0220Z.jpg",
+  "cameraId": 12554,
+  "sky_frac": 0.703,
+  "top_lum": 109.5
+ },
+ {
+  "file": "west_frames/12555_ss+15_0223Z.jpg",
+  "cameraId": 12555,
+  "sky_frac": 0.591,
+  "top_lum": 141.0
+ },
+ {
+  "file": "west_frames/12556_ss+15_0219Z.jpg",
+  "cameraId": 12556,
+  "sky_frac": 0.512,
+  "top_lum": 227.2
+ },
+ {
+  "file": "west_frames/12557_ss+15_0218Z.jpg",
+  "cameraId": 12557,
+  "sky_frac": 0.447,
+  "top_lum": 175.9
+ },
+ {
+  "file": "west_frames/12558_ss+15_0218Z.jpg",
+  "cameraId": 12558,
+  "sky_frac": 0.491,
+  "top_lum": 222.8
+ },
+ {
+  "file": "west_frames/12559_ss+15_0217Z.jpg",
+  "cameraId": 12559,
+  "sky_frac": 0.455,
+  "top_lum": 231.8
+ },
+ {
+  "file": "west_frames/12560_ss+15_0228Z.jpg",
+  "cameraId": 12560,
+  "sky_frac": 0.52,
+  "top_lum": 166.1
+ },
+ {
+  "file": "west_frames/12561_ss+15_0227Z.jpg",
+  "cameraId": 12561,
+  "sky_frac": 0.485,
+  "top_lum": 123.2
+ },
+ {
+  "file": "west_frames/12562_ss+15_0228Z.jpg",
+  "cameraId": 12562,
+  "sky_frac": 0.468,
+  "top_lum": 124.0
+ },
+ {
+  "file": "west_frames/12563_ss+15_0229Z.jpg",
+  "cameraId": 12563,
+  "sky_frac": 0.471,
+  "top_lum": 225.8
+ },
+ {
+  "file": "west_frames/12564_ss+15_0212Z.jpg",
+  "cameraId": 12564,
+  "sky_frac": 0.399,
+  "top_lum": 186.3
+ },
+ {
+  "file": "west_frames/12565_ss+15_0212Z.jpg",
+  "cameraId": 12565,
+  "sky_frac": 0.427,
+  "top_lum": 146.8
+ },
+ {
+  "file": "west_frames/12566_ss+15_0210Z.jpg",
+  "cameraId": 12566,
+  "sky_frac": 0.572,
+  "top_lum": 144.2
+ },
+ {
+  "file": "west_frames/12567_ss+15_0212Z.jpg",
+  "cameraId": 12567,
+  "sky_frac": 0.542,
+  "top_lum": 180.5
+ },
+ {
+  "file": "west_frames/12568_ss+15_0212Z.jpg",
+  "cameraId": 12568,
+  "sky_frac": 0.54,
+  "top_lum": 166.4
+ },
+ {
+  "file": "west_frames/12569_ss+15_0212Z.jpg",
+  "cameraId": 12569,
+  "sky_frac": 0.628,
+  "top_lum": 131.1
+ },
+ {
+  "file": "west_frames/12570_ss+15_0212Z.jpg",
+  "cameraId": 12570,
+  "sky_frac": 0.548,
+  "top_lum": 135.5
+ },
+ {
+  "file": "west_frames/12571_ss+15_0213Z.jpg",
+  "cameraId": 12571,
+  "sky_frac": 0.393,
+  "top_lum": 249.9
+ },
+ {
+  "file": "west_frames/12572_ss+15_0203Z.jpg",
+  "cameraId": 12572,
+  "sky_frac": 0.554,
+  "top_lum": 152.2
+ },
+ {
+  "file": "west_frames/12573_ss+15_0206Z.jpg",
+  "cameraId": 12573,
+  "sky_frac": 0.547,
+  "top_lum": 138.4
+ },
+ {
+  "file": "west_frames/12574_ss+15_0204Z.jpg",
+  "cameraId": 12574,
+  "sky_frac": 0.497,
+  "top_lum": 187.8
+ },
+ {
+  "file": "west_frames/12575_ss+15_0206Z.jpg",
+  "cameraId": 12575,
+  "sky_frac": 0.515,
+  "top_lum": 176.3
+ },
+ {
+  "file": "west_frames/12580_ss+15_0201Z.jpg",
+  "cameraId": 12580,
+  "sky_frac": 0.535,
+  "top_lum": 156.1
+ },
+ {
+  "file": "west_frames/12581_ss+15_0209Z.jpg",
+  "cameraId": 12581,
+  "sky_frac": 0.52,
+  "top_lum": 123.3
+ },
+ {
+  "file": "west_frames/12582_ss+15_0210Z.jpg",
+  "cameraId": 12582,
+  "sky_frac": 0.478,
+  "top_lum": 127.8
+ },
+ {
+  "file": "west_frames/12583_ss+15_0202Z.jpg",
+  "cameraId": 12583,
+  "sky_frac": 0.452,
+  "top_lum": 170.7
+ },
+ {
+  "file": "west_frames/12589_ss+15_0214Z.jpg",
+  "cameraId": 12589,
+  "sky_frac": 0.549,
+  "top_lum": 131.6
+ },
+ {
+  "file": "west_frames/12590_ss+15_0215Z.jpg",
+  "cameraId": 12590,
+  "sky_frac": 0.435,
+  "top_lum": 172.0
+ },
+ {
+  "file": "west_frames/12591_ss+15_0215Z.jpg",
+  "cameraId": 12591,
+  "sky_frac": 0.473,
+  "top_lum": 247.5
+ },
+ {
+  "file": "west_frames/12592_ss+15_0225Z.jpg",
+  "cameraId": 12592,
+  "sky_frac": 0.539,
+  "top_lum": 111.2
+ },
+ {
+  "file": "west_frames/12601_ss+15_0220Z.jpg",
+  "cameraId": 12601,
+  "sky_frac": 0.513,
+  "top_lum": 113.6
+ },
+ {
+  "file": "west_frames/12602_ss+15_0219Z.jpg",
+  "cameraId": 12602,
+  "sky_frac": 0.537,
+  "top_lum": 97.0
+ },
+ {
+  "file": "west_frames/12603_ss+15_0219Z.jpg",
+  "cameraId": 12603,
+  "sky_frac": 0.482,
+  "top_lum": 237.8
+ },
+ {
+  "file": "west_frames/12604_ss+15_0218Z.jpg",
+  "cameraId": 12604,
+  "sky_frac": 0.465,
+  "top_lum": 172.7
+ },
+ {
+  "file": "west_frames/12605_ss+15_0202Z.jpg",
+  "cameraId": 12605,
+  "sky_frac": 0.566,
+  "top_lum": 155.0
+ },
+ {
+  "file": "west_frames/12606_ss+15_0202Z.jpg",
+  "cameraId": 12606,
+  "sky_frac": 0.534,
+  "top_lum": 129.4
+ },
+ {
+  "file": "west_frames/12607_ss+15_0201Z.jpg",
+  "cameraId": 12607,
+  "sky_frac": 0.57,
+  "top_lum": 193.2
+ },
+ {
+  "file": "west_frames/12608_ss+15_0225Z.jpg",
+  "cameraId": 12608,
+  "sky_frac": 0.582,
+  "top_lum": 159.8
+ },
+ {
+  "file": "west_frames/12609_ss+15_0233Z.jpg",
+  "cameraId": 12609,
+  "sky_frac": 0.55,
+  "top_lum": 143.1
+ },
+ {
+  "file": "west_frames/12610_ss+15_0225Z.jpg",
+  "cameraId": 12610,
+  "sky_frac": 0.632,
+  "top_lum": 182.5
+ },
+ {
+  "file": "west_frames/12611_ss+15_0225Z.jpg",
+  "cameraId": 12611,
+  "sky_frac": 0.65,
+  "top_lum": 148.4
+ },
+ {
+  "file": "west_frames/12614_ss+15_0205Z.jpg",
+  "cameraId": 12614,
+  "sky_frac": 0.554,
+  "top_lum": 135.6
+ },
+ {
+  "file": "west_frames/12615_ss+15_0205Z.jpg",
+  "cameraId": 12615,
+  "sky_frac": 0.556,
+  "top_lum": 139.1
+ },
+ {
+  "file": "west_frames/12616_ss+15_0206Z.jpg",
+  "cameraId": 12616,
+  "sky_frac": 0.5,
+  "top_lum": 156.8
+ },
+ {
+  "file": "west_frames/12617_ss+15_0225Z.jpg",
+  "cameraId": 12617,
+  "sky_frac": 0.511,
+  "top_lum": 176.9
+ },
+ {
+  "file": "west_frames/12618_ss+15_0224Z.jpg",
+  "cameraId": 12618,
+  "sky_frac": 0.582,
+  "top_lum": 134.9
+ },
+ {
+  "file": "west_frames/12619_ss+15_0225Z.jpg",
+  "cameraId": 12619,
+  "sky_frac": 0.527,
+  "top_lum": 219.7
+ },
+ {
+  "file": "west_frames/12620_ss+15_0225Z.jpg",
+  "cameraId": 12620,
+  "sky_frac": 0.43,
+  "top_lum": 193.5
+ },
+ {
+  "file": "west_frames/12625_ss+15_0206Z.jpg",
+  "cameraId": 12625,
+  "sky_frac": 0.595,
+  "top_lum": 179.6
+ },
+ {
+  "file": "west_frames/12626_ss+15_0207Z.jpg",
+  "cameraId": 12626,
+  "sky_frac": 0.557,
+  "top_lum": 153.9
+ },
+ {
+  "file": "west_frames/12627_ss+15_0207Z.jpg",
+  "cameraId": 12627,
+  "sky_frac": 0.538,
+  "top_lum": 173.1
+ },
+ {
+  "file": "west_frames/12628_ss+15_0206Z.jpg",
+  "cameraId": 12628,
+  "sky_frac": 0.664,
+  "top_lum": 174.3
+ },
+ {
+  "file": "west_frames/12629_ss+15_0206Z.jpg",
+  "cameraId": 12629,
+  "sky_frac": 0.576,
+  "top_lum": 77.7
+ },
+ {
+  "file": "west_frames/12630_ss+15_0206Z.jpg",
+  "cameraId": 12630,
+  "sky_frac": 0.475,
+  "top_lum": 115.3
+ },
+ {
+  "file": "west_frames/12631_ss+15_0207Z.jpg",
+  "cameraId": 12631,
+  "sky_frac": 0.447,
+  "top_lum": 158.9
+ },
+ {
+  "file": "west_frames/12632_ss+15_0207Z.jpg",
+  "cameraId": 12632,
+  "sky_frac": 0.485,
+  "top_lum": 199.7
+ },
+ {
+  "file": "west_frames/12633_ss+15_0227Z.jpg",
+  "cameraId": 12633,
+  "sky_frac": 0.558,
+  "top_lum": 134.9
+ },
+ {
+  "file": "west_frames/12634_ss+15_0227Z.jpg",
+  "cameraId": 12634,
+  "sky_frac": 0.659,
+  "top_lum": 128.1
+ },
+ {
+  "file": "west_frames/12635_ss+15_0227Z.jpg",
+  "cameraId": 12635,
+  "sky_frac": 0.625,
+  "top_lum": 184.7
+ },
+ {
+  "file": "west_frames/12636_ss+15_0228Z.jpg",
+  "cameraId": 12636,
+  "sky_frac": 0.627,
+  "top_lum": 169.4
+ },
+ {
+  "file": "west_frames/12637_ss+15_0225Z.jpg",
+  "cameraId": 12637,
+  "sky_frac": 0.568,
+  "top_lum": 155.3
+ },
+ {
+  "file": "west_frames/12638_ss+15_0222Z.jpg",
+  "cameraId": 12638,
+  "sky_frac": 0.59,
+  "top_lum": 137.5
+ },
+ {
+  "file": "west_frames/12639_ss+15_0223Z.jpg",
+  "cameraId": 12639,
+  "sky_frac": 0.54,
+  "top_lum": 228.9
+ },
+ {
+  "file": "west_frames/12640_ss+15_0223Z.jpg",
+  "cameraId": 12640,
+  "sky_frac": 0.472,
+  "top_lum": 243.7
+ },
+ {
+  "file": "west_frames/12641_ss+15_0154Z.jpg",
+  "cameraId": 12641,
+  "sky_frac": 0.448,
+  "top_lum": 137.9
+ },
+ {
+  "file": "west_frames/12642_ss+15_0154Z.jpg",
+  "cameraId": 12642,
+  "sky_frac": 0.49,
+  "top_lum": 129.3
+ },
+ {
+  "file": "west_frames/12643_ss+15_0155Z.jpg",
+  "cameraId": 12643,
+  "sky_frac": 0.489,
+  "top_lum": 116.0
+ },
+ {
+  "file": "west_frames/12644_ss+15_0154Z.jpg",
+  "cameraId": 12644,
+  "sky_frac": 0.381,
+  "top_lum": 144.7
+ },
+ {
+  "file": "west_frames/12645_ss+15_0218Z.jpg",
+  "cameraId": 12645,
+  "sky_frac": 0.613,
+  "top_lum": 203.0
+ },
+ {
+  "file": "west_frames/12646_ss+15_0219Z.jpg",
+  "cameraId": 12646,
+  "sky_frac": 0.596,
+  "top_lum": 173.8
+ },
+ {
+  "file": "west_frames/12647_ss+15_0219Z.jpg",
+  "cameraId": 12647,
+  "sky_frac": 0.417,
+  "top_lum": 214.8
+ },
+ {
+  "file": "west_frames/12648_ss+15_0220Z.jpg",
+  "cameraId": 12648,
+  "sky_frac": 0.478,
+  "top_lum": 246.3
+ },
+ {
+  "file": "west_frames/12649_ss+15_0216Z.jpg",
+  "cameraId": 12649,
+  "sky_frac": 0.443,
+  "top_lum": 154.5
+ },
+ {
+  "file": "west_frames/12650_ss+15_0216Z.jpg",
+  "cameraId": 12650,
+  "sky_frac": 0.404,
+  "top_lum": 149.1
+ },
+ {
+  "file": "west_frames/12651_ss+15_0217Z.jpg",
+  "cameraId": 12651,
+  "sky_frac": 0.551,
+  "top_lum": 149.4
+ },
+ {
+  "file": "west_frames/12652_ss+15_0216Z.jpg",
+  "cameraId": 12652,
+  "sky_frac": 0.422,
+  "top_lum": 202.7
+ },
+ {
+  "file": "west_frames/12653_ss+15_0204Z.jpg",
+  "cameraId": 12653,
+  "sky_frac": 0.44,
+  "top_lum": 185.0
+ },
+ {
+  "file": "west_frames/12654_ss+15_0203Z.jpg",
+  "cameraId": 12654,
+  "sky_frac": 0.487,
+  "top_lum": 154.0
+ },
+ {
+  "file": "west_frames/12655_ss+15_0205Z.jpg",
+  "cameraId": 12655,
+  "sky_frac": 0.942,
+  "top_lum": 239.9
+ },
+ {
+  "file": "west_frames/12656_ss+15_0204Z.jpg",
+  "cameraId": 12656,
+  "sky_frac": 0.563,
+  "top_lum": 160.1
+ },
+ {
+  "file": "west_frames/12658_ss+15_0209Z.jpg",
+  "cameraId": 12658,
+  "sky_frac": 0.569,
+  "top_lum": 116.4
+ },
+ {
+  "file": "west_frames/12659_ss+15_0209Z.jpg",
+  "cameraId": 12659,
+  "sky_frac": 0.728,
+  "top_lum": 110.9
+ },
+ {
+  "file": "west_frames/12660_ss+15_0208Z.jpg",
+  "cameraId": 12660,
+  "sky_frac": 0.591,
+  "top_lum": 248.0
+ },
+ {
+  "file": "west_frames/12661_ss+15_0159Z.jpg",
+  "cameraId": 12661,
+  "sky_frac": 0.536,
+  "top_lum": 204.2
+ },
+ {
+  "file": "west_frames/12662_ss+15_0223Z.jpg",
+  "cameraId": 12662,
+  "sky_frac": 0.533,
+  "top_lum": 189.8
+ },
+ {
+  "file": "west_frames/12663_ss+15_0216Z.jpg",
+  "cameraId": 12663,
+  "sky_frac": 0.557,
+  "top_lum": 195.3
+ },
+ {
+  "file": "west_frames/12664_ss+15_0224Z.jpg",
+  "cameraId": 12664,
+  "sky_frac": 0.52,
+  "top_lum": 222.5
+ },
+ {
+  "file": "west_frames/12665_ss+15_0159Z.jpg",
+  "cameraId": 12665,
+  "sky_frac": 0.526,
+  "top_lum": 198.6
+ },
+ {
+  "file": "west_frames/12666_ss+15_0158Z.jpg",
+  "cameraId": 12666,
+  "sky_frac": 0.521,
+  "top_lum": 162.5
+ },
+ {
+  "file": "west_frames/12667_ss+15_0158Z.jpg",
+  "cameraId": 12667,
+  "sky_frac": 0.569,
+  "top_lum": 146.4
+ },
+ {
+  "file": "west_frames/12668_ss+15_0208Z.jpg",
+  "cameraId": 12668,
+  "sky_frac": 0.381,
+  "top_lum": 144.1
+ },
+ {
+  "file": "west_frames/12669_ss+15_0204Z.jpg",
+  "cameraId": 12669,
+  "sky_frac": 0.545,
+  "top_lum": 144.5
+ },
+ {
+  "file": "west_frames/12670_ss+15_0206Z.jpg",
+  "cameraId": 12670,
+  "sky_frac": 0.506,
+  "top_lum": 142.4
+ },
+ {
+  "file": "west_frames/12671_ss+15_0207Z.jpg",
+  "cameraId": 12671,
+  "sky_frac": 0.554,
+  "top_lum": 139.9
+ },
+ {
+  "file": "west_frames/12672_ss+15_0206Z.jpg",
+  "cameraId": 12672,
+  "sky_frac": 0.391,
+  "top_lum": 185.2
+ },
+ {
+  "file": "west_frames/12673_ss+15_0206Z.jpg",
+  "cameraId": 12673,
+  "sky_frac": 0.531,
+  "top_lum": 213.9
+ },
+ {
+  "file": "west_frames/12674_ss+15_0205Z.jpg",
+  "cameraId": 12674,
+  "sky_frac": 0.562,
+  "top_lum": 117.2
+ },
+ {
+  "file": "west_frames/12675_ss+15_0204Z.jpg",
+  "cameraId": 12675,
+  "sky_frac": 0.684,
+  "top_lum": 216.3
+ },
+ {
+  "file": "west_frames/12678_ss+15_0214Z.jpg",
+  "cameraId": 12678,
+  "sky_frac": 0.434,
+  "top_lum": 150.7
+ },
+ {
+  "file": "west_frames/12679_ss+15_0213Z.jpg",
+  "cameraId": 12679,
+  "sky_frac": 0.378,
+  "top_lum": 155.4
+ },
+ {
+  "file": "west_frames/12680_ss+15_0214Z.jpg",
+  "cameraId": 12680,
+  "sky_frac": 0.621,
+  "top_lum": 155.8
+ },
+ {
+  "file": "west_frames/12681_ss+15_0213Z.jpg",
+  "cameraId": 12681,
+  "sky_frac": 0.539,
+  "top_lum": 168.7
+ },
+ {
+  "file": "west_frames/12682_ss+15_0224Z.jpg",
+  "cameraId": 12682,
+  "sky_frac": 0.547,
+  "top_lum": 155.9
+ },
+ {
+  "file": "west_frames/12683_ss+15_0225Z.jpg",
+  "cameraId": 12683,
+  "sky_frac": 0.332,
+  "top_lum": 164.8
+ },
+ {
+  "file": "west_frames/12684_ss+15_0224Z.jpg",
+  "cameraId": 12684,
+  "sky_frac": 0.341,
+  "top_lum": 197.1
+ },
+ {
+  "file": "west_frames/12685_ss+15_0224Z.jpg",
+  "cameraId": 12685,
+  "sky_frac": 0.323,
+  "top_lum": 242.4
+ },
+ {
+  "file": "west_frames/12686_ss+15_0233Z.jpg",
+  "cameraId": 12686,
+  "sky_frac": 0.567,
+  "top_lum": 129.9
+ },
+ {
+  "file": "west_frames/12687_ss+15_0235Z.jpg",
+  "cameraId": 12687,
+  "sky_frac": 0.579,
+  "top_lum": 132.4
+ },
+ {
+  "file": "west_frames/12688_ss+15_0235Z.jpg",
+  "cameraId": 12688,
+  "sky_frac": 0.54,
+  "top_lum": 131.3
+ },
+ {
+  "file": "west_frames/12689_ss+15_0235Z.jpg",
+  "cameraId": 12689,
+  "sky_frac": 0.502,
+  "top_lum": 152.2
+ },
+ {
+  "file": "west_frames/12690_ss+15_0218Z.jpg",
+  "cameraId": 12690,
+  "sky_frac": 0.672,
+  "top_lum": 111.2
+ },
+ {
+  "file": "west_frames/12691_ss+15_0217Z.jpg",
+  "cameraId": 12691,
+  "sky_frac": 0.719,
+  "top_lum": 104.7
+ },
+ {
+  "file": "west_frames/12696_ss+15_0200Z.jpg",
+  "cameraId": 12696,
+  "sky_frac": 0.536,
+  "top_lum": 154.5
+ },
+ {
+  "file": "west_frames/12697_ss+15_0202Z.jpg",
+  "cameraId": 12697,
+  "sky_frac": 0.492,
+  "top_lum": 146.3
+ },
+ {
+  "file": "west_frames/12698_ss+15_0201Z.jpg",
+  "cameraId": 12698,
+  "sky_frac": 0.569,
+  "top_lum": 239.2
+ },
+ {
+  "file": "west_frames/12699_ss+15_0200Z.jpg",
+  "cameraId": 12699,
+  "sky_frac": 0.656,
+  "top_lum": 150.0
+ },
+ {
+  "file": "west_frames/12700_ss+15_0212Z.jpg",
+  "cameraId": 12700,
+  "sky_frac": 0.629,
+  "top_lum": 104.9
+ },
+ {
+  "file": "west_frames/12701_ss+15_0204Z.jpg",
+  "cameraId": 12701,
+  "sky_frac": 0.732,
+  "top_lum": 168.3
+ },
+ {
+  "file": "west_frames/12702_ss+15_0212Z.jpg",
+  "cameraId": 12702,
+  "sky_frac": 0.394,
+  "top_lum": 211.8
+ },
+ {
+  "file": "west_frames/12703_ss+15_0212Z.jpg",
+  "cameraId": 12703,
+  "sky_frac": 0.483,
+  "top_lum": 161.3
+ },
+ {
+  "file": "west_frames/12704_ss+15_0219Z.jpg",
+  "cameraId": 12704,
+  "sky_frac": 0.581,
+  "top_lum": 155.2
+ },
+ {
+  "file": "west_frames/12705_ss+15_0219Z.jpg",
+  "cameraId": 12705,
+  "sky_frac": 0.559,
+  "top_lum": 115.4
+ },
+ {
+  "file": "west_frames/12706_ss+15_0220Z.jpg",
+  "cameraId": 12706,
+  "sky_frac": 0.567,
+  "top_lum": 122.6
+ },
+ {
+  "file": "west_frames/12707_ss+15_0219Z.jpg",
+  "cameraId": 12707,
+  "sky_frac": 0.78,
+  "top_lum": 109.9
+ },
+ {
+  "file": "west_frames/12708_ss+15_0215Z.jpg",
+  "cameraId": 12708,
+  "sky_frac": 0.532,
+  "top_lum": 168.2
+ },
+ {
+  "file": "west_frames/12709_ss+15_0214Z.jpg",
+  "cameraId": 12709,
+  "sky_frac": 0.56,
+  "top_lum": 196.9
+ },
+ {
+  "file": "west_frames/12710_ss+15_0214Z.jpg",
+  "cameraId": 12710,
+  "sky_frac": 0.378,
+  "top_lum": 247.8
+ },
+ {
+  "file": "west_frames/12711_ss+15_0214Z.jpg",
+  "cameraId": 12711,
+  "sky_frac": 0.368,
+  "top_lum": 212.5
+ },
+ {
+  "file": "west_frames/12716_ss+15_0202Z.jpg",
+  "cameraId": 12716,
+  "sky_frac": 0.613,
+  "top_lum": 249.3
+ },
+ {
+  "file": "west_frames/12717_ss+15_0226Z.jpg",
+  "cameraId": 12717,
+  "sky_frac": 0.498,
+  "top_lum": 131.8
+ },
+ {
+  "file": "west_frames/12718_ss+15_0225Z.jpg",
+  "cameraId": 12718,
+  "sky_frac": 0.464,
+  "top_lum": 135.2
+ },
+ {
+  "file": "west_frames/12719_ss+15_0226Z.jpg",
+  "cameraId": 12719,
+  "sky_frac": 0.478,
+  "top_lum": 131.8
+ },
+ {
+  "file": "west_frames/12720_ss+15_0225Z.jpg",
+  "cameraId": 12720,
+  "sky_frac": 0.402,
+  "top_lum": 194.9
+ },
+ {
+  "file": "west_frames/12721_ss+15_0221Z.jpg",
+  "cameraId": 12721,
+  "sky_frac": 0.607,
+  "top_lum": 166.3
+ },
+ {
+  "file": "west_frames/12722_ss+15_0222Z.jpg",
+  "cameraId": 12722,
+  "sky_frac": 0.606,
+  "top_lum": 163.0
+ },
+ {
+  "file": "west_frames/12723_ss+15_0222Z.jpg",
+  "cameraId": 12723,
+  "sky_frac": 0.615,
+  "top_lum": 246.5
+ },
+ {
+  "file": "west_frames/12724_ss+15_0222Z.jpg",
+  "cameraId": 12724,
+  "sky_frac": 0.645,
+  "top_lum": 137.4
+ },
+ {
+  "file": "west_frames/12725_ss+15_0213Z.jpg",
+  "cameraId": 12725,
+  "sky_frac": 0.403,
+  "top_lum": 155.7
+ },
+ {
+  "file": "west_frames/12726_ss+15_0212Z.jpg",
+  "cameraId": 12726,
+  "sky_frac": 0.515,
+  "top_lum": 134.9
+ },
+ {
+  "file": "west_frames/12727_ss+15_0211Z.jpg",
+  "cameraId": 12727,
+  "sky_frac": 0.53,
+  "top_lum": 241.0
+ },
+ {
+  "file": "west_frames/12728_ss+15_0211Z.jpg",
+  "cameraId": 12728,
+  "sky_frac": 0.45,
+  "top_lum": 188.2
+ },
+ {
+  "file": "west_frames/12729_ss+15_0224Z.jpg",
+  "cameraId": 12729,
+  "sky_frac": 0.555,
+  "top_lum": 145.2
+ },
+ {
+  "file": "west_frames/12730_ss+15_0225Z.jpg",
+  "cameraId": 12730,
+  "sky_frac": 0.406,
+  "top_lum": 188.6
+ },
+ {
+  "file": "west_frames/12731_ss+15_0226Z.jpg",
+  "cameraId": 12731,
+  "sky_frac": 0.43,
+  "top_lum": 250.3
+ },
+ {
+  "file": "west_frames/12732_ss+15_0225Z.jpg",
+  "cameraId": 12732,
+  "sky_frac": 0.484,
+  "top_lum": 233.1
+ },
+ {
+  "file": "west_frames/12733_ss+15_0222Z.jpg",
+  "cameraId": 12733,
+  "sky_frac": 0.422,
+  "top_lum": 247.7
+ },
+ {
+  "file": "west_frames/12734_ss+15_0223Z.jpg",
+  "cameraId": 12734,
+  "sky_frac": 0.381,
+  "top_lum": 250.2
+ },
+ {
+  "file": "west_frames/12738_ss+15_0206Z.jpg",
+  "cameraId": 12738,
+  "sky_frac": 0.513,
+  "top_lum": 167.5
+ },
+ {
+  "file": "west_frames/12739_ss+15_0215Z.jpg",
+  "cameraId": 12739,
+  "sky_frac": 0.459,
+  "top_lum": 178.4
+ },
+ {
+  "file": "west_frames/12740_ss+15_0205Z.jpg",
+  "cameraId": 12740,
+  "sky_frac": 0.473,
+  "top_lum": 239.3
+ },
+ {
+  "file": "west_frames/12741_ss+15_0206Z.jpg",
+  "cameraId": 12741,
+  "sky_frac": 0.526,
+  "top_lum": 152.4
+ },
+ {
+  "file": "west_frames/12746_ss+15_0228Z.jpg",
+  "cameraId": 12746,
+  "sky_frac": 0.589,
+  "top_lum": 149.3
+ },
+ {
+  "file": "west_frames/12747_ss+15_0227Z.jpg",
+  "cameraId": 12747,
+  "sky_frac": 0.519,
+  "top_lum": 199.7
+ },
+ {
+  "file": "west_frames/12748_ss+15_0229Z.jpg",
+  "cameraId": 12748,
+  "sky_frac": 0.526,
+  "top_lum": 249.2
+ },
+ {
+  "file": "west_frames/12749_ss+15_0228Z.jpg",
+  "cameraId": 12749,
+  "sky_frac": 0.589,
+  "top_lum": 187.5
+ },
+ {
+  "file": "west_frames/12754_ss+15_0218Z.jpg",
+  "cameraId": 12754,
+  "sky_frac": 0.496,
+  "top_lum": 149.3
+ },
+ {
+  "file": "west_frames/12755_ss+15_0225Z.jpg",
+  "cameraId": 12755,
+  "sky_frac": 0.462,
+  "top_lum": 179.4
+ },
+ {
+  "file": "west_frames/12756_ss+15_0225Z.jpg",
+  "cameraId": 12756,
+  "sky_frac": 0.421,
+  "top_lum": 248.8
+ },
+ {
+  "file": "west_frames/12757_ss+15_0216Z.jpg",
+  "cameraId": 12757,
+  "sky_frac": 0.406,
+  "top_lum": 223.1
+ },
+ {
+  "file": "west_frames/12758_ss+15_0229Z.jpg",
+  "cameraId": 12758,
+  "sky_frac": 0.545,
+  "top_lum": 165.3
+ },
+ {
+  "file": "west_frames/12759_ss+15_0228Z.jpg",
+  "cameraId": 12759,
+  "sky_frac": 0.504,
+  "top_lum": 207.4
+ },
+ {
+  "file": "west_frames/12760_ss+15_0229Z.jpg",
+  "cameraId": 12760,
+  "sky_frac": 0.437,
+  "top_lum": 249.5
+ },
+ {
+  "file": "west_frames/12761_ss+15_0228Z.jpg",
+  "cameraId": 12761,
+  "sky_frac": 0.377,
+  "top_lum": 189.3
+ },
+ {
+  "file": "west_frames/12762_ss+15_0207Z.jpg",
+  "cameraId": 12762,
+  "sky_frac": 0.48,
+  "top_lum": 130.1
+ },
+ {
+  "file": "west_frames/12763_ss+15_0207Z.jpg",
+  "cameraId": 12763,
+  "sky_frac": 0.479,
+  "top_lum": 188.3
+ },
+ {
+  "file": "west_frames/12764_ss+15_0207Z.jpg",
+  "cameraId": 12764,
+  "sky_frac": 0.494,
+  "top_lum": 248.8
+ },
+ {
+  "file": "west_frames/12765_ss+15_0207Z.jpg",
+  "cameraId": 12765,
+  "sky_frac": 0.447,
+  "top_lum": 211.5
+ },
+ {
+  "file": "west_frames/12766_ss+15_0216Z.jpg",
+  "cameraId": 12766,
+  "sky_frac": 0.56,
+  "top_lum": 144.8
+ },
+ {
+  "file": "west_frames/12767_ss+15_0211Z.jpg",
+  "cameraId": 12767,
+  "sky_frac": 0.54,
+  "top_lum": 179.4
+ },
+ {
+  "file": "west_frames/12768_ss+15_0210Z.jpg",
+  "cameraId": 12768,
+  "sky_frac": 0.503,
+  "top_lum": 227.9
+ },
+ {
+  "file": "west_frames/12769_ss+15_0211Z.jpg",
+  "cameraId": 12769,
+  "sky_frac": 0.561,
+  "top_lum": 148.2
+ },
+ {
+  "file": "west_frames/12774_ss+15_0228Z.jpg",
+  "cameraId": 12774,
+  "sky_frac": 0.562,
+  "top_lum": 170.7
+ },
+ {
+  "file": "west_frames/12775_ss+15_0229Z.jpg",
+  "cameraId": 12775,
+  "sky_frac": 0.556,
+  "top_lum": 134.3
+ },
+ {
+  "file": "west_frames/12776_ss+15_0228Z.jpg",
+  "cameraId": 12776,
+  "sky_frac": 0.443,
+  "top_lum": 250.6
+ },
+ {
+  "file": "west_frames/12777_ss+15_0228Z.jpg",
+  "cameraId": 12777,
+  "sky_frac": 0.423,
+  "top_lum": 246.8
+ },
+ {
+  "file": "west_frames/12778_ss+15_0229Z.jpg",
+  "cameraId": 12778,
+  "sky_frac": 0.495,
+  "top_lum": 155.8
+ },
+ {
+  "file": "west_frames/12779_ss+15_0230Z.jpg",
+  "cameraId": 12779,
+  "sky_frac": 0.441,
+  "top_lum": 222.6
+ },
+ {
+  "file": "west_frames/12780_ss+15_0229Z.jpg",
+  "cameraId": 12780,
+  "sky_frac": 0.391,
+  "top_lum": 250.2
+ },
+ {
+  "file": "west_frames/12781_ss+15_0228Z.jpg",
+  "cameraId": 12781,
+  "sky_frac": 0.367,
+  "top_lum": 198.6
+ },
+ {
+  "file": "west_frames/12786_ss+15_0213Z.jpg",
+  "cameraId": 12786,
+  "sky_frac": 0.55,
+  "top_lum": 124.6
+ },
+ {
+  "file": "west_frames/12787_ss+15_0212Z.jpg",
+  "cameraId": 12787,
+  "sky_frac": 0.523,
+  "top_lum": 135.5
+ },
+ {
+  "file": "west_frames/12788_ss+15_0212Z.jpg",
+  "cameraId": 12788,
+  "sky_frac": 0.464,
+  "top_lum": 196.8
+ },
+ {
+  "file": "west_frames/12789_ss+15_0212Z.jpg",
+  "cameraId": 12789,
+  "sky_frac": 0.462,
+  "top_lum": 170.0
+ },
+ {
+  "file": "west_frames/12790_ss+15_0227Z.jpg",
+  "cameraId": 12790,
+  "sky_frac": 0.462,
+  "top_lum": 162.3
+ },
+ {
+  "file": "west_frames/12791_ss+15_0227Z.jpg",
+  "cameraId": 12791,
+  "sky_frac": 0.509,
+  "top_lum": 167.9
+ },
+ {
+  "file": "west_frames/12792_ss+15_0226Z.jpg",
+  "cameraId": 12792,
+  "sky_frac": 0.514,
+  "top_lum": 219.9
+ },
+ {
+  "file": "west_frames/12793_ss+15_0227Z.jpg",
+  "cameraId": 12793,
+  "sky_frac": 0.434,
+  "top_lum": 249.9
+ },
+ {
+  "file": "west_frames/12794_ss+15_0229Z.jpg",
+  "cameraId": 12794,
+  "sky_frac": 0.433,
+  "top_lum": 139.1
+ },
+ {
+  "file": "west_frames/12795_ss+15_0230Z.jpg",
+  "cameraId": 12795,
+  "sky_frac": 0.48,
+  "top_lum": 159.2
+ },
+ {
+  "file": "west_frames/12796_ss+15_0229Z.jpg",
+  "cameraId": 12796,
+  "sky_frac": 0.509,
+  "top_lum": 205.0
+ },
+ {
+  "file": "west_frames/12797_ss+15_0229Z.jpg",
+  "cameraId": 12797,
+  "sky_frac": 0.38,
+  "top_lum": 228.1
+ },
+ {
+  "file": "west_frames/12798_ss+15_0220Z.jpg",
+  "cameraId": 12798,
+  "sky_frac": 0.549,
+  "top_lum": 152.4
+ },
+ {
+  "file": "west_frames/12799_ss+15_0224Z.jpg",
+  "cameraId": 12799,
+  "sky_frac": 0.625,
+  "top_lum": 156.4
+ },
+ {
+  "file": "west_frames/12800_ss+15_0224Z.jpg",
+  "cameraId": 12800,
+  "sky_frac": 0.589,
+  "top_lum": 168.6
+ },
+ {
+  "file": "west_frames/12801_ss+15_0221Z.jpg",
+  "cameraId": 12801,
+  "sky_frac": 0.534,
+  "top_lum": 226.2
+ },
+ {
+  "file": "west_frames/12802_ss+15_0232Z.jpg",
+  "cameraId": 12802,
+  "sky_frac": 0.531,
+  "top_lum": 121.6
+ },
+ {
+  "file": "west_frames/12803_ss+15_0223Z.jpg",
+  "cameraId": 12803,
+  "sky_frac": 0.465,
+  "top_lum": 208.4
+ },
+ {
+  "file": "west_frames/12804_ss+15_0224Z.jpg",
+  "cameraId": 12804,
+  "sky_frac": 0.38,
+  "top_lum": 249.3
+ },
+ {
+  "file": "west_frames/12805_ss+15_0223Z.jpg",
+  "cameraId": 12805,
+  "sky_frac": 0.409,
+  "top_lum": 179.9
+ },
+ {
+  "file": "west_frames/12806_ss+15_0224Z.jpg",
+  "cameraId": 12806,
+  "sky_frac": 0.548,
+  "top_lum": 153.7
+ },
+ {
+  "file": "west_frames/12807_ss+15_0216Z.jpg",
+  "cameraId": 12807,
+  "sky_frac": 0.499,
+  "top_lum": 158.2
+ },
+ {
+  "file": "west_frames/12808_ss+15_0225Z.jpg",
+  "cameraId": 12808,
+  "sky_frac": 0.478,
+  "top_lum": 152.6
+ },
+ {
+  "file": "west_frames/12809_ss+15_0208Z.jpg",
+  "cameraId": 12809,
+  "sky_frac": 0.488,
+  "top_lum": 166.2
+ },
+ {
+  "file": "west_frames/12810_ss+15_0238Z.jpg",
+  "cameraId": 12810,
+  "sky_frac": 0.562,
+  "top_lum": 183.7
+ },
+ {
+  "file": "west_frames/12811_ss+15_0230Z.jpg",
+  "cameraId": 12811,
+  "sky_frac": 0.432,
+  "top_lum": 158.0
+ },
+ {
+  "file": "west_frames/12812_ss+15_0237Z.jpg",
+  "cameraId": 12812,
+  "sky_frac": 0.399,
+  "top_lum": 187.3
+ },
+ {
+  "file": "west_frames/12813_ss+15_0228Z.jpg",
+  "cameraId": 12813,
+  "sky_frac": 0.451,
+  "top_lum": 164.3
+ },
+ {
+  "file": "west_frames/12814_ss+15_0232Z.jpg",
+  "cameraId": 12814,
+  "sky_frac": 0.489,
+  "top_lum": 92.4
+ },
+ {
+  "file": "west_frames/12815_ss+15_0232Z.jpg",
+  "cameraId": 12815,
+  "sky_frac": 0.522,
+  "top_lum": 84.5
+ },
+ {
+  "file": "west_frames/12816_ss+15_0233Z.jpg",
+  "cameraId": 12816,
+  "sky_frac": 0.487,
+  "top_lum": 95.3
+ },
+ {
+  "file": "west_frames/12817_ss+15_0233Z.jpg",
+  "cameraId": 12817,
+  "sky_frac": 0.367,
+  "top_lum": 239.4
+ },
+ {
+  "file": "west_frames/12818_ss+15_0230Z.jpg",
+  "cameraId": 12818,
+  "sky_frac": 0.546,
+  "top_lum": 98.1
+ },
+ {
+  "file": "west_frames/12819_ss+15_0229Z.jpg",
+  "cameraId": 12819,
+  "sky_frac": 0.549,
+  "top_lum": 199.3
+ },
+ {
+  "file": "west_frames/12820_ss+15_0229Z.jpg",
+  "cameraId": 12820,
+  "sky_frac": 0.59,
+  "top_lum": 242.6
+ },
+ {
+  "file": "west_frames/12821_ss+15_0229Z.jpg",
+  "cameraId": 12821,
+  "sky_frac": 0.593,
+  "top_lum": 166.2
+ },
+ {
+  "file": "west_frames/12822_ss+15_0205Z.jpg",
+  "cameraId": 12822,
+  "sky_frac": 0.647,
+  "top_lum": 105.9
+ },
+ {
+  "file": "west_frames/12823_ss+15_0206Z.jpg",
+  "cameraId": 12823,
+  "sky_frac": 0.528,
+  "top_lum": 126.4
+ },
+ {
+  "file": "west_frames/12824_ss+15_0205Z.jpg",
+  "cameraId": 12824,
+  "sky_frac": 0.349,
+  "top_lum": 148.8
+ },
+ {
+  "file": "west_frames/12825_ss+15_0203Z.jpg",
+  "cameraId": 12825,
+  "sky_frac": 0.379,
+  "top_lum": 211.9
+ },
+ {
+  "file": "west_frames/12826_ss+15_0206Z.jpg",
+  "cameraId": 12826,
+  "sky_frac": 0.431,
+  "top_lum": 105.2
+ },
+ {
+  "file": "west_frames/12827_ss+15_0206Z.jpg",
+  "cameraId": 12827,
+  "sky_frac": 0.423,
+  "top_lum": 143.9
+ },
+ {
+  "file": "west_frames/12828_ss+15_0207Z.jpg",
+  "cameraId": 12828,
+  "sky_frac": 0.369,
+  "top_lum": 213.3
+ },
+ {
+  "file": "west_frames/12829_ss+15_0207Z.jpg",
+  "cameraId": 12829,
+  "sky_frac": 0.322,
+  "top_lum": 140.8
+ },
+ {
+  "file": "west_frames/12830_ss+15_0204Z.jpg",
+  "cameraId": 12830,
+  "sky_frac": 0.55,
+  "top_lum": 170.3
+ },
+ {
+  "file": "west_frames/12831_ss+15_0203Z.jpg",
+  "cameraId": 12831,
+  "sky_frac": 0.693,
+  "top_lum": 166.2
+ },
+ {
+  "file": "west_frames/12832_ss+15_0203Z.jpg",
+  "cameraId": 12832,
+  "sky_frac": 0.672,
+  "top_lum": 183.8
+ },
+ {
+  "file": "west_frames/12833_ss+15_0204Z.jpg",
+  "cameraId": 12833,
+  "sky_frac": 0.525,
+  "top_lum": 247.2
+ },
+ {
+  "file": "west_frames/12834_ss+15_0211Z.jpg",
+  "cameraId": 12834,
+  "sky_frac": 0.506,
+  "top_lum": 165.6
+ },
+ {
+  "file": "west_frames/12835_ss+15_0212Z.jpg",
+  "cameraId": 12835,
+  "sky_frac": 0.585,
+  "top_lum": 146.0
+ },
+ {
+  "file": "west_frames/12836_ss+15_0215Z.jpg",
+  "cameraId": 12836,
+  "sky_frac": 0.498,
+  "top_lum": 189.6
+ },
+ {
+  "file": "west_frames/12837_ss+15_0213Z.jpg",
+  "cameraId": 12837,
+  "sky_frac": 0.425,
+  "top_lum": 247.8
+ },
+ {
+  "file": "west_frames/12838_ss+15_0218Z.jpg",
+  "cameraId": 12838,
+  "sky_frac": 0.522,
+  "top_lum": 144.7
+ },
+ {
+  "file": "west_frames/12839_ss+15_0219Z.jpg",
+  "cameraId": 12839,
+  "sky_frac": 0.471,
+  "top_lum": 114.3
+ },
+ {
+  "file": "west_frames/12840_ss+15_0217Z.jpg",
+  "cameraId": 12840,
+  "sky_frac": 0.577,
+  "top_lum": 156.7
+ },
+ {
+  "file": "west_frames/12841_ss+15_0218Z.jpg",
+  "cameraId": 12841,
+  "sky_frac": 0.591,
+  "top_lum": 231.2
+ },
+ {
+  "file": "west_frames/12842_ss+15_0154Z.jpg",
+  "cameraId": 12842,
+  "sky_frac": 0.548,
+  "top_lum": 149.0
+ },
+ {
+  "file": "west_frames/12843_ss+15_0153Z.jpg",
+  "cameraId": 12843,
+  "sky_frac": 0.556,
+  "top_lum": 147.6
+ },
+ {
+  "file": "west_frames/12844_ss+15_0155Z.jpg",
+  "cameraId": 12844,
+  "sky_frac": 0.544,
+  "top_lum": 204.6
+ },
+ {
+  "file": "west_frames/12845_ss+15_0206Z.jpg",
+  "cameraId": 12845,
+  "sky_frac": 0.587,
+  "top_lum": 155.7
+ },
+ {
+  "file": "west_frames/12846_ss+15_0216Z.jpg",
+  "cameraId": 12846,
+  "sky_frac": 0.546,
+  "top_lum": 138.9
+ },
+ {
+  "file": "west_frames/12847_ss+15_0216Z.jpg",
+  "cameraId": 12847,
+  "sky_frac": 0.55,
+  "top_lum": 129.5
+ },
+ {
+  "file": "west_frames/12848_ss+15_0216Z.jpg",
+  "cameraId": 12848,
+  "sky_frac": 0.532,
+  "top_lum": 250.1
+ },
+ {
+  "file": "west_frames/12849_ss+15_0202Z.jpg",
+  "cameraId": 12849,
+  "sky_frac": 0.595,
+  "top_lum": 157.6
+ },
+ {
+  "file": "west_frames/12850_ss+15_0202Z.jpg",
+  "cameraId": 12850,
+  "sky_frac": 0.519,
+  "top_lum": 143.9
+ },
+ {
+  "file": "west_frames/12851_ss+15_0203Z.jpg",
+  "cameraId": 12851,
+  "sky_frac": 0.45,
+  "top_lum": 169.5
+ },
+ {
+  "file": "west_frames/12852_ss+15_0204Z.jpg",
+  "cameraId": 12852,
+  "sky_frac": 0.433,
+  "top_lum": 165.6
+ },
+ {
+  "file": "west_frames/12853_ss+15_0202Z.jpg",
+  "cameraId": 12853,
+  "sky_frac": 0.669,
+  "top_lum": 173.5
+ },
+ {
+  "file": "west_frames/12854_ss+15_0151Z.jpg",
+  "cameraId": 12854,
+  "sky_frac": 0.56,
+  "top_lum": 124.9
+ },
+ {
+  "file": "west_frames/12855_ss+15_0150Z.jpg",
+  "cameraId": 12855,
+  "sky_frac": 0.379,
+  "top_lum": 164.5
+ },
+ {
+  "file": "west_frames/12856_ss+15_0149Z.jpg",
+  "cameraId": 12856,
+  "sky_frac": 0.434,
+  "top_lum": 210.0
+ },
+ {
+  "file": "west_frames/12857_ss+15_0200Z.jpg",
+  "cameraId": 12857,
+  "sky_frac": 0.442,
+  "top_lum": 158.8
+ },
+ {
+  "file": "west_frames/12858_ss+15_0212Z.jpg",
+  "cameraId": 12858,
+  "sky_frac": 0.519,
+  "top_lum": 248.2
+ },
+ {
+  "file": "west_frames/12859_ss+15_0211Z.jpg",
+  "cameraId": 12859,
+  "sky_frac": 0.604,
+  "top_lum": 136.4
+ },
+ {
+  "file": "west_frames/12860_ss+15_0212Z.jpg",
+  "cameraId": 12860,
+  "sky_frac": 0.526,
+  "top_lum": 156.6
+ },
+ {
+  "file": "west_frames/12861_ss+15_0212Z.jpg",
+  "cameraId": 12861,
+  "sky_frac": 0.474,
+  "top_lum": 172.8
+ },
+ {
+  "file": "west_frames/12866_ss+15_0158Z.jpg",
+  "cameraId": 12866,
+  "sky_frac": 0.567,
+  "top_lum": 153.2
+ },
+ {
+  "file": "west_frames/12867_ss+15_0157Z.jpg",
+  "cameraId": 12867,
+  "sky_frac": 0.573,
+  "top_lum": 161.4
+ },
+ {
+  "file": "west_frames/12868_ss+15_0158Z.jpg",
+  "cameraId": 12868,
+  "sky_frac": 0.556,
+  "top_lum": 171.9
+ },
+ {
+  "file": "west_frames/12869_ss+15_0158Z.jpg",
+  "cameraId": 12869,
+  "sky_frac": 0.587,
+  "top_lum": 229.2
+ },
+ {
+  "file": "west_frames/12873_ss+15_0203Z.jpg",
+  "cameraId": 12873,
+  "sky_frac": 0.516,
+  "top_lum": 168.8
+ },
+ {
+  "file": "west_frames/12874_ss+15_0202Z.jpg",
+  "cameraId": 12874,
+  "sky_frac": 0.507,
+  "top_lum": 166.0
+ },
+ {
+  "file": "west_frames/12875_ss+15_0202Z.jpg",
+  "cameraId": 12875,
+  "sky_frac": 0.607,
+  "top_lum": 156.3
+ },
+ {
+  "file": "west_frames/12876_ss+15_0200Z.jpg",
+  "cameraId": 12876,
+  "sky_frac": 0.506,
+  "top_lum": 179.8
+ },
+ {
+  "file": "west_frames/12877_ss+15_0209Z.jpg",
+  "cameraId": 12877,
+  "sky_frac": 0.599,
+  "top_lum": 151.3
+ },
+ {
+  "file": "west_frames/12878_ss+15_0209Z.jpg",
+  "cameraId": 12878,
+  "sky_frac": 0.542,
+  "top_lum": 124.2
+ },
+ {
+  "file": "west_frames/12879_ss+15_0208Z.jpg",
+  "cameraId": 12879,
+  "sky_frac": 0.505,
+  "top_lum": 129.2
+ },
+ {
+  "file": "west_frames/12880_ss+15_0208Z.jpg",
+  "cameraId": 12880,
+  "sky_frac": 0.463,
+  "top_lum": 165.6
+ },
+ {
+  "file": "west_frames/12881_ss+15_0219Z.jpg",
+  "cameraId": 12881,
+  "sky_frac": 0.452,
+  "top_lum": 144.2
+ },
+ {
+  "file": "west_frames/12882_ss+15_0220Z.jpg",
+  "cameraId": 12882,
+  "sky_frac": 0.417,
+  "top_lum": 156.5
+ },
+ {
+  "file": "west_frames/12883_ss+15_0219Z.jpg",
+  "cameraId": 12883,
+  "sky_frac": 0.418,
+  "top_lum": 176.5
+ },
+ {
+  "file": "west_frames/12884_ss+15_0218Z.jpg",
+  "cameraId": 12884,
+  "sky_frac": 0.474,
+  "top_lum": 160.3
+ },
+ {
+  "file": "west_frames/12885_ss+15_0209Z.jpg",
+  "cameraId": 12885,
+  "sky_frac": 0.575,
+  "top_lum": 129.8
+ },
+ {
+  "file": "west_frames/12886_ss+15_0210Z.jpg",
+  "cameraId": 12886,
+  "sky_frac": 0.506,
+  "top_lum": 134.8
+ },
+ {
+  "file": "west_frames/12887_ss+15_0209Z.jpg",
+  "cameraId": 12887,
+  "sky_frac": 0.497,
+  "top_lum": 150.6
+ },
+ {
+  "file": "west_frames/12888_ss+15_0209Z.jpg",
+  "cameraId": 12888,
+  "sky_frac": 0.489,
+  "top_lum": 211.7
+ },
+ {
+  "file": "west_frames/12889_ss+15_0211Z.jpg",
+  "cameraId": 12889,
+  "sky_frac": 0.588,
+  "top_lum": 137.0
+ },
+ {
+  "file": "west_frames/12890_ss+15_0212Z.jpg",
+  "cameraId": 12890,
+  "sky_frac": 0.62,
+  "top_lum": 148.9
+ },
+ {
+  "file": "west_frames/12891_ss+15_0212Z.jpg",
+  "cameraId": 12891,
+  "sky_frac": 0.611,
+  "top_lum": 214.3
+ },
+ {
+  "file": "west_frames/12892_ss+15_0212Z.jpg",
+  "cameraId": 12892,
+  "sky_frac": 0.593,
+  "top_lum": 175.8
+ },
+ {
+  "file": "west_frames/12893_ss+15_0231Z.jpg",
+  "cameraId": 12893,
+  "sky_frac": 0.465,
+  "top_lum": 132.5
+ },
+ {
+  "file": "west_frames/12894_ss+15_0232Z.jpg",
+  "cameraId": 12894,
+  "sky_frac": 0.411,
+  "top_lum": 192.2
+ },
+ {
+  "file": "west_frames/12895_ss+15_0231Z.jpg",
+  "cameraId": 12895,
+  "sky_frac": 0.44,
+  "top_lum": 246.2
+ },
+ {
+  "file": "west_frames/12896_ss+15_0232Z.jpg",
+  "cameraId": 12896,
+  "sky_frac": 0.441,
+  "top_lum": 222.8
+ },
+ {
+  "file": "west_frames/12897_ss+15_0211Z.jpg",
+  "cameraId": 12897,
+  "sky_frac": 0.576,
+  "top_lum": 139.1
+ },
+ {
+  "file": "west_frames/12898_ss+15_0211Z.jpg",
+  "cameraId": 12898,
+  "sky_frac": 0.415,
+  "top_lum": 183.7
+ },
+ {
+  "file": "west_frames/12899_ss+15_0212Z.jpg",
+  "cameraId": 12899,
+  "sky_frac": 0.401,
+  "top_lum": 248.8
+ },
+ {
+  "file": "west_frames/12900_ss+15_0215Z.jpg",
+  "cameraId": 12900,
+  "sky_frac": 0.428,
+  "top_lum": 214.0
+ },
+ {
+  "file": "west_frames/12905_ss+15_0219Z.jpg",
+  "cameraId": 12905,
+  "sky_frac": 0.55,
+  "top_lum": 174.6
+ },
+ {
+  "file": "west_frames/12906_ss+15_0228Z.jpg",
+  "cameraId": 12906,
+  "sky_frac": 0.512,
+  "top_lum": 153.6
+ },
+ {
+  "file": "west_frames/12907_ss+15_0219Z.jpg",
+  "cameraId": 12907,
+  "sky_frac": 0.42,
+  "top_lum": 250.2
+ },
+ {
+  "file": "west_frames/12908_ss+15_0219Z.jpg",
+  "cameraId": 12908,
+  "sky_frac": 0.491,
+  "top_lum": 222.3
+ },
+ {
+  "file": "west_frames/12911_ss+15_0156Z.jpg",
+  "cameraId": 12911,
+  "sky_frac": 0.447,
+  "top_lum": 81.0
+ },
+ {
+  "file": "west_frames/12912_ss+15_0156Z.jpg",
+  "cameraId": 12912,
+  "sky_frac": 0.602,
+  "top_lum": 83.3
+ },
+ {
+  "file": "west_frames/12913_ss+15_0156Z.jpg",
+  "cameraId": 12913,
+  "sky_frac": 0.528,
+  "top_lum": 154.4
+ },
+ {
+  "file": "west_frames/12914_ss+15_0156Z.jpg",
+  "cameraId": 12914,
+  "sky_frac": 0.496,
+  "top_lum": 125.3
+ },
+ {
+  "file": "west_frames/12915_ss+15_0150Z.jpg",
+  "cameraId": 12915,
+  "sky_frac": 0.537,
+  "top_lum": 135.7
+ },
+ {
+  "file": "west_frames/12916_ss+15_0150Z.jpg",
+  "cameraId": 12916,
+  "sky_frac": 0.509,
+  "top_lum": 147.3
+ },
+ {
+  "file": "west_frames/12917_ss+15_0151Z.jpg",
+  "cameraId": 12917,
+  "sky_frac": 0.458,
+  "top_lum": 160.4
+ },
+ {
+  "file": "west_frames/12918_ss+15_0151Z.jpg",
+  "cameraId": 12918,
+  "sky_frac": 0.404,
+  "top_lum": 241.9
+ },
+ {
+  "file": "west_frames/12922_ss+15_0234Z.jpg",
+  "cameraId": 12922,
+  "sky_frac": 0.563,
+  "top_lum": 132.5
+ },
+ {
+  "file": "west_frames/12923_ss+15_0235Z.jpg",
+  "cameraId": 12923,
+  "sky_frac": 0.46,
+  "top_lum": 183.3
+ },
+ {
+  "file": "west_frames/12924_ss+15_0236Z.jpg",
+  "cameraId": 12924,
+  "sky_frac": 0.426,
+  "top_lum": 249.6
+ },
+ {
+  "file": "west_frames/12925_ss+15_0236Z.jpg",
+  "cameraId": 12925,
+  "sky_frac": 0.448,
+  "top_lum": 217.1
+ },
+ {
+  "file": "west_frames/12934_ss+15_0154Z.jpg",
+  "cameraId": 12934,
+  "sky_frac": 0.73,
+  "top_lum": 159.7
+ },
+ {
+  "file": "west_frames/12935_ss+15_0157Z.jpg",
+  "cameraId": 12935,
+  "sky_frac": 0.727,
+  "top_lum": 173.4
+ },
+ {
+  "file": "west_frames/12936_ss+15_0156Z.jpg",
+  "cameraId": 12936,
+  "sky_frac": 0.813,
+  "top_lum": 150.0
+ },
+ {
+  "file": "west_frames/12937_ss+15_0156Z.jpg",
+  "cameraId": 12937,
+  "sky_frac": 0.432,
+  "top_lum": 224.3
+ },
+ {
+  "file": "west_frames/12939_ss+15_0152Z.jpg",
+  "cameraId": 12939,
+  "sky_frac": 0.713,
+  "top_lum": 166.1
+ },
+ {
+  "file": "west_frames/12940_ss+15_0157Z.jpg",
+  "cameraId": 12940,
+  "sky_frac": 0.778,
+  "top_lum": 124.0
+ },
+ {
+  "file": "west_frames/12941_ss+15_0152Z.jpg",
+  "cameraId": 12941,
+  "sky_frac": 0.757,
+  "top_lum": 105.9
+ },
+ {
+  "file": "west_frames/12942_ss+15_0156Z.jpg",
+  "cameraId": 12942,
+  "sky_frac": 0.836,
+  "top_lum": 134.4
+ },
+ {
+  "file": "west_frames/12943_ss+15_0157Z.jpg",
+  "cameraId": 12943,
+  "sky_frac": 0.745,
+  "top_lum": 153.0
+ },
+ {
+  "file": "west_frames/12944_ss+15_0156Z.jpg",
+  "cameraId": 12944,
+  "sky_frac": 0.707,
+  "top_lum": 172.0
+ },
+ {
+  "file": "west_frames/12945_ss+15_0156Z.jpg",
+  "cameraId": 12945,
+  "sky_frac": 0.769,
+  "top_lum": 107.8
+ },
+ {
+  "file": "west_frames/12946_ss+15_0157Z.jpg",
+  "cameraId": 12946,
+  "sky_frac": 0.744,
+  "top_lum": 115.8
+ },
+ {
+  "file": "west_frames/12963_ss+15_0236Z.jpg",
+  "cameraId": 12963,
+  "sky_frac": 0.705,
+  "top_lum": 144.4
+ },
+ {
+  "file": "west_frames/12964_ss+15_0232Z.jpg",
+  "cameraId": 12964,
+  "sky_frac": 0.733,
+  "top_lum": 149.7
+ },
+ {
+  "file": "west_frames/12965_ss+15_0235Z.jpg",
+  "cameraId": 12965,
+  "sky_frac": 0.739,
+  "top_lum": 123.5
+ },
+ {
+  "file": "west_frames/12979_ss+15_0157Z.jpg",
+  "cameraId": 12979,
+  "sky_frac": 0.597,
+  "top_lum": 168.1
+ },
+ {
+  "file": "west_frames/12980_ss+15_0158Z.jpg",
+  "cameraId": 12980,
+  "sky_frac": 0.529,
+  "top_lum": 142.6
+ },
+ {
+  "file": "west_frames/12981_ss+15_0157Z.jpg",
+  "cameraId": 12981,
+  "sky_frac": 0.461,
+  "top_lum": 143.2
+ },
+ {
+  "file": "west_frames/12982_ss+15_0158Z.jpg",
+  "cameraId": 12982,
+  "sky_frac": 0.405,
+  "top_lum": 215.6
+ },
+ {
+  "file": "west_frames/12984_ss+15_0156Z.jpg",
+  "cameraId": 12984,
+  "sky_frac": 0.525,
+  "top_lum": 125.2
+ },
+ {
+  "file": "west_frames/12985_ss+15_0154Z.jpg",
+  "cameraId": 12985,
+  "sky_frac": 0.496,
+  "top_lum": 134.1
+ },
+ {
+  "file": "west_frames/12986_ss+15_0203Z.jpg",
+  "cameraId": 12986,
+  "sky_frac": 0.494,
+  "top_lum": 134.3
+ },
+ {
+  "file": "west_frames/12987_ss+15_0203Z.jpg",
+  "cameraId": 12987,
+  "sky_frac": 0.573,
+  "top_lum": 191.6
+ },
+ {
+  "file": "west_frames/12992_ss+15_0225Z.jpg",
+  "cameraId": 12992,
+  "sky_frac": 0.552,
+  "top_lum": 161.8
+ },
+ {
+  "file": "west_frames/12993_ss+15_0225Z.jpg",
+  "cameraId": 12993,
+  "sky_frac": 0.497,
+  "top_lum": 143.1
+ },
+ {
+  "file": "west_frames/12994_ss+15_0226Z.jpg",
+  "cameraId": 12994,
+  "sky_frac": 0.418,
+  "top_lum": 149.7
+ },
+ {
+  "file": "west_frames/13023_ss+15_0206Z.jpg",
+  "cameraId": 13023,
+  "sky_frac": 0.564,
+  "top_lum": 80.1
+ },
+ {
+  "file": "west_frames/13024_ss+15_0206Z.jpg",
+  "cameraId": 13024,
+  "sky_frac": 0.511,
+  "top_lum": 92.2
+ },
+ {
+  "file": "west_frames/13025_ss+15_0207Z.jpg",
+  "cameraId": 13025,
+  "sky_frac": 0.451,
+  "top_lum": 171.2
+ },
+ {
+  "file": "west_frames/13026_ss+15_0206Z.jpg",
+  "cameraId": 13026,
+  "sky_frac": 0.43,
+  "top_lum": 149.4
+ },
+ {
+  "file": "west_frames/13027_ss+15_0218Z.jpg",
+  "cameraId": 13027,
+  "sky_frac": 0.538,
+  "top_lum": 167.4
+ },
+ {
+  "file": "west_frames/13028_ss+15_0218Z.jpg",
+  "cameraId": 13028,
+  "sky_frac": 0.501,
+  "top_lum": 170.1
+ },
+ {
+  "file": "west_frames/13029_ss+15_0217Z.jpg",
+  "cameraId": 13029,
+  "sky_frac": 0.605,
+  "top_lum": 169.5
+ },
+ {
+  "file": "west_frames/13030_ss+15_0218Z.jpg",
+  "cameraId": 13030,
+  "sky_frac": 0.588,
+  "top_lum": 155.7
+ },
+ {
+  "file": "west_frames/13031_ss+15_0212Z.jpg",
+  "cameraId": 13031,
+  "sky_frac": 0.68,
+  "top_lum": 156.6
+ },
+ {
+  "file": "west_frames/13032_ss+15_0216Z.jpg",
+  "cameraId": 13032,
+  "sky_frac": 0.698,
+  "top_lum": 172.1
+ },
+ {
+  "file": "west_frames/13033_ss+15_0213Z.jpg",
+  "cameraId": 13033,
+  "sky_frac": 0.696,
+  "top_lum": 125.5
+ },
+ {
+  "file": "west_frames/13034_ss+15_0217Z.jpg",
+  "cameraId": 13034,
+  "sky_frac": 0.71,
+  "top_lum": 83.2
+ },
+ {
+  "file": "west_frames/13037_ss+15_0223Z.jpg",
+  "cameraId": 13037,
+  "sky_frac": 0.615,
+  "top_lum": 166.6
+ },
+ {
+  "file": "west_frames/13038_ss+15_0227Z.jpg",
+  "cameraId": 13038,
+  "sky_frac": 0.677,
+  "top_lum": 179.6
+ },
+ {
+  "file": "west_frames/13039_ss+15_0231Z.jpg",
+  "cameraId": 13039,
+  "sky_frac": 0.666,
+  "top_lum": 159.6
+ },
+ {
+  "file": "west_frames/13040_ss+15_0223Z.jpg",
+  "cameraId": 13040,
+  "sky_frac": 0.611,
+  "top_lum": 135.6
+ },
+ {
+  "file": "west_frames/13041_ss+15_0231Z.jpg",
+  "cameraId": 13041,
+  "sky_frac": 0.684,
+  "top_lum": 134.9
+ },
+ {
+  "file": "west_frames/13042_ss+15_0231Z.jpg",
+  "cameraId": 13042,
+  "sky_frac": 0.675,
+  "top_lum": 185.1
+ },
+ {
+  "file": "west_frames/13043_ss+15_0232Z.jpg",
+  "cameraId": 13043,
+  "sky_frac": 0.682,
+  "top_lum": 127.1
+ },
+ {
+  "file": "west_frames/13044_ss+15_0231Z.jpg",
+  "cameraId": 13044,
+  "sky_frac": 0.675,
+  "top_lum": 113.7
+ },
+ {
+  "file": "west_frames/13049_ss+15_0218Z.jpg",
+  "cameraId": 13049,
+  "sky_frac": 0.653,
+  "top_lum": 149.0
+ },
+ {
+  "file": "west_frames/13050_ss+15_0215Z.jpg",
+  "cameraId": 13050,
+  "sky_frac": 0.668,
+  "top_lum": 173.0
+ },
+ {
+  "file": "west_frames/13051_ss+15_0214Z.jpg",
+  "cameraId": 13051,
+  "sky_frac": 0.681,
+  "top_lum": 111.4
+ },
+ {
+  "file": "west_frames/13052_ss+15_0216Z.jpg",
+  "cameraId": 13052,
+  "sky_frac": 0.685,
+  "top_lum": 91.6
+ },
+ {
+  "file": "west_frames/13068_ss+15_0207Z.jpg",
+  "cameraId": 13068,
+  "sky_frac": 0.479,
+  "top_lum": 181.2
+ },
+ {
+  "file": "west_frames/13069_ss+15_0208Z.jpg",
+  "cameraId": 13069,
+  "sky_frac": 0.513,
+  "top_lum": 158.5
+ },
+ {
+  "file": "west_frames/13070_ss+15_0207Z.jpg",
+  "cameraId": 13070,
+  "sky_frac": 0.41,
+  "top_lum": 201.0
+ },
+ {
+  "file": "west_frames/13071_ss+15_0207Z.jpg",
+  "cameraId": 13071,
+  "sky_frac": 0.404,
+  "top_lum": 250.6
+ },
+ {
+  "file": "west_frames/13072_ss+15_0207Z.jpg",
+  "cameraId": 13072,
+  "sky_frac": 0.619,
+  "top_lum": 138.0
+ },
+ {
+  "file": "west_frames/13073_ss+15_0207Z.jpg",
+  "cameraId": 13073,
+  "sky_frac": 0.546,
+  "top_lum": 158.0
+ },
+ {
+  "file": "west_frames/13074_ss+15_0207Z.jpg",
+  "cameraId": 13074,
+  "sky_frac": 0.509,
+  "top_lum": 157.8
+ },
+ {
+  "file": "west_frames/13075_ss+15_0206Z.jpg",
+  "cameraId": 13075,
+  "sky_frac": 0.585,
+  "top_lum": 152.9
+ },
+ {
+  "file": "west_frames/13121_ss+15_0215Z.jpg",
+  "cameraId": 13121,
+  "sky_frac": 0.618,
+  "top_lum": 131.4
+ },
+ {
+  "file": "west_frames/13122_ss+15_0215Z.jpg",
+  "cameraId": 13122,
+  "sky_frac": 0.508,
+  "top_lum": 162.5
+ },
+ {
+  "file": "west_frames/13123_ss+15_0214Z.jpg",
+  "cameraId": 13123,
+  "sky_frac": 0.405,
+  "top_lum": 248.8
+ },
+ {
+  "file": "west_frames/13124_ss+15_0215Z.jpg",
+  "cameraId": 13124,
+  "sky_frac": 0.392,
+  "top_lum": 210.0
+ },
+ {
+  "file": "west_frames/13129_ss+15_0225Z.jpg",
+  "cameraId": 13129,
+  "sky_frac": 0.576,
+  "top_lum": 173.7
+ },
+ {
+  "file": "west_frames/13130_ss+15_0224Z.jpg",
+  "cameraId": 13130,
+  "sky_frac": 0.527,
+  "top_lum": 127.8
+ },
+ {
+  "file": "west_frames/13131_ss+15_0225Z.jpg",
+  "cameraId": 13131,
+  "sky_frac": 0.496,
+  "top_lum": 140.3
+ },
+ {
+  "file": "west_frames/13132_ss+15_0225Z.jpg",
+  "cameraId": 13132,
+  "sky_frac": 0.577,
+  "top_lum": 173.3
+ },
+ {
+  "file": "west_frames/13137_ss+15_0205Z.jpg",
+  "cameraId": 13137,
+  "sky_frac": 0.502,
+  "top_lum": 118.2
+ },
+ {
+  "file": "west_frames/13138_ss+15_0205Z.jpg",
+  "cameraId": 13138,
+  "sky_frac": 0.588,
+  "top_lum": 133.7
+ },
+ {
+  "file": "west_frames/13139_ss+15_0206Z.jpg",
+  "cameraId": 13139,
+  "sky_frac": 0.577,
+  "top_lum": 159.2
+ },
+ {
+  "file": "west_frames/13140_ss+15_0206Z.jpg",
+  "cameraId": 13140,
+  "sky_frac": 0.31,
+  "top_lum": 243.2
+ },
+ {
+  "file": "west_frames/13161_ss+15_0214Z.jpg",
+  "cameraId": 13161,
+  "sky_frac": 0.572,
+  "top_lum": 141.4
+ },
+ {
+  "file": "west_frames/13162_ss+15_0215Z.jpg",
+  "cameraId": 13162,
+  "sky_frac": 0.527,
+  "top_lum": 141.3
+ },
+ {
+  "file": "west_frames/13163_ss+15_0215Z.jpg",
+  "cameraId": 13163,
+  "sky_frac": 0.482,
+  "top_lum": 177.5
+ },
+ {
+  "file": "west_frames/13164_ss+15_0215Z.jpg",
+  "cameraId": 13164,
+  "sky_frac": 0.472,
+  "top_lum": 240.8
+ },
+ {
+  "file": "west_frames/13173_ss+15_0205Z.jpg",
+  "cameraId": 13173,
+  "sky_frac": 0.551,
+  "top_lum": 143.1
+ },
+ {
+  "file": "west_frames/13174_ss+15_0206Z.jpg",
+  "cameraId": 13174,
+  "sky_frac": 0.544,
+  "top_lum": 141.2
+ },
+ {
+  "file": "west_frames/13175_ss+15_0206Z.jpg",
+  "cameraId": 13175,
+  "sky_frac": 0.553,
+  "top_lum": 233.5
+ },
+ {
+  "file": "west_frames/13176_ss+15_0203Z.jpg",
+  "cameraId": 13176,
+  "sky_frac": 0.64,
+  "top_lum": 200.6
+ },
+ {
+  "file": "west_frames/13177_ss+15_0204Z.jpg",
+  "cameraId": 13177,
+  "sky_frac": 0.46,
+  "top_lum": 126.9
+ },
+ {
+  "file": "west_frames/13178_ss+15_0203Z.jpg",
+  "cameraId": 13178,
+  "sky_frac": 0.413,
+  "top_lum": 125.6
+ },
+ {
+  "file": "west_frames/13179_ss+15_0204Z.jpg",
+  "cameraId": 13179,
+  "sky_frac": 0.504,
+  "top_lum": 141.9
+ },
+ {
+  "file": "west_frames/13180_ss+15_0205Z.jpg",
+  "cameraId": 13180,
+  "sky_frac": 0.478,
+  "top_lum": 181.3
+ },
+ {
+  "file": "west_frames/13181_ss+15_0224Z.jpg",
+  "cameraId": 13181,
+  "sky_frac": 0.557,
+  "top_lum": 188.3
+ },
+ {
+  "file": "west_frames/13182_ss+15_0224Z.jpg",
+  "cameraId": 13182,
+  "sky_frac": 0.496,
+  "top_lum": 151.6
+ },
+ {
+  "file": "west_frames/13183_ss+15_0224Z.jpg",
+  "cameraId": 13183,
+  "sky_frac": 0.499,
+  "top_lum": 176.1
+ },
+ {
+  "file": "west_frames/13184_ss+15_0224Z.jpg",
+  "cameraId": 13184,
+  "sky_frac": 0.501,
+  "top_lum": 250.3
+ },
+ {
+  "file": "west_frames/13193_ss+15_0203Z.jpg",
+  "cameraId": 13193,
+  "sky_frac": 0.54,
+  "top_lum": 115.5
+ },
+ {
+  "file": "west_frames/13194_ss+15_0202Z.jpg",
+  "cameraId": 13194,
+  "sky_frac": 0.549,
+  "top_lum": 111.6
+ },
+ {
+  "file": "west_frames/13195_ss+15_0200Z.jpg",
+  "cameraId": 13195,
+  "sky_frac": 0.474,
+  "top_lum": 115.4
+ },
+ {
+  "file": "west_frames/13196_ss+15_0202Z.jpg",
+  "cameraId": 13196,
+  "sky_frac": 0.59,
+  "top_lum": 171.5
+ },
+ {
+  "file": "west_frames/13209_ss+15_0201Z.jpg",
+  "cameraId": 13209,
+  "sky_frac": 0.793,
+  "top_lum": 138.5
+ },
+ {
+  "file": "west_frames/13210_ss+15_0201Z.jpg",
+  "cameraId": 13210,
+  "sky_frac": 0.83,
+  "top_lum": 149.5
+ },
+ {
+  "file": "west_frames/13211_ss+15_0200Z.jpg",
+  "cameraId": 13211,
+  "sky_frac": 0.704,
+  "top_lum": 170.1
+ },
+ {
+  "file": "west_frames/13212_ss+15_0154Z.jpg",
+  "cameraId": 13212,
+  "sky_frac": 0.664,
+  "top_lum": 131.4
+ },
+ {
+  "file": "west_frames/13213_ss+15_0215Z.jpg",
+  "cameraId": 13213,
+  "sky_frac": 0.547,
+  "top_lum": 102.0
+ },
+ {
+  "file": "west_frames/13214_ss+15_0222Z.jpg",
+  "cameraId": 13214,
+  "sky_frac": 0.557,
+  "top_lum": 128.2
+ },
+ {
+  "file": "west_frames/13215_ss+15_0222Z.jpg",
+  "cameraId": 13215,
+  "sky_frac": 0.524,
+  "top_lum": 195.4
+ },
+ {
+  "file": "west_frames/13216_ss+15_0215Z.jpg",
+  "cameraId": 13216,
+  "sky_frac": 0.511,
+  "top_lum": 248.6
+ },
+ {
+  "file": "west_frames/13217_ss+15_0149Z.jpg",
+  "cameraId": 13217,
+  "sky_frac": 0.517,
+  "top_lum": 146.9
+ },
+ {
+  "file": "west_frames/13218_ss+15_0159Z.jpg",
+  "cameraId": 13218,
+  "sky_frac": 0.529,
+  "top_lum": 94.4
+ },
+ {
+  "file": "west_frames/13219_ss+15_0159Z.jpg",
+  "cameraId": 13219,
+  "sky_frac": 0.579,
+  "top_lum": 119.2
+ },
+ {
+  "file": "west_frames/13220_ss+15_0159Z.jpg",
+  "cameraId": 13220,
+  "sky_frac": 0.541,
+  "top_lum": 234.0
+ },
+ {
+  "file": "west_frames/13225_ss+15_0204Z.jpg",
+  "cameraId": 13225,
+  "sky_frac": 0.571,
+  "top_lum": 135.3
+ },
+ {
+  "file": "west_frames/13226_ss+15_0205Z.jpg",
+  "cameraId": 13226,
+  "sky_frac": 0.564,
+  "top_lum": 132.0
+ },
+ {
+  "file": "west_frames/13227_ss+15_0203Z.jpg",
+  "cameraId": 13227,
+  "sky_frac": 0.561,
+  "top_lum": 149.5
+ },
+ {
+  "file": "west_frames/13228_ss+15_0202Z.jpg",
+  "cameraId": 13228,
+  "sky_frac": 0.638,
+  "top_lum": 243.1
+ },
+ {
+  "file": "west_frames/13233_ss+15_0202Z.jpg",
+  "cameraId": 13233,
+  "sky_frac": 0.606,
+  "top_lum": 106.5
+ },
+ {
+  "file": "west_frames/13234_ss+15_0202Z.jpg",
+  "cameraId": 13234,
+  "sky_frac": 0.538,
+  "top_lum": 98.7
+ },
+ {
+  "file": "west_frames/13235_ss+15_0203Z.jpg",
+  "cameraId": 13235,
+  "sky_frac": 0.619,
+  "top_lum": 89.5
+ },
+ {
+  "file": "west_frames/13236_ss+15_0200Z.jpg",
+  "cameraId": 13236,
+  "sky_frac": 0.55,
+  "top_lum": 134.4
+ },
+ {
+  "file": "west_frames/13237_ss+15_0220Z.jpg",
+  "cameraId": 13237,
+  "sky_frac": 0.49,
+  "top_lum": 156.3
+ },
+ {
+  "file": "west_frames/13238_ss+15_0221Z.jpg",
+  "cameraId": 13238,
+  "sky_frac": 0.463,
+  "top_lum": 166.7
+ },
+ {
+  "file": "west_frames/13239_ss+15_0221Z.jpg",
+  "cameraId": 13239,
+  "sky_frac": 0.488,
+  "top_lum": 168.3
+ },
+ {
+  "file": "west_frames/13240_ss+15_0221Z.jpg",
+  "cameraId": 13240,
+  "sky_frac": 0.486,
+  "top_lum": 187.0
+ },
+ {
+  "file": "west_frames/13241_ss+15_0219Z.jpg",
+  "cameraId": 13241,
+  "sky_frac": 0.549,
+  "top_lum": 141.9
+ },
+ {
+  "file": "west_frames/13242_ss+15_0218Z.jpg",
+  "cameraId": 13242,
+  "sky_frac": 0.533,
+  "top_lum": 148.8
+ },
+ {
+  "file": "west_frames/13243_ss+15_0218Z.jpg",
+  "cameraId": 13243,
+  "sky_frac": 0.5,
+  "top_lum": 244.6
+ },
+ {
+  "file": "west_frames/13244_ss+15_0225Z.jpg",
+  "cameraId": 13244,
+  "sky_frac": 0.549,
+  "top_lum": 138.4
+ },
+ {
+  "file": "west_frames/13245_ss+15_0223Z.jpg",
+  "cameraId": 13245,
+  "sky_frac": 0.53,
+  "top_lum": 129.6
+ },
+ {
+  "file": "west_frames/13246_ss+15_0224Z.jpg",
+  "cameraId": 13246,
+  "sky_frac": 0.47,
+  "top_lum": 160.5
+ },
+ {
+  "file": "west_frames/13247_ss+15_0216Z.jpg",
+  "cameraId": 13247,
+  "sky_frac": 0.47,
+  "top_lum": 162.4
+ },
+ {
+  "file": "west_frames/13248_ss+15_0216Z.jpg",
+  "cameraId": 13248,
+  "sky_frac": 0.545,
+  "top_lum": 130.5
+ },
+ {
+  "file": "west_frames/13251_ss+15_0226Z.jpg",
+  "cameraId": 13251,
+  "sky_frac": 0.544,
+  "top_lum": 179.4
+ },
+ {
+  "file": "west_frames/13252_ss+15_0226Z.jpg",
+  "cameraId": 13252,
+  "sky_frac": 0.516,
+  "top_lum": 168.7
+ },
+ {
+  "file": "west_frames/13253_ss+15_0223Z.jpg",
+  "cameraId": 13253,
+  "sky_frac": 0.48,
+  "top_lum": 158.5
+ },
+ {
+  "file": "west_frames/13254_ss+15_0223Z.jpg",
+  "cameraId": 13254,
+  "sky_frac": 0.527,
+  "top_lum": 156.7
+ },
+ {
+  "file": "west_frames/13255_ss+15_0224Z.jpg",
+  "cameraId": 13255,
+  "sky_frac": 0.58,
+  "top_lum": 180.1
+ },
+ {
+  "file": "west_frames/13256_ss+15_0223Z.jpg",
+  "cameraId": 13256,
+  "sky_frac": 0.563,
+  "top_lum": 224.5
+ },
+ {
+  "file": "west_frames/13257_ss+15_0219Z.jpg",
+  "cameraId": 13257,
+  "sky_frac": 0.548,
+  "top_lum": 157.3
+ },
+ {
+  "file": "west_frames/13258_ss+15_0227Z.jpg",
+  "cameraId": 13258,
+  "sky_frac": 0.492,
+  "top_lum": 132.4
+ },
+ {
+  "file": "west_frames/13259_ss+15_0219Z.jpg",
+  "cameraId": 13259,
+  "sky_frac": 0.422,
+  "top_lum": 190.5
+ },
+ {
+  "file": "west_frames/13260_ss+15_0220Z.jpg",
+  "cameraId": 13260,
+  "sky_frac": 0.484,
+  "top_lum": 176.1
+ },
+ {
+  "file": "west_frames/13261_ss+15_0229Z.jpg",
+  "cameraId": 13261,
+  "sky_frac": 0.465,
+  "top_lum": 144.8
+ },
+ {
+  "file": "west_frames/13262_ss+15_0229Z.jpg",
+  "cameraId": 13262,
+  "sky_frac": 0.454,
+  "top_lum": 128.7
+ },
+ {
+  "file": "west_frames/13263_ss+15_0228Z.jpg",
+  "cameraId": 13263,
+  "sky_frac": 0.441,
+  "top_lum": 138.9
+ },
+ {
+  "file": "west_frames/13264_ss+15_0229Z.jpg",
+  "cameraId": 13264,
+  "sky_frac": 0.392,
+  "top_lum": 208.1
+ },
+ {
+  "file": "west_frames/13266_ss+15_0229Z.jpg",
+  "cameraId": 13266,
+  "sky_frac": 0.582,
+  "top_lum": 151.1
+ },
+ {
+  "file": "west_frames/13267_ss+15_0228Z.jpg",
+  "cameraId": 13267,
+  "sky_frac": 0.612,
+  "top_lum": 123.1
+ },
+ {
+  "file": "west_frames/13268_ss+15_0228Z.jpg",
+  "cameraId": 13268,
+  "sky_frac": 0.524,
+  "top_lum": 171.6
+ },
+ {
+  "file": "west_frames/13269_ss+15_0229Z.jpg",
+  "cameraId": 13269,
+  "sky_frac": 0.421,
+  "top_lum": 193.6
+ },
+ {
+  "file": "west_frames/13270_ss+15_0221Z.jpg",
+  "cameraId": 13270,
+  "sky_frac": 0.494,
+  "top_lum": 125.6
+ },
+ {
+  "file": "west_frames/13271_ss+15_0221Z.jpg",
+  "cameraId": 13271,
+  "sky_frac": 0.565,
+  "top_lum": 186.6
+ },
+ {
+  "file": "west_frames/13272_ss+15_0220Z.jpg",
+  "cameraId": 13272,
+  "sky_frac": 0.469,
+  "top_lum": 246.4
+ },
+ {
+  "file": "west_frames/13273_ss+15_0220Z.jpg",
+  "cameraId": 13273,
+  "sky_frac": 0.489,
+  "top_lum": 183.2
+ },
+ {
+  "file": "west_frames/13274_ss+15_0230Z.jpg",
+  "cameraId": 13274,
+  "sky_frac": 0.375,
+  "top_lum": 151.4
+ },
+ {
+  "file": "west_frames/13275_ss+15_0231Z.jpg",
+  "cameraId": 13275,
+  "sky_frac": 0.668,
+  "top_lum": 193.3
+ },
+ {
+  "file": "west_frames/13276_ss+15_0233Z.jpg",
+  "cameraId": 13276,
+  "sky_frac": 0.426,
+  "top_lum": 249.6
+ },
+ {
+  "file": "west_frames/13277_ss+15_0231Z.jpg",
+  "cameraId": 13277,
+  "sky_frac": 0.558,
+  "top_lum": 167.1
+ },
+ {
+  "file": "west_frames/13290_ss+15_0158Z.jpg",
+  "cameraId": 13290,
+  "sky_frac": 0.552,
+  "top_lum": 173.1
+ },
+ {
+  "file": "west_frames/13291_ss+15_0157Z.jpg",
+  "cameraId": 13291,
+  "sky_frac": 0.548,
+  "top_lum": 138.9
+ },
+ {
+  "file": "west_frames/13292_ss+15_0158Z.jpg",
+  "cameraId": 13292,
+  "sky_frac": 0.552,
+  "top_lum": 141.1
+ },
+ {
+  "file": "west_frames/13293_ss+15_0158Z.jpg",
+  "cameraId": 13293,
+  "sky_frac": 0.519,
+  "top_lum": 173.2
+ },
+ {
+  "file": "west_frames/13294_ss+15_0219Z.jpg",
+  "cameraId": 13294,
+  "sky_frac": 0.537,
+  "top_lum": 158.6
+ },
+ {
+  "file": "west_frames/13295_ss+15_0218Z.jpg",
+  "cameraId": 13295,
+  "sky_frac": 0.535,
+  "top_lum": 154.6
+ },
+ {
+  "file": "west_frames/13296_ss+15_0218Z.jpg",
+  "cameraId": 13296,
+  "sky_frac": 0.479,
+  "top_lum": 188.1
+ },
+ {
+  "file": "west_frames/13297_ss+15_0228Z.jpg",
+  "cameraId": 13297,
+  "sky_frac": 0.455,
+  "top_lum": 203.1
+ },
+ {
+  "file": "west_frames/13302_ss+15_0230Z.jpg",
+  "cameraId": 13302,
+  "sky_frac": 0.503,
+  "top_lum": 155.5
+ },
+ {
+  "file": "west_frames/13303_ss+15_0230Z.jpg",
+  "cameraId": 13303,
+  "sky_frac": 0.52,
+  "top_lum": 143.0
+ },
+ {
+  "file": "west_frames/13304_ss+15_0230Z.jpg",
+  "cameraId": 13304,
+  "sky_frac": 0.52,
+  "top_lum": 236.7
+ },
+ {
+  "file": "west_frames/13305_ss+15_0230Z.jpg",
+  "cameraId": 13305,
+  "sky_frac": 0.497,
+  "top_lum": 221.0
+ },
+ {
+  "file": "west_frames/13318_ss+15_0224Z.jpg",
+  "cameraId": 13318,
+  "sky_frac": 0.485,
+  "top_lum": 168.2
+ },
+ {
+  "file": "west_frames/13319_ss+15_0225Z.jpg",
+  "cameraId": 13319,
+  "sky_frac": 0.571,
+  "top_lum": 140.6
+ },
+ {
+  "file": "west_frames/13320_ss+15_0223Z.jpg",
+  "cameraId": 13320,
+  "sky_frac": 0.519,
+  "top_lum": 135.4
+ },
+ {
+  "file": "west_frames/13321_ss+15_0224Z.jpg",
+  "cameraId": 13321,
+  "sky_frac": 0.336,
+  "top_lum": 247.7
+ },
+ {
+  "file": "west_frames/13326_ss+15_0226Z.jpg",
+  "cameraId": 13326,
+  "sky_frac": 0.512,
+  "top_lum": 148.4
+ },
+ {
+  "file": "west_frames/13327_ss+15_0227Z.jpg",
+  "cameraId": 13327,
+  "sky_frac": 0.538,
+  "top_lum": 113.1
+ },
+ {
+  "file": "west_frames/13328_ss+15_0227Z.jpg",
+  "cameraId": 13328,
+  "sky_frac": 0.503,
+  "top_lum": 165.1
+ },
+ {
+  "file": "west_frames/13329_ss+15_0227Z.jpg",
+  "cameraId": 13329,
+  "sky_frac": 0.472,
+  "top_lum": 231.7
+ },
+ {
+  "file": "west_frames/13330_ss+15_0224Z.jpg",
+  "cameraId": 13330,
+  "sky_frac": 0.51,
+  "top_lum": 212.8
+ },
+ {
+  "file": "west_frames/13331_ss+15_0223Z.jpg",
+  "cameraId": 13331,
+  "sky_frac": 0.505,
+  "top_lum": 184.9
+ },
+ {
+  "file": "west_frames/13332_ss+15_0223Z.jpg",
+  "cameraId": 13332,
+  "sky_frac": 0.417,
+  "top_lum": 169.7
+ },
+ {
+  "file": "west_frames/13333_ss+15_0223Z.jpg",
+  "cameraId": 13333,
+  "sky_frac": 0.433,
+  "top_lum": 237.1
+ },
+ {
+  "file": "west_frames/13334_ss+15_0228Z.jpg",
+  "cameraId": 13334,
+  "sky_frac": 0.466,
+  "top_lum": 180.1
+ },
+ {
+  "file": "west_frames/13335_ss+15_0228Z.jpg",
+  "cameraId": 13335,
+  "sky_frac": 0.428,
+  "top_lum": 193.5
+ },
+ {
+  "file": "west_frames/13336_ss+15_0228Z.jpg",
+  "cameraId": 13336,
+  "sky_frac": 0.52,
+  "top_lum": 227.9
+ },
+ {
+  "file": "west_frames/13337_ss+15_0237Z.jpg",
+  "cameraId": 13337,
+  "sky_frac": 0.415,
+  "top_lum": 226.6
+ },
+ {
+  "file": "west_frames/13338_ss+15_0230Z.jpg",
+  "cameraId": 13338,
+  "sky_frac": 0.971,
+  "top_lum": 132.5
+ },
+ {
+  "file": "west_frames/13339_ss+15_0230Z.jpg",
+  "cameraId": 13339,
+  "sky_frac": 1.0,
+  "top_lum": 133.9
+ },
+ {
+  "file": "west_frames/13340_ss+15_0230Z.jpg",
+  "cameraId": 13340,
+  "sky_frac": 0.994,
+  "top_lum": 142.3
+ },
+ {
+  "file": "west_frames/13341_ss+15_0229Z.jpg",
+  "cameraId": 13341,
+  "sky_frac": 0.393,
+  "top_lum": 200.7
+ },
+ {
+  "file": "west_frames/13356_ss+15_0219Z.jpg",
+  "cameraId": 13356,
+  "sky_frac": 0.467,
+  "top_lum": 167.8
+ },
+ {
+  "file": "west_frames/13357_ss+15_0221Z.jpg",
+  "cameraId": 13357,
+  "sky_frac": 0.485,
+  "top_lum": 126.3
+ },
+ {
+  "file": "west_frames/13358_ss+15_0221Z.jpg",
+  "cameraId": 13358,
+  "sky_frac": 0.602,
+  "top_lum": 156.7
+ },
+ {
+  "file": "west_frames/13359_ss+15_0213Z.jpg",
+  "cameraId": 13359,
+  "sky_frac": 0.543,
+  "top_lum": 242.4
+ },
+ {
+  "file": "west_frames/13360_ss+15_0207Z.jpg",
+  "cameraId": 13360,
+  "sky_frac": 0.576,
+  "top_lum": 135.6
+ },
+ {
+  "file": "west_frames/13361_ss+15_0207Z.jpg",
+  "cameraId": 13361,
+  "sky_frac": 0.601,
+  "top_lum": 144.9
+ },
+ {
+  "file": "west_frames/13362_ss+15_0206Z.jpg",
+  "cameraId": 13362,
+  "sky_frac": 0.662,
+  "top_lum": 163.3
+ },
+ {
+  "file": "west_frames/13363_ss+15_0206Z.jpg",
+  "cameraId": 13363,
+  "sky_frac": 0.527,
+  "top_lum": 192.5
+ },
+ {
+  "file": "west_frames/13368_ss+15_0157Z.jpg",
+  "cameraId": 13368,
+  "sky_frac": 0.55,
+  "top_lum": 139.6
+ },
+ {
+  "file": "west_frames/13369_ss+15_0157Z.jpg",
+  "cameraId": 13369,
+  "sky_frac": 0.558,
+  "top_lum": 121.4
+ },
+ {
+  "file": "west_frames/13370_ss+15_0158Z.jpg",
+  "cameraId": 13370,
+  "sky_frac": 0.554,
+  "top_lum": 109.8
+ },
+ {
+  "file": "west_frames/13371_ss+15_0213Z.jpg",
+  "cameraId": 13371,
+  "sky_frac": 0.507,
+  "top_lum": 221.3
+ },
+ {
+  "file": "west_frames/13372_ss+15_0213Z.jpg",
+  "cameraId": 13372,
+  "sky_frac": 0.552,
+  "top_lum": 222.3
+ },
+ {
+  "file": "west_frames/13373_ss+15_0213Z.jpg",
+  "cameraId": 13373,
+  "sky_frac": 0.541,
+  "top_lum": 152.5
+ },
+ {
+  "file": "west_frames/13374_ss+15_0215Z.jpg",
+  "cameraId": 13374,
+  "sky_frac": 0.527,
+  "top_lum": 177.2
+ },
+ {
+  "file": "west_frames/13375_ss+15_0212Z.jpg",
+  "cameraId": 13375,
+  "sky_frac": 0.563,
+  "top_lum": 185.8
+ },
+ {
+  "file": "west_frames/13376_ss+15_0211Z.jpg",
+  "cameraId": 13376,
+  "sky_frac": 0.462,
+  "top_lum": 225.6
+ },
+ {
+  "file": "west_frames/13377_ss+15_0214Z.jpg",
+  "cameraId": 13377,
+  "sky_frac": 0.415,
+  "top_lum": 228.1
+ },
+ {
+  "file": "west_frames/13378_ss+15_0215Z.jpg",
+  "cameraId": 13378,
+  "sky_frac": 0.471,
+  "top_lum": 250.5
+ },
+ {
+  "file": "west_frames/13379_ss+15_0214Z.jpg",
+  "cameraId": 13379,
+  "sky_frac": 0.553,
+  "top_lum": 138.1
+ },
+ {
+  "file": "west_frames/13380_ss+15_0215Z.jpg",
+  "cameraId": 13380,
+  "sky_frac": 0.546,
+  "top_lum": 131.5
+ },
+ {
+  "file": "west_frames/13381_ss+15_0215Z.jpg",
+  "cameraId": 13381,
+  "sky_frac": 0.525,
+  "top_lum": 125.5
+ },
+ {
+  "file": "west_frames/13382_ss+15_0215Z.jpg",
+  "cameraId": 13382,
+  "sky_frac": 0.483,
+  "top_lum": 189.5
+ },
+ {
+  "file": "west_frames/13383_ss+15_0223Z.jpg",
+  "cameraId": 13383,
+  "sky_frac": 0.509,
+  "top_lum": 146.2
+ },
+ {
+  "file": "west_frames/13384_ss+15_0224Z.jpg",
+  "cameraId": 13384,
+  "sky_frac": 0.544,
+  "top_lum": 139.4
+ },
+ {
+  "file": "west_frames/13385_ss+15_0225Z.jpg",
+  "cameraId": 13385,
+  "sky_frac": 0.465,
+  "top_lum": 206.3
+ },
+ {
+  "file": "west_frames/13386_ss+15_0224Z.jpg",
+  "cameraId": 13386,
+  "sky_frac": 0.532,
+  "top_lum": 248.6
+ },
+ {
+  "file": "west_frames/13387_ss+15_0231Z.jpg",
+  "cameraId": 13387,
+  "sky_frac": 0.705,
+  "top_lum": 135.6
+ },
+ {
+  "file": "west_frames/13388_ss+15_0226Z.jpg",
+  "cameraId": 13388,
+  "sky_frac": 0.662,
+  "top_lum": 179.8
+ },
+ {
+  "file": "west_frames/13389_ss+15_0226Z.jpg",
+  "cameraId": 13389,
+  "sky_frac": 0.697,
+  "top_lum": 174.4
+ },
+ {
+  "file": "west_frames/13390_ss+15_0231Z.jpg",
+  "cameraId": 13390,
+  "sky_frac": 0.705,
+  "top_lum": 134.1
+ },
+ {
+  "file": "west_frames/13391_ss+15_0223Z.jpg",
+  "cameraId": 13391,
+  "sky_frac": 0.526,
+  "top_lum": 159.6
+ },
+ {
+  "file": "west_frames/13392_ss+15_0225Z.jpg",
+  "cameraId": 13392,
+  "sky_frac": 0.562,
+  "top_lum": 138.6
+ },
+ {
+  "file": "west_frames/13393_ss+15_0224Z.jpg",
+  "cameraId": 13393,
+  "sky_frac": 0.574,
+  "top_lum": 171.6
+ },
+ {
+  "file": "west_frames/13394_ss+15_0224Z.jpg",
+  "cameraId": 13394,
+  "sky_frac": 0.619,
+  "top_lum": 156.4
+ },
+ {
+  "file": "west_frames/13395_ss+15_0155Z.jpg",
+  "cameraId": 13395,
+  "sky_frac": 0.549,
+  "top_lum": 190.5
+ },
+ {
+  "file": "west_frames/13396_ss+15_0155Z.jpg",
+  "cameraId": 13396,
+  "sky_frac": 0.692,
+  "top_lum": 167.2
+ },
+ {
+  "file": "west_frames/13397_ss+15_0156Z.jpg",
+  "cameraId": 13397,
+  "sky_frac": 0.754,
+  "top_lum": 159.5
+ },
+ {
+  "file": "west_frames/13398_ss+15_0156Z.jpg",
+  "cameraId": 13398,
+  "sky_frac": 0.688,
+  "top_lum": 183.8
+ },
+ {
+  "file": "west_frames/13407_ss+15_0221Z.jpg",
+  "cameraId": 13407,
+  "sky_frac": 0.599,
+  "top_lum": 172.4
+ },
+ {
+  "file": "west_frames/13408_ss+15_0220Z.jpg",
+  "cameraId": 13408,
+  "sky_frac": 0.568,
+  "top_lum": 155.3
+ },
+ {
+  "file": "west_frames/13409_ss+15_0220Z.jpg",
+  "cameraId": 13409,
+  "sky_frac": 0.524,
+  "top_lum": 239.7
+ },
+ {
+  "file": "west_frames/13410_ss+15_0220Z.jpg",
+  "cameraId": 13410,
+  "sky_frac": 0.507,
+  "top_lum": 250.2
+ },
+ {
+  "file": "west_frames/13411_ss+15_0207Z.jpg",
+  "cameraId": 13411,
+  "sky_frac": 0.522,
+  "top_lum": 193.6
+ },
+ {
+  "file": "west_frames/13412_ss+15_0207Z.jpg",
+  "cameraId": 13412,
+  "sky_frac": 0.523,
+  "top_lum": 165.8
+ },
+ {
+  "file": "west_frames/13413_ss+15_0207Z.jpg",
+  "cameraId": 13413,
+  "sky_frac": 0.493,
+  "top_lum": 163.8
+ },
+ {
+  "file": "west_frames/13414_ss+15_0207Z.jpg",
+  "cameraId": 13414,
+  "sky_frac": 0.562,
+  "top_lum": 195.6
+ },
+ {
+  "file": "west_frames/13420_ss+15_0216Z.jpg",
+  "cameraId": 13420,
+  "sky_frac": 0.45,
+  "top_lum": 147.9
+ },
+ {
+  "file": "west_frames/13421_ss+15_0216Z.jpg",
+  "cameraId": 13421,
+  "sky_frac": 0.465,
+  "top_lum": 138.8
+ },
+ {
+  "file": "west_frames/13422_ss+15_0217Z.jpg",
+  "cameraId": 13422,
+  "sky_frac": 0.48,
+  "top_lum": 137.4
+ },
+ {
+  "file": "west_frames/13423_ss+15_0216Z.jpg",
+  "cameraId": 13423,
+  "sky_frac": 0.422,
+  "top_lum": 202.8
+ },
+ {
+  "file": "west_frames/13432_ss+15_0201Z.jpg",
+  "cameraId": 13432,
+  "sky_frac": 0.639,
+  "top_lum": 173.9
+ },
+ {
+  "file": "west_frames/13434_ss+15_0205Z.jpg",
+  "cameraId": 13434,
+  "sky_frac": 0.704,
+  "top_lum": 101.9
+ },
+ {
+  "file": "west_frames/13435_ss+15_0201Z.jpg",
+  "cameraId": 13435,
+  "sky_frac": 0.727,
+  "top_lum": 112.7
+ },
+ {
+  "file": "west_frames/13436_ss+15_0201Z.jpg",
+  "cameraId": 13436,
+  "sky_frac": 0.691,
+  "top_lum": 145.0
+ },
+ {
+  "file": "west_frames/13437_ss+15_0204Z.jpg",
+  "cameraId": 13437,
+  "sky_frac": 0.662,
+  "top_lum": 170.9
+ },
+ {
+  "file": "west_frames/13438_ss+15_0201Z.jpg",
+  "cameraId": 13438,
+  "sky_frac": 0.591,
+  "top_lum": 130.8
+ },
+ {
+  "file": "west_frames/13439_ss+15_0203Z.jpg",
+  "cameraId": 13439,
+  "sky_frac": 0.67,
+  "top_lum": 111.6
+ },
+ {
+  "file": "west_frames/13450_ss+15_0216Z.jpg",
+  "cameraId": 13450,
+  "sky_frac": 0.504,
+  "top_lum": 172.3
+ },
+ {
+  "file": "west_frames/13451_ss+15_0224Z.jpg",
+  "cameraId": 13451,
+  "sky_frac": 0.58,
+  "top_lum": 169.6
+ },
+ {
+  "file": "west_frames/13452_ss+15_0215Z.jpg",
+  "cameraId": 13452,
+  "sky_frac": 0.633,
+  "top_lum": 159.6
+ },
+ {
+  "file": "west_frames/13453_ss+15_0215Z.jpg",
+  "cameraId": 13453,
+  "sky_frac": 0.573,
+  "top_lum": 245.0
+ },
+ {
+  "file": "west_frames/13454_ss+15_0229Z.jpg",
+  "cameraId": 13454,
+  "sky_frac": 0.772,
+  "top_lum": 132.5
+ },
+ {
+  "file": "west_frames/13455_ss+15_0222Z.jpg",
+  "cameraId": 13455,
+  "sky_frac": 0.798,
+  "top_lum": 147.5
+ },
+ {
+  "file": "west_frames/13456_ss+15_0228Z.jpg",
+  "cameraId": 13456,
+  "sky_frac": 0.851,
+  "top_lum": 122.2
+ },
+ {
+  "file": "west_frames/13457_ss+15_0222Z.jpg",
+  "cameraId": 13457,
+  "sky_frac": 0.845,
+  "top_lum": 137.3
+ },
+ {
+  "file": "west_frames/13458_ss+15_0228Z.jpg",
+  "cameraId": 13458,
+  "sky_frac": 0.504,
+  "top_lum": 163.6
+ },
+ {
+  "file": "west_frames/13459_ss+15_0228Z.jpg",
+  "cameraId": 13459,
+  "sky_frac": 0.532,
+  "top_lum": 131.4
+ },
+ {
+  "file": "west_frames/13460_ss+15_0229Z.jpg",
+  "cameraId": 13460,
+  "sky_frac": 0.565,
+  "top_lum": 139.0
+ },
+ {
+  "file": "west_frames/13461_ss+15_0229Z.jpg",
+  "cameraId": 13461,
+  "sky_frac": 0.633,
+  "top_lum": 227.4
+ },
+ {
+  "file": "west_frames/13462_ss+15_0228Z.jpg",
+  "cameraId": 13462,
+  "sky_frac": 0.778,
+  "top_lum": 128.0
+ },
+ {
+  "file": "west_frames/13463_ss+15_0226Z.jpg",
+  "cameraId": 13463,
+  "sky_frac": 0.773,
+  "top_lum": 111.2
+ },
+ {
+  "file": "west_frames/13464_ss+15_0222Z.jpg",
+  "cameraId": 13464,
+  "sky_frac": 0.805,
+  "top_lum": 129.1
+ },
+ {
+  "file": "west_frames/13465_ss+15_0226Z.jpg",
+  "cameraId": 13465,
+  "sky_frac": 0.794,
+  "top_lum": 158.0
+ },
+ {
+  "file": "west_frames/13478_ss+15_0228Z.jpg",
+  "cameraId": 13478,
+  "sky_frac": 0.562,
+  "top_lum": 188.7
+ },
+ {
+  "file": "west_frames/13479_ss+15_0227Z.jpg",
+  "cameraId": 13479,
+  "sky_frac": 0.636,
+  "top_lum": 177.9
+ },
+ {
+  "file": "west_frames/13480_ss+15_0228Z.jpg",
+  "cameraId": 13480,
+  "sky_frac": 0.617,
+  "top_lum": 161.2
+ },
+ {
+  "file": "west_frames/13481_ss+15_0227Z.jpg",
+  "cameraId": 13481,
+  "sky_frac": 0.636,
+  "top_lum": 143.3
+ },
+ {
+  "file": "west_frames/13482_ss+15_0233Z.jpg",
+  "cameraId": 13482,
+  "sky_frac": 0.554,
+  "top_lum": 211.7
+ },
+ {
+  "file": "west_frames/13483_ss+15_0232Z.jpg",
+  "cameraId": 13483,
+  "sky_frac": 0.562,
+  "top_lum": 166.6
+ },
+ {
+  "file": "west_frames/13484_ss+15_0232Z.jpg",
+  "cameraId": 13484,
+  "sky_frac": 0.553,
+  "top_lum": 190.9
+ },
+ {
+  "file": "west_frames/13485_ss+15_0233Z.jpg",
+  "cameraId": 13485,
+  "sky_frac": 0.678,
+  "top_lum": 249.7
+ },
+ {
+  "file": "west_frames/13486_ss+15_0225Z.jpg",
+  "cameraId": 13486,
+  "sky_frac": 0.81,
+  "top_lum": 165.6
+ },
+ {
+  "file": "west_frames/13487_ss+15_0226Z.jpg",
+  "cameraId": 13487,
+  "sky_frac": 0.819,
+  "top_lum": 172.3
+ },
+ {
+  "file": "west_frames/13488_ss+15_0229Z.jpg",
+  "cameraId": 13488,
+  "sky_frac": 0.737,
+  "top_lum": 165.4
+ },
+ {
+  "file": "west_frames/13489_ss+15_0226Z.jpg",
+  "cameraId": 13489,
+  "sky_frac": 0.683,
+  "top_lum": 177.7
+ },
+ {
+  "file": "west_frames/13490_ss+15_0219Z.jpg",
+  "cameraId": 13490,
+  "sky_frac": 0.536,
+  "top_lum": 205.5
+ },
+ {
+  "file": "west_frames/13491_ss+15_0219Z.jpg",
+  "cameraId": 13491,
+  "sky_frac": 0.562,
+  "top_lum": 162.5
+ },
+ {
+  "file": "west_frames/13492_ss+15_0218Z.jpg",
+  "cameraId": 13492,
+  "sky_frac": 0.56,
+  "top_lum": 162.3
+ },
+ {
+  "file": "west_frames/13493_ss+15_0218Z.jpg",
+  "cameraId": 13493,
+  "sky_frac": 0.522,
+  "top_lum": 231.4
+ },
+ {
+  "file": "west_frames/13494_ss+15_0152Z.jpg",
+  "cameraId": 13494,
+  "sky_frac": 0.678,
+  "top_lum": 185.1
+ },
+ {
+  "file": "west_frames/13495_ss+15_0156Z.jpg",
+  "cameraId": 13495,
+  "sky_frac": 0.62,
+  "top_lum": 187.1
+ },
+ {
+  "file": "west_frames/13496_ss+15_0157Z.jpg",
+  "cameraId": 13496,
+  "sky_frac": 0.633,
+  "top_lum": 154.4
+ },
+ {
+  "file": "west_frames/13497_ss+15_0150Z.jpg",
+  "cameraId": 13497,
+  "sky_frac": 0.391,
+  "top_lum": 138.4
+ },
+ {
+  "file": "west_frames/13498_ss+15_0225Z.jpg",
+  "cameraId": 13498,
+  "sky_frac": 0.972,
+  "top_lum": 91.6
+ },
+ {
+  "file": "west_frames/13499_ss+15_0225Z.jpg",
+  "cameraId": 13499,
+  "sky_frac": 0.996,
+  "top_lum": 163.7
+ },
+ {
+  "file": "west_frames/13500_ss+15_0225Z.jpg",
+  "cameraId": 13500,
+  "sky_frac": 0.504,
+  "top_lum": 228.9
+ },
+ {
+  "file": "west_frames/13501_ss+15_0224Z.jpg",
+  "cameraId": 13501,
+  "sky_frac": 0.925,
+  "top_lum": 155.1
+ },
+ {
+  "file": "west_frames/13502_ss+15_0232Z.jpg",
+  "cameraId": 13502,
+  "sky_frac": 0.5,
+  "top_lum": 146.6
+ },
+ {
+  "file": "west_frames/13503_ss+15_0232Z.jpg",
+  "cameraId": 13503,
+  "sky_frac": 0.516,
+  "top_lum": 122.0
+ },
+ {
+  "file": "west_frames/13504_ss+15_0225Z.jpg",
+  "cameraId": 13504,
+  "sky_frac": 0.599,
+  "top_lum": 175.1
+ },
+ {
+  "file": "west_frames/13505_ss+15_0232Z.jpg",
+  "cameraId": 13505,
+  "sky_frac": 0.673,
+  "top_lum": 134.9
+ },
+ {
+  "file": "west_frames/13506_ss+15_0223Z.jpg",
+  "cameraId": 13506,
+  "sky_frac": 0.552,
+  "top_lum": 97.9
+ },
+ {
+  "file": "west_frames/13507_ss+15_0223Z.jpg",
+  "cameraId": 13507,
+  "sky_frac": 0.5,
+  "top_lum": 95.4
+ },
+ {
+  "file": "west_frames/13508_ss+15_0224Z.jpg",
+  "cameraId": 13508,
+  "sky_frac": 0.484,
+  "top_lum": 117.0
+ },
+ {
+  "file": "west_frames/13509_ss+15_0223Z.jpg",
+  "cameraId": 13509,
+  "sky_frac": 0.463,
+  "top_lum": 225.2
+ },
+ {
+  "file": "west_frames/13510_ss+15_0227Z.jpg",
+  "cameraId": 13510,
+  "sky_frac": 0.613,
+  "top_lum": 143.9
+ },
+ {
+  "file": "west_frames/13511_ss+15_0228Z.jpg",
+  "cameraId": 13511,
+  "sky_frac": 0.666,
+  "top_lum": 146.0
+ },
+ {
+  "file": "west_frames/13512_ss+15_0228Z.jpg",
+  "cameraId": 13512,
+  "sky_frac": 0.864,
+  "top_lum": 130.6
+ },
+ {
+  "file": "west_frames/13513_ss+15_0227Z.jpg",
+  "cameraId": 13513,
+  "sky_frac": 0.855,
+  "top_lum": 135.2
+ },
+ {
+  "file": "west_frames/13518_ss+15_0226Z.jpg",
+  "cameraId": 13518,
+  "sky_frac": 0.571,
+  "top_lum": 174.7
+ },
+ {
+  "file": "west_frames/13519_ss+15_0230Z.jpg",
+  "cameraId": 13519,
+  "sky_frac": 0.743,
+  "top_lum": 150.2
+ },
+ {
+  "file": "west_frames/13520_ss+15_0224Z.jpg",
+  "cameraId": 13520,
+  "sky_frac": 0.741,
+  "top_lum": 155.2
+ },
+ {
+  "file": "west_frames/13521_ss+15_0227Z.jpg",
+  "cameraId": 13521,
+  "sky_frac": 0.71,
+  "top_lum": 167.2
+ },
+ {
+  "file": "west_frames/13522_ss+15_0223Z.jpg",
+  "cameraId": 13522,
+  "sky_frac": 0.356,
+  "top_lum": 115.1
+ },
+ {
+  "file": "west_frames/13523_ss+15_0223Z.jpg",
+  "cameraId": 13523,
+  "sky_frac": 0.526,
+  "top_lum": 111.0
+ },
+ {
+  "file": "west_frames/13524_ss+15_0219Z.jpg",
+  "cameraId": 13524,
+  "sky_frac": 0.453,
+  "top_lum": 107.8
+ },
+ {
+  "file": "west_frames/13525_ss+15_0224Z.jpg",
+  "cameraId": 13525,
+  "sky_frac": 0.426,
+  "top_lum": 87.5
+ },
+ {
+  "file": "west_frames/13526_ss+15_0236Z.jpg",
+  "cameraId": 13526,
+  "sky_frac": 0.815,
+  "top_lum": 144.6
+ },
+ {
+  "file": "west_frames/13527_ss+15_0228Z.jpg",
+  "cameraId": 13527,
+  "sky_frac": 0.639,
+  "top_lum": 162.6
+ },
+ {
+  "file": "west_frames/13528_ss+15_0235Z.jpg",
+  "cameraId": 13528,
+  "sky_frac": 0.847,
+  "top_lum": 145.3
+ },
+ {
+  "file": "west_frames/13529_ss+15_0234Z.jpg",
+  "cameraId": 13529,
+  "sky_frac": 0.699,
+  "top_lum": 150.1
+ },
+ {
+  "file": "west_frames/13530_ss+15_0231Z.jpg",
+  "cameraId": 13530,
+  "sky_frac": 0.788,
+  "top_lum": 126.3
+ },
+ {
+  "file": "west_frames/13531_ss+15_0231Z.jpg",
+  "cameraId": 13531,
+  "sky_frac": 0.533,
+  "top_lum": 132.5
+ },
+ {
+  "file": "west_frames/13532_ss+15_0231Z.jpg",
+  "cameraId": 13532,
+  "sky_frac": 0.74,
+  "top_lum": 124.3
+ },
+ {
+  "file": "west_frames/13553_ss+15_0228Z.jpg",
+  "cameraId": 13553,
+  "sky_frac": 0.38,
+  "top_lum": 176.6
+ },
+ {
+  "file": "west_frames/13554_ss+15_0237Z.jpg",
+  "cameraId": 13554,
+  "sky_frac": 0.422,
+  "top_lum": 171.2
+ },
+ {
+  "file": "west_frames/13555_ss+15_0237Z.jpg",
+  "cameraId": 13555,
+  "sky_frac": 0.475,
+  "top_lum": 193.1
+ },
+ {
+  "file": "west_frames/13556_ss+15_0228Z.jpg",
+  "cameraId": 13556,
+  "sky_frac": 0.589,
+  "top_lum": 167.5
+ },
+ {
+  "file": "west_frames/13558_ss+15_0223Z.jpg",
+  "cameraId": 13558,
+  "sky_frac": 1.0,
+  "top_lum": 144.1
+ },
+ {
+  "file": "west_frames/13559_ss+15_0224Z.jpg",
+  "cameraId": 13559,
+  "sky_frac": 0.975,
+  "top_lum": 133.3
+ },
+ {
+  "file": "west_frames/13560_ss+15_0224Z.jpg",
+  "cameraId": 13560,
+  "sky_frac": 0.99,
+  "top_lum": 135.0
+ },
+ {
+  "file": "west_frames/13561_ss+15_0224Z.jpg",
+  "cameraId": 13561,
+  "sky_frac": 0.969,
+  "top_lum": 140.4
+ },
+ {
+  "file": "west_frames/13565_ss+15_0233Z.jpg",
+  "cameraId": 13565,
+  "sky_frac": 0.399,
+  "top_lum": 138.1
+ },
+ {
+  "file": "west_frames/13566_ss+15_0233Z.jpg",
+  "cameraId": 13566,
+  "sky_frac": 0.397,
+  "top_lum": 173.7
+ },
+ {
+  "file": "west_frames/13567_ss+15_0232Z.jpg",
+  "cameraId": 13567,
+  "sky_frac": 0.365,
+  "top_lum": 167.6
+ },
+ {
+  "file": "west_frames/13568_ss+15_0223Z.jpg",
+  "cameraId": 13568,
+  "sky_frac": 0.427,
+  "top_lum": 156.3
+ },
+ {
+  "file": "west_frames/13569_ss+15_0231Z.jpg",
+  "cameraId": 13569,
+  "sky_frac": 0.411,
+  "top_lum": 169.5
+ },
+ {
+  "file": "west_frames/13570_ss+15_0232Z.jpg",
+  "cameraId": 13570,
+  "sky_frac": 0.364,
+  "top_lum": 147.2
+ },
+ {
+  "file": "west_frames/13571_ss+15_0229Z.jpg",
+  "cameraId": 13571,
+  "sky_frac": 0.314,
+  "top_lum": 151.5
+ },
+ {
+  "file": "west_frames/13572_ss+15_0232Z.jpg",
+  "cameraId": 13572,
+  "sky_frac": 0.118,
+  "top_lum": 130.0
+ },
+ {
+  "file": "west_frames/13573_ss+15_0222Z.jpg",
+  "cameraId": 13573,
+  "sky_frac": 0.742,
+  "top_lum": 147.8
+ },
+ {
+  "file": "west_frames/13574_ss+15_0226Z.jpg",
+  "cameraId": 13574,
+  "sky_frac": 0.789,
+  "top_lum": 145.5
+ },
+ {
+  "file": "west_frames/13575_ss+15_0222Z.jpg",
+  "cameraId": 13575,
+  "sky_frac": 0.842,
+  "top_lum": 128.3
+ },
+ {
+  "file": "west_frames/13576_ss+15_0228Z.jpg",
+  "cameraId": 13576,
+  "sky_frac": 0.782,
+  "top_lum": 130.2
+ },
+ {
+  "file": "west_frames/13577_ss+15_0231Z.jpg",
+  "cameraId": 13577,
+  "sky_frac": 0.417,
+  "top_lum": 147.6
+ },
+ {
+  "file": "west_frames/13578_ss+15_0224Z.jpg",
+  "cameraId": 13578,
+  "sky_frac": 0.475,
+  "top_lum": 216.9
+ },
+ {
+  "file": "west_frames/13579_ss+15_0225Z.jpg",
+  "cameraId": 13579,
+  "sky_frac": 0.528,
+  "top_lum": 250.5
+ },
+ {
+  "file": "west_frames/13580_ss+15_0225Z.jpg",
+  "cameraId": 13580,
+  "sky_frac": 0.569,
+  "top_lum": 199.7
+ },
+ {
+  "file": "west_frames/13581_ss+15_0231Z.jpg",
+  "cameraId": 13581,
+  "sky_frac": 0.841,
+  "top_lum": 131.4
+ },
+ {
+  "file": "west_frames/13582_ss+15_0235Z.jpg",
+  "cameraId": 13582,
+  "sky_frac": 0.835,
+  "top_lum": 124.0
+ },
+ {
+  "file": "west_frames/13583_ss+15_0231Z.jpg",
+  "cameraId": 13583,
+  "sky_frac": 0.82,
+  "top_lum": 127.2
+ },
+ {
+  "file": "west_frames/13584_ss+15_0235Z.jpg",
+  "cameraId": 13584,
+  "sky_frac": 0.854,
+  "top_lum": 132.7
+ },
+ {
+  "file": "west_frames/13585_ss+15_0231Z.jpg",
+  "cameraId": 13585,
+  "sky_frac": 0.796,
+  "top_lum": 133.7
+ },
+ {
+  "file": "west_frames/13586_ss+15_0227Z.jpg",
+  "cameraId": 13586,
+  "sky_frac": 0.817,
+  "top_lum": 139.3
+ },
+ {
+  "file": "west_frames/13587_ss+15_0233Z.jpg",
+  "cameraId": 13587,
+  "sky_frac": 0.86,
+  "top_lum": 142.6
+ },
+ {
+  "file": "west_frames/13588_ss+15_0227Z.jpg",
+  "cameraId": 13588,
+  "sky_frac": 0.707,
+  "top_lum": 156.7
+ },
+ {
+  "file": "west_frames/13597_ss+15_0201Z.jpg",
+  "cameraId": 13597,
+  "sky_frac": 0.486,
+  "top_lum": 155.8
+ },
+ {
+  "file": "west_frames/13598_ss+15_0201Z.jpg",
+  "cameraId": 13598,
+  "sky_frac": 0.475,
+  "top_lum": 176.4
+ },
+ {
+  "file": "west_frames/13599_ss+15_0156Z.jpg",
+  "cameraId": 13599,
+  "sky_frac": 0.554,
+  "top_lum": 132.5
+ },
+ {
+  "file": "west_frames/13600_ss+15_0156Z.jpg",
+  "cameraId": 13600,
+  "sky_frac": 0.364,
+  "top_lum": 244.8
+ },
+ {
+  "file": "west_frames/13625_ss+15_0229Z.jpg",
+  "cameraId": 13625,
+  "sky_frac": 0.514,
+  "top_lum": 141.2
+ },
+ {
+  "file": "west_frames/13626_ss+15_0229Z.jpg",
+  "cameraId": 13626,
+  "sky_frac": 0.512,
+  "top_lum": 128.1
+ },
+ {
+  "file": "west_frames/13627_ss+15_0230Z.jpg",
+  "cameraId": 13627,
+  "sky_frac": 0.504,
+  "top_lum": 188.2
+ },
+ {
+  "file": "west_frames/13628_ss+15_0229Z.jpg",
+  "cameraId": 13628,
+  "sky_frac": 0.484,
+  "top_lum": 247.8
+ },
+ {
+  "file": "west_frames/13633_ss+15_0230Z.jpg",
+  "cameraId": 13633,
+  "sky_frac": 0.812,
+  "top_lum": 128.9
+ },
+ {
+  "file": "west_frames/13634_ss+15_0226Z.jpg",
+  "cameraId": 13634,
+  "sky_frac": 0.843,
+  "top_lum": 149.2
+ },
+ {
+  "file": "west_frames/13635_ss+15_0225Z.jpg",
+  "cameraId": 13635,
+  "sky_frac": 0.853,
+  "top_lum": 133.2
+ },
+ {
+  "file": "west_frames/13636_ss+15_0225Z.jpg",
+  "cameraId": 13636,
+  "sky_frac": 0.715,
+  "top_lum": 169.9
+ },
+ {
+  "file": "west_frames/13637_ss+15_0230Z.jpg",
+  "cameraId": 13637,
+  "sky_frac": 0.834,
+  "top_lum": 129.5
+ },
+ {
+  "file": "west_frames/13638_ss+15_0225Z.jpg",
+  "cameraId": 13638,
+  "sky_frac": 0.837,
+  "top_lum": 142.4
+ },
+ {
+  "file": "west_frames/13639_ss+15_0225Z.jpg",
+  "cameraId": 13639,
+  "sky_frac": 0.819,
+  "top_lum": 147.8
+ },
+ {
+  "file": "west_frames/13640_ss+15_0228Z.jpg",
+  "cameraId": 13640,
+  "sky_frac": 0.822,
+  "top_lum": 148.7
+ },
+ {
+  "file": "west_frames/13693_ss+15_0218Z.jpg",
+  "cameraId": 13693,
+  "sky_frac": 0.615,
+  "top_lum": 151.9
+ },
+ {
+  "file": "west_frames/13694_ss+15_0219Z.jpg",
+  "cameraId": 13694,
+  "sky_frac": 0.586,
+  "top_lum": 175.8
+ },
+ {
+  "file": "west_frames/13695_ss+15_0218Z.jpg",
+  "cameraId": 13695,
+  "sky_frac": 0.661,
+  "top_lum": 244.6
+ },
+ {
+  "file": "west_frames/13696_ss+15_0219Z.jpg",
+  "cameraId": 13696,
+  "sky_frac": 0.591,
+  "top_lum": 163.4
+ },
+ {
+  "file": "west_frames/13701_ss+15_0230Z.jpg",
+  "cameraId": 13701,
+  "sky_frac": 0.536,
+  "top_lum": 96.3
+ },
+ {
+  "file": "west_frames/13702_ss+15_0229Z.jpg",
+  "cameraId": 13702,
+  "sky_frac": 0.545,
+  "top_lum": 88.9
+ },
+ {
+  "file": "west_frames/13703_ss+15_0229Z.jpg",
+  "cameraId": 13703,
+  "sky_frac": 0.577,
+  "top_lum": 84.8
+ },
+ {
+  "file": "west_frames/13704_ss+15_0230Z.jpg",
+  "cameraId": 13704,
+  "sky_frac": 0.485,
+  "top_lum": 139.3
+ },
+ {
+  "file": "west_frames/13710_ss+15_0224Z.jpg",
+  "cameraId": 13710,
+  "sky_frac": 0.555,
+  "top_lum": 122.7
+ },
+ {
+  "file": "west_frames/13711_ss+15_0225Z.jpg",
+  "cameraId": 13711,
+  "sky_frac": 0.585,
+  "top_lum": 138.5
+ },
+ {
+  "file": "west_frames/13712_ss+15_0225Z.jpg",
+  "cameraId": 13712,
+  "sky_frac": 0.58,
+  "top_lum": 103.1
+ },
+ {
+  "file": "west_frames/13713_ss+15_0215Z.jpg",
+  "cameraId": 13713,
+  "sky_frac": 0.642,
+  "top_lum": 207.6
+ },
+ {
+  "file": "west_frames/13714_ss+15_0230Z.jpg",
+  "cameraId": 13714,
+  "sky_frac": 0.487,
+  "top_lum": 178.4
+ },
+ {
+  "file": "west_frames/13715_ss+15_0230Z.jpg",
+  "cameraId": 13715,
+  "sky_frac": 0.537,
+  "top_lum": 144.0
+ },
+ {
+  "file": "west_frames/13716_ss+15_0225Z.jpg",
+  "cameraId": 13716,
+  "sky_frac": 0.552,
+  "top_lum": 210.1
+ },
+ {
+  "file": "west_frames/13717_ss+15_0224Z.jpg",
+  "cameraId": 13717,
+  "sky_frac": 0.494,
+  "top_lum": 249.5
+ },
+ {
+  "file": "west_frames/13734_ss+15_0225Z.jpg",
+  "cameraId": 13734,
+  "sky_frac": 0.682,
+  "top_lum": 159.9
+ },
+ {
+  "file": "west_frames/13735_ss+15_0225Z.jpg",
+  "cameraId": 13735,
+  "sky_frac": 0.613,
+  "top_lum": 171.7
+ },
+ {
+  "file": "west_frames/13736_ss+15_0216Z.jpg",
+  "cameraId": 13736,
+  "sky_frac": 0.507,
+  "top_lum": 168.7
+ },
+ {
+  "file": "west_frames/13737_ss+15_0225Z.jpg",
+  "cameraId": 13737,
+  "sky_frac": 0.577,
+  "top_lum": 209.8
+ },
+ {
+  "file": "west_frames/13738_ss+15_0226Z.jpg",
+  "cameraId": 13738,
+  "sky_frac": 0.808,
+  "top_lum": 130.2
+ },
+ {
+  "file": "west_frames/13739_ss+15_0229Z.jpg",
+  "cameraId": 13739,
+  "sky_frac": 0.785,
+  "top_lum": 125.3
+ },
+ {
+  "file": "west_frames/13740_ss+15_0224Z.jpg",
+  "cameraId": 13740,
+  "sky_frac": 0.787,
+  "top_lum": 142.0
+ },
+ {
+  "file": "west_frames/13741_ss+15_0225Z.jpg",
+  "cameraId": 13741,
+  "sky_frac": 0.757,
+  "top_lum": 159.6
+ },
+ {
+  "file": "west_frames/13746_ss+15_0226Z.jpg",
+  "cameraId": 13746,
+  "sky_frac": 0.994,
+  "top_lum": 134.8
+ },
+ {
+  "file": "west_frames/13748_ss+15_0227Z.jpg",
+  "cameraId": 13748,
+  "sky_frac": 0.997,
+  "top_lum": 128.4
+ },
+ {
+  "file": "west_frames/13749_ss+15_0227Z.jpg",
+  "cameraId": 13749,
+  "sky_frac": 0.997,
+  "top_lum": 126.9
+ },
+ {
+  "file": "west_frames/13750_ss+15_0226Z.jpg",
+  "cameraId": 13750,
+  "sky_frac": 0.087,
+  "top_lum": 135.0
+ },
+ {
+  "file": "west_frames/13753_ss+15_0231Z.jpg",
+  "cameraId": 13753,
+  "sky_frac": 0.898,
+  "top_lum": 155.5
+ },
+ {
+  "file": "west_frames/13754_ss+15_0234Z.jpg",
+  "cameraId": 13754,
+  "sky_frac": 0.711,
+  "top_lum": 153.6
+ },
+ {
+  "file": "west_frames/13755_ss+15_0234Z.jpg",
+  "cameraId": 13755,
+  "sky_frac": 0.441,
+  "top_lum": 161.2
+ },
+ {
+  "file": "west_frames/13756_ss+15_0235Z.jpg",
+  "cameraId": 13756,
+  "sky_frac": 0.895,
+  "top_lum": 153.8
+ },
+ {
+  "file": "west_frames/13765_ss+15_0219Z.jpg",
+  "cameraId": 13765,
+  "sky_frac": 0.485,
+  "top_lum": 172.1
+ },
+ {
+  "file": "west_frames/13766_ss+15_0219Z.jpg",
+  "cameraId": 13766,
+  "sky_frac": 0.555,
+  "top_lum": 169.3
+ },
+ {
+  "file": "west_frames/13767_ss+15_0218Z.jpg",
+  "cameraId": 13767,
+  "sky_frac": 0.517,
+  "top_lum": 249.2
+ },
+ {
+  "file": "west_frames/13768_ss+15_0218Z.jpg",
+  "cameraId": 13768,
+  "sky_frac": 0.426,
+  "top_lum": 198.3
+ },
+ {
+  "file": "west_frames/13777_ss+15_0227Z.jpg",
+  "cameraId": 13777,
+  "sky_frac": 0.894,
+  "top_lum": 132.6
+ },
+ {
+  "file": "west_frames/13778_ss+15_0222Z.jpg",
+  "cameraId": 13778,
+  "sky_frac": 0.764,
+  "top_lum": 148.1
+ },
+ {
+  "file": "west_frames/13779_ss+15_0228Z.jpg",
+  "cameraId": 13779,
+  "sky_frac": 0.793,
+  "top_lum": 143.8
+ },
+ {
+  "file": "west_frames/13780_ss+15_0226Z.jpg",
+  "cameraId": 13780,
+  "sky_frac": 0.743,
+  "top_lum": 151.4
+ },
+ {
+  "file": "west_frames/13781_ss+15_0202Z.jpg",
+  "cameraId": 13781,
+  "sky_frac": 0.533,
+  "top_lum": 170.2
+ },
+ {
+  "file": "west_frames/13782_ss+15_0210Z.jpg",
+  "cameraId": 13782,
+  "sky_frac": 0.701,
+  "top_lum": 117.1
+ },
+ {
+  "file": "west_frames/13818_ss+15_0215Z.jpg",
+  "cameraId": 13818,
+  "sky_frac": 0.422,
+  "top_lum": 183.0
+ },
+ {
+  "file": "west_frames/13819_ss+15_0215Z.jpg",
+  "cameraId": 13819,
+  "sky_frac": 0.605,
+  "top_lum": 174.6
+ },
+ {
+  "file": "west_frames/13820_ss+15_0214Z.jpg",
+  "cameraId": 13820,
+  "sky_frac": 0.679,
+  "top_lum": 179.5
+ },
+ {
+  "file": "west_frames/13821_ss+15_0215Z.jpg",
+  "cameraId": 13821,
+  "sky_frac": 0.634,
+  "top_lum": 248.9
+ },
+ {
+  "file": "west_frames/13822_ss+15_0215Z.jpg",
+  "cameraId": 13822,
+  "sky_frac": 0.467,
+  "top_lum": 181.6
+ },
+ {
+  "file": "west_frames/13823_ss+15_0222Z.jpg",
+  "cameraId": 13823,
+  "sky_frac": 0.509,
+  "top_lum": 161.1
+ },
+ {
+  "file": "west_frames/13824_ss+15_0222Z.jpg",
+  "cameraId": 13824,
+  "sky_frac": 0.431,
+  "top_lum": 220.7
+ },
+ {
+  "file": "west_frames/13825_ss+15_0223Z.jpg",
+  "cameraId": 13825,
+  "sky_frac": 0.473,
+  "top_lum": 243.5
+ },
+ {
+  "file": "west_frames/13841_ss+15_0156Z.jpg",
+  "cameraId": 13841,
+  "sky_frac": 0.567,
+  "top_lum": 130.1
+ },
+ {
+  "file": "west_frames/13842_ss+15_0156Z.jpg",
+  "cameraId": 13842,
+  "sky_frac": 0.626,
+  "top_lum": 124.7
+ },
+ {
+  "file": "west_frames/13843_ss+15_0201Z.jpg",
+  "cameraId": 13843,
+  "sky_frac": 0.62,
+  "top_lum": 126.5
+ },
+ {
+  "file": "west_frames/13844_ss+15_0200Z.jpg",
+  "cameraId": 13844,
+  "sky_frac": 0.517,
+  "top_lum": 134.3
+ },
+ {
+  "file": "west_frames/13845_ss+15_0216Z.jpg",
+  "cameraId": 13845,
+  "sky_frac": 0.538,
+  "top_lum": 132.7
+ },
+ {
+  "file": "west_frames/13846_ss+15_0216Z.jpg",
+  "cameraId": 13846,
+  "sky_frac": 0.53,
+  "top_lum": 156.6
+ },
+ {
+  "file": "west_frames/13848_ss+15_0216Z.jpg",
+  "cameraId": 13848,
+  "sky_frac": 0.567,
+  "top_lum": 191.6
+ },
+ {
+  "file": "west_frames/13853_ss+15_0152Z.jpg",
+  "cameraId": 13853,
+  "sky_frac": 0.573,
+  "top_lum": 148.3
+ },
+ {
+  "file": "west_frames/13854_ss+15_0152Z.jpg",
+  "cameraId": 13854,
+  "sky_frac": 0.558,
+  "top_lum": 147.5
+ },
+ {
+  "file": "west_frames/13855_ss+15_0202Z.jpg",
+  "cameraId": 13855,
+  "sky_frac": 0.547,
+  "top_lum": 222.6
+ },
+ {
+  "file": "west_frames/13865_ss+15_0228Z.jpg",
+  "cameraId": 13865,
+  "sky_frac": 0.558,
+  "top_lum": 223.6
+ },
+ {
+  "file": "west_frames/13866_ss+15_0229Z.jpg",
+  "cameraId": 13866,
+  "sky_frac": 0.449,
+  "top_lum": 225.2
+ },
+ {
+  "file": "west_frames/13867_ss+15_0226Z.jpg",
+  "cameraId": 13867,
+  "sky_frac": 0.61,
+  "top_lum": 163.2
+ },
+ {
+  "file": "west_frames/13868_ss+15_0230Z.jpg",
+  "cameraId": 13868,
+  "sky_frac": 0.587,
+  "top_lum": 124.7
+ },
+ {
+  "file": "west_frames/13869_ss+15_0225Z.jpg",
+  "cameraId": 13869,
+  "sky_frac": 0.646,
+  "top_lum": 169.1
+ },
+ {
+  "file": "west_frames/13870_ss+15_0225Z.jpg",
+  "cameraId": 13870,
+  "sky_frac": 0.606,
+  "top_lum": 169.1
+ },
+ {
+  "file": "west_frames/13871_ss+15_0227Z.jpg",
+  "cameraId": 13871,
+  "sky_frac": 0.609,
+  "top_lum": 120.4
+ },
+ {
+  "file": "west_frames/13872_ss+15_0224Z.jpg",
+  "cameraId": 13872,
+  "sky_frac": 0.623,
+  "top_lum": 120.4
+ },
+ {
+  "file": "west_frames/13873_ss+15_0222Z.jpg",
+  "cameraId": 13873,
+  "sky_frac": 0.493,
+  "top_lum": 109.7
+ },
+ {
+  "file": "west_frames/13874_ss+15_0224Z.jpg",
+  "cameraId": 13874,
+  "sky_frac": 0.576,
+  "top_lum": 181.3
+ },
+ {
+  "file": "west_frames/13875_ss+15_0223Z.jpg",
+  "cameraId": 13875,
+  "sky_frac": 0.484,
+  "top_lum": 195.9
+ },
+ {
+  "file": "west_frames/13876_ss+15_0223Z.jpg",
+  "cameraId": 13876,
+  "sky_frac": 0.509,
+  "top_lum": 250.8
+ },
+ {
+  "file": "west_frames/13877_ss+15_0232Z.jpg",
+  "cameraId": 13877,
+  "sky_frac": 0.772,
+  "top_lum": 146.2
+ },
+ {
+  "file": "west_frames/13878_ss+15_0233Z.jpg",
+  "cameraId": 13878,
+  "sky_frac": 0.797,
+  "top_lum": 150.7
+ },
+ {
+  "file": "west_frames/13879_ss+15_0231Z.jpg",
+  "cameraId": 13879,
+  "sky_frac": 0.777,
+  "top_lum": 146.2
+ },
+ {
+  "file": "west_frames/13880_ss+15_0232Z.jpg",
+  "cameraId": 13880,
+  "sky_frac": 0.815,
+  "top_lum": 138.0
+ },
+ {
+  "file": "west_frames/13885_ss+15_0235Z.jpg",
+  "cameraId": 13885,
+  "sky_frac": 0.595,
+  "top_lum": 120.7
+ },
+ {
+  "file": "west_frames/13886_ss+15_0235Z.jpg",
+  "cameraId": 13886,
+  "sky_frac": 0.738,
+  "top_lum": 106.6
+ },
+ {
+  "file": "west_frames/13900_ss+15_0229Z.jpg",
+  "cameraId": 13900,
+  "sky_frac": 0.775,
+  "top_lum": 130.8
+ },
+ {
+  "file": "west_frames/13901_ss+15_0228Z.jpg",
+  "cameraId": 13901,
+  "sky_frac": 0.788,
+  "top_lum": 132.5
+ },
+ {
+  "file": "west_frames/13902_ss+15_0229Z.jpg",
+  "cameraId": 13902,
+  "sky_frac": 0.84,
+  "top_lum": 133.7
+ },
+ {
+  "file": "west_frames/13903_ss+15_0231Z.jpg",
+  "cameraId": 13903,
+  "sky_frac": 0.806,
+  "top_lum": 120.7
+ },
+ {
+  "file": "west_frames/13904_ss+15_0225Z.jpg",
+  "cameraId": 13904,
+  "sky_frac": 0.803,
+  "top_lum": 135.7
+ },
+ {
+  "file": "west_frames/13905_ss+15_0225Z.jpg",
+  "cameraId": 13905,
+  "sky_frac": 0.806,
+  "top_lum": 146.0
+ },
+ {
+  "file": "west_frames/13906_ss+15_0225Z.jpg",
+  "cameraId": 13906,
+  "sky_frac": 0.726,
+  "top_lum": 148.8
+ },
+ {
+  "file": "west_frames/13907_ss+15_0227Z.jpg",
+  "cameraId": 13907,
+  "sky_frac": 0.738,
+  "top_lum": 132.7
+ },
+ {
+  "file": "west_frames/13912_ss+15_0225Z.jpg",
+  "cameraId": 13912,
+  "sky_frac": 0.628,
+  "top_lum": 163.0
+ },
+ {
+  "file": "west_frames/13913_ss+15_0228Z.jpg",
+  "cameraId": 13913,
+  "sky_frac": 0.749,
+  "top_lum": 162.9
+ },
+ {
+  "file": "west_frames/13914_ss+15_0227Z.jpg",
+  "cameraId": 13914,
+  "sky_frac": 0.758,
+  "top_lum": 158.2
+ },
+ {
+  "file": "west_frames/13915_ss+15_0228Z.jpg",
+  "cameraId": 13915,
+  "sky_frac": 0.733,
+  "top_lum": 161.6
+ },
+ {
+  "file": "west_frames/13928_ss+15_0228Z.jpg",
+  "cameraId": 13928,
+  "sky_frac": 0.356,
+  "top_lum": 130.9
+ },
+ {
+  "file": "west_frames/13929_ss+15_0229Z.jpg",
+  "cameraId": 13929,
+  "sky_frac": 0.184,
+  "top_lum": 106.9
+ },
+ {
+  "file": "west_frames/13930_ss+15_0228Z.jpg",
+  "cameraId": 13930,
+  "sky_frac": 0.357,
+  "top_lum": 213.2
+ },
+ {
+  "file": "west_frames/13931_ss+15_0226Z.jpg",
+  "cameraId": 13931,
+  "sky_frac": 0.576,
+  "top_lum": 171.2
+ },
+ {
+  "file": "west_frames/13932_ss+15_0225Z.jpg",
+  "cameraId": 13932,
+  "sky_frac": 0.548,
+  "top_lum": 174.5
+ },
+ {
+  "file": "west_frames/13933_ss+15_0225Z.jpg",
+  "cameraId": 13933,
+  "sky_frac": 0.606,
+  "top_lum": 205.4
+ },
+ {
+  "file": "west_frames/13934_ss+15_0225Z.jpg",
+  "cameraId": 13934,
+  "sky_frac": 0.561,
+  "top_lum": 165.4
+ },
+ {
+  "file": "west_frames/13935_ss+15_0205Z.jpg",
+  "cameraId": 13935,
+  "sky_frac": 0.573,
+  "top_lum": 85.2
+ },
+ {
+  "file": "west_frames/13936_ss+15_0206Z.jpg",
+  "cameraId": 13936,
+  "sky_frac": 0.565,
+  "top_lum": 114.3
+ },
+ {
+  "file": "west_frames/13937_ss+15_0207Z.jpg",
+  "cameraId": 13937,
+  "sky_frac": 0.641,
+  "top_lum": 103.4
+ },
+ {
+  "file": "west_frames/13938_ss+15_0205Z.jpg",
+  "cameraId": 13938,
+  "sky_frac": 0.581,
+  "top_lum": 170.0
+ },
+ {
+  "file": "west_frames/13961_ss+15_0228Z.jpg",
+  "cameraId": 13961,
+  "sky_frac": 0.856,
+  "top_lum": 140.2
+ },
+ {
+  "file": "west_frames/13962_ss+15_0225Z.jpg",
+  "cameraId": 13962,
+  "sky_frac": 0.842,
+  "top_lum": 142.4
+ },
+ {
+  "file": "west_frames/13963_ss+15_0226Z.jpg",
+  "cameraId": 13963,
+  "sky_frac": 0.815,
+  "top_lum": 161.9
+ },
+ {
+  "file": "west_frames/13964_ss+15_0230Z.jpg",
+  "cameraId": 13964,
+  "sky_frac": 0.864,
+  "top_lum": 134.6
+ },
+ {
+  "file": "west_frames/13987_ss+15_0229Z.jpg",
+  "cameraId": 13987,
+  "sky_frac": 0.454,
+  "top_lum": 168.4
+ },
+ {
+  "file": "west_frames/13988_ss+15_0229Z.jpg",
+  "cameraId": 13988,
+  "sky_frac": 0.537,
+  "top_lum": 131.4
+ },
+ {
+  "file": "west_frames/13989_ss+15_0222Z.jpg",
+  "cameraId": 13989,
+  "sky_frac": 0.426,
+  "top_lum": 170.0
+ },
+ {
+  "file": "west_frames/13990_ss+15_0231Z.jpg",
+  "cameraId": 13990,
+  "sky_frac": 0.428,
+  "top_lum": 203.9
+ },
+ {
+  "file": "west_frames/14090_ss+15_0153Z.jpg",
+  "cameraId": 14090,
+  "sky_frac": 0.786,
+  "top_lum": 127.5
+ },
+ {
+  "file": "west_frames/14091_ss+15_0154Z.jpg",
+  "cameraId": 14091,
+  "sky_frac": 0.734,
+  "top_lum": 180.9
+ },
+ {
+  "file": "west_frames/14129_ss+15_0221Z.jpg",
+  "cameraId": 14129,
+  "sky_frac": 0.764,
+  "top_lum": 104.8
+ },
+ {
+  "file": "west_frames/14131_ss+15_0206Z.jpg",
+  "cameraId": 14131,
+  "sky_frac": 0.444,
+  "top_lum": 194.7
+ },
+ {
+  "file": "west_frames/14160_ss+15_0228Z.jpg",
+  "cameraId": 14160,
+  "sky_frac": 0.81,
+  "top_lum": 121.3
+ },
+ {
+  "file": "west_frames/14161_ss+15_0226Z.jpg",
+  "cameraId": 14161,
+  "sky_frac": 0.748,
+  "top_lum": 144.3
+ },
+ {
+  "file": "west_frames/14162_ss+15_0226Z.jpg",
+  "cameraId": 14162,
+  "sky_frac": 0.861,
+  "top_lum": 135.7
+ },
+ {
+  "file": "west_frames/14163_ss+15_0225Z.jpg",
+  "cameraId": 14163,
+  "sky_frac": 0.838,
+  "top_lum": 152.5
+ }
+]
