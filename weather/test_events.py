@@ -8,6 +8,8 @@
 3. Live: a run with no --when completes and events.json validates; ProbSevere age <= 5 min.
 4. Aurora (approximate): --aurora fires at Yellowknife. OVATION is live-only, so the ~26%
    probability expected on 2026-09-20T04:40Z drifts; the check only requires fires=True.
+5. Sunset sweep: --sunset at 2026-09-20T02:00Z emits a sunset event within 90 km of Wagontire OR
+   Plains MT (the West-Coast test evening's 4/5 frames), as valid camera-side records.
 """
 import datetime as dt
 import json
@@ -59,7 +61,7 @@ def regression_lamar() -> bool:
 
 def replay_mead() -> bool:
     payload, _ = run_events("--when", "2024-04-26T20:30Z")
-    storms = [e for e in payload["events"] if e["type"] == "storm"]
+    storms = [e for e in payload["events"] if e["type"] == "thunderstorm"]
     if not storms:
         return check("replay Mead storm", False, "no storm events")
     best = min(storms, key=lambda e: distance_km(41.1447, -96.4616, e["lat"], e["lon"]))
@@ -69,18 +71,34 @@ def replay_mead() -> bool:
     return check("replay Mead storm", ok, f"km={km:.1f} MESH={ev['MESH']} FLASH={ev['FLASH_RATE']}")
 
 
-REQUIRED_KEYS = {"id", "type", "lat", "lon", "radius_km", "t_start", "t_end", "score",
+REQUIRED_KEYS = {"id", "type", "lat", "lon", "radius_km", "t_start", "t_end", "severity", "replay",
                  "needs_daylight", "needs_night_capable_camera", "look_bearing_hint", "evidence"}
+EVENT_TYPES = ("thunderstorm", "sunset", "aurora")  # camera-side EventType names
+
+
+def valid_events(events: list[dict]) -> bool:
+    return all(REQUIRED_KEYS <= set(e) and e["type"] in EVENT_TYPES and 0 <= e["severity"] <= 1 for e in events)
 
 
 def live() -> bool:
     payload, elapsed = run_events()
-    valid = all(REQUIRED_KEYS <= set(e) and e["type"] in ("storm", "sunset", "aurora")
-                and 0 <= e["score"] <= 1 for e in payload["events"])
+    valid = valid_events(payload["events"])
     age = payload["sources"]["probsevere"]["probsevere_age_s"]
     ok = check("live schema", valid, f"{len(payload['events'])} events")
     ok &= check("live runtime < 90 s", elapsed < 90, f"{elapsed:.0f}s")
     ok &= check("probsevere age <= 5 min", age is not None and age <= 300, f"age={age}s")
+    return ok
+
+
+def sunset_sweep() -> bool:
+    """--sunset at 02:00Z on the West-Coast test evening: the lattice sweep must flag the Wagontire / Plains
+    area (the colour index's 4/5 frames, REPORT §3.16) as sunset events within 90 km, with valid records."""
+    payload, elapsed = run_events("--when", "2026-09-20T02:00Z", "--sunset", timeout=900)
+    sunsets = [e for e in payload["events"] if e["type"] == "sunset"]
+    near = [e for e in sunsets if min(distance_km(43.25, -119.88, e["lat"], e["lon"]),
+                                      distance_km(47.47, -114.90, e["lat"], e["lon"])) <= 90]
+    ok = check("sunset sweep flags Wagontire or Plains", bool(near), f"{len(sunsets)} sunset events, {len(near)} near; {elapsed:.0f}s")
+    ok &= check("sunset records valid", valid_events(sunsets) and all(e["replay"] for e in sunsets))
     return ok
 
 
@@ -93,5 +111,5 @@ def aurora() -> bool:
 
 
 if __name__ == "__main__":
-    results = [regression_lamar(), replay_mead(), live(), aurora()]
+    results = [regression_lamar(), replay_mead(), live(), aurora(), sunset_sweep()]
     sys.exit(0 if all(results) else 1)

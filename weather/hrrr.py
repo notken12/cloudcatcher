@@ -22,6 +22,7 @@ CLOUD_FIELDS = [
     ("HGT", "cloud base"),
     ("HGT", "cloud top"),
     ("HGT", "surface"),
+    ("LAND", "surface"),
     ("HPBL", "surface"),
     ("RH", "2 m above ground"),
 ]
@@ -35,6 +36,7 @@ FIELD_KEYS = {
     "base": ("gh", "cloudBase"),
     "top": ("gh", "cloudTop"),
     "orog": ("orog", "surface"),
+    "land": ("lsm", "surface"),
     "blh": ("blh", "surface"),
     "rh": ("2r", "heightAboveGround"),
 }
@@ -82,7 +84,8 @@ def byte_ranges(index, wanted: list[tuple[str, str]]) -> list[tuple[int, int | N
 
 
 def download_subset(key: str, out_dir: str, fields=CLOUD_FIELDS) -> str:
-    path = os.path.join(out_dir, os.path.basename(key).replace(".grib2", ".subset.grib2"))
+    """Cached per field count, so a subset downloaded with an older field list is not reused."""
+    path = os.path.join(out_dir, os.path.basename(key).replace(".grib2", f".subset{len(fields)}.grib2"))
     if os.path.exists(path):
         return path
     os.makedirs(out_dir, exist_ok=True)
@@ -116,9 +119,8 @@ class CloudGrid:
 
 
 def terrain_km(grid: CloudGrid, lats, lons) -> np.ndarray:
-    """Surface height in km; off-grid points take the mean of the on-grid ones."""
-    orog = grid.sample("orog", lats, lons) / 1000.0
-    return np.nan_to_num(orog, nan=float(np.nanmean(orog)))
+    """Surface height in km; off the grid (ocean, for a sunward fan from a CONUS site) is sea level."""
+    return np.nan_to_num(grid.sample("orog", lats, lons) / 1000.0, nan=0.0)
 
 
 class HrrrCloudField:
