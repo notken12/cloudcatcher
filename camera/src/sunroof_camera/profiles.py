@@ -30,7 +30,10 @@ class EventProfile:
     vlm_definition: str = ""  # one-line definition appended to the prompt
     feasibility: int = 3  # 1 = hardest (sunrise/sunset) .. 5 = easiest
     q: dict[str, float] = field(default_factory=lambda: dict(Q_CLOUD))  # quality weights
-    min_q: float = 0.15  # below this a passing frame is still not shown (LOW_QUALITY)
+    # Q floor below which a passing frame is not shown (LOW_QUALITY). 0 = advisory only: Q
+    # orders candidates, the VLM is the sole content judge (a grainy road cam with a real
+    # anvil behind it must not be lost to a heuristic).
+    min_q: float = 0.0
     require_yes: bool = False  # VLM must say event_visible == "yes" ("partial" is not enough)
 
 
@@ -52,7 +55,6 @@ PROFILES: dict[str, EventProfile] = {
         vlm_definition="a visible lightning bolt or a cloud lit from inside by a flash.",
         feasibility=3,
         q={"sky_share": 0.3, "sharpness": 0.3, "exposure": 0.2, "texture": 0.2},
-        min_q=0.1,
         require_yes=True,
     ),
     "mammatus": EventProfile(
@@ -89,7 +91,6 @@ PROFILES: dict[str, EventProfile] = {
         vlm_definition="aurora: green / red / purple glowing arcs, curtains or rays in a night sky.",
         feasibility=3,
         q={"colourfulness": 0.5, "sharpness": 0.3, "exposure": 0.2},
-        min_q=0.05,
     ),
     "rainbow": EventProfile(
         "rainbow",

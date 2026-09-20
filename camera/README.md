@@ -73,9 +73,11 @@ backend the service still runs and returns gate-passed frames marked `verified: 
 gate-passed frame gets seven deterministic [0,1] features (sky share, Hasler–Süsstrunk
 colourfulness, warm-hue share, sky texture, dark-channel clarity, sharpness, exposure; ~2 ms,
 numpy only) and a per-type weighted mean `Q` (`EventProfile.q`). `Q` re-ranks — it never
-decides presence: with the VLM on, passing frames sort by `confidence × (0.5 + 0.5·Q)`; the only
-hard use is `min_q` (a frame far below the type's floor is dropped → `LOW_QUALITY`). The VLM
-verdict is also held to per-type rules: `require_yes` (lightning, rainbow: "partial" is not
+decides presence: with the VLM on, passing frames sort by `confidence × (0.5 + 0.5·Q)`. No
+content heuristic (catalog `sky_frac`, Q, sharpness) hard-rejects a frame — only the sanity gates
+do (bytes / placeholder / frozen / stale / uniform / blown-out / near-black without night
+capability); the VLM is the sole content judge. `EventProfile.min_q` (default 0 = off) can turn
+Q into a floor → `LOW_QUALITY`. The VLM verdict is also held to per-type rules: `require_yes` (lightning, rainbow: "partial" is not
 enough) and `night` ⇒ reject for daytime-only types. `Footage.quality` / `Footage.features`
 and `data/verdicts.jsonl` (`q`, `features` next to the verdict) expose all of it for calibration.
 

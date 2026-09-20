@@ -207,6 +207,40 @@ each one costs recall.
 Current end-to-end (measured tonight, US night, 9 candidates): fetch+gates 1–2 s, 6 parallel
 gpt-4o-mini calls, total 3.3 s.
 
+### 4.1 Gate-only vs gate+VLM — daylight run, 2026-09-20 ~09 UTC (12.5k-camera catalog)
+
+Same events, same catalog, same frame cache, `k=5`, `SUNROOF_VLM_BACKEND=off` then `openai`
+(gpt-4o-mini, `detail:low`). Content heuristics were advisory only (this PR).
+
+| set | events | with cameras in range | gate-only status | VLM status | VLM calls | rejects by gates | median Δt |
+|---|---|---|---|---|---|---|---|
+| 10 synthetic (Taipei, HK, Alps, Nordics, NZ…) | 10 | 7 (3 `CAMERAS_DARK`, local dusk) | 7 × `FOOTAGE_FOUND` (5 frames each) | 7 × `EVENT_NOT_VISIBLE` | 70 | 3 (all `stale`) | 1.3 s → 2.7 s |
+| real `weather/events.py` output (needs_daylight types) | 25 | 5 (lenticular, CZ/SK/AT) | 5 × `FOOTAGE_FOUND` | 5 × `EVENT_NOT_VISIBLE` | 41 | 2 (both `stale`) | 0.4 s → 1.7 s |
+
+All 92 verdicts were `event_visible: no`, confidence 0.8–0.95; spot-checking the contact sheets
+agrees (ordinary blue / partly-cloudy sky, no lens-shaped or storm cloud). Q sat at 0.86–0.92 for
+every served frame — it separated nothing.
+
+What this says:
+
+- **The VLM's gain is precision, not recall.** Gate-only shows 5 pleasant-but-irrelevant sky
+  frames per event ("not stunning"); the VLM turns them into an honest `EVENT_NOT_VISIBLE`. It never
+  had a real event to confirm in this run, so the recall side is still unmeasured.
+- **Not one frame was lost to a content heuristic**: the only gate rejects were stale timestamps.
+  So the "images aren't stunning" problem is not the CV layer being too strict; it is upstream:
+  20/25 real events had **no camera in range** (SK/PL mountains, Turkey, Malaysia, W. Africa), and
+  the 5 that did are SYNOP station reports with a 50 km radius, whose nearest cameras look at a
+  different piece of sky.
+- **Panoramas are wasted on `detail:low`**: the panomax `recent_small.jpg` we ingest is 1807×150
+  (12:1); after the model's 512 px downscale the sky is ~20 px tall. If lenticular/mammatus recall
+  matters, fetch the larger rendition and tile / crop the sky band before the VLM call (Stage
+  D-style, one extra call) — a cheaper win than any new CV feature.
+- Verdict on "more fast CV filtering?": **no, not as filters.** Evidence for adding Stage B
+  (MobileCLIP pre-rank) is only cost: ~10 VLM calls/event ≈ $0.005 — fine at demo scale. Revisit if
+  events × cameras grows 10×. Stage A stays as a tie-breaker among *confirmed* frames.
+
+Raw logs: `verdicts.jsonl` rows carry `q`, `features`, `confidence`, `caption` per call.
+
 ---
 
 ## 5. Sources
