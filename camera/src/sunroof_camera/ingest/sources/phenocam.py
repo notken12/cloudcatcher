@@ -5,7 +5,7 @@ orientation, latest JPEG at /data/latest/<site>.jpg and archives back to 2000s
 from __future__ import annotations
 
 import re
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from typing import ClassVar
 
 import httpx
@@ -33,6 +33,20 @@ def closest_frame_path(html: str, ts: datetime) -> str | None:
         if best is None or dt < best[0]:
             best = (dt, m.group(0))
     return best[1] if best else None
+
+
+def tz_name(utc_offset: int | None) -> str | None:
+    """PhenoCam gives a fixed integer offset; the IANA name for UTC-5 is `Etc/GMT+5`."""
+    return None if utc_offset is None else f"Etc/GMT{-utc_offset:+d}"
+
+
+def local_time(ts: datetime, tz: str | None) -> datetime:
+    """Naive site-local wall clock for `ts` (aware -> converted; naive = already local)."""
+    if ts.tzinfo is None:
+        return ts
+    m = re.fullmatch(r"Etc/GMT([+-]\d+)", tz or "")
+    off = timezone(timedelta(hours=-int(m.group(1)))) if m else timezone.utc
+    return ts.astimezone(off).replace(tzinfo=None)
 
 
 class PhenoCamAdapter:
@@ -64,6 +78,7 @@ class PhenoCamAdapter:
                         lat=rec["Lat"],
                         lon=rec["Lon"],
                         alt_m=rec.get("Elev"),
+                        tz=tz_name(rec.get("utc_offset")),
                         azimuth_deg=az,
                         hfov_deg=50,
                         elev_min_deg=-5,
@@ -90,6 +105,7 @@ class PhenoCamAdapter:
         if ts is None:
             return await default_fetch_frame(http, cam, None)
         site = cam.id.split(":", 1)[1]
+        ts = local_time(ts, cam.tz)
         try:
             r = await http.get(ts.strftime(BROWSE.format(site=site)))
         except httpx.HTTPError:

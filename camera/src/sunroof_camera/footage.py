@@ -107,7 +107,7 @@ class Footage(BaseModel):
 
 class Rejected(BaseModel):
     camera_id: str
-    stage: Literal["fetch", "gate", "vlm", "quality"]
+    stage: Literal["fetch", "gate", "cv", "vlm", "quality"]
     reason: str
 
 
@@ -120,7 +120,11 @@ class FootageResult(BaseModel):
     candidates: int = 0
     fetched: int = 0
     passed_gates: int = 0
+    cv_skipped: int = Field(
+        0, description="gate-passing frames the CV pre-gate / top-N cut kept from the VLM"
+    )
     vlm_calls: int = 0
+    note: str | None = Field(None, description="why the event was skipped before any fetch")
     rejected: list[Rejected] = []
     elapsed_s: float = 0.0
     retry_after_s: int | None = None

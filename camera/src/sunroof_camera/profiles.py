@@ -35,6 +35,16 @@ class EventProfile:
     # anvil behind it must not be lost to a heuristic).
     min_q: float = 0.0
     require_yes: bool = False  # VLM must say event_visible == "yes" ("partial" is not enough)
+    # CV pre-gate (design doc §4.2): frames with less sky than this never reach the VLM.
+    # 0 = off. Only set for cloud types, where "no sky in frame ⇒ no cloud event" is safe;
+    # the same rule loses real sunsets (sun glare reads as non-sky).
+    min_sky_share: float = 0.0
+    # Rank-then-cut: at most this many gate-passing frames (best gate-adjusted score × Q first)
+    # are sent to the VLM per event. Replay: top-2 kept every event with a `yes`, top-1 lost 11/43.
+    vlm_top_n: int = 3
+    # Solar elevation (deg) below which the event is skipped outright as night — unless the
+    # profile is night-capable (aurora, lightning). Sunrise/sunset keep the afterglow window.
+    night_below_deg: float | None = -6.0
 
 
 PROFILES: dict[str, EventProfile] = {
@@ -44,6 +54,7 @@ PROFILES: dict[str, EventProfile] = {
         vlm_definition="a cumulonimbus / storm cloud: towering dark convective cloud, anvil, "
         "rain shafts or a shelf cloud; not just overcast.",
         feasibility=5,
+        min_sky_share=0.15,
     ),
     "lightning": EventProfile(
         "lightning",
@@ -56,6 +67,7 @@ PROFILES: dict[str, EventProfile] = {
         feasibility=3,
         q={"sky_share": 0.3, "sharpness": 0.3, "exposure": 0.2, "texture": 0.2},
         require_yes=True,
+        night_below_deg=None,
     ),
     "mammatus": EventProfile(
         "mammatus",
@@ -63,6 +75,7 @@ PROFILES: dict[str, EventProfile] = {
         vlm_definition="mammatus: pouch-like bulging lobes hanging from the underside of a cloud.",
         feasibility=4,
         q={"texture": 0.4, "sky_share": 0.25, "clarity": 0.15, "sharpness": 0.1, "exposure": 0.1},
+        min_sky_share=0.15,
     ),
     "lenticular": EventProfile(
         "lenticular",
@@ -71,6 +84,7 @@ PROFILES: dict[str, EventProfile] = {
         "usually near mountains.",
         feasibility=4,
         q={"texture": 0.4, "sky_share": 0.25, "clarity": 0.15, "sharpness": 0.1, "exposure": 0.1},
+        min_sky_share=0.15,
     ),
     "undercast": EventProfile(
         "undercast",
@@ -91,6 +105,7 @@ PROFILES: dict[str, EventProfile] = {
         vlm_definition="aurora: green / red / purple glowing arcs, curtains or rays in a night sky.",
         feasibility=3,
         q={"colourfulness": 0.5, "sharpness": 0.3, "exposure": 0.2},
+        night_below_deg=None,
     ),
     "rainbow": EventProfile(
         "rainbow",
@@ -114,6 +129,7 @@ PROFILES: dict[str, EventProfile] = {
         "cloud undersides; a plain bright sky does not count.",
         feasibility=1,
         q=dict(Q_COLOUR),
+        night_below_deg=-12.0,
     ),
     "sunset": EventProfile(
         "sunset",
@@ -126,6 +142,7 @@ PROFILES: dict[str, EventProfile] = {
         "cloud undersides; a plain bright sky does not count.",
         feasibility=1,
         q=dict(Q_COLOUR),
+        night_below_deg=-12.0,
     ),
 }
 

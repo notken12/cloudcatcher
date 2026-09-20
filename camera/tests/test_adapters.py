@@ -802,6 +802,88 @@ def test_downscale_jpeg():
     assert downscale_jpeg(b"not an image", 480) == (b"not an image", "image/jpeg")
 
 
+def test_iem_historical_catalog_and_archive_frame():
+    from datetime import datetime, timezone
+
+    from sunroof_camera.ingest.sources import iem
+
+    feat = {
+        "type": "Feature",
+        "id": "KCCI-027",
+        "geometry": {"type": "Point", "coordinates": [-93.77, 42.02]},
+        "properties": {"cid": "KCCI-027", "name": "Ames", "angle": 270},
+    }
+    seen: list[str] = []
+
+    def handler(req: httpx.Request) -> httpx.Response:
+        seen.append(str(req.url))
+        if "webcam.geojson" in str(req.url):
+            return httpx.Response(200, json={"features": [feat]})
+        if req.url.path.endswith("KCCI-027_202507152000.jpg"):
+            return httpx.Response(200, content=b"\xff\xd8\xff\xe0" + b"\0" * 64)
+        return httpx.Response(404)
+
+    async def go():
+        async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as http:
+            at = datetime(2025, 7, 15, 20, 0, tzinfo=timezone.utc)
+            cams = await iem.IEMAdapter().catalog(http, at=at)
+            fr = await iem.IEMAdapter().fetch_frame(
+                http, cams[0], datetime(2025, 7, 15, 20, 3, 40, tzinfo=timezone.utc)
+            )
+            return cams, fr
+
+    cams, fr = asyncio.run(go())
+    assert len(cams) == 1 and cams[0].azimuth_deg == 270 and cams[0].night_ok
+    assert sum("webcam.geojson" in u for u in seen) == len(iem.NETWORKS)
+    assert any("network=KCCI&ts=2025-07-15T20:00:00Z" in u for u in seen)
+    assert fr is not None  # 20:03:40 rounded down to the 20:00 archive frame
+
+
+def test_phenocam_replay_converts_utc_to_site_local():
+    from datetime import datetime, timezone
+
+    from sunroof_camera.ingest.sources import phenocam
+
+    assert phenocam.tz_name(-6) == "Etc/GMT+6"
+    assert phenocam.tz_name(None) is None
+    cam = Camera(
+        id="phenocam:demo",
+        source="phenocam",
+        source_kind="jpeg",
+        name="demo",
+        lat=40.0,
+        lon=-90.0,
+        tz="Etc/GMT+6",
+        history_kind="url_template",
+        history_template=phenocam.ARCHIVE.format(site="demo"),
+    )
+    browse = " ".join(
+        f'<a href="/data/archive/demo/2021/09/demo_2021_09_14_{h}.jpg">'
+        for h in ("101205", "104205", "111205", "161205")
+    )
+    got: list[str] = []
+
+    def handler(req: httpx.Request) -> httpx.Response:
+        got.append(req.url.path)
+        if "/browse/" in req.url.path:
+            return httpx.Response(200, text=browse)
+        return httpx.Response(200, content=b"\xff\xd8\xff\xe0" + b"\0" * 64)
+
+    async def go():
+        async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as http:
+            # 16:50Z is 10:50 local -> 10:42:05, not the 16:12 local frame
+            return await phenocam.PhenoCamAdapter().fetch_frame(
+                http, cam, datetime(2021, 9, 14, 16, 50, tzinfo=timezone.utc)
+            )
+
+    fr = asyncio.run(go())
+    assert fr is not None
+    assert got[0] == "/webcam/browse/demo/2021/09/14/"
+    assert got[1].endswith("/demo_2021_09_14_104205.jpg")
+    naive = datetime(2021, 9, 14, 16, 50)
+    assert phenocam.local_time(naive, "Etc/GMT+6") == naive  # naive = already local
+
+
 def test_history_cache_lru():
     from sunroof_camera.server import HistoryCache
 

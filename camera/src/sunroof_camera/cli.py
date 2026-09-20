@@ -146,6 +146,9 @@ def match(
     deadline_s: float = 30.0,
     ignore_night: bool = False,
     run_time: str | None = typer.Option(None, help="ISO run to match; default latest"),
+    verdict_log: Path = typer.Option(
+        Path("data/verdicts.jsonl"), help="VLM log: read for the camera track record, appended to"
+    ),
 ):
     """Cron step after `import-events`: rank cameras per new event -> event_cameras."""
     from . import events_db as edb
@@ -158,7 +161,7 @@ def match(
         async with make_client(timeout=15.0) as http:
             return await match_run(
                 conn,
-                Catalog.load(catalog),
+                Catalog.load(catalog, verdict_log=verdict_log),
                 run_time,
                 k=k,
                 resolve=resolve,
@@ -167,6 +170,7 @@ def match(
                 cache=FrameCache(),
                 deadline_s=deadline_s,
                 ignore_night=ignore_night,
+                verdict_log=str(verdict_log),
             )
 
     results = asyncio.run(go())
@@ -221,3 +225,21 @@ def schema():
     from .schema import CAMERA_DTYPES
 
     typer.echo(json.dumps(CAMERA_DTYPES, indent=2))
+
+
+@app.command()
+def track(
+    verdict_log: Path = Path("data/verdicts.jsonl"),
+    type: str | None = typer.Option(None, help="only this event type"),
+    top: int = 20,
+):
+    """Cameras with confirmed sightings so far (the demo shortlist), from the VLM log."""
+    from .track import CameraTrack
+
+    rows = CameraTrack.from_log(verdict_log).summary(type)[:top]
+    for r in rows:
+        typer.echo(
+            f"{r['camera_id']:<36} {r['event_type']:<12} hits={r['hits']:>4.1f}/{r['judged']:<4} "
+            f"rate={r['hit_rate']:.2f} Q={r['mean_q']:.2f} vlmQ={r['mean_vlm_quality']:.1f} "
+            f"x{r['multiplier']:.2f}"
+        )

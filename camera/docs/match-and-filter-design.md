@@ -241,6 +241,122 @@ What this says:
 
 Raw logs: `verdicts.jsonl` rows carry `q`, `features`, `confidence`, `caption` per call.
 
+### 4.2 CV pre-gate vs VLM-only — historical replay, 993 events / 2021–2026 (decides the pipeline)
+
+§4.1 could not measure recall (no positives). This run replays *historical* events through the
+real pipeline (`find_cameras` at the event time → archive frame → sanity gates → Q features → VLM
+on **every** gate-passing frame), then evaluates each candidate CV pre-gate offline against the
+logged verdicts: "calls it would have skipped" vs "frames the VLM said `yes` in that it would have
+skipped". Same frames on both sides, so it is an exact shadow comparison.
+
+**Sample.** 993 events (two seeds, ~500 each), 2021–2026, all months (Jun–Aug heaviest, as storms
+are), lat 26.5–50.3 / lon −123 to −70, 268 distinct 1° cells. Types: thunderstorm 593 (MRMS
+ProbSevere objects), sunset 147 / sunrise 132 (solar crossings at camera sites), aurora 80 (hand-picked Kp≥7 storm
+nights). No mammatus / lenticular / undercast / rainbow: no historical *event* source exists for
+them, so the cloud-type rule below is transferred from thunderstorm. Frames: PhenoCam archive
+(705 judged frames, US-wide, 30-min cadence, `night_ok=False`) and IEM Iowa webcams (137, 5-min
+cadence, `night_ok=True`). Panomax/FAA have no usable archive → they are absent here.
+
+**Outcome.** 952 events ran; 967 VLM calls (gpt-4o-mini, `detail:low`, ≈$0.5 total); 842 unique
+frame×type judgements. Statuses: `EVENT_NOT_VISIBLE` 550, `CAMERAS_DARK` 280, `FOOTAGE_FOUND` 49,
+`NO_FOOTAGE_FOUND` 45, `ALL_STALE` 28. Resolver latency on events that reached the VLM: median
+2.3 s, p90 5.0 s. Feature extraction: 4.7 ms/frame. Positives are rare: 50 `yes` + 9 `partial`
+frames — sunset 40, sunrise 8, thunderstorm 2 (+7 partial), aurora **0** (Iowa night frames at
+Kp≥7 nights showed nothing the VLM accepted; the aurora rows below are therefore not evidence either way).
+
+| rule (skip VLM when …) | type | best zero-`yes`-loss threshold | calls skipped | what the lost frames look like |
+|---|---|---|---|---|
+| `sky_share < thr` | thunderstorm (538 fr, 2 yes / 9 partial) | 0.20 (0.30 loses 1 partial) | **35 %** | — |
+| `sky_share < thr` | sunset (162 fr, 40 yes) | 0.05 | 7 % | at 0.10: 3 real sunsets lost — **sun glare reads as non-sky** |
+| `sky_share < thr` | sunrise (72 fr, 8 yes) | 0.10 | 24 % | at 0.20: 2 lost |
+| `warm_share < thr` | sunset | **none** — every threshold loses `yes` frames (3 lost at 0.005) | — | hazy pink/white sunsets have almost no "warm" pixels |
+| `warm_share < thr` | sunrise | 0.02 | 60 % | 1 lost at 0.05 |
+| `colourfulness < thr` | sunset / sunrise | 0.20 / 0.40 | 10 % / 76 % | — |
+| `texture < thr` (cloud texture) | thunderstorm | 0.30 | 3 % | useless: PhenoCam sky bands are smooth |
+| `Q < thr` | sunset / sunrise / thunderstorm | 0.30 / 0.30 / 0.50 | 19 % / 35 % / 3 % | Q≥0.4 loses 16 of 40 sunsets |
+| **rank-then-cut: top-N by Q per event** | all (599 events with frames) | N = 2 | **15 %**, every event with a `yes` keeps one | N = 1 loses 11 of 43 positive events |
+
+Q as a ranker: AUC(yes vs no) 0.92 sunrise, 0.67 sunset, 0.49 thunderstorm — it orders sun
+events well and storms not at all (storm `yes` frames had Q 0.73 vs 0.72 for `no`).
+
+**Reading it honestly.** Every *content* threshold that saves a lot of calls on the colour types
+loses real events, and the losses are exactly the "ugly but real" frames the policy in §4.1 worried
+about (blown-out sun, haze). The one rule that is both safe and worthwhile is *no sky in view → no
+cloud event*, for cloud types only (35 % of storm calls, 0 `yes` lost, 0 partial lost at 0.20; we
+ship 0.15 for margin). The largest type-agnostic saving comes from not judging every frame: the
+pipeline already ranks by gate-adjusted score × Q, and the VLM only needs the top few. The
+thunderstorm positive base (2 `yes`) is thin; the rule is kept because its failure mode is
+physically implausible, not because n=2 proves it.
+
+**Pipeline shipped (this commit):**
+
+1. **Night skip** — daytime types (everything but aurora / lightning) are not resolved at all when
+   the sun is below −6° at the event (sunrise/sunset: −12°, afterglow window) → `CAMERAS_DARK`
+   with `note`, no fetch, no VLM. 280/952 replay events were night rows for daytime types.
+2. **CV pre-gate, cloud types only** — `EventProfile.min_sky_share = 0.15` for thunderstorm /
+   mammatus / lenticular; frames below it are `Rejected(stage="cv")` and never reach the VLM. Off
+   for every colour type, aurora, undercast, rainbow (the data says it would cost real events).
+3. **Rank-then-cut** — `EventProfile.vlm_top_n = 3` (env `SUNROOF_VLM_TOP_N`; ≤0 restores judging
+   2k frames): only the 3 best gate-passing frames per event are judged. Replay: N=2 already kept
+   every positive event; N=3 is the margin. With the live 12.5k-camera catalog (~9 candidates/event
+   in §4.1) this is a ~3× cut in VLM calls; on the archive replay (1–2 candidates/event) it is 6 %.
+4. Everything else stays advisory: `Q` orders, `min_q = 0`, VLM is the content judge.
+
+Not changed by the data: warm-hue / colourfulness / texture / Q thresholds — rejected as gates.
+`FootageResult.cv_skipped` counts frames removed by 2+3 so the saving stays measurable in
+production logs.
+
+Artifacts (not committed): `bench/report.md`, per-type contact sheets (`sunset_yes.jpg`,
+`thunderstorm_partial.jpg`, `lost_sunset_sky_share_0.1.jpg`, …), `results.jsonl`, `verdicts.jsonl`.
+
+### 4.3 Event → camera: the pick is deterministic, and it now learns per camera
+
+The choice among suitable cameras/frames was three ranked stages already (catalog score → gate-
+adjusted score → VLM verdict × Q). The replay exposed what geometry cannot see: **which cameras
+actually deliver**. Of 40 confirmed sunsets, 33 came from two IEM cameras (`iem:KCCI-034` Big
+Creek Marina 21/40 asked, `iem:KCCI-027` ISU Ag Farm 13/19), while `phenocam:arsbrooks10` — same
+type, same geometry class — was asked 33 times for 2 hits. Nothing in the catalog row
+(`sky_frac`, heading, source prior) separates them.
+
+So the second commit adds a **camera track record** (`track.py`, Stage E made concrete):
+
+* every VLM verdict is folded into a per-(camera, type) Beta posterior of *P(event visible when
+  asked)* — `yes` = 1, `partial` = ½ — shrunk towards the type-wide base rate with 4 pseudo-obs.
+  It is rebuilt from `verdicts.jsonl` at startup (`Catalog.load(..., verdict_log=)`) and updated
+  in memory after every event, so the live server and the cron `match` step learn continuously.
+* `Catalog.find_cameras` multiplies the catalog score by a bounded factor
+  `clip(1 + 0.35·log(p/p₀)·(1−e^{−n/6}), 0.75, 1.35)` and appends `track x1.23` to `reason`.
+  An unknown camera is exactly neutral; nothing is ever *excluded* by history (a dud can still
+  win when it is the only camera in range, and one confirmed frame lifts it again).
+* the in-event best-frame pick is `pick_score` (resolve.py):
+  `confidence × (yes 1.0 | partial 0.7) × (0.5+0.5·Q) × (0.8+0.05·vlm_quality) × (0.9+0.1·catalog) × track`.
+  Presence dominates; Q (replay-calibrated) and the VLM's 1-5 decide the look; geometry/freshness
+  and track record break ties. This replaces the old `confidence × (0.5+0.5·Q)`.
+* `sunroof-camera track [--type]` prints the shortlist of cameras with confirmed sightings.
+
+Night: daytime types are skipped *before* any fetch when the sun is below −6° at the event
+(−12° for sunrise/sunset, to keep the afterglow); aurora and lightning are exempt (§4.2, commit 1).
+
+**Demo shortlist from the replay** (what the VLM accepted, ordered by hits then Q; frames in the
+`sunset_yes` / `thunderstorm_yes` / `sunrise_yes` contact sheets):
+
+| camera | type | asked → yes | mean Q | note |
+|---|---|---|---|---|
+| `iem:KCCI-034` Big Creek Marina, Polk City IA (az 268°) | sunset | 40 → 21 | 0.40 | sun setting over the lake, boats in the foreground — the most photogenic and most reliable view in the whole sample; live in the IEM KCCI network today |
+| `iem:KCCI-027` ISU Ag Farm, Ames IA (az 282°) | sunset | 19 → 13 | 0.51 | highest hit rate; open horizon, strong colour, lens flare on clear evenings |
+| `phenocam:harvardhemlock2` Harvard Forest MA (az 225°) | sunset | 2 → 2 | 0.52 | fisheye over the canopy, warm rim light |
+| `phenocam:uiefsorghum` U. Illinois Energy Farm | thunderstorm | 5 → 1 | 0.80 | rain shaft + dark base over the field, best Q of any positive |
+| `phenocam:NEON.D10.STER.DP1.00033` Sterling CO tower | thunderstorm | 12 → 1 | 0.66 | shelf cloud across the plains |
+| `phenocam:archboldavir` / `archboldpnot` Archbold FL | sunrise | 1 → 1 each | 0.56–0.64 | pastel Florida sunrises; the site has four near-identical cams, dedupe keeps one |
+| `iem:KCCI-008` | sunrise | 1 → 1 | 0.46 | Iowa TV cam, warm horizon |
+
+Aurora: 80 events on Kp≥7 nights, no accepted frame — the archive cameras face the wrong way or
+are not `night_ok`; for an aurora demo use the `night_ok` all-sky/Nordic rows in the README table
+(`manual:irf-kiruna-allsky`, `no_vegvesen:2000065_1`, `iceland:*`) rather than anything measured here.
+
+Caveat: `data/cameras.parquet` shipped without the `iem`/`phenocam` shards; run
+`sunroof-camera refresh --source iem --source phenocam` once (≈1 min) so these cameras exist live.
+
 ---
 
 ## 5. Sources

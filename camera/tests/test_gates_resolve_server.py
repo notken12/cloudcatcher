@@ -153,10 +153,11 @@ def test_vlm_loose_parse():
     assert vlm._parse_loose('{"usable": true}') is None  # missing fields -> no verdict
 
 
-def jpeg(w=640, h=480, mean=120, noise=40, seed=0, gradient=0.0) -> bytes:
+def jpeg(w=640, h=480, mean=120, noise=40, seed=0, gradient=0.0, rgb=None) -> bytes:
     rng = np.random.default_rng(seed)
     ramp = np.linspace(-gradient, gradient, w)[None, :, None]
-    a = np.clip(rng.normal(mean, noise, (h, w, 3)) + ramp, 0, 255).astype("uint8")
+    base = np.array(rgb, dtype=float)[None, None, :] if rgb else mean
+    a = np.clip(rng.normal(base, noise, (h, w, 3)) + ramp, 0, 255).astype("uint8")
     buf = io.BytesIO()
     Image.fromarray(a).save(buf, "JPEG", quality=85)
     return buf.getvalue()
@@ -388,3 +389,95 @@ async def test_server_routes(tmp_path, patched_fetch, monkeypatch):
             assert (await c.get("/events/e1/footage")).status_code == 200
             assert (await c.get("/events/nope/footage")).status_code == 404
             assert (await c.get("/proxy/frame/nope")).status_code == 404
+
+
+async def test_resolve_skips_night_for_daytime_types(tmp_path, patched_fetch, monkeypatch):
+    """Non-aurora/lightning events after civil twilight are skipped before any fetch."""
+    cat = Catalog.load(_catalog(tmp_path))
+    fetched = []
+    orig = resolve.fetch_frame
+
+    async def spy(http, cam, ts=None):
+        fetched.append(cam.id)
+        return await orig(http, cam, ts)
+
+    monkeypatch.setattr(resolve, "fetch_frame", spy)
+    async with httpx.AsyncClient() as http:
+        night = STORM.model_copy(update={"id": "n1", "t_start": NOW + timedelta(hours=10)})
+        r = await resolve.resolve_footage(night, cat, http, resolve.FrameCache())
+        assert r.status == "CAMERAS_DARK" and r.note and "night" in r.note and not fetched
+        # --ignore-night keeps the old behaviour (fetch and let the frames decide)
+        r = await resolve.resolve_footage(night, cat, http, resolve.FrameCache(), ignore_night=True)
+        assert fetched and r.note is None
+    from sunroof_camera.profiles import profile
+
+    assert resolve.is_night_for(night, profile("aurora"), night.t_start) is None
+    assert resolve.is_night_for(night, profile("lightning"), night.t_start) is None
+    assert resolve.is_night_for(night, profile("thunderstorm"), night.t_start) is not None
+    # sunrise/sunset keep the afterglow: -6..-12 is still allowed
+    dusk = STORM.model_copy(update={"type": "sunset", "t_start": NOW + timedelta(hours=7)})
+    el, _ = resolve.solar.sun_position_deg(dusk.lat, dusk.lon, dusk.t_start)
+    if -12 < float(el) < -6:
+        assert resolve.is_night_for(dusk, profile("sunset"), dusk.t_start) is None
+
+
+async def test_resolve_cv_pregate_and_top_n(tmp_path, patched_fetch, monkeypatch):
+    """Cloud types: frames with no sky never reach the VLM; the rest are cut to top-N by Q."""
+    monkeypatch.setenv("SUNROOF_VLM_BACKEND", "openai")
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
+    monkeypatch.setenv("SUNROOF_VLM_TOP_N", "1")
+    vlm.backend.cache_clear()
+    judged: list[str] = []
+
+    async def fake_judge(c, ev, prof, cache):
+        judged.append(c.cam.id)
+        c.verdict = vlm.Verdict(
+            usable=True, event_visible="yes", event_type_seen="thunderstorm", confidence=0.9
+        )
+
+    monkeypatch.setattr(resolve, "_judge", fake_judge)
+    # east1: a green field, no sky at all -> pre-gated; east2: normal frame
+    patched_fetch["east1"] = jpeg(noise=25, gradient=30, rgb=(40, 120, 30))
+    cat = Catalog.load(_catalog(tmp_path))
+    try:
+        async with httpx.AsyncClient() as http:
+            res = await resolve.resolve_footage(STORM, cat, http, resolve.FrameCache(), k=2)
+    finally:
+        vlm.backend.cache_clear()
+    reasons = {r.camera_id: r.reason for r in res.rejected if r.stage == "cv"}
+    assert "east1" in reasons and reasons["east1"].startswith("cv: sky_share")
+    assert judged == ["east2"] and res.vlm_calls == 1 and res.cv_skipped >= 1
+    assert res.status == "FOOTAGE_FOUND" and res.footage[0].camera_id == "east2"
+
+
+async def test_track_record_breaks_ties_and_learns(tmp_path, patched_fetch, monkeypatch):
+    """Two equally good 'yes' frames: the camera that has shown storms before ranks first, and
+    this event's verdicts are folded into the live track record."""
+    from sunroof_camera.track import CameraTrack
+
+    monkeypatch.setenv("SUNROOF_VLM_BACKEND", "openai")
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
+    vlm.backend.cache_clear()
+
+    async def fake_judge(c, ev, prof, cache):
+        c.verdict = vlm.Verdict(
+            usable=True, event_visible="yes", event_type_seen="thunderstorm", confidence=0.9
+        )
+
+    monkeypatch.setattr(resolve, "_judge", fake_judge)
+    patched_fetch["east1"] = jpeg(seed=3)
+    patched_fetch["east2"] = jpeg(seed=4)
+    track = CameraTrack()
+    for _ in range(10):
+        track.record("east2", "thunderstorm", "yes", 0.6, 5)
+        track.record("east1", "thunderstorm", "no")
+    cat = Catalog(Catalog.load(_catalog(tmp_path)).df, track)
+    try:
+        async with httpx.AsyncClient() as http:
+            res = await resolve.resolve_footage(STORM, cat, http, resolve.FrameCache(), k=2)
+    finally:
+        vlm.backend.cache_clear()
+    assert res.status == "FOOTAGE_FOUND"
+    assert res.footage[0].camera_id == "east2"
+    assert track.per_cam[("east2", "thunderstorm")].judged == 11
+    assert track.per_cam[("east1", "thunderstorm")].hits == 1.0

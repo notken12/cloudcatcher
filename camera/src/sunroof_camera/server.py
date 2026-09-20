@@ -116,8 +116,11 @@ def create_app(
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
-        st.catalog = Catalog.load(st.catalog_path)
+        st.catalog = Catalog.load(st.catalog_path, verdict_log=st.verdict_log)
         log.info("catalog: %d cameras from %s", len(st.catalog.df), st.catalog_path)
+        if st.catalog.track is not None:
+            n = sum(s.judged for s in st.catalog.track.per_type.values())
+            log.info("camera track record: %d past verdicts from %s", n, st.verdict_log)
         log.info("vlm: %s", vlm.describe())  # raises here on a misconfigured backend
         tasks = []
         if fake_events:

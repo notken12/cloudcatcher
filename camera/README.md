@@ -89,7 +89,7 @@ the cron step, not at query time; the API only reads:
 ```
 weather run  ──► events.json ──► sunroof-camera import-events out/events.json --db data/events.db
                                  (or: from sunroof_camera.events_db import connect, upsert_run)
-cron         ──► sunroof-camera match --db data/events.db [--resolve]     # ranks cameras, optional footage
+cron         ──► sunroof-camera match --db data/events.db [--resolve]     # ranks cameras (geometry × track record), optional footage
 API          ──► sunroof-camera serve --db data/events.db                 # GET /events?type=&time=&limit=20
 ```
 
@@ -233,6 +233,12 @@ Secrets: `WINDY_API_KEY` etc. via environment or a git-ignored `.env` only; neve
 `uv run sunroof-camera refresh` builds every keyless source in ~3 min (~42k rows; the CARS portals are paged 100 at a time).
 
 ## Demo cameras & sample queries
+
+**Best for a beautiful picture** (from the 993-event historical replay, design doc §4.3; needs
+`sunroof-camera refresh --source iem --source phenocam` once): `iem:KCCI-034` Big Creek Marina and
+`iem:KCCI-027` ISU Ag Farm for sunset (21/40 and 13/19 confirmed), `phenocam:uiefsorghum` /
+`phenocam:NEON.D10.STER.DP1.00033` for thunderstorms, `phenocam:archboldavir` for sunrise.
+`sunroof-camera track` prints the live shortlist from `data/verdicts.jsonl`.
 
 Known-good rows (frames verified live, Sep 2026) to hard-code into demos/tests:
 

@@ -251,7 +251,12 @@ def _parse_loose(text: str) -> _Answer | None:
 def _client(b: Backend):
     from openai import AsyncOpenAI  # imported lazily so the package works without the SDK
 
-    return AsyncOpenAI(base_url=b.base_url, api_key=b.api_key, timeout=max(120, b.min_budget_s))
+    return AsyncOpenAI(
+        base_url=b.base_url,
+        api_key=b.api_key,
+        timeout=max(120, b.min_budget_s),
+        max_retries=6,  # 429 TPM bursts: SDK backs off using Retry-After
+    )
 
 
 async def judge(
