@@ -53,7 +53,6 @@ export function FootageCard({ footage }: { footage: Footage }) {
           </div>
         </div>
 
-        {verdict && <p className="text-[15px]">“{verdict.caption}”</p>}
         <p className="muted text-sm">{EVENT_BLURB[event.type]}</p>
 
         <div className="muted mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px]">
