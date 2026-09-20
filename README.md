@@ -1,4 +1,4 @@
-# sunroof
+# skylight
 
 Live footage of rare sky events, worldwide (HackMIT). The weather side detects events
 (storms, aurora, sunsets, …) from live data; the camera side finds public webcams that can see
