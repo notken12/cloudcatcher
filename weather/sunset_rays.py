@@ -7,7 +7,7 @@ import numpy as np
 
 from common.geo import point_along
 from weather.cloud_columns import EARTH_RADIUS_KM, LAYERS, OPACITY, TROPOPAUSE_KM
-from weather.hrrr import CloudGrid
+from weather.cloud_grid import CloudGrid
 
 STEP_KM = 3.0
 CLOUD_COHERENCE_KM = 20.0

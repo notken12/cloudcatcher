@@ -1,4 +1,5 @@
-"""GOES ABI L2 products. CONUS band 13 (10.3 um) is 3.3 MB / 5 min / ~3 min lag; ACHAC cloud-top height is 0.3 MB at 10 km."""
+"""GOES ABI L2 products and the geostationary fixed grid (shared with Himawari AHI, which uses the same projection).
+CONUS band 13 (10.3 um) is 3.3 MB / 5 min / ~3 min lag; ACHAC cloud-top height is 0.3 MB at 10 km."""
 import datetime as dt
 
 import netCDF4
@@ -19,18 +20,27 @@ def open_dataset(bucket: str, key: str) -> netCDF4.Dataset:
 
 
 class FixedGrid:
-    """Maps lat/lon to (row, col) of an ABI fixed-grid dataset."""
+    """Maps lat/lon to (row, col) of a normalized geostationary projection (GOES-R PUG 5.1.2.8): `x`/`y` are the
+    column/row scan angles in radians, `height` the satellite height above the ellipsoid in metres. GOES scans
+    with the x sweep axis, Himawari and Meteosat with y (proj's `sweep`), which swaps the two angle formulas."""
 
-    def __init__(self, ds: netCDF4.Dataset):
-        proj = ds.variables["goes_imager_projection"]
-        self.h = proj.perspective_point_height
-        self.lon0 = np.radians(proj.longitude_of_projection_origin)
-        self.re = proj.semi_major_axis
-        self.rp = proj.semi_minor_axis
-        self.x = np.asarray(ds.variables["x"][:], dtype=float)
-        self.y = np.asarray(ds.variables["y"][:], dtype=float)
+    def __init__(self, height: float, lon0_deg: float, semi_major: float, semi_minor: float, x: np.ndarray, y: np.ndarray,
+                 sweep: str = "x"):
+        self.h = height
+        self.lon0 = np.radians(lon0_deg)
+        self.re = semi_major
+        self.rp = semi_minor
+        self.x = np.asarray(x, dtype=float)
+        self.y = np.asarray(y, dtype=float)
         self.dx = float(self.x[1] - self.x[0])
         self.dy = float(self.y[1] - self.y[0])
+        self.sweep = sweep
+
+    @classmethod
+    def from_dataset(cls, ds: netCDF4.Dataset) -> "FixedGrid":
+        proj = ds.variables["goes_imager_projection"]
+        return cls(proj.perspective_point_height, proj.longitude_of_projection_origin, proj.semi_major_axis, proj.semi_minor_axis,
+                   ds.variables["x"][:], ds.variables["y"][:], proj.sweep_angle_axis)
 
     def indices(self, lats_deg, lons_deg) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """(row, col, inside) per point; row/col are clipped to the grid, `inside` is False off the scan or behind the limb."""
@@ -41,8 +51,12 @@ class FixedGrid:
         sx = self.h + self.re - r_c * np.cos(phi_c) * np.cos(lon - self.lon0)
         sy = -r_c * np.cos(phi_c) * np.sin(lon - self.lon0)
         sz = r_c * np.sin(phi_c)
-        scan_y = np.arctan(sz / sx)
-        scan_x = np.arcsin(-sy / np.sqrt(sx**2 + sy**2 + sz**2))
+        if self.sweep == "x":
+            scan_y = np.arctan(sz / sx)
+            scan_x = np.arcsin(-sy / np.sqrt(sx**2 + sy**2 + sz**2))
+        else:
+            scan_x = np.arctan(-sy / sx)
+            scan_y = np.arcsin(sz / np.sqrt(sx**2 + sy**2 + sz**2))
         visible = np.cos(phi_c) * np.cos(lon - self.lon0) > self.re / (self.h + self.re)  # this side of the limb
         col = np.rint(np.nan_to_num((scan_x - self.x[0]) / self.dx)).astype(int)
         row = np.rint(np.nan_to_num((scan_y - self.y[0]) / self.dy)).astype(int)
@@ -56,7 +70,7 @@ class FixedGrid:
 
 def window(ds: netCDF4.Dataset, variable: str, lat: float, lon: float, half: int) -> np.ndarray:
     """(2*half+1)^2 pixel window of `variable` centred on lat/lon, masked→NaN."""
-    i, j = FixedGrid(ds).index(lat, lon)
+    i, j = FixedGrid.from_dataset(ds).index(lat, lon)
     values = ds.variables[variable][max(i - half, 0):i + half + 1, max(j - half, 0):j + half + 1]
     return np.ma.filled(values.astype(float), np.nan)
 

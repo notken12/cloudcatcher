@@ -3,7 +3,7 @@ usage: uv run python -m weather.sunset_scan subset.grib2 sites.json out.json"""
 import json
 import sys
 
-from weather.hrrr import CloudGrid
+from weather.cloud_grid import CloudGrid
 from weather.sunset_rays import score_site
 from weather.sunset_rules import simple_rule
 

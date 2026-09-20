@@ -1,6 +1,6 @@
 """Simple sunset rule: mid/high cloud over the site, little low cloud along the sun ray."""
 from common.geo import point_along
-from weather.hrrr import CloudGrid
+from weather.cloud_grid import CloudGrid
 
 RAY_DISTANCES_KM = range(0, 125, 5)
 
