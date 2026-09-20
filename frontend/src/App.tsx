@@ -150,8 +150,12 @@ export default function App() {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement | null
       if (t && (t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.tagName === 'TEXTAREA')) return
-      if (view === 'show') {
-        onView('broadcast')
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      if (view === 'show' && !(e.key === 'ArrowRight' || e.key === 'ArrowLeft')) {
+        // printable, Escape or Enter leave; modifiers, F11 etc. do not
+        if (e.key.length !== 1 && e.key !== 'Escape' && e.key !== 'Enter') return
+        onView(e.key in VIEW_KEYS ? VIEW_KEYS[e.key] : 'broadcast')
+        e.preventDefault()
         return
       }
       if (e.key === 'ArrowRight') setIndex((i) => (count ? (i + 1) % count : 0))
