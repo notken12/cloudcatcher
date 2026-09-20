@@ -92,6 +92,7 @@ Rules I'd change: (a) sunset rule → ray model with underside lighting + anti-s
 - **Worldwide storms** are weaker: no open Europe-wide radar (DWD only), lightning needs EUMETSAT registration (MTG-LI); otherwise it's model-based (ICON-D2 `lpi`, CAPE) + MeteoAlarm warnings + RainViewer tiles. Fine for "there is a storm", not for the ≥50 dBZ + flashes rule.
 - **Aurora**: a genuinely good live sensor chain exists at NOAA SWPC — IMAP L1 solar wind (1-min) → OVATION probability grid (5-min, ~1 h lead) → hemispheric power / Kp. `weather/swpc_aurora.py`. Rule = OVATION ≥10 % ∧ sun < −12° ∧ clear. Verified tonight: it fired at Yellowknife (26 %) and the Windy-relayed **AuroraMAX all-sky cam showed a green arc** at 04:32Z; ordinary cams beside it showed nothing. Cameras must be all-sky/long-exposure: Windy `meteo/landscape` at Tromsø 33, Reykjavik 14, Yellowknife 4 (incl. AuroraMAX), Churchill 0; UAF all-sky only serves images when dark.
 - Recommendation: add both. Sunsets/aurora go worldwide almost for free; keep storm detection CONUS-only (MRMS/GLM) unless you register for EUMETSAT.
+- Where Open-Meteo belongs: **not** in the CONUS loop (HRRR is one 10 MB fetch/hour for the whole grid with base/top/ceiling, scored 234 sites in 2 s). Use it only (a) outside HRRR coverage until GFS/ICON-D2 grids are wired in the same way, and (b) the ERA5 archive endpoint for per-site climatology, cached once.
 
 ## 5. Endpoints / URL patterns that worked (copy-paste)
 ```
