@@ -105,6 +105,13 @@ def serve(
     watch_db_s: float = typer.Option(
         30.0, help="poll --db for unmatched runs every N s (0 = rely on `match` cron only)"
     ),
+    push_db: Path | None = typer.Option(
+        Path("data/push.sqlite"), help="Web Push subscriptions + users store (push.py)"
+    ),
+    push_key: Path = typer.Option(Path("data/vapid.pem"), help="VAPID private key PEM"),
+    public_url: str | None = typer.Option(
+        None, help="public https origin of the app, for notification images/links"
+    ),
 ):
     """Run the camera service + sandbox page (see server.py for endpoints)."""
     from .server import run
@@ -120,6 +127,9 @@ def serve(
         ignore_night=ignore_night,
         db=db,
         watch_db_s=watch_db_s,
+        push_db=push_db,
+        push_key=push_key,
+        public_url=public_url,
     )
 
 

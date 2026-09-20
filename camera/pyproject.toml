@@ -17,6 +17,7 @@ dependencies = [
     "uvicorn>=0.30",
     "openai>=1.40",
     "python-dotenv>=1.0",
+    "pywebpush>=2.4,<3",
 ]
 
 [project.optional-dependencies]
