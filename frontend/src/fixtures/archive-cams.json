@@ -1,0 +1,262 @@
+[
+  {
+    "id": "fotowebcam:zugspitze",
+    "name": "Zugspitze, Germany",
+    "lat": 47.421,
+    "lon": 10.985,
+    "since": 2016,
+    "source": "foto-webcam.eu",
+    "page": "https://www.foto-webcam.eu/webcam/zugspitze/",
+    "direct": "https://www.foto-webcam.eu/webcam/zugspitze/%Y/%m/%d/%H%M_la.jpg",
+    "step_min": 10
+  },
+  {
+    "id": "fotowebcam:konkordiahuette",
+    "name": "Konkordiahütte, Aletsch Glacier",
+    "lat": 46.5,
+    "lon": 8.053,
+    "since": 2016,
+    "source": "foto-webcam.eu",
+    "page": "https://www.foto-webcam.eu/webcam/konkordiahuette/",
+    "direct": "https://www.foto-webcam.eu/webcam/konkordiahuette/%Y/%m/%d/%H%M_la.jpg",
+    "step_min": 10
+  },
+  {
+    "id": "fotowebcam:bardolino",
+    "name": "Lake Garda, Bardolino",
+    "lat": 45.543,
+    "lon": 10.726,
+    "since": 2016,
+    "source": "foto-webcam.eu",
+    "page": "https://www.foto-webcam.eu/webcam/bardolino/",
+    "direct": "https://www.foto-webcam.eu/webcam/bardolino/%Y/%m/%d/%H%M_la.jpg",
+    "step_min": 10
+  },
+  {
+    "id": "fotowebcam:husum-dockkoog",
+    "name": "Husum, North Sea coast",
+    "lat": 54.48,
+    "lon": 9.004,
+    "since": 2020,
+    "source": "foto-webcam.eu",
+    "page": "https://www.foto-webcam.eu/webcam/husum-dockkoog/",
+    "direct": "https://www.foto-webcam.eu/webcam/husum-dockkoog/%Y/%m/%d/%H%M_la.jpg",
+    "step_min": 10
+  },
+  {
+    "id": "fotowebcam:feldberg-ts",
+    "name": "Großer Feldberg, Frankfurt",
+    "lat": 50.232,
+    "lon": 8.458,
+    "since": 2016,
+    "source": "foto-webcam.eu",
+    "page": "https://www.foto-webcam.eu/webcam/feldberg-ts/",
+    "direct": "https://www.foto-webcam.eu/webcam/feldberg-ts/%Y/%m/%d/%H%M_la.jpg",
+    "step_min": 10
+  },
+  {
+    "id": "fotowebcam:hochkar",
+    "name": "Hochkar, Austria",
+    "lat": 47.709,
+    "lon": 14.913,
+    "since": 2016,
+    "source": "foto-webcam.eu",
+    "page": "https://www.foto-webcam.eu/webcam/hochkar/",
+    "direct": "https://www.foto-webcam.eu/webcam/hochkar/%Y/%m/%d/%H%M_la.jpg",
+    "step_min": 10
+  },
+  {
+    "id": "iem:ISUC-006",
+    "name": "Ames, Iowa",
+    "lat": 42.026,
+    "lon": -93.645,
+    "since": 2016,
+    "source": "Iowa Environmental Mesonet",
+    "page": "https://mesonet.agron.iastate.edu/current/webcam.php?cid=ISUC-006",
+    "direct": "https://mesonet.agron.iastate.edu/archive/data/%Y/%m/%d/camera/ISUC-006/ISUC-006_%Y%m%d%H%M.jpg",
+    "step_min": 5,
+    "utc": true
+  },
+  {
+    "id": "iem:KCRG-013",
+    "name": "Decorah, Iowa",
+    "lat": 43.293,
+    "lon": -91.773,
+    "since": 2016,
+    "source": "Iowa Environmental Mesonet",
+    "page": "https://mesonet.agron.iastate.edu/current/webcam.php?cid=KCRG-013",
+    "direct": "https://mesonet.agron.iastate.edu/archive/data/%Y/%m/%d/camera/KCRG-013/KCRG-013_%Y%m%d%H%M.jpg",
+    "step_min": 5,
+    "utc": true
+  },
+  {
+    "id": "phenocam:waahila",
+    "name": "Waahila Ridge, Oahu",
+    "lat": 21.302,
+    "lon": -157.815,
+    "since": 2016,
+    "source": "PhenoCam Network (CC BY 4.0)",
+    "page": "https://phenocam.nau.edu/webcam/sites/waahila/",
+    "step_min": 30
+  },
+  {
+    "id": "phenocam:NEON.D18.TOOL.DP1.00033",
+    "name": "Toolik Lake, Alaska",
+    "lat": 68.661,
+    "lon": -149.37,
+    "since": 2017,
+    "source": "PhenoCam Network (CC BY 4.0)",
+    "page": "https://phenocam.nau.edu/webcam/sites/NEON.D18.TOOL.DP1.00033/",
+    "step_min": 30
+  },
+  {
+    "id": "phenocam:canadaOBS",
+    "name": "Prince Albert, Saskatchewan",
+    "lat": 53.987,
+    "lon": -105.118,
+    "since": 2016,
+    "source": "PhenoCam Network (CC BY 4.0)",
+    "page": "https://phenocam.nau.edu/webcam/sites/canadaOBS/",
+    "step_min": 30
+  },
+  {
+    "id": "phenocam:jasperridge",
+    "name": "Jasper Ridge, California",
+    "lat": 37.402,
+    "lon": -122.221,
+    "since": 2016,
+    "source": "PhenoCam Network (CC BY 4.0)",
+    "page": "https://phenocam.nau.edu/webcam/sites/jasperridge/",
+    "step_min": 30
+  },
+  {
+    "id": "phenocam:harvard",
+    "name": "Harvard Forest, Massachusetts",
+    "lat": 42.538,
+    "lon": -72.171,
+    "since": 2016,
+    "source": "PhenoCam Network (CC BY 4.0)",
+    "page": "https://phenocam.nau.edu/webcam/sites/harvard/",
+    "step_min": 30
+  },
+  {
+    "id": "phenocam:barrocolorado",
+    "name": "Barro Colorado, Panama",
+    "lat": 9.158,
+    "lon": -79.847,
+    "since": 2016,
+    "source": "PhenoCam Network (CC BY 4.0)",
+    "page": "https://phenocam.nau.edu/webcam/sites/barrocolorado/",
+    "step_min": 30
+  },
+  {
+    "id": "phenocam:NEON.D04.GUAN.DP1.00033",
+    "name": "Guánica Forest, Puerto Rico",
+    "lat": 17.97,
+    "lon": -66.869,
+    "since": 2017,
+    "source": "PhenoCam Network (CC BY 4.0)",
+    "page": "https://phenocam.nau.edu/webcam/sites/NEON.D04.GUAN.DP1.00033/",
+    "step_min": 30
+  },
+  {
+    "id": "phenocam:eucflux",
+    "name": "São Paulo state, Brazil",
+    "lat": -22.968,
+    "lon": -48.728,
+    "since": 2018,
+    "source": "PhenoCam Network (CC BY 4.0)",
+    "page": "https://phenocam.nau.edu/webcam/sites/eucflux/",
+    "step_min": 30
+  },
+  {
+    "id": "phenocam:alercecosteroforest",
+    "name": "Alerce Costero, Chile",
+    "lat": -40.173,
+    "lon": -73.444,
+    "since": 2023,
+    "source": "PhenoCam Network (CC BY 4.0)",
+    "page": "https://phenocam.nau.edu/webcam/sites/alercecosteroforest/",
+    "step_min": 30
+  },
+  {
+    "id": "phenocam:torrepalacio",
+    "name": "Doñana marshes, Spain",
+    "lat": 36.99,
+    "lon": -6.443,
+    "since": 2017,
+    "source": "PhenoCam Network (CC BY 4.0)",
+    "page": "https://phenocam.nau.edu/webcam/sites/torrepalacio/",
+    "step_min": 30
+  },
+  {
+    "id": "phenocam:millhaft",
+    "name": "Norbury, Staffordshire",
+    "lat": 52.8,
+    "lon": -2.301,
+    "since": 2016,
+    "source": "PhenoCam Network (CC BY 4.0)",
+    "page": "https://phenocam.nau.edu/webcam/sites/millhaft/",
+    "step_min": 30
+  },
+  {
+    "id": "phenocam:vindeln2",
+    "name": "Svartberget, Sweden",
+    "lat": 64.244,
+    "lon": 19.767,
+    "since": 2016,
+    "source": "PhenoCam Network (CC BY 4.0)",
+    "page": "https://phenocam.nau.edu/webcam/sites/vindeln2/",
+    "step_min": 30
+  },
+  {
+    "id": "phenocam:congoflux",
+    "name": "Yangambi, DR Congo",
+    "lat": 0.814,
+    "lon": 24.502,
+    "since": 2022,
+    "source": "PhenoCam Network (CC BY 4.0)",
+    "page": "https://phenocam.nau.edu/webcam/sites/congoflux/",
+    "step_min": 30
+  },
+  {
+    "id": "phenocam:bezamahafaly",
+    "name": "Beza Mahafaly, Madagascar",
+    "lat": -23.656,
+    "lon": 44.629,
+    "since": 2024,
+    "source": "PhenoCam Network (CC BY 4.0)",
+    "page": "https://phenocam.nau.edu/webcam/sites/bezamahafaly/",
+    "step_min": 30
+  },
+  {
+    "id": "phenocam:jurong",
+    "name": "Jurong, Jiangsu",
+    "lat": 31.807,
+    "lon": 119.217,
+    "since": 2018,
+    "source": "PhenoCam Network (CC BY 4.0)",
+    "page": "https://phenocam.nau.edu/webcam/sites/jurong/",
+    "step_min": 30
+  },
+  {
+    "id": "phenocam:caes",
+    "name": "Chiayi, Taiwan",
+    "lat": 23.485,
+    "lon": 120.474,
+    "since": 2024,
+    "source": "PhenoCam Network (CC BY 4.0)",
+    "page": "https://phenocam.nau.edu/webcam/sites/caes/",
+    "step_min": 30
+  },
+  {
+    "id": "phenocam:clareviewconvpasture",
+    "name": "Clareview, New Zealand",
+    "lat": -43.786,
+    "lon": 171.595,
+    "since": 2023,
+    "source": "PhenoCam Network (CC BY 4.0)",
+    "page": "https://phenocam.nau.edu/webcam/sites/clareviewconvpasture/",
+    "step_min": 30
+  }
+]
