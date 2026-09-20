@@ -27,3 +27,11 @@ astral: `azimuth(Observer(lat,lon), t)`, `sunset(obs, date, tzinfo=UTC)`. Lamar 
 
 ## Heading estimate from frames (step 4)
 - (dropped: did not work) on 2026-09-17 full-day frames (siteimagelist lags ~2 days): norriepoint (declared SSE 157°) → one saturated frame → 118° (off 39°); proctor2 (declared WSW 247°) → "246°" but the frame was overcast with no sun — coincidence. **0/2 usable.** Needs clear days and the sun actually crossing the FOV; most PhenoCams face N by design so it never does. Use metadata (`camera_orientation` PhenoCam, `cameraBearing` FAA) instead.
+
+## B3 result — Alaska live sunset (frames fetched 04:25Z; `ak_frames/`, `sheet_ak.jpg`, `sheet_ak2.jpg`)
+Ratings of the sunward camera at sunset+15 (1–5): Livengood (ray 0.265) **3** — orange glow under a broken deck; Eagle (0.226) 2 — pale streaks;
+Minto (0.223) **3** — pink cirrus band; Fort Yukon (0.160) **3** — golden slot under a dark deck; Central (0.131) **3** — orange-lit altocumulus;
+Chignik Lagoon (0.034) 1 — overcast; Knob Ridge (0.0; the *simple rule's* pick) 2 — grey overcast with a thin yellow slot.
+Ray-model top-5 mean 2.8 vs bottom-2 mean 1.5; nothing above 3/5 (a mediocre evening). Anti-solar cameras were 1–2 everywhere
+(the Lamar anti-solar 5/5 was a lit storm anvil, not a typical sunset). Small positive for the ray model, and it correctly overruled the simple rule on Knob Ridge.
+HRRR-AK input was the 00Z run's f04 (valid 04Z), i.e. 3.5–4.5 h old at sunset.
