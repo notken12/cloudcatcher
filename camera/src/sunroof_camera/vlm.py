@@ -4,6 +4,7 @@ Any OpenAI-chat-compatible vision endpoint, structured (pydantic) answer. Backen
 by env:
 
     OPENAI_API_KEY                 -> api.openai.com, gpt-4o-mini (+ gpt-4o escalation)
+    GROQ_API_KEY                   -> api.groq.com (free tier, ~1 s/frame), qwen/qwen3.8-27b
     SUNROOF_VLM_BASE_URL           -> e.g. http://127.0.0.1:11434/v1 (Ollama), vLLM, OpenRouter
     SUNROOF_VLM_MODEL[_LARGE]      -> model ids; default qwen2.5vl:3b for a local base_url
     SUNROOF_VLM_API_KEY            -> key for the custom base_url (Ollama ignores it)
@@ -36,6 +37,8 @@ log = logging.getLogger(__name__)
 
 OLLAMA_URL = "http://127.0.0.1:11434/v1"
 OLLAMA_MODEL = "qwen2.5vl:3b"
+GROQ_URL = "https://api.groq.com/openai/v1"
+GROQ_MODEL = "qwen/qwen3.8-27b"
 
 
 @dataclass(frozen=True)
@@ -67,17 +70,20 @@ def backend() -> Backend | None:
             native_schema=True,
         )
     url = env("SUNROOF_VLM_BASE_URL")
+    default_model = OLLAMA_MODEL
+    if not url and env("GROQ_API_KEY"):
+        url, default_model = GROQ_URL, GROQ_MODEL
     if not url:
         try:  # zero-config local fallback
             httpx.get(OLLAMA_URL.removesuffix("/v1") + "/api/tags", timeout=0.5).raise_for_status()
             url = OLLAMA_URL
         except httpx.HTTPError:
             return None
-    model = env("SUNROOF_VLM_MODEL", OLLAMA_MODEL)
+    model = env("SUNROOF_VLM_MODEL", default_model)
     local = "127.0.0.1" in url or "localhost" in url
     return Backend(
         url,
-        env("SUNROOF_VLM_API_KEY") or env("OPENAI_API_KEY") or "local",
+        env("SUNROOF_VLM_API_KEY") or env("GROQ_API_KEY") or env("OPENAI_API_KEY") or "local",
         model,
         env("SUNROOF_VLM_MODEL_LARGE", model),
         native_schema=False,
