@@ -1,4 +1,4 @@
-import { ChevronDown, Earth, Tv } from 'lucide-react'
+import { ChevronDown, Earth, History, Tv } from 'lucide-react'
 import type { StreamState } from '../lib/api'
 import { FILTER_LABEL, FILTERS, type Filter } from '../lib/events'
 import type { View } from '../lib/view'
@@ -43,8 +43,17 @@ export function Header({ filter, onFilter, liveCount, stream, view, onView }: Pr
             <Earth className="h-4 w-4" aria-hidden />
             <span className="sr-only">Globe</span>
           </button>
+          <button
+            type="button"
+            aria-pressed={view === 'time'}
+            onClick={() => onView('time')}
+            title="Time travel"
+          >
+            <History className="h-4 w-4" aria-hidden />
+            <span className="sr-only">Time travel</span>
+          </button>
         </div>
-        <label className="relative">
+        <label className={`relative ${view === 'time' ? 'invisible' : ''}`}>
           <select
             className="plain"
             value={filter}

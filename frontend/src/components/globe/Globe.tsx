@@ -1,15 +1,24 @@
 import { useEffect, useRef, useState } from 'react'
-import type { Footage } from '../../lib/types'
 import type { CameraPoint } from '../../lib/api'
-import { EVENT_LABEL } from '../../lib/events'
-import { mediaUrl } from '../../lib/api'
 import { phiFacing, project, shortestTurn } from './projection'
+
+/** Anything with a place and a thumbnail: live footage or an archive frame. */
+export interface Pin {
+  id: string
+  lat: number
+  lon: number
+  /** CSS color for the ring/tail. */
+  color: string
+  /** Thumbnail URL; null = nothing to show at this moment (pin renders hollow). */
+  thumb: string | null
+  label: string
+}
 
 interface Props {
   cameras: CameraPoint[]
-  footage: Footage[]
+  pins: Pin[]
   selectedId?: string
-  onSelect: (f: Footage) => void
+  onSelect: (id: string) => void
 }
 
 const THETA = 0.28
@@ -23,21 +32,22 @@ type PinPos = { x: number; y: number; visible: boolean; depth: number }
  * event pins are absolutely positioned <button>s projected with the same
  * camera maths every frame, so they stay clickable and styleable.
  */
-export function Globe({ cameras, footage, selectedId, onSelect }: Props) {
+export function Globe({ cameras, pins, selectedId, onSelect }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const pinRefs = useRef(new Map<string, HTMLButtonElement>())
   const [ready, setReady] = useState(false)
+  const [broken, setBroken] = useState<ReadonlySet<string>>(() => new Set())
 
   // Mutable render state lives in refs so the rAF loop never re-renders React.
   const phi = useRef(0)
   const target = useRef<number | null>(null)
   const drag = useRef<{ x: number; phi: number } | null>(null)
   const lastInteraction = useRef(0)
-  const footageRef = useRef(footage)
+  const pinsRef = useRef(pins)
   useEffect(() => {
-    footageRef.current = footage
-  }, [footage])
+    pinsRef.current = pins
+  }, [pins])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -52,10 +62,10 @@ export function Globe({ cameras, footage, selectedId, onSelect }: Props) {
     const dpr = Math.min(window.devicePixelRatio || 1, 2)
 
     const positionPins = (w: number) => {
-      for (const f of footageRef.current) {
-        const el = pinRefs.current.get(f.event_id)
+      for (const f of pinsRef.current) {
+        const el = pinRefs.current.get(f.id)
         if (!el) continue
-        const p: PinPos = project(f.camera.lat, f.camera.lon, {
+        const p: PinPos = project(f.lat, f.lon, {
           phi: phi.current,
           theta: THETA,
           aspect: 1,
@@ -159,13 +169,13 @@ export function Globe({ cameras, footage, selectedId, onSelect }: Props) {
     // cameras only change when the catalog loads; remount for that.
   }, [cameras])
 
-  // Fly to the selected footage.
+  // Fly to the selected pin.
   useEffect(() => {
-    const f = footage.find((x) => x.event_id === selectedId)
+    const f = pins.find((x) => x.id === selectedId)
     if (!f) return
-    target.current = phiFacing(f.camera.lon)
+    target.current = phiFacing(f.lon)
     lastInteraction.current = performance.now()
-  }, [selectedId, footage])
+  }, [selectedId, pins])
 
   return (
     <div
@@ -179,24 +189,34 @@ export function Globe({ cameras, footage, selectedId, onSelect }: Props) {
         style={{ cursor: 'grab', opacity: ready ? 1 : 0, transition: 'opacity 0.6s' }}
       />
       <div className="pointer-events-none absolute inset-0">
-        {footage.map((f) => (
-          <button
-            key={f.event_id}
-            ref={(el) => {
-              if (el) pinRefs.current.set(f.event_id, el)
-              else pinRefs.current.delete(f.event_id)
-            }}
-            type="button"
-            className={`pin ${f.event_id === selectedId ? 'pin-active' : ''}`}
-            style={{ ['--pin' as string]: `var(--c-${f.event.type})`, opacity: 0 }}
-            onClick={() => onSelect(f)}
-            aria-label={`${EVENT_LABEL[f.event.type]} · ${f.event.place ?? f.camera.name}`}
-            aria-pressed={f.event_id === selectedId}
-          >
-            <img src={mediaUrl(f.media.poster ?? f.media.src)} alt="" loading="lazy" />
-            <span className="pin-tail" />
-          </button>
-        ))}
+        {pins.map((f) => {
+          const thumb = f.thumb && !broken.has(f.thumb) ? f.thumb : null
+          return (
+            <button
+              key={f.id}
+              ref={(el) => {
+                if (el) pinRefs.current.set(f.id, el)
+                else pinRefs.current.delete(f.id)
+              }}
+              type="button"
+              className={`pin ${f.id === selectedId ? 'pin-active' : ''} ${thumb ? '' : 'pin-empty'}`}
+              style={{ ['--pin' as string]: f.color, opacity: 0 }}
+              onClick={() => onSelect(f.id)}
+              aria-label={f.label}
+              aria-pressed={f.id === selectedId}
+            >
+              {thumb && (
+                <img
+                  src={thumb}
+                  alt=""
+                  loading="lazy"
+                  onError={() => setBroken((b) => new Set(b).add(thumb))}
+                />
+              )}
+              <span className="pin-tail" />
+            </button>
+          )
+        })}
       </div>
     </div>
   )

@@ -246,7 +246,39 @@ default route is broadcast, globe is opt-in via the toggle. **PWA / iOS
 install deliberately skipped** for now (decided with the team); when
 wanted it's a manifest + service worker on the same build, no new codebase.
 
-### Iteration 3 (only if time)
+### Iteration 3 — Time travel (done, tryout version)
+
+Third header layout (`#/time/<YYYY-MM-DD>T<HH:MM>`): the same globe, but the
+pins are archive frames from a fixed set of cameras at a chosen **date +
+camera-local time of day** (18:00 everywhere = one sunset ring around the
+planet, no black night frames).
+
+**Why hand-picked cameras.** Of ~40 sources only foto-webcam.eu (10 y, 10 min),
+PhenoCam (2008→, 30 min) and IEM (2003→, 5 min) expose a frame per timestamp;
+the other ~38k cameras are live-only. So `src/fixtures/archive-cams.json` is
+~25 cameras chosen for sky-heavy views and uptime, spread as far as the
+archives allow (Alps, N. Sea, Iowa, Hawaii, Alaska, Panama, Puerto Rico,
+Brazil, Chile, Spain, UK, Sweden, DR Congo, Madagascar, China, Taiwan, NZ).
+Each has `since` (first usable year) and `step_min` (cadence to snap to).
+
+**Data path.** Fixture mode: browser loads the strftime template directly
+(foto-webcam / IEM permit it; PhenoCam pins render hollow). Live mode: every
+frame goes through `camera`'s `GET /proxy/history/{id}?ts=<ISO+offset>&w=<px>`
+which resolves the source-specific archive URL (PhenoCam needs a browse-page
+lookup) and downscales with Pillow — PhenoCam originals are 300–900 kB, the
+`w=240` pin thumbnails ~15 kB. Local time → UTC uses `round(lon/15)`; good to
+±1 h, which the UI's 30-min slider tolerates.
+
+**Latency.** 25 parallel requests, progressive: pins pop in as they arrive,
+typically 1–3 s for all (measured 0.4–1 s per frame through the proxy). The
+hash updates 350 ms after the last slider move so a scrub isn't 25 requests
+per pixel; a revisited moment is a browser cache hit.
+
+**Later.** Backend pre-warming for the current moment, a "same UTC instant"
+toggle, more archive sources (Digitraffic 24 h, Windy embeds), and the weather
+model's events for that date as an overlay when its history exists.
+
+### Iteration 4 (only if time)
 
 - Event evidence panel under the hero (radar/satellite tile from the weather
   half, "why it's rare" text) — needs the weather half to expose a tile URL.
@@ -324,7 +356,8 @@ frontend/
    proxy. — as soon as the routing Devin has step 2 of _their_ build order
    ("proxy routes + store + SSE").
 4. Globe (§3 iteration 2).
-5. Evidence panel / share link / PWA (PWA deferred).
+5. Time travel (§3 iteration 3) + `/proxy/history` in `camera`.
+6. Evidence panel / share link / PWA (PWA deferred).
 
 ---
 

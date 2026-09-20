@@ -761,3 +761,42 @@ def test_sgc_colombia_picks_full_res_and_skips_thumbs_and_dead_mirror():
         andes_volcano.sgc_cam_key("https://x/ovspa/camaras/azufral-lag-hd000.jpg")
         == "azufral-lag-hd"
     )
+
+
+def test_archive_camera_from_id_and_time():
+    from datetime import datetime, timedelta, timezone
+
+    from sunroof_camera.archive import archive_time, camera_from_id
+    from sunroof_camera.ingest.sources.phenocam import closest_frame_path
+
+    cam = camera_from_id("fotowebcam:zugspitze")
+    assert cam is not None and cam.history_kind == "url_template"
+    assert camera_from_id("caltrans:d3-123") is None
+    assert camera_from_id("phenocam") is None
+
+    t = datetime(2023, 6, 15, 18, 0, tzinfo=timezone(timedelta(hours=-6)))
+    assert archive_time("iem", t) == datetime(2023, 6, 16, 0, 0)  # archive keyed in UTC
+    assert archive_time("fotowebcam", t) == datetime(2023, 6, 15, 18, 0)  # wall clock
+
+    html = (
+        '<a href="/data/archive/harvard/2023/06/harvard_2023_06_15_112906.jpg">'
+        '<img src="/data/archive/harvard/2023/06/harvard_2023_06_15_165906.jpg">'
+    )
+    assert closest_frame_path(html, datetime(2023, 6, 15, 17, 30)).endswith("165906.jpg")
+    assert closest_frame_path("<html/>", datetime(2023, 6, 15)) is None
+
+
+def test_downscale_jpeg():
+    import io
+
+    from PIL import Image
+
+    from sunroof_camera.server import downscale_jpeg
+
+    buf = io.BytesIO()
+    Image.new("RGB", (1200, 675), "skyblue").save(buf, "JPEG")
+    out, ctype = downscale_jpeg(buf.getvalue(), 480)
+    assert ctype == "image/jpeg" and Image.open(io.BytesIO(out)).size == (480, 270)
+    small, _ = downscale_jpeg(buf.getvalue(), 2000)
+    assert small == buf.getvalue()
+    assert downscale_jpeg(b"not an image", 480) == (b"not an image", "image/jpeg")
