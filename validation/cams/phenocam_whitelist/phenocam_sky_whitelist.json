@@ -1,0 +1,4492 @@
+[
+ {
+  "site": "rosemountcons",
+  "lat": 44.6946,
+  "lon": -93.0578,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2017-01-09",
+  "nimage": 128190,
+  "sky_frac": 0.684
+ },
+ {
+  "site": "zumwalt2",
+  "lat": 40.7939,
+  "lon": -87.5354,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2024-12-06",
+  "nimage": 20961,
+  "sky_frac": 0.538
+ },
+ {
+  "site": "archboldimprovednorth",
+  "lat": 27.188,
+  "lon": -81.2,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2026-02-04",
+  "nimage": 6505,
+  "sky_frac": 0.484
+ },
+ {
+  "site": "NEON.D09.PRPO.DP1.20002",
+  "lat": 47.12999,
+  "lon": -99.250551,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2016-12-19",
+  "nimage": 112886,
+  "sky_frac": 0.456
+ },
+ {
+  "site": "humnokericea",
+  "lat": 34.585192,
+  "lon": -91.751684,
+  "tz": -6,
+  "orientation": "S",
+  "date_start": "2015-06-24",
+  "nimage": 110747,
+  "sky_frac": 0.446
+ },
+ {
+  "site": "norriepoint",
+  "lat": 41.8316,
+  "lon": -73.9421,
+  "tz": -5,
+  "orientation": "SSE",
+  "date_start": "2024-05-29",
+  "nimage": 28947,
+  "sky_frac": 0.446
+ },
+ {
+  "site": "NEON.D12.YELL.DP1.00033",
+  "lat": 44.95348,
+  "lon": -110.53914,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2018-09-30",
+  "nimage": 75740,
+  "sky_frac": 0.439
+ },
+ {
+  "site": "valleyviewcl14",
+  "lat": 35.7635,
+  "lon": -90.773,
+  "tz": -6,
+  "orientation": "S",
+  "date_start": "2026-07-22",
+  "nimage": 2248,
+  "sky_frac": 0.438
+ },
+ {
+  "site": "furmanpheno",
+  "lat": 34.9198,
+  "lon": -82.4379,
+  "tz": -5,
+  "orientation": "NE",
+  "date_start": "2023-02-28",
+  "nimage": 20827,
+  "sky_frac": 0.435
+ },
+ {
+  "site": "segabluechute",
+  "lat": 35.5876,
+  "lon": -111.9716,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2017-04-18",
+  "nimage": 73346,
+  "sky_frac": 0.418
+ },
+ {
+  "site": "bostonu",
+  "lat": 42.35041,
+  "lon": -71.10438,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2012-09-14",
+  "nimage": 140418,
+  "sky_frac": 0.414
+ },
+ {
+  "site": "parkschoolbuffalo",
+  "lat": 42.9637,
+  "lon": -78.7834,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2021-04-08",
+  "nimage": 53321,
+  "sky_frac": 0.397
+ },
+ {
+  "site": "worcester",
+  "lat": 42.2697,
+  "lon": -71.8428,
+  "tz": -5,
+  "orientation": "NW",
+  "date_start": "2013-05-13",
+  "nimage": 172182,
+  "sky_frac": 0.389
+ },
+ {
+  "site": "turkeypointenf74",
+  "lat": 42.70736,
+  "lon": -80.3485,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2012-02-02",
+  "nimage": 167683,
+  "sky_frac": 0.374
+ },
+ {
+  "site": "shenandoah",
+  "lat": 38.6167,
+  "lon": -78.35,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2009-09-14",
+  "nimage": 94002,
+  "sky_frac": 0.371
+ },
+ {
+  "site": "me8",
+  "lat": 44.4523,
+  "lon": -121.5594,
+  "tz": -8,
+  "orientation": "N",
+  "date_start": "2022-10-18",
+  "nimage": 52439,
+  "sky_frac": 0.37
+ },
+ {
+  "site": "nevconness1",
+  "lat": 37.9688,
+  "lon": -119.3028,
+  "tz": null,
+  "orientation": "WSW",
+  "date_start": "2026-08-24",
+  "nimage": 1635,
+  "sky_frac": 0.366
+ },
+ {
+  "site": "cpertgm",
+  "lat": 40.833,
+  "lon": -104.76,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2016-05-05",
+  "nimage": 51923,
+  "sky_frac": 0.363
+ },
+ {
+  "site": "NEON.D08.LENO.DP1.00033",
+  "lat": 31.85388,
+  "lon": -88.16122,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2016-05-06",
+  "nimage": 102999,
+  "sky_frac": 0.361
+ },
+ {
+  "site": "uiefprairie2",
+  "lat": 40.0637,
+  "lon": -88.1973,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2018-08-14",
+  "nimage": 108563,
+  "sky_frac": 0.354
+ },
+ {
+  "site": "cperagm",
+  "lat": 40.8402,
+  "lon": -104.7672,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2016-05-19",
+  "nimage": 36981,
+  "sky_frac": 0.351
+ },
+ {
+  "site": "ncssm",
+  "lat": 36.018446,
+  "lon": -78.92075,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2013-03-20",
+  "nimage": 215606,
+  "sky_frac": 0.346
+ },
+ {
+  "site": "segawhitepockets",
+  "lat": 36.6081,
+  "lon": -112.4082,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2016-04-01",
+  "nimage": 77511,
+  "sky_frac": 0.346
+ },
+ {
+  "site": "proctortower",
+  "lat": 44.5263,
+  "lon": -72.8661,
+  "tz": -5,
+  "orientation": "NNW",
+  "date_start": "2026-04-30",
+  "nimage": 4328,
+  "sky_frac": 0.344
+ },
+ {
+  "site": "butte",
+  "lat": 45.95304,
+  "lon": -112.47964,
+  "tz": -7,
+  "orientation": "E",
+  "date_start": "2008-04-01",
+  "nimage": 197687,
+  "sky_frac": 0.342
+ },
+ {
+  "site": "turkeypointdbf",
+  "lat": 42.6353,
+  "lon": -80.5576,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2012-02-10",
+  "nimage": 163403,
+  "sky_frac": 0.341
+ },
+ {
+  "site": "doverdesaltmarsh",
+  "lat": 39.0888,
+  "lon": -75.4368,
+  "tz": -5,
+  "orientation": "E",
+  "date_start": "2020-06-09",
+  "nimage": 37753,
+  "sky_frac": 0.338
+ },
+ {
+  "site": "vandy",
+  "lat": 36.1429,
+  "lon": -86.7973,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2023-09-14",
+  "nimage": 43079,
+  "sky_frac": 0.327
+ },
+ {
+  "site": "NEON.D10.RMNP.DP1.00033",
+  "lat": 40.275903,
+  "lon": -105.545955,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2016-12-19",
+  "nimage": 98434,
+  "sky_frac": 0.318
+ },
+ {
+  "site": "delnortecounty2",
+  "lat": 41.6,
+  "lon": -124.1,
+  "tz": -8,
+  "orientation": null,
+  "date_start": "2020-03-12",
+  "nimage": 34711,
+  "sky_frac": 0.317
+ },
+ {
+  "site": "segalcr2",
+  "lat": 35.7069,
+  "lon": -111.36,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2018-03-28",
+  "nimage": 73385,
+  "sky_frac": 0.315
+ },
+ {
+  "site": "statenrice1",
+  "lat": 38.1235,
+  "lon": -121.549,
+  "tz": -8,
+  "orientation": "W",
+  "date_start": "2021-08-03",
+  "nimage": 49404,
+  "sky_frac": 0.314
+ },
+ {
+  "site": "howland1",
+  "lat": 45.2041,
+  "lon": -68.7403,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2007-01-01",
+  "nimage": 165106,
+  "sky_frac": 0.306
+ },
+ {
+  "site": "hanfordhn1",
+  "lat": 46.4089,
+  "lon": -119.275,
+  "tz": -8,
+  "orientation": "NNE",
+  "date_start": "2023-11-09",
+  "nimage": 40447,
+  "sky_frac": 0.298
+ },
+ {
+  "site": "southerngreatplains",
+  "lat": 36.6058,
+  "lon": -97.4888,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2012-05-16",
+  "nimage": 183830,
+  "sky_frac": 0.292
+ },
+ {
+  "site": "santacruz2",
+  "lat": 36.9741,
+  "lon": -122.0308,
+  "tz": -8,
+  "orientation": null,
+  "date_start": "2021-04-08",
+  "nimage": 24711,
+  "sky_frac": 0.288
+ },
+ {
+  "site": "arsgacp1",
+  "lat": 31.5109,
+  "lon": -83.6179,
+  "tz": -5,
+  "orientation": null,
+  "date_start": "2016-05-10",
+  "nimage": 102508,
+  "sky_frac": 0.286
+ },
+ {
+  "site": "sevmetfstn",
+  "lat": 34.356,
+  "lon": -106.8853,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2024-02-15",
+  "nimage": 11774,
+  "sky_frac": 0.284
+ },
+ {
+  "site": "uiefswitchgrass2",
+  "lat": 40.0637,
+  "lon": -88.1973,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2018-08-15",
+  "nimage": 109712,
+  "sky_frac": 0.28
+ },
+ {
+  "site": "montmegmsj",
+  "lat": 45.4234,
+  "lon": -71.1258,
+  "tz": -5,
+  "orientation": null,
+  "date_start": "2019-09-06",
+  "nimage": 67650,
+  "sky_frac": 0.279
+ },
+ {
+  "site": "snodgrass5",
+  "lat": 38.92744789,
+  "lon": -106.97852093,
+  "tz": -7,
+  "orientation": "S",
+  "date_start": "2021-06-23",
+  "nimage": 17036,
+  "sky_frac": 0.279
+ },
+ {
+  "site": "ecb2",
+  "lat": 41.5321,
+  "lon": -84.808,
+  "tz": -5,
+  "orientation": "NE",
+  "date_start": "2020-06-07",
+  "nimage": 141082,
+  "sky_frac": 0.273
+ },
+ {
+  "site": "NEON.D10.STER.DP1.00033",
+  "lat": 40.461894,
+  "lon": -103.02929,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2016-12-18",
+  "nimage": 99343,
+  "sky_frac": 0.269
+ },
+ {
+  "site": "harvard",
+  "lat": 42.5378,
+  "lon": -72.1715,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2008-04-04",
+  "nimage": 227618,
+  "sky_frac": 0.264
+ },
+ {
+  "site": "ufona",
+  "lat": 27.3836,
+  "lon": -81.950856,
+  "tz": -5,
+  "orientation": "NNE",
+  "date_start": "2016-03-30",
+  "nimage": 105973,
+  "sky_frac": 0.263
+ },
+ {
+  "site": "NEON.D09.NOGP.DP1.00033",
+  "lat": 46.76972,
+  "lon": -100.91535,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2017-10-29",
+  "nimage": 87900,
+  "sky_frac": 0.261
+ },
+ {
+  "site": "NEON.D05.UNDE.DP1.00033",
+  "lat": 46.23391,
+  "lon": -89.537254,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2016-12-14",
+  "nimage": 100731,
+  "sky_frac": 0.259
+ },
+ {
+  "site": "vancouversaltmarsh",
+  "lat": 49.0888,
+  "lon": -122.8954,
+  "tz": -8,
+  "orientation": "S",
+  "date_start": "2022-06-22",
+  "nimage": 59048,
+  "sky_frac": 0.255
+ },
+ {
+  "site": "yakimabasin1",
+  "lat": 46.9216,
+  "lon": -120.6585,
+  "tz": -8,
+  "orientation": "N",
+  "date_start": "2022-03-29",
+  "nimage": 60030,
+  "sky_frac": 0.254
+ },
+ {
+  "site": "bullshoals",
+  "lat": 36.562833,
+  "lon": -93.06663,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2013-11-20",
+  "nimage": 144557,
+  "sky_frac": 0.252
+ },
+ {
+  "site": "NEON.D17.SJER.DP1.00033",
+  "lat": 37.10878,
+  "lon": -119.73228,
+  "tz": -8,
+  "orientation": null,
+  "date_start": "2018-07-12",
+  "nimage": 83544,
+  "sky_frac": 0.25
+ },
+ {
+  "site": "coaloilpoint1",
+  "lat": 34.413695,
+  "lon": -119.880226,
+  "tz": -8,
+  "orientation": null,
+  "date_start": "2022-10-18",
+  "nimage": 54484,
+  "sky_frac": 0.246
+ },
+ {
+  "site": "manilacotton",
+  "lat": 35.8872,
+  "lon": -90.1371,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2016-06-05",
+  "nimage": 92723,
+  "sky_frac": 0.244
+ },
+ {
+  "site": "meadpasturesw",
+  "lat": 41.1447,
+  "lon": -96.4616,
+  "tz": -6,
+  "orientation": "SW",
+  "date_start": "2018-07-23",
+  "nimage": 126686,
+  "sky_frac": 0.243
+ },
+ {
+  "site": "summit1",
+  "lat": 37.9167,
+  "lon": -81.1221,
+  "tz": -5,
+  "orientation": "NNW",
+  "date_start": "2021-08-12",
+  "nimage": 52135,
+  "sky_frac": 0.241
+ },
+ {
+  "site": "greenfield13",
+  "lat": 35.6557,
+  "lon": -90.7217,
+  "tz": -6,
+  "orientation": "S",
+  "date_start": "2026-06-17",
+  "nimage": 3604,
+  "sky_frac": 0.24
+ },
+ {
+  "site": "ntucrownpoint",
+  "lat": 35.6858,
+  "lon": -108.1457,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2022-05-12",
+  "nimage": 28883,
+  "sky_frac": 0.239
+ },
+ {
+  "site": "russellsage",
+  "lat": 32.456961,
+  "lon": -91.974322,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2013-11-20",
+  "nimage": 41081,
+  "sky_frac": 0.237
+ },
+ {
+  "site": "uiefmaize2",
+  "lat": 40.0628,
+  "lon": -88.1961,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2018-08-08",
+  "nimage": 110460,
+  "sky_frac": 0.237
+ },
+ {
+  "site": "NEON.D09.DCFS.DP1.00033",
+  "lat": 47.161647,
+  "lon": -99.106556,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2017-10-31",
+  "nimage": 93363,
+  "sky_frac": 0.236
+ },
+ {
+  "site": "corona1",
+  "lat": 34.278,
+  "lon": -105.2729,
+  "tz": -7,
+  "orientation": "SW",
+  "date_start": "2025-10-04",
+  "nimage": 1317,
+  "sky_frac": 0.234
+ },
+ {
+  "site": "bbc5",
+  "lat": 41.5495,
+  "lon": -70.6432,
+  "tz": -5,
+  "orientation": null,
+  "date_start": "2015-06-22",
+  "nimage": 309145,
+  "sky_frac": 0.232
+ },
+ {
+  "site": "yakimabasin2",
+  "lat": 46.9045,
+  "lon": -120.6241,
+  "tz": -8,
+  "orientation": "N",
+  "date_start": "2022-03-29",
+  "nimage": 53215,
+  "sky_frac": 0.232
+ },
+ {
+  "site": "NEON.D11.OAES.DP1.00033",
+  "lat": 35.41059,
+  "lon": -99.05879,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2017-02-27",
+  "nimage": 96170,
+  "sky_frac": 0.231
+ },
+ {
+  "site": "nevcanspg4a",
+  "lat": 38.9061,
+  "lon": -114.3089,
+  "tz": -8,
+  "orientation": "NNW",
+  "date_start": "2016-09-20",
+  "nimage": 114271,
+  "sky_frac": 0.231
+ },
+ {
+  "site": "webbwl",
+  "lat": 38.0805,
+  "lon": -121.6087,
+  "tz": -8,
+  "orientation": "WNW",
+  "date_start": "2024-10-09",
+  "nimage": 27246,
+  "sky_frac": 0.23
+ },
+ {
+  "site": "goodwater",
+  "lat": 39.22848,
+  "lon": -92.11936,
+  "tz": -6,
+  "orientation": "NNE",
+  "date_start": "2015-09-25",
+  "nimage": 148260,
+  "sky_frac": 0.229
+ },
+ {
+  "site": "caryinstitute2",
+  "lat": 41.7839,
+  "lon": -73.7341,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2024-10-06",
+  "nimage": 17709,
+  "sky_frac": 0.228
+ },
+ {
+  "site": "greenfield11",
+  "lat": 35.6529,
+  "lon": -90.7218,
+  "tz": -6,
+  "orientation": "S",
+  "date_start": "2026-06-17",
+  "nimage": 2712,
+  "sky_frac": 0.228
+ },
+ {
+  "site": "marcell",
+  "lat": 47.5139,
+  "lon": -93.46925,
+  "tz": -6,
+  "orientation": "SW",
+  "date_start": "2014-05-21",
+  "nimage": 38630,
+  "sky_frac": 0.221
+ },
+ {
+  "site": "nevcanspg1a",
+  "lat": 38.9253,
+  "lon": -114.4082,
+  "tz": -8,
+  "orientation": "WNW",
+  "date_start": "2018-06-29",
+  "nimage": 100926,
+  "sky_frac": 0.221
+ },
+ {
+  "site": "bmgre",
+  "lat": 32.6114,
+  "lon": -112.7647,
+  "tz": -7,
+  "orientation": "",
+  "date_start": "2026-08-30",
+  "nimage": 689,
+  "sky_frac": 0.219
+ },
+ {
+  "site": "proctor2",
+  "lat": 44.5284,
+  "lon": -72.8683,
+  "tz": -5,
+  "orientation": "WSW",
+  "date_start": "2026-04-27",
+  "nimage": 5046,
+  "sky_frac": 0.219
+ },
+ {
+  "site": "ninemileprairie",
+  "lat": 40.86801886,
+  "lon": -96.822080664,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2015-04-16",
+  "nimage": 132634,
+  "sky_frac": 0.215
+ },
+ {
+  "site": "arsgreatbasinltar098",
+  "lat": 43.1675,
+  "lon": -116.7132,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2017-05-18",
+  "nimage": 33551,
+  "sky_frac": 0.214
+ },
+ {
+  "site": "huyckpreserveny",
+  "lat": 42.5266,
+  "lon": -74.1587,
+  "tz": -5,
+  "orientation": null,
+  "date_start": "2015-04-06",
+  "nimage": 87517,
+  "sky_frac": 0.214
+ },
+ {
+  "site": "NEON.D06.KONA.DP1.00033",
+  "lat": 39.110446,
+  "lon": -96.612935,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2016-05-06",
+  "nimage": 111514,
+  "sky_frac": 0.214
+ },
+ {
+  "site": "arsltarmdcrprcw",
+  "lat": 39.0667,
+  "lon": -75.7609,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2019-02-15",
+  "nimage": 107018,
+  "sky_frac": 0.213
+ },
+ {
+  "site": "morganmonroe",
+  "lat": 39.3231,
+  "lon": -86.4131,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2008-08-27",
+  "nimage": 188795,
+  "sky_frac": 0.212
+ },
+ {
+  "site": "cmarshlowsaltmarsh",
+  "lat": 42.7345,
+  "lon": -70.8382,
+  "tz": -5,
+  "orientation": "NNW",
+  "date_start": "2025-08-14",
+  "nimage": 4420,
+  "sky_frac": 0.21
+ },
+ {
+  "site": "delnortecounty1",
+  "lat": 41.6,
+  "lon": -124.1,
+  "tz": -8,
+  "orientation": null,
+  "date_start": "2020-03-12",
+  "nimage": 74732,
+  "sky_frac": 0.209
+ },
+ {
+  "site": "goodwaterbau",
+  "lat": 39.23115,
+  "lon": -92.15216,
+  "tz": -6,
+  "orientation": "NE",
+  "date_start": "2018-06-06",
+  "nimage": 105512,
+  "sky_frac": 0.208
+ },
+ {
+  "site": "valleyviewcl13",
+  "lat": 35.7634,
+  "lon": -90.762,
+  "tz": -6,
+  "orientation": "S",
+  "date_start": "2026-07-15",
+  "nimage": 2490,
+  "sky_frac": 0.208
+ },
+ {
+  "site": "glees",
+  "lat": 41.3644,
+  "lon": -106.2394,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2015-11-11",
+  "nimage": 110697,
+  "sky_frac": 0.207
+ },
+ {
+  "site": "laclaflamme",
+  "lat": 47.322678,
+  "lon": -71.121453,
+  "tz": -5,
+  "orientation": "",
+  "date_start": "2014-09-10",
+  "nimage": 116076,
+  "sky_frac": 0.206
+ },
+ {
+  "site": "oakville",
+  "lat": 47.899334,
+  "lon": -97.316139,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2014-08-07",
+  "nimage": 136712,
+  "sky_frac": 0.204
+ },
+ {
+  "site": "hobcawclearcutlongleaf",
+  "lat": 33.3486,
+  "lon": -79.232,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2018-12-18",
+  "nimage": 79653,
+  "sky_frac": 0.202
+ },
+ {
+  "site": "macordway",
+  "lat": 44.8106,
+  "lon": -93.0272,
+  "tz": -6,
+  "orientation": "S",
+  "date_start": "2019-07-11",
+  "nimage": 46012,
+  "sky_frac": 0.201
+ },
+ {
+  "site": "NEON.D01.BART.DP1.00033",
+  "lat": 44.063869,
+  "lon": -71.287375,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2016-12-13",
+  "nimage": 99919,
+  "sky_frac": 0.201
+ },
+ {
+  "site": "arsgacp3",
+  "lat": 31.7563,
+  "lon": -83.7516,
+  "tz": -5,
+  "orientation": "NNE",
+  "date_start": "2018-04-18",
+  "nimage": 93557,
+  "sky_frac": 0.199
+ },
+ {
+  "site": "ashburnham",
+  "lat": 42.6029,
+  "lon": -71.926,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2011-09-13",
+  "nimage": 192622,
+  "sky_frac": 0.199
+ },
+ {
+  "site": "elora3",
+  "lat": 43.6405,
+  "lon": -80.4123,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2020-08-06",
+  "nimage": 70971,
+  "sky_frac": 0.199
+ },
+ {
+  "site": "jacksonforestmitchell",
+  "lat": 39.3754,
+  "lon": -123.7525,
+  "tz": -8,
+  "orientation": null,
+  "date_start": "2025-12-02",
+  "nimage": 9455,
+  "sky_frac": 0.196
+ },
+ {
+  "site": "segabluechutepj1",
+  "lat": 35.5876,
+  "lon": -111.9712,
+  "tz": -7,
+  "orientation": "ENE",
+  "date_start": "2024-06-27",
+  "nimage": 11149,
+  "sky_frac": 0.196
+ },
+ {
+  "site": "jasperridge",
+  "lat": 37.402028,
+  "lon": -122.22104,
+  "tz": -8,
+  "orientation": "N",
+  "date_start": "1999-12-31",
+  "nimage": 133668,
+  "sky_frac": 0.195
+ },
+ {
+  "site": "NEON.D05.STEI.DP1.00033",
+  "lat": 45.50894,
+  "lon": -89.58637,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2017-10-30",
+  "nimage": 94133,
+  "sky_frac": 0.19
+ },
+ {
+  "site": "oregonYP",
+  "lat": 44.32384,
+  "lon": -121.605993,
+  "tz": -8,
+  "orientation": "N",
+  "date_start": "2011-08-18",
+  "nimage": 152634,
+  "sky_frac": 0.19
+ },
+ {
+  "site": "NEON.D03.BARC.DP1.20002",
+  "lat": 29.676473,
+  "lon": -82.009089,
+  "tz": -5,
+  "orientation": null,
+  "date_start": "2017-10-30",
+  "nimage": 89803,
+  "sky_frac": 0.189
+ },
+ {
+  "site": "northinletsaltmarsh",
+  "lat": 33.3455,
+  "lon": -79.1957,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2017-10-12",
+  "nimage": 137790,
+  "sky_frac": 0.188
+ },
+ {
+  "site": "brackishimpoundment",
+  "lat": 33.2015,
+  "lon": -79.2973,
+  "tz": -5,
+  "orientation": "NE",
+  "date_start": "2020-03-20",
+  "nimage": 73213,
+  "sky_frac": 0.187
+ },
+ {
+  "site": "jernwern",
+  "lat": 32.6271,
+  "lon": -106.7387,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2017-11-06",
+  "nimage": 116003,
+  "sky_frac": 0.187
+ },
+ {
+  "site": "NEON.D03.DSNY.DP1.00033",
+  "lat": 28.12505,
+  "lon": -81.43619,
+  "tz": -5,
+  "orientation": "NNE",
+  "date_start": "2016-12-14",
+  "nimage": 105799,
+  "sky_frac": 0.186
+ },
+ {
+  "site": "dangermondjalama",
+  "lat": 34.5163,
+  "lon": -120.458,
+  "tz": -8,
+  "orientation": "NE",
+  "date_start": "2022-02-02",
+  "nimage": 65183,
+  "sky_frac": 0.185
+ },
+ {
+  "site": "cedarmesa",
+  "lat": 37.5241,
+  "lon": -109.7471,
+  "tz": -7,
+  "orientation": "W",
+  "date_start": "2023-05-23",
+  "nimage": 46283,
+  "sky_frac": 0.184
+ },
+ {
+  "site": "sealbeach1",
+  "lat": 33.734,
+  "lon": -118.0672,
+  "tz": null,
+  "orientation": "W",
+  "date_start": "2025-12-30",
+  "nimage": 7723,
+  "sky_frac": 0.184
+ },
+ {
+  "site": "NEON.D14.SRER.DP1.00033",
+  "lat": 31.91068,
+  "lon": -110.83549,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2017-02-24",
+  "nimage": 95860,
+  "sky_frac": 0.181
+ },
+ {
+  "site": "sedgwick2",
+  "lat": 34.7012,
+  "lon": -120.037,
+  "tz": -8,
+  "orientation": "NE",
+  "date_start": "2022-08-09",
+  "nimage": 56559,
+  "sky_frac": 0.181
+ },
+ {
+  "site": "czdrylandpecan",
+  "lat": 31.4123,
+  "lon": -106.0787,
+  "tz": -7,
+  "orientation": "NNW",
+  "date_start": "2022-09-06",
+  "nimage": 33772,
+  "sky_frac": 0.18
+ },
+ {
+  "site": "morganmonroe2",
+  "lat": 39.3231,
+  "lon": -86.4131,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2017-04-04",
+  "nimage": 108396,
+  "sky_frac": 0.179
+ },
+ {
+  "site": "NEON.D17.TEAK.DP1.00033",
+  "lat": 37.00583,
+  "lon": -119.00602,
+  "tz": -8,
+  "orientation": null,
+  "date_start": "2018-07-24",
+  "nimage": 87643,
+  "sky_frac": 0.179
+ },
+ {
+  "site": "blackrockforestcenter",
+  "lat": 41.4139,
+  "lon": -74.0118,
+  "tz": -5,
+  "orientation": "SSW",
+  "date_start": "2026-03-31",
+  "nimage": 5693,
+  "sky_frac": 0.177
+ },
+ {
+  "site": "hollandrice",
+  "lat": 37.9832,
+  "lon": -121.5838,
+  "tz": -8,
+  "orientation": "WNW",
+  "date_start": "2025-04-11",
+  "nimage": 19899,
+  "sky_frac": 0.176
+ },
+ {
+  "site": "NEON.D11.BLUE.DP1.20002",
+  "lat": 34.444218,
+  "lon": -96.624201,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2018-07-19",
+  "nimage": 75681,
+  "sky_frac": 0.175
+ },
+ {
+  "site": "snodgrass1",
+  "lat": 38.92619636,
+  "lon": -106.97143762,
+  "tz": -7,
+  "orientation": "NE",
+  "date_start": "2021-06-16",
+  "nimage": 15647,
+  "sky_frac": 0.175
+ },
+ {
+  "site": "flagstaffchimneysprings",
+  "lat": 35.257296,
+  "lon": -111.678542,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2020-09-02",
+  "nimage": 40342,
+  "sky_frac": 0.174
+ },
+ {
+  "site": "usgseros",
+  "lat": 43.7343,
+  "lon": -96.6234,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2014-09-04",
+  "nimage": 154073,
+  "sky_frac": 0.173
+ },
+ {
+  "site": "cs1afforestation",
+  "lat": 33.5,
+  "lon": -79.9454,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2025-01-14",
+  "nimage": 19497,
+  "sky_frac": 0.171
+ },
+ {
+  "site": "NEON.D08.BLWA.DP1.20002",
+  "lat": 32.541529,
+  "lon": -87.798151,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2018-10-10",
+  "nimage": 75305,
+  "sky_frac": 0.171
+ },
+ {
+  "site": "NEON.D11.CLBJ.DP1.00033",
+  "lat": 33.40123,
+  "lon": -97.57,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2017-02-13",
+  "nimage": 94680,
+  "sky_frac": 0.17
+ },
+ {
+  "site": "sevmetcont",
+  "lat": 34.34,
+  "lon": -106.7428,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2024-03-20",
+  "nimage": 30134,
+  "sky_frac": 0.17
+ },
+ {
+  "site": "lspnaturalmarsh",
+  "lat": 46.0886,
+  "lon": -72.9117,
+  "tz": -5,
+  "orientation": "WSW",
+  "date_start": "2026-08-11",
+  "nimage": 1449,
+  "sky_frac": 0.168
+ },
+ {
+  "site": "NEON.D05.TREE.DP1.00033",
+  "lat": 45.49373,
+  "lon": -89.58572,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2016-12-15",
+  "nimage": 102473,
+  "sky_frac": 0.168
+ },
+ {
+  "site": "NEON.D15.ONAQ.DP1.00033",
+  "lat": 40.177599,
+  "lon": -112.452452,
+  "tz": -7,
+  "orientation": "NNE",
+  "date_start": "2016-12-19",
+  "nimage": 100411,
+  "sky_frac": 0.167
+ },
+ {
+  "site": "nevcanspg2a",
+  "lat": 38.8921,
+  "lon": -114.3521,
+  "tz": -8,
+  "orientation": "NNW",
+  "date_start": "2018-06-29",
+  "nimage": 89267,
+  "sky_frac": 0.167
+ },
+ {
+  "site": "zumwalt1",
+  "lat": 40.7975,
+  "lon": -87.5355,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2024-12-06",
+  "nimage": 21292,
+  "sky_frac": 0.167
+ },
+ {
+  "site": "rosemountconv",
+  "lat": 44.691,
+  "lon": -93.0576,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2017-01-13",
+  "nimage": 131795,
+  "sky_frac": 0.165
+ },
+ {
+  "site": "nevcanspg3a",
+  "lat": 38.8898,
+  "lon": -114.3314,
+  "tz": -8,
+  "orientation": "ESE",
+  "date_start": "2016-09-20",
+  "nimage": 81103,
+  "sky_frac": 0.162
+ },
+ {
+  "site": "sedgwick3",
+  "lat": 34.7031,
+  "lon": -120.0348,
+  "tz": -8,
+  "orientation": "N",
+  "date_start": "2025-09-13",
+  "nimage": 11997,
+  "sky_frac": 0.159
+ },
+ {
+  "site": "NEON.D14.JORN.DP1.00033",
+  "lat": 32.59068,
+  "lon": -106.84254,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2017-02-24",
+  "nimage": 93646,
+  "sky_frac": 0.158
+ },
+ {
+  "site": "strdisturbedforestedpeatland",
+  "lat": 45.2459,
+  "lon": -73.6823,
+  "tz": -5,
+  "orientation": "SW",
+  "date_start": "2026-01-13",
+  "nimage": 9187,
+  "sky_frac": 0.158
+ },
+ {
+  "site": "NEON.D03.SUGG.DP1.20002",
+  "lat": 29.687054,
+  "lon": -82.016171,
+  "tz": -5,
+  "orientation": null,
+  "date_start": "2017-10-30",
+  "nimage": 89476,
+  "sky_frac": 0.157
+ },
+ {
+  "site": "arsmnswanlake1",
+  "lat": 45.684508,
+  "lon": -95.799703,
+  "tz": -6,
+  "orientation": "NNW",
+  "date_start": "2015-10-02",
+  "nimage": 125199,
+  "sky_frac": 0.155
+ },
+ {
+  "site": "newmanwetland",
+  "lat": 37.3091,
+  "lon": -121.0044,
+  "tz": -8,
+  "orientation": "NNW",
+  "date_start": "2025-07-24",
+  "nimage": 14103,
+  "sky_frac": 0.154
+ },
+ {
+  "site": "lostcreek",
+  "lat": 46.0827,
+  "lon": -89.9792,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2015-07-28",
+  "nimage": 140564,
+  "sky_frac": 0.153
+ },
+ {
+  "site": "boglakepeatland",
+  "lat": 47.5051,
+  "lon": -93.4893,
+  "tz": -6,
+  "orientation": "E",
+  "date_start": "2021-03-18",
+  "nimage": 76277,
+  "sky_frac": 0.152
+ },
+ {
+  "site": "cmarshhighsaltmarsh",
+  "lat": 42.7423,
+  "lon": -70.8301,
+  "tz": -5,
+  "orientation": "NNW",
+  "date_start": "2025-04-30",
+  "nimage": 8421,
+  "sky_frac": 0.151
+ },
+ {
+  "site": "proctor",
+  "lat": 44.525,
+  "lon": -72.866,
+  "tz": -5,
+  "orientation": "NE",
+  "date_start": "2008-04-15",
+  "nimage": 351099,
+  "sky_frac": 0.149
+ },
+ {
+  "site": "junipersavannah",
+  "lat": 34.4254,
+  "lon": -105.8615,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2020-10-27",
+  "nimage": 49106,
+  "sky_frac": 0.148
+ },
+ {
+  "site": "archboldavirx",
+  "lat": 27.166627,
+  "lon": -81.219828,
+  "tz": -5,
+  "orientation": null,
+  "date_start": "2016-05-15",
+  "nimage": 103307,
+  "sky_frac": 0.147
+ },
+ {
+  "site": "hobcawmaturelongleaf",
+  "lat": 33.3242,
+  "lon": -79.2439,
+  "tz": -5,
+  "orientation": "NNE",
+  "date_start": "2018-12-17",
+  "nimage": 80005,
+  "sky_frac": 0.147
+ },
+ {
+  "site": "segalcr",
+  "lat": 35.7231,
+  "lon": -111.321,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2018-07-31",
+  "nimage": 65443,
+  "sky_frac": 0.147
+ },
+ {
+  "site": "me4",
+  "lat": 44.4999,
+  "lon": -121.6233,
+  "tz": -8,
+  "orientation": "N",
+  "date_start": "2024-03-13",
+  "nimage": 35229,
+  "sky_frac": 0.146
+ },
+ {
+  "site": "NEON.D09.WOOD.DP1.00033",
+  "lat": 47.1282,
+  "lon": -99.241334,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2016-12-18",
+  "nimage": 104008,
+  "sky_frac": 0.146
+ },
+ {
+  "site": "willowcreek",
+  "lat": 45.805986,
+  "lon": -90.07912,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2012-04-25",
+  "nimage": 168249,
+  "sky_frac": 0.143
+ },
+ {
+  "site": "wvuarboretum",
+  "lat": 39.6456,
+  "lon": -79.9858,
+  "tz": -5,
+  "orientation": "NE",
+  "date_start": "2026-04-10",
+  "nimage": 3040,
+  "sky_frac": 0.142
+ },
+ {
+  "site": "meadpasture",
+  "lat": 41.1447,
+  "lon": -96.4616,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2016-07-15",
+  "nimage": 144532,
+  "sky_frac": 0.138
+ },
+ {
+  "site": "sanford",
+  "lat": 42.726777,
+  "lon": -84.464482,
+  "tz": -5,
+  "orientation": "",
+  "date_start": "2013-12-20",
+  "nimage": 169260,
+  "sky_frac": 0.137
+ },
+ {
+  "site": "czdryredlake",
+  "lat": 32.7122,
+  "lon": -106.8303,
+  "tz": -7,
+  "orientation": "NNW",
+  "date_start": "2022-08-04",
+  "nimage": 54520,
+  "sky_frac": 0.136
+ },
+ {
+  "site": "sylvania",
+  "lat": 46.242,
+  "lon": -89.348,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2015-07-30",
+  "nimage": 140493,
+  "sky_frac": 0.136
+ },
+ {
+  "site": "sevmetfvpt",
+  "lat": 34.335,
+  "lon": -106.7293,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2024-03-20",
+  "nimage": 29998,
+  "sky_frac": 0.135
+ },
+ {
+  "site": "NEON.D07.GRSM.DP1.00033",
+  "lat": 35.68896,
+  "lon": -83.50195,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2017-01-24",
+  "nimage": 103924,
+  "sky_frac": 0.133
+ },
+ {
+  "site": "latnaturalopenbog",
+  "lat": 46.5317,
+  "lon": -72.6447,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2025-04-14",
+  "nimage": 20247,
+  "sky_frac": 0.132
+ },
+ {
+  "site": "sevmettuwl",
+  "lat": 34.4187,
+  "lon": -107.0006,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2024-03-21",
+  "nimage": 25022,
+  "sky_frac": 0.131
+ },
+ {
+  "site": "welldrainedloblolly",
+  "lat": 33.4902,
+  "lon": -79.4172,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2022-08-29",
+  "nimage": 14109,
+  "sky_frac": 0.13
+ },
+ {
+  "site": "latnaturalforestedbog",
+  "lat": 46.528,
+  "lon": -72.6463,
+  "tz": -5,
+  "orientation": "NNE",
+  "date_start": "2025-04-10",
+  "nimage": 19855,
+  "sky_frac": 0.127
+ },
+ {
+  "site": "arsope3ltar",
+  "lat": 39.0309,
+  "lon": -76.8442,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2017-04-10",
+  "nimage": 127114,
+  "sky_frac": 0.126
+ },
+ {
+  "site": "jernort",
+  "lat": 32.619,
+  "lon": -106.788,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2014-03-04",
+  "nimage": 106919,
+  "sky_frac": 0.126
+ },
+ {
+  "site": "sevmetbuwl",
+  "lat": 34.3349,
+  "lon": -106.632,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2024-03-21",
+  "nimage": 29365,
+  "sky_frac": 0.126
+ },
+ {
+  "site": "elora1",
+  "lat": 43.6408,
+  "lon": -80.4141,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2020-07-06",
+  "nimage": 81554,
+  "sky_frac": 0.125
+ },
+ {
+  "site": "jacksonforestparlin",
+  "lat": 39.3619,
+  "lon": -123.6564,
+  "tz": -8,
+  "orientation": null,
+  "date_start": "2025-09-25",
+  "nimage": 11558,
+  "sky_frac": 0.122
+ },
+ {
+  "site": "jersand",
+  "lat": 32.515,
+  "lon": -106.798,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2014-02-28",
+  "nimage": 95817,
+  "sky_frac": 0.121
+ },
+ {
+  "site": "mead3",
+  "lat": 41.1797,
+  "lon": -96.4397,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2016-07-12",
+  "nimage": 159092,
+  "sky_frac": 0.121
+ },
+ {
+  "site": "ucnrsanzaborrego",
+  "lat": 33.2401,
+  "lon": -116.3886,
+  "tz": -8,
+  "orientation": "N",
+  "date_start": "2019-04-15",
+  "nimage": 64623,
+  "sky_frac": 0.121
+ },
+ {
+  "site": "segasoapcreek",
+  "lat": 36.751,
+  "lon": -111.716,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2018-07-31",
+  "nimage": 47163,
+  "sky_frac": 0.12
+ },
+ {
+  "site": "flagstaff6",
+  "lat": 35.17961521,
+  "lon": -111.60490323,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2024-03-29",
+  "nimage": 66449,
+  "sky_frac": 0.118
+ },
+ {
+  "site": "cuny",
+  "lat": 40.8162,
+  "lon": -73.9507,
+  "tz": -5,
+  "orientation": "NNE",
+  "date_start": "2021-11-09",
+  "nimage": 50809,
+  "sky_frac": 0.117
+ },
+ {
+  "site": "NEON.D17.SOAP.DP1.00033",
+  "lat": 37.03337,
+  "lon": -119.26219,
+  "tz": -8,
+  "orientation": "N",
+  "date_start": "2017-11-02",
+  "nimage": 87588,
+  "sky_frac": 0.117
+ },
+ {
+  "site": "NEON.D03.JERC.DP1.00033",
+  "lat": 31.194839,
+  "lon": -84.468623,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2016-12-14",
+  "nimage": 95631,
+  "sky_frac": 0.116
+ },
+ {
+  "site": "castlevalley",
+  "lat": 38.6744,
+  "lon": -109.4154,
+  "tz": null,
+  "orientation": "NE",
+  "date_start": "2026-02-18",
+  "nimage": 1192,
+  "sky_frac": 0.115
+ },
+ {
+  "site": "turkeypointurban",
+  "lat": 43.2466,
+  "lon": -79.9486,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2026-04-16",
+  "nimage": 4493,
+  "sky_frac": 0.115
+ },
+ {
+  "site": "bbc1",
+  "lat": 42.53508,
+  "lon": -72.174359,
+  "tz": -5,
+  "orientation": "NE",
+  "date_start": "2015-05-04",
+  "nimage": 284693,
+  "sky_frac": 0.112
+ },
+ {
+  "site": "lacclair",
+  "lat": 46.95209167,
+  "lon": -71.66957778,
+  "tz": -5,
+  "orientation": "",
+  "date_start": "2014-08-23",
+  "nimage": 127937,
+  "sky_frac": 0.112
+ },
+ {
+  "site": "nist",
+  "lat": 39.139,
+  "lon": -77.2125,
+  "tz": -5,
+  "orientation": "NW",
+  "date_start": "2017-06-12",
+  "nimage": 197114,
+  "sky_frac": 0.112
+ },
+ {
+  "site": "santaluciapreserve1",
+  "lat": 36.5265,
+  "lon": -121.8682,
+  "tz": -8,
+  "orientation": null,
+  "date_start": "2020-07-10",
+  "nimage": 45292,
+  "sky_frac": 0.112
+ },
+ {
+  "site": "kempnrs",
+  "lat": 45.83992,
+  "lon": -89.67755,
+  "tz": -6,
+  "orientation": "NNW",
+  "date_start": "2021-05-18",
+  "nimage": 73558,
+  "sky_frac": 0.111
+ },
+ {
+  "site": "NEON.D05.LIRO.DP1.20002",
+  "lat": 45.998269,
+  "lon": -89.704767,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2017-10-30",
+  "nimage": 91293,
+  "sky_frac": 0.111
+ },
+ {
+  "site": "harvardbarn",
+  "lat": 42.53532,
+  "lon": -72.1899,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2011-07-27",
+  "nimage": 312133,
+  "sky_frac": 0.11
+ },
+ {
+  "site": "segahartprairie",
+  "lat": 35.3536,
+  "lon": -111.7324,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2019-08-02",
+  "nimage": 54350,
+  "sky_frac": 0.108
+ },
+ {
+  "site": "ecb1",
+  "lat": 41.5348,
+  "lon": -84.8068,
+  "tz": -5,
+  "orientation": "NE",
+  "date_start": "2020-08-12",
+  "nimage": 91692,
+  "sky_frac": 0.107
+ },
+ {
+  "site": "sevMRME10L",
+  "lat": 34.3438,
+  "lon": -106.7269,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2018-11-15",
+  "nimage": 81877,
+  "sky_frac": 0.107
+ },
+ {
+  "site": "lspdisturbedmarsh",
+  "lat": 46.165,
+  "lon": -72.685,
+  "tz": -5,
+  "orientation": "NW",
+  "date_start": "2024-07-15",
+  "nimage": 15251,
+  "sky_frac": 0.106
+ },
+ {
+  "site": "sevmetbrwl",
+  "lat": 34.4056,
+  "lon": -106.934,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2024-03-21",
+  "nimage": 25020,
+  "sky_frac": 0.106
+ },
+ {
+  "site": "arsltarucbec1",
+  "lat": 40.7537,
+  "lon": -78.0057,
+  "tz": -5,
+  "orientation": "W",
+  "date_start": "2019-05-16",
+  "nimage": 85285,
+  "sky_frac": 0.105
+ },
+ {
+  "site": "NEON.D08.TOMB.DP1.20002",
+  "lat": 31.853431,
+  "lon": -88.158872,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2018-07-24",
+  "nimage": 84054,
+  "sky_frac": 0.105
+ },
+ {
+  "site": "ecb4",
+  "lat": 41.1796,
+  "lon": -83.0604,
+  "tz": -5,
+  "orientation": "NE",
+  "date_start": "2021-08-12",
+  "nimage": 69827,
+  "sky_frac": 0.104
+ },
+ {
+  "site": "sevmetsepu",
+  "lat": 34.2688,
+  "lon": -106.6248,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2024-05-02",
+  "nimage": 6872,
+  "sky_frac": 0.104
+ },
+ {
+  "site": "arsgacp4",
+  "lat": 31.7093,
+  "lon": -83.7287,
+  "tz": -5,
+  "orientation": "S",
+  "date_start": "2018-06-21",
+  "nimage": 76768,
+  "sky_frac": 0.101
+ },
+ {
+  "site": "NEON.D10.CPER.DP1.00033",
+  "lat": 40.81553,
+  "lon": -104.7456,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2016-06-29",
+  "nimage": 104811,
+  "sky_frac": 0.099
+ },
+ {
+  "site": "merbleue",
+  "lat": 45.4094,
+  "lon": -75.5187,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2012-10-22",
+  "nimage": 165278,
+  "sky_frac": 0.097
+ },
+ {
+  "site": "jerbajada",
+  "lat": 32.57992,
+  "lon": -106.633793,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2014-04-21",
+  "nimage": 103035,
+  "sky_frac": 0.094
+ },
+ {
+  "site": "gcejuncus",
+  "lat": 31.3868,
+  "lon": -81.275,
+  "tz": -5,
+  "orientation": "NE",
+  "date_start": "2022-02-01",
+  "nimage": 45213,
+  "sky_frac": 0.093
+ },
+ {
+  "site": "centralredwoods1",
+  "lat": 38.632272,
+  "lon": -123.301511,
+  "tz": -8,
+  "orientation": null,
+  "date_start": "2020-06-28",
+  "nimage": 35756,
+  "sky_frac": 0.092
+ },
+ {
+  "site": "mead1",
+  "lat": 41.1651,
+  "lon": -96.4766,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2016-07-12",
+  "nimage": 162747,
+  "sky_frac": 0.092
+ },
+ {
+  "site": "segaarboretummeadow",
+  "lat": 35.1621,
+  "lon": -111.7316,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2016-08-09",
+  "nimage": 71628,
+  "sky_frac": 0.092
+ },
+ {
+  "site": "bbc7",
+  "lat": 44.0646,
+  "lon": -71.2881,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2015-05-15",
+  "nimage": 194821,
+  "sky_frac": 0.091
+ },
+ {
+  "site": "NEON.D07.MLBS.DP1.00033",
+  "lat": 37.378314,
+  "lon": -80.524847,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2016-12-15",
+  "nimage": 102666,
+  "sky_frac": 0.091
+ },
+ {
+  "site": "templefieldstation1",
+  "lat": 40.1667,
+  "lon": -75.1894,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2021-04-08",
+  "nimage": 76133,
+  "sky_frac": 0.091
+ },
+ {
+  "site": "rosemountnprs",
+  "lat": 44.6781,
+  "lon": -93.0723,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2015-10-26",
+  "nimage": 149663,
+  "sky_frac": 0.089
+ },
+ {
+  "site": "jershrubland2",
+  "lat": 32.6638,
+  "lon": -106.831,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2022-01-22",
+  "nimage": 49797,
+  "sky_frac": 0.088
+ },
+ {
+  "site": "arsgreatbasinltar117",
+  "lat": 43.1432,
+  "lon": -116.7357,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2021-03-10",
+  "nimage": 23515,
+  "sky_frac": 0.086
+ },
+ {
+  "site": "jershrubland",
+  "lat": 32.6502,
+  "lon": -106.8334,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2019-02-13",
+  "nimage": 84829,
+  "sky_frac": 0.086
+ },
+ {
+  "site": "arsltarmdcr",
+  "lat": 39.0587,
+  "lon": -75.8513,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2017-05-10",
+  "nimage": 84372,
+  "sky_frac": 0.084
+ },
+ {
+  "site": "flagstaff",
+  "lat": 35.17961521,
+  "lon": -111.60490323,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2019-06-17",
+  "nimage": 136056,
+  "sky_frac": 0.084
+ },
+ {
+  "site": "hobcawghostforest",
+  "lat": 33.3473,
+  "lon": -79.1985,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2025-04-23",
+  "nimage": 18060,
+  "sky_frac": 0.084
+ },
+ {
+  "site": "harvardems2",
+  "lat": 42.5378,
+  "lon": -72.1715,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2021-04-12",
+  "nimage": 71195,
+  "sky_frac": 0.083
+ },
+ {
+  "site": "humnokericec",
+  "lat": 34.588853,
+  "lon": -91.7516729,
+  "tz": -6,
+  "orientation": "S",
+  "date_start": "2015-06-24",
+  "nimage": 121420,
+  "sky_frac": 0.082
+ },
+ {
+  "site": "sevmetgtdr",
+  "lat": 34.4147,
+  "lon": -106.5234,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2024-03-21",
+  "nimage": 29165,
+  "sky_frac": 0.078
+ },
+ {
+  "site": "flagstaff7",
+  "lat": 35.17961521,
+  "lon": -111.60490323,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2024-03-30",
+  "nimage": 58130,
+  "sky_frac": 0.076
+ },
+ {
+  "site": "slatefloodplain",
+  "lat": 38.9094,
+  "lon": -107.0282,
+  "tz": -7,
+  "orientation": "NNW",
+  "date_start": "2020-07-31",
+  "nimage": 4778,
+  "sky_frac": 0.076
+ },
+ {
+  "site": "mandani2",
+  "lat": 46.7614,
+  "lon": -100.9257,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2016-04-22",
+  "nimage": 103769,
+  "sky_frac": 0.075
+ },
+ {
+  "site": "usrrcmarsh",
+  "lat": 37.3344,
+  "lon": -77.2065,
+  "tz": -5,
+  "orientation": "SW",
+  "date_start": "2025-10-10",
+  "nimage": 11433,
+  "sky_frac": 0.075
+ },
+ {
+  "site": "harvardhemlock2",
+  "lat": 42.539407,
+  "lon": -72.177976,
+  "tz": -5,
+  "orientation": "SW",
+  "date_start": "2015-09-03",
+  "nimage": 148711,
+  "sky_frac": 0.074
+ },
+ {
+  "site": "stanislausforage",
+  "lat": 37.6994,
+  "lon": -121.1367,
+  "tz": -8,
+  "orientation": "W",
+  "date_start": "2023-03-07",
+  "nimage": 22548,
+  "sky_frac": 0.074
+ },
+ {
+  "site": "tuckerprairie",
+  "lat": 38.9491,
+  "lon": -91.9952,
+  "tz": -7,
+  "orientation": "SSE",
+  "date_start": "2018-10-02",
+  "nimage": 108639,
+  "sky_frac": 0.073
+ },
+ {
+  "site": "cmarshtypha",
+  "lat": 42.7496,
+  "lon": -70.9157,
+  "tz": -5,
+  "orientation": "NNW",
+  "date_start": "2025-04-29",
+  "nimage": 10939,
+  "sky_frac": 0.072
+ },
+ {
+  "site": "NEON.D14.JORN.DP1.00042",
+  "lat": 32.59068,
+  "lon": -106.84254,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2017-02-24",
+  "nimage": 93970,
+  "sky_frac": 0.072
+ },
+ {
+  "site": "segabluechutepj2",
+  "lat": 35.5876,
+  "lon": -111.9712,
+  "tz": -7,
+  "orientation": "E",
+  "date_start": "2024-06-27",
+  "nimage": 11168,
+  "sky_frac": 0.072
+ },
+ {
+  "site": "ldeocam",
+  "lat": 41.0039,
+  "lon": -73.9053,
+  "tz": -5,
+  "orientation": "S",
+  "date_start": "2020-10-13",
+  "nimage": 157142,
+  "sky_frac": 0.069
+ },
+ {
+  "site": "sevMRME1S",
+  "lat": 34.3442,
+  "lon": -106.7272,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2018-11-15",
+  "nimage": 79708,
+  "sky_frac": 0.069
+ },
+ {
+  "site": "usdadfrc",
+  "lat": 43.3448,
+  "lon": -89.7117,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2022-07-07",
+  "nimage": 58442,
+  "sky_frac": 0.069
+ },
+ {
+  "site": "NEON.D01.HARV.DP1.00033",
+  "lat": 42.536911,
+  "lon": -72.17265,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2016-12-13",
+  "nimage": 98698,
+  "sky_frac": 0.067
+ },
+ {
+  "site": "sagehen",
+  "lat": 39.4315,
+  "lon": -120.2398,
+  "tz": -8,
+  "orientation": "WSW",
+  "date_start": "2017-10-05",
+  "nimage": 122590,
+  "sky_frac": 0.067
+ },
+ {
+  "site": "sevmetcrmt",
+  "lat": 34.3685,
+  "lon": -106.5354,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2024-03-21",
+  "nimage": 29152,
+  "sky_frac": 0.067
+ },
+ {
+  "site": "cafcookeastltar01",
+  "lat": 46.78152,
+  "lon": -117.0821,
+  "tz": -8,
+  "orientation": "SSW",
+  "date_start": "2017-05-09",
+  "nimage": 238945,
+  "sky_frac": 0.066
+ },
+ {
+  "site": "cs2afforestation",
+  "lat": 34.0367,
+  "lon": -80.5528,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2024-07-02",
+  "nimage": 21665,
+  "sky_frac": 0.066
+ },
+ {
+  "site": "sevmettswl",
+  "lat": 34.3104,
+  "lon": -106.6844,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2024-03-20",
+  "nimage": 11335,
+  "sky_frac": 0.064
+ },
+ {
+  "site": "NEON.D13.MOAB.DP1.00042",
+  "lat": 38.24833,
+  "lon": -109.38827,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2017-02-24",
+  "nimage": 104678,
+  "sky_frac": 0.062
+ },
+ {
+  "site": "NEON.D09.DCFS.DP1.00042",
+  "lat": 47.161647,
+  "lon": -99.106556,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2017-10-31",
+  "nimage": 93988,
+  "sky_frac": 0.06
+ },
+ {
+  "site": "mandanh5",
+  "lat": 46.775423,
+  "lon": -100.95109,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2015-09-16",
+  "nimage": 109163,
+  "sky_frac": 0.059
+ },
+ {
+  "site": "lsprestoredmarsh",
+  "lat": 46.1488,
+  "lon": -72.7268,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2025-08-19",
+  "nimage": 15352,
+  "sky_frac": 0.058
+ },
+ {
+  "site": "segaarboretumforest",
+  "lat": 35.1613,
+  "lon": -111.7359,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2019-05-29",
+  "nimage": 57466,
+  "sky_frac": 0.058
+ },
+ {
+  "site": "mead2",
+  "lat": 41.1649,
+  "lon": -96.4701,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2016-07-12",
+  "nimage": 163422,
+  "sky_frac": 0.057
+ },
+ {
+  "site": "arscolesnorth",
+  "lat": 42.4884,
+  "lon": -93.5225,
+  "tz": -6,
+  "orientation": "NNW",
+  "date_start": "2018-08-22",
+  "nimage": 86048,
+  "sky_frac": 0.056
+ },
+ {
+  "site": "uwmfieldsta",
+  "lat": 43.38709,
+  "lon": -88.0229,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2013-03-14",
+  "nimage": 191597,
+  "sky_frac": 0.055
+ },
+ {
+  "site": "coweeta",
+  "lat": 35.0592,
+  "lon": -83.4275,
+  "tz": -5,
+  "orientation": "NE",
+  "date_start": "2011-04-08",
+  "nimage": 157644,
+  "sky_frac": 0.052
+ },
+ {
+  "site": "murphy24",
+  "lat": 36.7436,
+  "lon": -88.8545,
+  "tz": -6,
+  "orientation": "SSW",
+  "date_start": "2025-01-28",
+  "nimage": 4226,
+  "sky_frac": 0.052
+ },
+ {
+  "site": "laurentides",
+  "lat": 45.9881,
+  "lon": -74.0055,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2011-09-12",
+  "nimage": 66721,
+  "sky_frac": 0.05
+ },
+ {
+  "site": "spruceA0EMI",
+  "lat": 47.5049,
+  "lon": -93.4541,
+  "tz": -6,
+  "orientation": "",
+  "date_start": "2016-03-31",
+  "nimage": 141176,
+  "sky_frac": 0.048
+ },
+ {
+  "site": "tidmarshplymouth",
+  "lat": 41.9157,
+  "lon": -70.5754,
+  "tz": -5,
+  "orientation": "NNW",
+  "date_start": "2018-08-16",
+  "nimage": 109033,
+  "sky_frac": 0.046
+ },
+ {
+  "site": "stjones",
+  "lat": 39.088222,
+  "lon": -75.43725,
+  "tz": -5,
+  "orientation": "E",
+  "date_start": "2015-09-21",
+  "nimage": 128738,
+  "sky_frac": 0.045
+ },
+ {
+  "site": "centralredwoods2",
+  "lat": 38.632272,
+  "lon": -123.301511,
+  "tz": -8,
+  "orientation": null,
+  "date_start": "2021-10-09",
+  "nimage": 34934,
+  "sky_frac": 0.044
+ },
+ {
+  "site": "meadpasturese",
+  "lat": 41.1447,
+  "lon": -96.4616,
+  "tz": -6,
+  "orientation": "SE",
+  "date_start": "2018-07-24",
+  "nimage": 96290,
+  "sky_frac": 0.043
+ },
+ {
+  "site": "NEON.D10.STER.DP1.00042",
+  "lat": 40.461894,
+  "lon": -103.02929,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2016-12-18",
+  "nimage": 99410,
+  "sky_frac": 0.043
+ },
+ {
+  "site": "NEON.D06.UKFS.DP1.00033",
+  "lat": 39.040431,
+  "lon": -95.19215,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2018-11-14",
+  "nimage": 79878,
+  "sky_frac": 0.042
+ },
+ {
+  "site": "NEON.D13.MOAB.DP1.00033",
+  "lat": 38.24833,
+  "lon": -109.38827,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2017-02-24",
+  "nimage": 104551,
+  "sky_frac": 0.041
+ },
+ {
+  "site": "NEON.D03.OSBS.DP1.00033",
+  "lat": 29.689282,
+  "lon": -81.993431,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2016-12-14",
+  "nimage": 94353,
+  "sky_frac": 0.04
+ },
+ {
+  "site": "cafcookwestltar01",
+  "lat": 46.784037,
+  "lon": -117.09083,
+  "tz": -8,
+  "orientation": "SE",
+  "date_start": "2017-06-26",
+  "nimage": 224345,
+  "sky_frac": 0.039
+ },
+ {
+  "site": "snodgrass8",
+  "lat": 38.93142134,
+  "lon": -106.98523878,
+  "tz": -7,
+  "orientation": "NE",
+  "date_start": "2021-06-12",
+  "nimage": 14660,
+  "sky_frac": 0.039
+ },
+ {
+  "site": "jernovel2",
+  "lat": 32.6465,
+  "lon": -106.8333,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2022-01-22",
+  "nimage": 53227,
+  "sky_frac": 0.037
+ },
+ {
+  "site": "snodgrass4",
+  "lat": 38.92839978,
+  "lon": -106.97811962,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2021-06-23",
+  "nimage": 16243,
+  "sky_frac": 0.037
+ },
+ {
+  "site": "NEON.D02.BLAN.DP1.00033",
+  "lat": 39.033698,
+  "lon": -78.041788,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2016-12-14",
+  "nimage": 104794,
+  "sky_frac": 0.036
+ },
+ {
+  "site": "NEON.D05.CRAM.DP1.20002",
+  "lat": 46.21111,
+  "lon": -89.47825,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2017-10-30",
+  "nimage": 91745,
+  "sky_frac": 0.036
+ },
+ {
+  "site": "queens",
+  "lat": 44.565,
+  "lon": -76.324,
+  "tz": -5,
+  "orientation": "ENE",
+  "date_start": "2008-05-26",
+  "nimage": 199013,
+  "sky_frac": 0.036
+ },
+ {
+  "site": "downerwoods",
+  "lat": 43.07938,
+  "lon": -87.88076,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2013-03-25",
+  "nimage": 176446,
+  "sky_frac": 0.033
+ },
+ {
+  "site": "NEON.D10.HQTW.DP1.00033",
+  "lat": 40.016704,
+  "lon": -105.245612,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2021-04-13",
+  "nimage": 14320,
+  "sky_frac": 0.033
+ },
+ {
+  "site": "uiefsorghum",
+  "lat": 40.0065,
+  "lon": -88.2032,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2018-08-15",
+  "nimage": 82998,
+  "sky_frac": 0.033
+ },
+ {
+  "site": "sevMRME11C",
+  "lat": 34.3438,
+  "lon": -106.7268,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2018-11-15",
+  "nimage": 81706,
+  "sky_frac": 0.031
+ },
+ {
+  "site": "spruceA0EMT",
+  "lat": 47.5049,
+  "lon": -93.4541,
+  "tz": -6,
+  "orientation": "",
+  "date_start": "2014-10-14",
+  "nimage": 157257,
+  "sky_frac": 0.031
+ },
+ {
+  "site": "snodgrass6",
+  "lat": 38.92744789,
+  "lon": -106.97852093,
+  "tz": -7,
+  "orientation": "E",
+  "date_start": "2021-06-23",
+  "nimage": 15440,
+  "sky_frac": 0.03
+ },
+ {
+  "site": "luckyhills",
+  "lat": 31.743896,
+  "lon": -110.052023,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2013-04-30",
+  "nimage": 162128,
+  "sky_frac": 0.029
+ },
+ {
+  "site": "kegonsasolar",
+  "lat": 42.9572,
+  "lon": -89.2923,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2025-07-31",
+  "nimage": 11102,
+  "sky_frac": 0.027
+ },
+ {
+  "site": "mexchurin",
+  "lat": 28.6982,
+  "lon": -110.5392,
+  "tz": -7,
+  "orientation": "NNE",
+  "date_start": "2025-04-05",
+  "nimage": 5389,
+  "sky_frac": 0.027
+ },
+ {
+  "site": "NEON.D06.UKFS.DP1.00042",
+  "lat": 39.040431,
+  "lon": -95.19215,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2017-10-31",
+  "nimage": 86454,
+  "sky_frac": 0.025
+ },
+ {
+  "site": "shalehillsczo",
+  "lat": 40.6658,
+  "lon": -77.9041,
+  "tz": -5,
+  "orientation": "NE",
+  "date_start": "2012-04-18",
+  "nimage": 177566,
+  "sky_frac": 0.025
+ },
+ {
+  "site": "nevcansnk3a",
+  "lat": 39.0099,
+  "lon": -114.3095,
+  "tz": -8,
+  "orientation": "WNW",
+  "date_start": "2016-09-19",
+  "nimage": 93907,
+  "sky_frac": 0.023
+ },
+ {
+  "site": "NEON.D02.SERC.DP1.00033",
+  "lat": 38.89008,
+  "lon": -76.56001,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2016-01-29",
+  "nimage": 107007,
+  "sky_frac": 0.022
+ },
+ {
+  "site": "arsgreatbasinltar177",
+  "lat": 43.0645,
+  "lon": -116.7484,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2018-10-17",
+  "nimage": 42427,
+  "sky_frac": 0.021
+ },
+ {
+  "site": "sevcreogrowth",
+  "lat": 34.3384,
+  "lon": -106.7385,
+  "tz": -7,
+  "orientation": "NE",
+  "date_start": "2025-07-17",
+  "nimage": 2946,
+  "sky_frac": 0.021
+ },
+ {
+  "site": "amherst",
+  "lat": 42.3942,
+  "lon": -72.5289,
+  "tz": -5,
+  "orientation": null,
+  "date_start": "2026-06-19",
+  "nimage": 710,
+  "sky_frac": 0.02
+ },
+ {
+  "site": "turkeypointagr",
+  "lat": 42.69467,
+  "lon": -80.348748,
+  "tz": -5,
+  "orientation": null,
+  "date_start": "2025-05-27",
+  "nimage": 15875,
+  "sky_frac": 0.02
+ },
+ {
+  "site": "koffler",
+  "lat": 44.030028,
+  "lon": -79.533556,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2025-02-11",
+  "nimage": 21057,
+  "sky_frac": 0.019
+ },
+ {
+  "site": "NEON.D13.COMO.DP1.20002",
+  "lat": 40.03496,
+  "lon": -105.54487,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2017-05-30",
+  "nimage": 93308,
+  "sky_frac": 0.019
+ },
+ {
+  "site": "kendall",
+  "lat": 31.73652,
+  "lon": -109.94185,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2012-07-06",
+  "nimage": 160020,
+  "sky_frac": 0.018
+ },
+ {
+  "site": "NEON.D13.NIWO.DP1.00033",
+  "lat": 40.05425,
+  "lon": -105.58237,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2017-04-25",
+  "nimage": 90241,
+  "sky_frac": 0.018
+ },
+ {
+  "site": "sevmveblack15redamb",
+  "lat": 34.3356,
+  "lon": -106.7274,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-02-01",
+  "nimage": 7099,
+  "sky_frac": 0.018
+ },
+ {
+  "site": "NEON.D10.RMNP.DP1.00042",
+  "lat": 40.275903,
+  "lon": -105.545955,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2016-12-19",
+  "nimage": 98503,
+  "sky_frac": 0.016
+ },
+ {
+  "site": "niwot3",
+  "lat": 40.03286358,
+  "lon": -105.54697017,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2015-07-16",
+  "nimage": 149948,
+  "sky_frac": 0.016
+ },
+ {
+  "site": "NEON.D03.FLNT.DP1.20002",
+  "lat": 31.185424,
+  "lon": -84.437403,
+  "tz": -5,
+  "orientation": null,
+  "date_start": "2018-07-24",
+  "nimage": 84175,
+  "sky_frac": 0.015
+ },
+ {
+  "site": "srg",
+  "lat": 31.7894,
+  "lon": -110.8276,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2019-09-04",
+  "nimage": 61085,
+  "sky_frac": 0.014
+ },
+ {
+  "site": "cperuvb",
+  "lat": 40.8055764,
+  "lon": -104.7558542,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2015-07-15",
+  "nimage": 154708,
+  "sky_frac": 0.013
+ },
+ {
+  "site": "jernovel",
+  "lat": 32.6335,
+  "lon": -106.8334,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2019-02-13",
+  "nimage": 90512,
+  "sky_frac": 0.013
+ },
+ {
+  "site": "NEON.D16.ABBY.DP1.00033",
+  "lat": 45.76243,
+  "lon": -122.33033,
+  "tz": -8,
+  "orientation": "N",
+  "date_start": "2017-05-30",
+  "nimage": 94219,
+  "sky_frac": 0.013
+ },
+ {
+  "site": "NEON.D16.WREF.DP1.00042",
+  "lat": 45.82049,
+  "lon": -121.95191,
+  "tz": -8,
+  "orientation": "N",
+  "date_start": "2018-02-01",
+  "nimage": 87163,
+  "sky_frac": 0.013
+ },
+ {
+  "site": "tworfpr",
+  "lat": 31.4802,
+  "lon": -96.8826,
+  "tz": -6,
+  "orientation": "S",
+  "date_start": "2018-04-18",
+  "nimage": 64500,
+  "sky_frac": 0.013
+ },
+ {
+  "site": "NEON.D09.PRLA.DP1.20002",
+  "lat": 47.15909,
+  "lon": -99.11388,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2017-10-30",
+  "nimage": 101253,
+  "sky_frac": 0.012
+ },
+ {
+  "site": "NEON.D16.MCRA.DP1.20002",
+  "lat": 44.259598,
+  "lon": -122.165554,
+  "tz": -8,
+  "orientation": null,
+  "date_start": "2017-11-17",
+  "nimage": 69039,
+  "sky_frac": 0.012
+ },
+ {
+  "site": "NEON.D15.ONAQ.DP1.00042",
+  "lat": 40.177599,
+  "lon": -112.452452,
+  "tz": -7,
+  "orientation": "NNE",
+  "date_start": "2016-12-19",
+  "nimage": 98110,
+  "sky_frac": 0.011
+ },
+ {
+  "site": "arsltarucbec2",
+  "lat": 40.7558,
+  "lon": -77.9999,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2019-05-16",
+  "nimage": 84532,
+  "sky_frac": 0.01
+ },
+ {
+  "site": "NEON.D06.KONA.DP1.00042",
+  "lat": 39.110446,
+  "lon": -96.612935,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2016-05-06",
+  "nimage": 109530,
+  "sky_frac": 0.01
+ },
+ {
+  "site": "srm",
+  "lat": 31.8214,
+  "lon": -110.8661,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2018-07-20",
+  "nimage": 110150,
+  "sky_frac": 0.01
+ },
+ {
+  "site": "NEON.D08.TALL.DP1.00033",
+  "lat": 32.95047,
+  "lon": -87.393259,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2016-12-16",
+  "nimage": 98073,
+  "sky_frac": 0.009
+ },
+ {
+  "site": "NEON.D02.LEWI.DP1.20002",
+  "lat": 39.09564,
+  "lon": -77.98322,
+  "tz": -5,
+  "orientation": null,
+  "date_start": "2017-05-30",
+  "nimage": 91364,
+  "sky_frac": 0.008
+ },
+ {
+  "site": "NEON.D13.NIWO.DP1.00042",
+  "lat": 40.05425,
+  "lon": -105.58237,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2017-03-09",
+  "nimage": 86231,
+  "sky_frac": 0.008
+ },
+ {
+  "site": "NEON.D14.SYCA.DP1.20002",
+  "lat": 33.749057,
+  "lon": -111.506903,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2017-10-31",
+  "nimage": 82647,
+  "sky_frac": 0.007
+ },
+ {
+  "site": "asuhighlands",
+  "lat": 36.2076,
+  "lon": -81.7032,
+  "tz": -5,
+  "orientation": "NNE",
+  "date_start": "2016-07-12",
+  "nimage": 126474,
+  "sky_frac": 0.006
+ },
+ {
+  "site": "NEON.D02.SCBI.DP1.00042",
+  "lat": 38.892925,
+  "lon": -78.139494,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2016-12-13",
+  "nimage": 99908,
+  "sky_frac": 0.006
+ },
+ {
+  "site": "NEON.D11.OAES.DP1.00042",
+  "lat": 35.41059,
+  "lon": -99.05879,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2017-02-27",
+  "nimage": 95814,
+  "sky_frac": 0.006
+ },
+ {
+  "site": "NEON.D06.KING.DP1.20002",
+  "lat": 39.10506,
+  "lon": -96.60336,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2016-12-15",
+  "nimage": 105926,
+  "sky_frac": 0.005
+ },
+ {
+  "site": "NEON.D13.WLOU.DP1.20002",
+  "lat": 39.891366,
+  "lon": -105.915395,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2017-10-30",
+  "nimage": 79137,
+  "sky_frac": 0.005
+ },
+ {
+  "site": "witnesstree",
+  "lat": 42.53556197,
+  "lon": -72.18956997,
+  "tz": -5,
+  "orientation": "UP",
+  "date_start": "2014-11-21",
+  "nimage": 153205,
+  "sky_frac": 0.005
+ },
+ {
+  "site": "NEON.D06.KONZ.DP1.00033",
+  "lat": 39.10077,
+  "lon": -96.56309,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2017-02-24",
+  "nimage": 104123,
+  "sky_frac": 0.003
+ },
+ {
+  "site": "NEON.D07.ORNL.DP1.00042",
+  "lat": 35.964128,
+  "lon": -84.282588,
+  "tz": -5,
+  "orientation": "W",
+  "date_start": "2016-12-15",
+  "nimage": 96742,
+  "sky_frac": 0.003
+ },
+ {
+  "site": "NEON.D09.NOGP.DP1.00042",
+  "lat": 46.76972,
+  "lon": -100.91535,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2017-10-31",
+  "nimage": 89084,
+  "sky_frac": 0.003
+ },
+ {
+  "site": "NEON.D16.WREF.DP1.00033",
+  "lat": 45.82049,
+  "lon": -121.95191,
+  "tz": -8,
+  "orientation": "N",
+  "date_start": "2018-02-01",
+  "nimage": 89765,
+  "sky_frac": 0.003
+ },
+ {
+  "site": "richmondbrackishmarsh",
+  "lat": 49.1312,
+  "lon": -123.1963,
+  "tz": -8,
+  "orientation": "SW",
+  "date_start": "2022-09-30",
+  "nimage": 54572,
+  "sky_frac": 0.002
+ },
+ {
+  "site": "sagehen2",
+  "lat": 39.4307,
+  "lon": -120.2407,
+  "tz": -8,
+  "orientation": "W",
+  "date_start": "2017-10-13",
+  "nimage": 118009,
+  "sky_frac": 0.002
+ },
+ {
+  "site": "sevmveblack18ambamb",
+  "lat": 34.3355,
+  "lon": -106.7273,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-02-02",
+  "nimage": 7035,
+  "sky_frac": 0.002
+ },
+ {
+  "site": "gcesapelo",
+  "lat": 31.4440444,
+  "lon": -81.283528,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2013-09-16",
+  "nimage": 133419,
+  "sky_frac": 0.001
+ },
+ {
+  "site": "NEON.D06.KONZ.DP1.00042",
+  "lat": 39.10077,
+  "lon": -96.56309,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2017-02-24",
+  "nimage": 100516,
+  "sky_frac": 0.001
+ },
+ {
+  "site": "NEON.D09.WOOD.DP1.00042",
+  "lat": 47.1282,
+  "lon": -99.241334,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2016-12-19",
+  "nimage": 94232,
+  "sky_frac": 0.001
+ },
+ {
+  "site": "NEON.D10.ARIK.DP1.20002",
+  "lat": 39.758246,
+  "lon": -102.447103,
+  "tz": -7,
+  "orientation": "",
+  "date_start": "2016-12-19",
+  "nimage": 98510,
+  "sky_frac": 0.001
+ },
+ {
+  "site": "NEON.D17.TECR.DP1.20002",
+  "lat": 36.955931,
+  "lon": -119.027363,
+  "tz": -8,
+  "orientation": null,
+  "date_start": "2018-11-26",
+  "nimage": 48577,
+  "sky_frac": 0.001
+ },
+ {
+  "site": "sevmvecreo6ambamb",
+  "lat": 34.3383,
+  "lon": -106.7389,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-22",
+  "nimage": 7214,
+  "sky_frac": 0.001
+ },
+ {
+  "site": "thompsonfarmfluxtower",
+  "lat": 43.1084,
+  "lon": -70.9519,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2024-07-10",
+  "nimage": 47789,
+  "sky_frac": 0.001
+ },
+ {
+  "site": "archboldbahia",
+  "lat": 27.1656,
+  "lon": -81.216112,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2017-03-21",
+  "nimage": 93482,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "arscolessouth",
+  "lat": 42.4816,
+  "lon": -93.5235,
+  "tz": -6,
+  "orientation": "NNW",
+  "date_start": "2018-08-17",
+  "nimage": 91850,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "bostoncommon",
+  "lat": 42.355912,
+  "lon": -71.064145,
+  "tz": -5,
+  "orientation": "NW",
+  "date_start": "2010-05-06",
+  "nimage": 305237,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "dangermondbunkerhill",
+  "lat": 34.4909,
+  "lon": -120.4635,
+  "tz": -8,
+  "orientation": "N",
+  "date_start": "2022-02-03",
+  "nimage": 55273,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "harvardbarn2",
+  "lat": 42.53532,
+  "lon": -72.1899,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2011-08-03",
+  "nimage": 296620,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "harvardblo",
+  "lat": 42.5378,
+  "lon": -72.1715,
+  "tz": -5,
+  "orientation": "NW",
+  "date_start": "2009-04-01",
+  "nimage": 194522,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "hobcawlongleafunderstory",
+  "lat": 33.3242,
+  "lon": -79.244,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2024-01-27",
+  "nimage": 30050,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "ibp",
+  "lat": 32.589,
+  "lon": -106.847,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2013-05-10",
+  "nimage": 103910,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "jergrassland2",
+  "lat": 32.5849,
+  "lon": -106.8261,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2022-01-22",
+  "nimage": 51988,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D01.BART.DP1.00042",
+  "lat": 44.063869,
+  "lon": -71.287375,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2016-12-13",
+  "nimage": 101369,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D01.HARV.DP1.00042",
+  "lat": 42.536911,
+  "lon": -72.17265,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2016-12-13",
+  "nimage": 99717,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D01.HOPB.DP1.20002",
+  "lat": 42.471786,
+  "lon": -72.329627,
+  "tz": -5,
+  "orientation": null,
+  "date_start": "2017-11-01",
+  "nimage": 88163,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D02.BLAN.DP1.00042",
+  "lat": 39.033698,
+  "lon": -78.041788,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2016-12-14",
+  "nimage": 108483,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D02.POSE.DP1.20002",
+  "lat": 38.89332,
+  "lon": -78.14678,
+  "tz": -5,
+  "orientation": null,
+  "date_start": "2016-04-12",
+  "nimage": 105062,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D02.SCBI.DP1.00033",
+  "lat": 38.892925,
+  "lon": -78.139494,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2016-12-13",
+  "nimage": 98693,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D02.SERC.DP1.00042",
+  "lat": 38.89008,
+  "lon": -76.56001,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2016-02-23",
+  "nimage": 106612,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D03.DSNY.DP1.00042",
+  "lat": 28.12505,
+  "lon": -81.43619,
+  "tz": -5,
+  "orientation": "NNE",
+  "date_start": "2016-12-14",
+  "nimage": 102457,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D03.JERC.DP1.00042",
+  "lat": 31.194839,
+  "lon": -84.468623,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2016-12-14",
+  "nimage": 95033,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D03.OSBS.DP1.00042",
+  "lat": 29.689282,
+  "lon": -81.993431,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2016-12-14",
+  "nimage": 95844,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D05.STEI.DP1.00042",
+  "lat": 45.50894,
+  "lon": -89.58637,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2017-10-30",
+  "nimage": 93578,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D05.TREE.DP1.00042",
+  "lat": 45.49373,
+  "lon": -89.58572,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2016-12-15",
+  "nimage": 102031,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D05.UNDE.DP1.00042",
+  "lat": 46.23391,
+  "lon": -89.537254,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2016-12-14",
+  "nimage": 97833,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D06.MCDI.DP1.20002",
+  "lat": 38.94428,
+  "lon": -96.44197,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2017-04-03",
+  "nimage": 92558,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D07.GRSM.DP1.00042",
+  "lat": 35.68896,
+  "lon": -83.50195,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2017-01-24",
+  "nimage": 99972,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D07.LECO.DP1.20002",
+  "lat": 35.69043,
+  "lon": -83.50379,
+  "tz": -5,
+  "orientation": null,
+  "date_start": "2017-04-03",
+  "nimage": 102808,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D07.MLBS.DP1.00042",
+  "lat": 37.378314,
+  "lon": -80.524847,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2016-12-15",
+  "nimage": 100163,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D08.LENO.DP1.00042",
+  "lat": 31.85388,
+  "lon": -88.16122,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2017-10-30",
+  "nimage": 83425,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D08.MAYF.DP1.20002",
+  "lat": 32.959657,
+  "lon": -87.408128,
+  "tz": -6,
+  "orientation": "",
+  "date_start": "2016-04-12",
+  "nimage": 95995,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D08.TALL.DP1.00042",
+  "lat": 32.95047,
+  "lon": -87.393259,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2016-12-16",
+  "nimage": 100635,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D10.CPER.DP1.00042",
+  "lat": 40.81553,
+  "lon": -104.7456,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2016-06-29",
+  "nimage": 105102,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D10.HQTW.DP1.00042",
+  "lat": 40.016704,
+  "lon": -105.245612,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2021-04-13",
+  "nimage": 16826,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D11.CLBJ.DP1.00042",
+  "lat": 33.40123,
+  "lon": -97.57,
+  "tz": -6,
+  "orientation": "N",
+  "date_start": "2017-02-13",
+  "nimage": 96407,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D11.PRIN.DP1.20002",
+  "lat": 33.37859,
+  "lon": -97.78226,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2017-02-24",
+  "nimage": 102061,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D12.BLDE.DP1.20002",
+  "lat": 44.95011,
+  "lon": -110.58715,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2018-09-25",
+  "nimage": 87178,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D12.YELL.DP1.00042",
+  "lat": 44.95348,
+  "lon": -110.53914,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2018-10-10",
+  "nimage": 85400,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D14.SRER.DP1.00042",
+  "lat": 31.91068,
+  "lon": -110.83549,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2017-02-24",
+  "nimage": 95840,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D15.REDB.DP1.20002",
+  "lat": 40.783934,
+  "lon": -111.797887,
+  "tz": -7,
+  "orientation": null,
+  "date_start": "2018-07-19",
+  "nimage": 72409,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D16.ABBY.DP1.00042",
+  "lat": 45.76243,
+  "lon": -122.33033,
+  "tz": -8,
+  "orientation": "N",
+  "date_start": "2017-10-31",
+  "nimage": 89154,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D17.BIGC.DP1.20002",
+  "lat": 37.059719,
+  "lon": -119.257549,
+  "tz": -8,
+  "orientation": null,
+  "date_start": "2018-09-13",
+  "nimage": 71490,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D17.SJER.DP1.00042",
+  "lat": 37.10878,
+  "lon": -119.73228,
+  "tz": -8,
+  "orientation": null,
+  "date_start": "2018-07-12",
+  "nimage": 82834,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D17.SOAP.DP1.00042",
+  "lat": 37.03337,
+  "lon": -119.26219,
+  "tz": -8,
+  "orientation": "N",
+  "date_start": "2017-11-02",
+  "nimage": 85686,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "NEON.D17.TEAK.DP1.00042",
+  "lat": 37.00583,
+  "lon": -119.00602,
+  "tz": -8,
+  "orientation": null,
+  "date_start": "2018-07-24",
+  "nimage": 85858,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "niwot5",
+  "lat": 40.03286358,
+  "lon": -105.54697017,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2016-07-06",
+  "nimage": 273840,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "oregonYPbud",
+  "lat": 44.3238,
+  "lon": -121.606,
+  "tz": -8,
+  "orientation": "N",
+  "date_start": "2019-05-23",
+  "nimage": 85752,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "othssoftwood",
+  "lat": 44.934527,
+  "lon": -68.664888,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2019-04-08",
+  "nimage": 23206,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sagehen3",
+  "lat": 39.4311,
+  "lon": -120.2405,
+  "tz": -8,
+  "orientation": "SW",
+  "date_start": "2019-05-10",
+  "nimage": 98691,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "santacruz1",
+  "lat": 36.9741,
+  "lon": -122.0308,
+  "tz": -8,
+  "orientation": null,
+  "date_start": "2021-04-08",
+  "nimage": 14933,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "segabluechutepj3",
+  "lat": 35.5876,
+  "lon": -111.9712,
+  "tz": -7,
+  "orientation": "ENE",
+  "date_start": "2024-06-27",
+  "nimage": 11187,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblack14redinc",
+  "lat": 34.3356,
+  "lon": -106.7275,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-02-01",
+  "nimage": 7119,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue10ambinc",
+  "lat": 34.3341,
+  "lon": -106.6311,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 10649,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue11ambinc",
+  "lat": 34.3341,
+  "lon": -106.631,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 10645,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue12ambamb",
+  "lat": 34.334,
+  "lon": -106.6309,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 10657,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue13ambamb",
+  "lat": 34.334,
+  "lon": -106.6311,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 10648,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue14ambinc",
+  "lat": 34.334,
+  "lon": -106.6313,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 10698,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue15ambinc",
+  "lat": 34.334,
+  "lon": -106.6314,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 10707,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue16redamb",
+  "lat": 34.3339,
+  "lon": -106.6314,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 10728,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue17redinc",
+  "lat": 34.3339,
+  "lon": -106.6313,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 10655,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue18redinc",
+  "lat": 34.3338,
+  "lon": -106.6312,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 9799,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue1ambinc",
+  "lat": 34.3344,
+  "lon": -106.6307,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 9618,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue2ambinc",
+  "lat": 34.3344,
+  "lon": -106.6308,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 9529,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue3ambamb",
+  "lat": 34.3345,
+  "lon": -106.6309,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 9531,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue4redinc",
+  "lat": 34.3344,
+  "lon": -106.631,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 9525,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue5redinc",
+  "lat": 34.3343,
+  "lon": -106.6308,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 7757,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue6redamb",
+  "lat": 34.3342,
+  "lon": -106.6307,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 9520,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue7redinc",
+  "lat": 34.3341,
+  "lon": -106.6308,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 10698,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue8redinc",
+  "lat": 34.3342,
+  "lon": -106.631,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 10684,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmveblue9redamb",
+  "lat": 34.3342,
+  "lon": -106.6311,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2022-05-24",
+  "nimage": 8920,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvecreo10redamb",
+  "lat": 34.3382,
+  "lon": -106.7388,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-21",
+  "nimage": 6363,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvecreo11redinc",
+  "lat": 34.3383,
+  "lon": -106.7386,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-21",
+  "nimage": 6582,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvecreo12redinc",
+  "lat": 34.3382,
+  "lon": -106.7385,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-21",
+  "nimage": 7171,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvecreo19redamb",
+  "lat": 34.3386,
+  "lon": -106.739,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-23",
+  "nimage": 7258,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvecreo1redinc",
+  "lat": 34.3382,
+  "lon": -106.7392,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-22",
+  "nimage": 7307,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvecreo20redinc",
+  "lat": 34.3386,
+  "lon": -106.739,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-23",
+  "nimage": 7251,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvecreo21redinc",
+  "lat": 34.3386,
+  "lon": -106.739,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-23",
+  "nimage": 7189,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvecreo22ambinc",
+  "lat": 34.3386,
+  "lon": -106.739,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-23",
+  "nimage": 7223,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvecreo23ambinc",
+  "lat": 34.3386,
+  "lon": -106.739,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-23",
+  "nimage": 7119,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvecreo24ambamb",
+  "lat": 34.3386,
+  "lon": -106.739,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-23",
+  "nimage": 7124,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvecreo2redinc",
+  "lat": 34.3382,
+  "lon": -106.7391,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-22",
+  "nimage": 7306,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvecreo3redamb",
+  "lat": 34.3382,
+  "lon": -106.7389,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-22",
+  "nimage": 7298,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvecreo4ambinc",
+  "lat": 34.3384,
+  "lon": -106.7392,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-22",
+  "nimage": 7268,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvecreo5ambinc",
+  "lat": 34.3384,
+  "lon": -106.739,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-22",
+  "nimage": 7241,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvecreo7ambinc",
+  "lat": 34.3381,
+  "lon": -106.7388,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-21",
+  "nimage": 7339,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvecreo8ambinc",
+  "lat": 34.3381,
+  "lon": -106.7387,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-21",
+  "nimage": 7317,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvecreo9ambamb",
+  "lat": 34.3381,
+  "lon": -106.7385,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2023-05-21",
+  "nimage": 7243,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj10redinc",
+  "lat": 34.38789688,
+  "lon": -106.5238533,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2024-06-22",
+  "nimage": 5556,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj11redinc",
+  "lat": 34.38791006,
+  "lon": -106.524042,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2024-06-22",
+  "nimage": 5561,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj12ambamb",
+  "lat": 34.38797414,
+  "lon": -106.5239625,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2024-06-27",
+  "nimage": 5508,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj13redinc",
+  "lat": 34.38780961,
+  "lon": -106.52378,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2024-06-22",
+  "nimage": 5483,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj14redinc",
+  "lat": 34.38781264,
+  "lon": -106.5238969,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2024-06-22",
+  "nimage": 5469,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj15ambamb",
+  "lat": 34.38782147,
+  "lon": -106.5240016,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2024-06-22",
+  "nimage": 5482,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj16ambinc",
+  "lat": 34.38770671,
+  "lon": -106.5237857,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2024-06-22",
+  "nimage": 5474,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj17ambinc",
+  "lat": 34.38770618,
+  "lon": -106.523909,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2024-06-22",
+  "nimage": 5495,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj18redamb",
+  "lat": 34.38770515,
+  "lon": -106.5240387,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2024-06-22",
+  "nimage": 5424,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj1ambamb",
+  "lat": 34.38822895,
+  "lon": -106.5236311,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2024-06-27",
+  "nimage": 5566,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj2redamb",
+  "lat": 34.38807678,
+  "lon": -106.523727,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2024-06-22",
+  "nimage": 5553,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj3ambinc",
+  "lat": 34.38806837,
+  "lon": -106.5238414,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2024-06-22",
+  "nimage": 5556,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj4ambinc",
+  "lat": 34.38807059,
+  "lon": -106.5239553,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2024-06-27",
+  "nimage": 5544,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj5redinc",
+  "lat": 34.38809039,
+  "lon": -106.5240621,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2024-06-22",
+  "nimage": 5575,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj6redinc",
+  "lat": 34.38798939,
+  "lon": -106.5237506,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2024-06-22",
+  "nimage": 5541,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj7ambinc",
+  "lat": 34.38798294,
+  "lon": -106.5238585,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2024-06-22",
+  "nimage": 5435,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj8ambinc",
+  "lat": 34.38801424,
+  "lon": -106.5240355,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2009-12-31",
+  "nimage": 4716,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "sevmvepj9redamb",
+  "lat": 34.38790394,
+  "lon": -106.5237611,
+  "tz": -7,
+  "orientation": "SE",
+  "date_start": "2024-06-22",
+  "nimage": 5615,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "snodgrass2",
+  "lat": 38.92619636,
+  "lon": -106.97143762,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2021-06-21",
+  "nimage": 15930,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "snodgrass3",
+  "lat": 38.92839978,
+  "lon": -106.97811962,
+  "tz": -7,
+  "orientation": "S",
+  "date_start": "2021-06-23",
+  "nimage": 16812,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "snodgrass7",
+  "lat": 38.93142134,
+  "lon": -106.98523878,
+  "tz": -7,
+  "orientation": "NE",
+  "date_start": "2021-06-22",
+  "nimage": 13513,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceA0P07",
+  "lat": 47.50493,
+  "lon": -93.45314,
+  "tz": -6,
+  "orientation": "",
+  "date_start": "2016-03-30",
+  "nimage": 139297,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceA0P07SH",
+  "lat": 47.50493,
+  "lon": -93.45314,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2017-11-29",
+  "nimage": 123438,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceA0P21",
+  "lat": 47.50625,
+  "lon": -93.45275,
+  "tz": -6,
+  "orientation": "",
+  "date_start": "2016-03-30",
+  "nimage": 138371,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceA0P21SH",
+  "lat": 47.50625,
+  "lon": -93.45275,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2017-11-29",
+  "nimage": 123929,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT0P06",
+  "lat": 47.5051,
+  "lon": -93.4535,
+  "tz": -6,
+  "orientation": "",
+  "date_start": "2015-08-23",
+  "nimage": 146390,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT0P06SH",
+  "lat": 47.5051,
+  "lon": -93.4535,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2017-11-29",
+  "nimage": 124450,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT0P19E",
+  "lat": 47.5065,
+  "lon": -93.4535,
+  "tz": -6,
+  "orientation": "",
+  "date_start": "2015-08-23",
+  "nimage": 145499,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT0P19ESH",
+  "lat": 47.5065,
+  "lon": -93.4535,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2017-11-29",
+  "nimage": 123651,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT2P11E",
+  "lat": 47.5053,
+  "lon": -93.4527,
+  "tz": -6,
+  "orientation": "",
+  "date_start": "2015-08-23",
+  "nimage": 146634,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT2P11ESH",
+  "lat": 47.5053,
+  "lon": -93.4527,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2017-11-29",
+  "nimage": 124208,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT2P20",
+  "lat": 47.5064,
+  "lon": -93.4532,
+  "tz": -6,
+  "orientation": "",
+  "date_start": "2015-08-23",
+  "nimage": 147494,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT2P20SH",
+  "lat": 47.5064,
+  "lon": -93.4532,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2017-11-29",
+  "nimage": 124149,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT4P04E",
+  "lat": 47.5052,
+  "lon": -93.454,
+  "tz": -6,
+  "orientation": "",
+  "date_start": "2015-08-23",
+  "nimage": 147301,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT4P04ESH",
+  "lat": 47.5052,
+  "lon": -93.454,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2017-11-29",
+  "nimage": 124542,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT4P13",
+  "lat": 47.5057,
+  "lon": -93.453,
+  "tz": -6,
+  "orientation": "",
+  "date_start": "2015-08-23",
+  "nimage": 147001,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT4P13SH",
+  "lat": 47.5057,
+  "lon": -93.453,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2017-11-29",
+  "nimage": 124258,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT6P08",
+  "lat": 47.5056,
+  "lon": -93.4539,
+  "tz": -6,
+  "orientation": "",
+  "date_start": "2015-08-23",
+  "nimage": 146019,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT6P08SH",
+  "lat": 47.5056,
+  "lon": -93.4539,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2017-11-29",
+  "nimage": 124287,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT6P16E",
+  "lat": 47.5061,
+  "lon": -93.4532,
+  "tz": -6,
+  "orientation": "",
+  "date_start": "2015-08-23",
+  "nimage": 147305,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT6P16ESH",
+  "lat": 47.5061,
+  "lon": -93.4532,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2017-11-29",
+  "nimage": 123693,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT9P10E",
+  "lat": 47.5054,
+  "lon": -93.4532,
+  "tz": -6,
+  "orientation": "",
+  "date_start": "2015-08-23",
+  "nimage": 145369,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT9P10ESH",
+  "lat": 47.5054,
+  "lon": -93.4532,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2017-11-29",
+  "nimage": 124344,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT9P17",
+  "lat": 47.506,
+  "lon": -93.4527,
+  "tz": -6,
+  "orientation": "",
+  "date_start": "2015-08-23",
+  "nimage": 139764,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "spruceT9P17SH",
+  "lat": 47.506,
+  "lon": -93.4527,
+  "tz": -6,
+  "orientation": null,
+  "date_start": "2017-11-29",
+  "nimage": 124171,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "stevensonoaks001",
+  "lat": 34.4566,
+  "lon": -119.2426,
+  "tz": -8,
+  "orientation": "E",
+  "date_start": "2023-03-23",
+  "nimage": 29021,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "townsenddemeadow",
+  "lat": 39.3917,
+  "lon": -75.6281,
+  "tz": -5,
+  "orientation": "N",
+  "date_start": "2020-05-26",
+  "nimage": 41798,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "usme4flox",
+  "lat": 44.4991,
+  "lon": -121.6237,
+  "tz": -8,
+  "orientation": "NNW",
+  "date_start": "2026-05-14",
+  "nimage": 4741,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "usmpj",
+  "lat": 34.43845,
+  "lon": -106.2543606,
+  "tz": -7,
+  "orientation": "N",
+  "date_start": "2013-09-20",
+  "nimage": 141079,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "warrenwilson",
+  "lat": 35.6069,
+  "lon": -82.4421,
+  "tz": -5,
+  "orientation": "NW",
+  "date_start": "2016-05-18",
+  "nimage": 122947,
+  "sky_frac": 0.0
+ },
+ {
+  "site": "windriverunderstory",
+  "lat": 45.8212833,
+  "lon": -121.9520833,
+  "tz": -8,
+  "orientation": "N",
+  "date_start": "2013-04-17",
+  "nimage": 141818,
+  "sky_frac": 0.0
+ }
+]
