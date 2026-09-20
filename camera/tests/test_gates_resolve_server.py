@@ -186,6 +186,16 @@ def test_gate_passes_normal_frame():
     assert g.phash is not None and g.width == 640
 
 
+def test_gate_accepts_webp():
+    rng = np.random.default_rng(1)
+    a = rng.normal(120, 40, (480, 640, 3)).clip(0, 255).astype("uint8")
+    buf = io.BytesIO()
+    Image.fromarray(a).save(buf, "WEBP", quality=85)
+    assert buf.getvalue()[:4] == b"RIFF"
+    g = gates.check_frame(frame(buf.getvalue()), refresh_s=600, now=NOW)
+    assert g.ok, g.reason
+
+
 def test_gate_rejects_bytes_level_problems():
     assert "too small" in gates.check_frame(frame(b"x" * 100), 600, now=NOW).reason
     html = b"<html>" + b" " * 5000

@@ -11,6 +11,7 @@ import pandas as pd
 from sunroof_camera.ingest.build import dedupe_views, merge_shards
 from sunroof_camera.ingest.sources import (
     algo,
+    andes_volcano,
     austin,
     caltrans,
     cars_gql,
@@ -656,3 +657,107 @@ def test_upsert_keeps_probed_health_across_category_sets():
     new = to_frame([mk("deldot:a", "unverified"), mk("deldot:c", "unverified")])
     out = upsert(base, new).set_index("id")["health"].astype(str)
     assert out.to_dict() == {"deldot:b": "dead", "deldot:a": "live", "deldot:c": "unverified"}
+
+
+def test_igp_peru_sector_and_site_placement():
+    payload = {
+        "data": [
+            {
+                "name": "Sabancaya",
+                "slug": "sabancaya",
+                "latitud": -15.7876,
+                "longitud": -71.8558,
+                "elevation": 5960,
+                "camera": [
+                    {
+                        "id": 1,
+                        "title": "Sector Noreste",
+                        "link": "https://ide.igp.gob.pe/ltImages/Sabancaya.jpg",
+                        "status": True,
+                    },
+                    {
+                        "id": 4,
+                        "title": "Quebrada Huayray (Pinchollo)",
+                        "link": "https://ide.igp.gob.pe/ltImages/Sabancaya05.jpg",
+                        "status": True,
+                    },
+                    {
+                        "id": 7,
+                        "title": "Off",
+                        "link": "https://ide.igp.gob.pe/ltImages/x.jpg",
+                        "status": False,
+                    },
+                    {"id": 8, "title": "No link", "link": None, "status": True},
+                ],
+            },
+            {"name": "NoCoords", "slug": "n", "latitud": None, "longitud": None, "camera": []},
+        ]
+    }
+    cams = _run(andes_volcano.IGPPeruAdapter(), {"api/volcanoes": payload})
+    assert [c.id for c in cams] == ["pe_igp:1", "pe_igp:4"]
+    ne = cams[0]
+    # NE-sector site is ~7 km NE of the summit and looks back SW at it
+    assert ne.lat > -15.7876 and ne.lon > -71.8558 and ne.azimuth_deg == 225
+    assert ne.heading_conf == "inferred" and ne.tz == "America/Lima" and ne.night_ok is False
+    assert cams[1].name.startswith("Sabancaya — ") and cams[1].image_url.endswith("Sabancaya05.jpg")
+
+
+def test_sector_bearing_es_multiword_first():
+    assert andes_volcano.sector_bearing_es("Sector Noreste") == 45
+    assert andes_volcano.sector_bearing_es("Sector Sur") == 180
+    assert andes_volcano.sector_bearing_es("Sector Sudoeste") == 225
+    assert andes_volcano.sector_bearing_es("Pinchollo") is None
+    lat, lon = andes_volcano.offset_km(0.0, 0.0, 90.0, 111.19)
+    assert abs(lat) < 1e-6 and abs(lon - 1.0) < 1e-3
+
+
+def test_igepn_parses_single_quoted_calls_ir_and_skips_fallback():
+    html = """
+    setImageWithFallback('rumVIS','https://www.igepn.edu.ec/images/portal/camaras/RUMVIS_HD.webp',
+        'https://www.igepn.edu.ec/images/portal/camaras/loading.png', 640, 480);
+    setImageWithFallback("rumIR", "https://www.igepn.edu.ec/images/portal/camaras/RUMIR_HD.webp");
+    setImageWithFallback('rumVIS','https://www.igepn.edu.ec/images/portal/camaras/dup.webp');
+    setImageWithFallback('tambo','https://www.igepn.edu.ec/images/portal/camaras/TAMBO.webp');
+    """
+    cams = _run(andes_volcano.IGEPNAdapter(), {"cotopaxi-camaras": html})
+    by = {c.id: c for c in cams}
+    assert set(by) == {"ec_igepn:rumVIS", "ec_igepn:rumIR", "ec_igepn:tambo"}
+    vis, ir, tambo = by["ec_igepn:rumVIS"], by["ec_igepn:rumIR"], by["ec_igepn:tambo"]
+    assert vis.image_url.endswith("RUMVIS_HD.webp") and vis.night_ok is False
+    assert ir.night_ok is True and (vis.lat, vis.lon) == (ir.lat, ir.lon)
+    assert vis.heading_conf == "inferred" and 100 < vis.azimuth_deg < 180  # site NW of summit
+    assert tambo.heading_conf == "unknown" and (tambo.lat, tambo.lon) == (-0.677, -78.436)
+    # co-located VIS/IR twins survive view dedupe
+    assert len(dedupe_views(to_frame(cams))) == 3
+
+
+def test_sgc_colombia_picks_full_res_and_skips_thumbs_and_dead_mirror():
+    galeras = """
+    <img src="https://amenazas.sgc.gov.co/ovspa/camaras/img-mini/barranco000.jpg">
+    <img src="https://amenazas.sgc.gov.co/webcam/pasto/cumbal000.jpg">
+    <a href="https://amenazas.sgc.gov.co/ovspa/camaras/barranco000.jpg">
+    <a href="http://amenazas.sgc.gov.co/ovspa/camaras/galeras-consaca.jpg">
+    <a href="https://amenazas.sgc.gov.co/ovspa/camaras/barranco000.jpg">
+    """
+    purace = """
+    <a href="https://amenazas.sgc.gov.co/popayan/webcams/Mina2/imagen_web.jpg">
+    <a href="https://amenazas.sgc.gov.co/popayan/webcams/Mina2_IR/imagen_web.jpg">
+    """
+    cams = _run(
+        andes_volcano.SGCColombiaAdapter(), {"VolcanGaleras": galeras, "VolcanPurace": purace}
+    )
+    by = {c.id: c for c in cams}
+    assert set(by) == {
+        "co_sgc:barranco",
+        "co_sgc:galeras-consaca",
+        "co_sgc:mina2",
+        "co_sgc:mina2_ir",
+    }
+    assert by["co_sgc:galeras-consaca"].image_url.startswith("https://")
+    assert by["co_sgc:barranco"].name == "Galeras — Barranco Alto"
+    assert by["co_sgc:mina2_ir"].night_ok and by["co_sgc:mina2_ir"].name == "Puracé — Mina2 (IR)"
+    assert by["co_sgc:mina2"].heading_conf == "unknown"
+    assert (
+        andes_volcano.sgc_cam_key("https://x/ovspa/camaras/azufral-lag-hd000.jpg")
+        == "azufral-lag-hd"
+    )

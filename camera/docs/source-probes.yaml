@@ -537,3 +537,76 @@
   region: global
   status: later
   reason: hand-picked video IDs from user; yt-dlp → ffmpeg frame; see sources.md Tier 3 list
+
+# ---------------------------------------------------------------- South America (after PR #23)
+
+- id: pe_igp
+  region: PE
+  status: added
+  adapter: andes_volcano.py (IGPPeruAdapter)
+  endpoint: https://cenvul.igp.gob.pe/backend/api/volcanoes?populate=camera
+  rows: 13
+  notes: >-
+    Strapi JSON; volcano lat/lon/elevation + camera[] (title 'Sector Noreste' -> site 7 km NE of summit,
+    azimuth back to summit). JPEGs at ide.igp.gob.pe/ltImages/*.jpg, ~1 min. 13/13 live on 2026-09-20.
+
+- id: ec_igepn
+  region: EC
+  status: added
+  adapter: andes_volcano.py (IGEPNAdapter)
+  endpoint: https://www.igepn.edu.ec/{cotopaxi,tungurahua,reventador,sangay,ggp,islas-galapagos}-camaras
+  rows: 26
+  notes: >-
+    inline JS setImageWithFallback('key','…_HD.webp','loading.png') (single quotes!); WebP 1296x960 ~2 min.
+    8 cams share a 'sin señal' card (auto-flagged as placeholder), 4 return 0 bytes. 3 thermal (*IR) rows night_ok.
+  probe: curl -sI https://www.igepn.edu.ec/images/portal/camaras/SNCHLG_HD.webp
+  expect: 200 image/webp, > 100 KB
+
+- id: co_sgc
+  region: CO
+  status: added
+  adapter: andes_volcano.py (SGCColombiaAdapter)
+  endpoint: https://www2.sgc.gov.co/sgc/volcanes/Volcan{Purace,Galeras,Cumbal,Azufral,Sotara,Animas}/Paginas/imagenes-en-linea.aspx
+  rows: 20
+  notes: >-
+    SharePoint pages; stills at amenazas.sgc.gov.co/ovspa/camaras/*.jpg and /popayan/webcams/*/imagen_web.jpg
+    (720p-1080p). /img-mini/ thumbnails and the legacy /webcam/pasto/ mirror (404) are skipped.
+    14 live, 5 stale (>= 16 days), 1 undecodable on 2026-09-20. 2 thermal (*_IR) rows night_ok.
+
+- id: co_sgc_ruiz_manizales
+  region: CO
+  status: later
+  observed: Nevado del Ruiz camera page is an embedded video wall; no still-image URLs in the HTML
+  reason: needs stream/XHR inspection
+  probe: open https://www2.sgc.gov.co/sgc/volcanes/VolcanNevadoDelRuiz/Paginas/imagenes-en-linea.aspx and inspect network
+  expect: a *.jpg or *.m3u8 URL
+
+- id: cl_sernageomin_rnvv
+  region: CL
+  status: later
+  observed: sernageomin.cl volcano camera pages are JS players; no direct still endpoints found
+  reason: needs XHR inspection
+  probe: inspect network on https://rnvv.sernageomin.cl camera pages
+  expect: still-image or HLS URL
+
+- id: south_america_road_agencies
+  region: CL, AR, BR, UY
+  status: rejected
+  observed: UOCT / Autopistas (CL), Vialidad Nacional (AR), DER-SP / CET (BR), MTOP (UY) -> HTML shells, 403, or connection failures
+  reason: no keyless JSON catalog or image endpoint found
+  probe: re-run probe_sa.sh equivalents; look for /api/cameras, GeoJSON, or map XHR
+  expect: JSON with lat/lon + image URL
+
+- id: south_america_met_services
+  region: BR, AR
+  status: rejected
+  observed: INPE/CPTEC and SMN publish no public camera product
+  reason: no cameras
+  probe: search site for 'camera' / 'webcam'
+
+- id: windy_south_america_extra_countries
+  region: EC, UY, PY, VE, FK
+  status: later
+  observed: keyed Windy API returns EC 2, UY 3, PY 7, VE 5, FK 1 webcams (2026-09-20)
+  reason: not in windy.COUNTRIES; +17 rows if added
+  probe: add the ISO codes to windy.COUNTRIES and refresh --source windy

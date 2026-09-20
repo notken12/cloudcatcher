@@ -146,3 +146,35 @@ Second pass over US states not on the CARS platform, plus city/regional DOTs.
 | USFS visibility cams `fsvisimages.com`, Mt Washington Obs, Michigan MiDrive `/camera` | nginx default page / 403 / 404 | dead or moved |
 
 Net: +4.2k US rows (catalog ~42.5k), 48 keyless sources. New US states with footage: DE, AL, CT, IL (Chicago corridor), TX (Austin), WA (Seattle/Puget Sound).
+
+## South America — Sep 2026 (after PR #23)
+
+Nothing keyless existed below Mexico (Windy only, ~360 cams across BR/AR/CL/CO/PE with the key). Road
+agencies were the obvious first stop; none of them exposed images. The national volcano observatories
+did — high-altitude, sky-facing, refreshed every 1–5 min, and several have thermal twins.
+
+| Source | Probe result | Verdict |
+|---|---|---|
+| Peru IGP / CENVUL `cenvul.igp.gob.pe/backend/api/volcanoes?populate=camera` | keyless Strapi JSON: 8 volcanoes with lat/lon/elevation and a `camera[]` list (title = "Sector Noreste" etc., `link` = `ide.igp.gob.pe/ltImages/*.jpg`); all 13 JPEGs 200 and < 2 min old | **added** `andes_volcano.IGPPeruAdapter` (+13, 13/13 live) |
+| Ecuador IG-EPN `igepn.edu.ec/{cotopaxi,tungurahua,reventador,sangay,ggp,islas-galapagos}-camaras` | HTML with inline `setImageWithFallback('key','…_HD.webp','loading.png')`; 26 WebP endpoints (1296×960, ~2 min); 8 currently return the same "sin señal" card, 4 are 0-byte | **added** `andes_volcano.IGEPNAdapter` (+26, 13 live at probe; placeholder card auto-detected by the shared-hash rule; WebP magic added to the frame gate) |
+| Colombia SGC `www2.sgc.gov.co/sgc/volcanes/Volcan{Purace,Galeras,Cumbal,Azufral,Sotara,Animas}/Paginas/imagenes-en-linea.aspx` | SharePoint pages linking `amenazas.sgc.gov.co/{ovspa/camaras,popayan/webcams}/*.jpg` (720p–1080p); `/img-mini/` thumbs and the legacy `/webcam/pasto/` mirror (404) skipped | **added** `andes_volcano.SGCColombiaAdapter` (+20, 14 live / 5 stale ≥ 16 days / 1 undecodable) |
+| Colombia SGC Nevado del Ruiz / Manizales observatory | camera page is an embedded video wall, no still endpoints found | later |
+| Chile SERNAGEOMIN (RNVV) volcano cams | `sernageomin.cl` camera pages are JS/embedded players; no still URLs | later |
+| Chile UOCT / Autopistas, Argentina Vialidad Nacional, Brazil DER-SP/CET, Uruguay MTOP road cams | HTML shells, 403, or connection failures; no JSON catalog | rejected |
+| Brazil INPE / CPTEC, Argentina SMN sky cams | no public camera product found | rejected |
+| Windy `BR 134 · AR 95 · CL 105 · CO 19 · PE 1 · EC 2 · UY 3 · PY 7 · VE 5 · FK 1 · BO/GY/SR/GF 0` (keyed) | totals confirmed against the API | already covered for BR/AR/CL/PE/CO; EC/UY/PY/VE not in `windy.COUNTRIES` (+17 if added) |
+
+**Coordinates.** The observatories publish the *volcano's* position, not the camera's. Where the site is a
+named place we could locate (Sincholagua, Lasso, Consacá, OVSP Pasto, Pinchollo, …) the row is placed
+at the site with `azimuth_deg` = bearing to the summit, `heading_conf="inferred"`. Peru's "Sector
+Noreste" titles are turned into a point 7 km from the summit in that direction, looking back. Anything
+else sits on the summit with `heading_conf="unknown"` (no bearing filter, score ×0.6). Alpine-style
+sky coverage: `hfov 50°, elev −2…30°`.
+
+**Night.** Thermal cameras (`*IR`, `*_IR`) are `night_ok=True`; the visible ones are not. The
+health probe's `night_usable_frac` will confirm or overturn that within a few nights of samples.
+
+**Licensing.** Public government monitoring imagery, no explicit licence text; credit line stored in
+`attribution`, `embed_allowed=True` pending confirmation.
+
+Net: +59 rows (45 live at first probe), 51 keyless sources.
