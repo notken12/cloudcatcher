@@ -4,6 +4,8 @@
     uv run sunroof-camera serve --fake-events   # also replays fake events every 90 s
 
 Endpoints
+    GET  /events?type=&time=&limit=20   events from the SQLite store (--db), rarest/most severe
+                                 first, each with its cron-matched ranked cameras + footage
     POST /events                 WeatherEvent -> FootageResult (also pushed on /stream)
     GET  /feed                   latest FootageResult per event, newest first
     GET  /events/{id}/footage    one FootageResult
@@ -16,14 +18,17 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import sqlite3
 from collections import OrderedDict
 from collections.abc import Awaitable, Callable
 from contextlib import asynccontextmanager
+from datetime import datetime, timezone
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import FileResponse, Response, StreamingResponse
 
+from . import events_db as edb
 from . import vlm
 from .fetch import fetch_frame, row_to_camera
 from .footage import FootageResult, WeatherEvent
@@ -36,8 +41,9 @@ STATIC = Path(__file__).parent / "static"
 
 
 class State:
-    def __init__(self, catalog_path: Path, verdict_log: Path | None):
+    def __init__(self, catalog_path: Path, verdict_log: Path | None, db: Path | None = None):
         self.catalog_path = catalog_path
+        self.db: sqlite3.Connection | None = edb.connect(db) if db else None
         self.verdict_log = str(verdict_log) if verdict_log else None
         self.catalog: Catalog | None = None
         self.cache = FrameCache()
@@ -46,6 +52,7 @@ class State:
         self.http = make_client(timeout=15.0)
         self.lock = asyncio.Lock()
         self.handle: Callable[[WeatherEvent], Awaitable[FootageResult]] | None = None
+        self.match_pending: Callable[[str | None], Awaitable[list[FootageResult]]] | None = None
 
     def publish(self, kind: str, data: str) -> None:
         for q in list(self.subscribers):
@@ -60,26 +67,47 @@ def create_app(
     k: int = 3,
     deadline_s: float = 30.0,
     ignore_night: bool = False,
+    db: Path | None = None,
+    watch_db_s: float = 30.0,
 ) -> FastAPI:
-    st = State(catalog_path, verdict_log)
+    st = State(catalog_path, verdict_log, db)
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
         st.catalog = Catalog.load(st.catalog_path)
         log.info("catalog: %d cameras from %s", len(st.catalog.df), st.catalog_path)
         log.info("vlm: %s", vlm.describe())  # raises here on a misconfigured backend
-        task = (
-            asyncio.create_task(_fake_loop(st, fake_period_s, ignore_night))
-            if fake_events
-            else None
-        )
+        tasks = []
+        if fake_events:
+            tasks.append(asyncio.create_task(_fake_loop(st, fake_period_s, ignore_night)))
+        if st.db is not None and watch_db_s > 0:
+            tasks.append(asyncio.create_task(_db_watch_loop(st, watch_db_s)))
         yield
-        if task:
-            task.cancel()
+        for t in tasks:
+            t.cancel()
         await st.http.aclose()
 
     app = FastAPI(title="sunroof camera", lifespan=lifespan)
     app.state.st = st
+
+    async def record(res: FootageResult, ev_type: str | None = None) -> None:
+        ev_type = ev_type or (res.footage[0].event_type if res.footage else "?")
+        st.results[res.event_id] = res
+        st.results.move_to_end(res.event_id)
+        while len(st.results) > 50:
+            st.results.popitem(last=False)
+        st.publish("footage", res.model_dump_json())
+        log.info(
+            "event %s (%s): %s — %d/%d candidates fetched, %d passed gates, %d vlm calls, %.1fs",
+            res.event_id,
+            ev_type,
+            res.status,
+            res.fetched,
+            res.candidates,
+            res.passed_gates,
+            res.vlm_calls,
+            res.elapsed_s,
+        )
 
     async def handle(ev: WeatherEvent) -> FootageResult:
         assert st.catalog is not None
@@ -94,25 +122,45 @@ def create_app(
                 verdict_log=st.verdict_log,
                 ignore_night=ignore_night,
             )
-        st.results[ev.id] = res
-        st.results.move_to_end(ev.id)
-        while len(st.results) > 50:
-            st.results.popitem(last=False)
-        st.publish("footage", res.model_dump_json())
-        log.info(
-            "event %s (%s): %s — %d/%d candidates fetched, %d passed gates, %d vlm calls, %.1fs",
-            ev.id,
-            ev.type,
-            res.status,
-            res.fetched,
-            res.candidates,
-            res.passed_gates,
-            res.vlm_calls,
-            res.elapsed_s,
-        )
+        await record(res, ev.type)
         return res
 
+    async def match_pending(run_time: str | None = None) -> list[FootageResult]:
+        """Rank + resolve every observation of the latest run that the cron has not matched."""
+        assert st.catalog is not None and st.db is not None
+        from .match import match_run
+
+        async with st.lock:
+            return await match_run(
+                st.db,
+                st.catalog,
+                run_time,
+                k=max(k, 5),
+                resolve=True,
+                http=st.http,
+                cache=st.cache,
+                deadline_s=deadline_s,
+                ignore_night=ignore_night,
+                verdict_log=st.verdict_log,
+                on_footage=record,
+            )
+
     st.handle = handle
+    st.match_pending = match_pending
+
+    @app.get("/events")
+    async def list_events(
+        type: str | None = None,
+        time: datetime | None = Query(None, description="ISO instant; default latest run"),
+        limit: int = Query(20, ge=1, le=100),
+    ) -> list[dict]:
+        if st.db is None:
+            raise HTTPException(503, "server started without --db")
+        if type is not None and type not in edb.RARITY_PRIOR:
+            raise HTTPException(422, f"unknown type {type!r}")
+        if time is not None and time.tzinfo is None:
+            time = time.replace(tzinfo=timezone.utc)
+        return edb.list_events(st.db, type, time, limit)
 
     @app.post("/events", response_model=FootageResult)
     async def post_event(ev: WeatherEvent) -> FootageResult:
@@ -184,6 +232,7 @@ def create_app(
         return {
             "cameras": len(st.catalog.df) if st.catalog is not None else 0,
             "results": len(st.results),
+            "db": edb.run_time_at(st.db, None) if st.db is not None else None,
             "vlm": vlm.describe() if vlm.available() else None,
             "vlm_usage": vlm.USAGE.as_dict(),
         }
@@ -200,10 +249,29 @@ async def _fake_loop(st: State, period_s: float, ignore_night: bool = False) -> 
         assert st.catalog is not None and st.handle is not None
         for ev in fake_events(st.catalog, ignore_night=ignore_night):
             try:
-                await st.handle(ev)
+                if st.db is not None:  # same path as the real cron: upsert -> match -> footage
+                    now = datetime.now(timezone.utc)
+                    edb.upsert_run(st.db, [ev.model_dump()], now)
+                    assert st.match_pending is not None
+                    await st.match_pending(edb.iso(now))
+                else:
+                    await st.handle(ev)
             except Exception:  # noqa: BLE001
                 log.exception("fake event %s failed", ev.id)
             await asyncio.sleep(period_s)
+
+
+async def _db_watch_loop(st: State, period_s: float) -> None:
+    """Poll the SQLite store: whenever the weather job wrote a run the cron did not match, do it."""
+    while True:
+        await asyncio.sleep(period_s)
+        try:
+            assert st.db is not None and st.match_pending is not None
+            rt = edb.run_time_at(st.db, None)
+            if rt and edb.unmatched(st.db, rt):
+                await st.match_pending(rt)
+        except Exception:  # noqa: BLE001
+            log.exception("db watch failed")
 
 
 def run(host: str, port: int, **kw) -> None:

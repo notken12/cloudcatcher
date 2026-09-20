@@ -25,15 +25,6 @@ from sunroof_camera.schema import Camera, to_frame, write_parquet
 NOW = datetime(2026, 7, 1, 20, 0, tzinfo=timezone.utc)  # daytime over Colorado
 
 
-@pytest.fixture(autouse=True)
-def no_vlm(monkeypatch):
-    """Tests never talk to a VLM (a local Ollama would otherwise be auto-detected)."""
-    monkeypatch.setenv("SUNROOF_VLM_BACKEND", "off")
-    vlm.backend.cache_clear()
-    yield
-    vlm.backend.cache_clear()
-
-
 def test_vlm_backend_selection(monkeypatch):
     monkeypatch.delenv("SUNROOF_VLM_BACKEND")
     monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
