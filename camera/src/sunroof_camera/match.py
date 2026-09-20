@@ -3,6 +3,7 @@
 
     uv run sunroof-camera match --db data/events.db            # rank only (ms per event)
     uv run sunroof-camera match --db data/events.db --resolve  # + footage for the top events
+    uv run sunroof-camera cron --db data/events.db             # weather -> import -> match -> refresh loop
 """
 
 from __future__ import annotations
@@ -80,6 +81,59 @@ def to_weather_event(obs: sqlite3.Row) -> WeatherEvent:
     )
 
 
+async def _match_one(
+    conn: sqlite3.Connection,
+    cat: Catalog,
+    rt: str,
+    obs: sqlite3.Row,
+    k: int,
+    resolve: bool,
+    http: httpx.AsyncClient | None,
+    cache: FrameCache | None,
+    deadline_s: float,
+    ignore_night: bool,
+    verdict_log: str | None,
+    on_footage,
+) -> FootageResult | None:
+    """Rank cameras for one observation -> event_cameras; with `resolve` and cameras in range
+    also fetch/gate/VLM -> event_footage. Returns the FootageResult if one was produced."""
+    ev = to_weather_event(obs)
+    q = Event(
+        type=ev.type,
+        lat=ev.lat,
+        lon=ev.lon,
+        radius_km=ev.radius_km,
+        t=ev.t_start,
+        ignore_night=ignore_night,
+    )
+    rows = _camera_rows(cat.find_cameras(q, k))
+    res = None
+    if resolve and rows and http is not None:
+        res = await resolve_footage(
+            ev,
+            cat,
+            http,
+            cache or FrameCache(),
+            k=min(k, 3),
+            deadline_s=deadline_s,
+            verdict_log=verdict_log,
+            ignore_night=ignore_night,
+        )
+        _apply_footage(rows, res)
+        edb.write_footage(conn, ev.id, rt, res.model_dump_json())
+        if on_footage is not None:
+            await on_footage(res)
+    edb.write_cameras(conn, ev.id, rt, rows)
+    log.info(
+        "matched %s (%s): %d cameras%s",
+        ev.id[:8],
+        ev.type,
+        len(rows),
+        f" -> {res.status}" if res else "",
+    )
+    return res
+
+
 async def match_run(
     conn: sqlite3.Connection,
     cat: Catalog,
@@ -99,36 +153,66 @@ async def match_run(
     rt = run_time or edb.run_time_at(conn, None)
     if rt is None:
         return []
-    pending = edb.unmatched(conn, rt)
     results: list[FootageResult] = []
-    for obs in pending:
-        ev = to_weather_event(obs)
-        q = Event(
-            type=ev.type,
-            lat=ev.lat,
-            lon=ev.lon,
-            radius_km=ev.radius_km,
-            t=ev.t_start,
-            ignore_night=ignore_night,
+    for obs in edb.unmatched(conn, rt):
+        res = await _match_one(
+            conn,
+            cat,
+            rt,
+            obs,
+            k,
+            resolve and len(results) < resolve_top,
+            http,
+            cache,
+            deadline_s,
+            ignore_night,
+            verdict_log,
+            on_footage,
         )
-        cands = cat.find_cameras(q, k)
-        rows = _camera_rows(cands)
-        if resolve and len(results) < resolve_top and rows and http is not None:
-            res = await resolve_footage(
-                ev,
-                cat,
-                http,
-                cache or FrameCache(),
-                k=min(k, 3),
-                deadline_s=deadline_s,
-                verdict_log=verdict_log,
-                ignore_night=ignore_night,
-            )
-            _apply_footage(rows, res)
-            edb.write_footage(conn, ev.id, rt, res.model_dump_json())
+        if res is not None:
             results.append(res)
-            if on_footage is not None:
-                await on_footage(res)
-        edb.write_cameras(conn, ev.id, rt, rows)
-        log.info("matched %s (%s): %d cameras", ev.id[:8], ev.type, len(rows))
+    return results
+
+
+async def refresh_run(
+    conn: sqlite3.Connection,
+    cat: Catalog,
+    run_time: str | None = None,
+    per_type: int = 3,
+    k: int = 5,
+    http: httpx.AsyncClient | None = None,
+    cache: FrameCache | None = None,
+    deadline_s: float = 30.0,
+    ignore_night: bool = False,
+    verdict_log: str | None = None,
+    on_footage=None,
+) -> list[FootageResult]:
+    """Re-resolve live footage for the latest run: per event type, the `per_type` rarest / most
+    severe events that have cameras in range. Cheap enough to run every few minutes (the
+    weather reanalysis itself is much slower), so the feed follows the cameras, not the cron."""
+    rt = run_time or edb.run_time_at(conn, None)
+    if rt is None or http is None:
+        return []
+    picked: dict[str, int] = {}
+    results: list[FootageResult] = []
+    for obs in edb.with_cameras(conn, rt):
+        if picked.get(obs["type"], 0) >= per_type:
+            continue
+        picked[obs["type"]] = picked.get(obs["type"], 0) + 1
+        res = await _match_one(
+            conn,
+            cat,
+            rt,
+            obs,
+            k,
+            True,
+            http,
+            cache,
+            deadline_s,
+            ignore_night,
+            verdict_log,
+            on_footage,
+        )
+        if res is not None:
+            results.append(res)
     return results

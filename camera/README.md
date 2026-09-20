@@ -107,6 +107,29 @@ Merge rule on import: same type, seen < 2 h ago, centre within `max(radius_km, M
 polls the file (`--watch-db-s`, default 30) and matches/resolves any run the cron did not, and
 `--fake-events --db` drives fake events through the same import → match → footage path.
 
+#### Scheduler (`sunroof-camera cron`)
+
+One process does the whole loop, so nothing else needs a crontab:
+
+```
+OPENAI_API_KEY=… uv run sunroof-camera cron --db data/events.db \
+    --weather-every-s 1800 --every-s 300 --per-type 3
+```
+
+- every `--weather-every-s` (30 min): runs `--weather-cmd` (default
+  `uv run python -m weather.events --out out/events.json --sunset --aurora` in `--repo`, the
+  repo root), imports `events.json`, ranks cameras for the new observations (`match_run`);
+- every `--every-s` (5 min): `refresh_run` — re-fetches/gates/VLM-judges the `--per-type`
+  rarest events *of each type* that have cameras in range, so the feed shows every type with a
+  visible event rather than only the rarest few; ~`per_type × types × 3` VLM calls per tick
+  (~$0.005 at gpt-4o-mini prices);
+- `--once` runs a single pass (for a real crontab / systemd timer instead of the loop).
+
+`deploy/sunroof.service` + `deploy/sunroof-cron.service` are systemd units for the API and the
+scheduler side by side. The page's **Refresh** button (`POST /refresh`, `R` key) runs the same
+`refresh_run` on demand from the API process, throttled to one run per `--refresh-min-s` (60 s);
+`GET /refresh` reports progress and the `refresh` SSE event announces completion.
+
 ### VLM backends (`vlm.py`)
 
 All backends speak the OpenAI chat-completions API, so switching is env-only:

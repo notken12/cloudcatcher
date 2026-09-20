@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import type { Footage, StreamMessage } from './types'
 import fixture from '../fixtures/feed.json'
@@ -66,7 +66,88 @@ export function useStream(): StreamState {
     }
     es.onmessage = onFootage
     es.addEventListener('footage', onFootage)
+    es.addEventListener('refresh', () => void qc.invalidateQueries({ queryKey: ['feed'] }))
     return () => es.close()
   }, [qc])
   return state
+}
+
+export interface RefreshStatus {
+  running: boolean
+  finished?: string
+  resolved?: number
+  with_footage?: number
+  error?: string
+}
+
+export interface Refresh {
+  running: boolean
+  /** seconds until the backend accepts another manual refresh (0 = now). */
+  cooldown: number
+  last?: RefreshStatus
+  trigger: () => void
+}
+
+/** The Refresh button: `POST /refresh` starts a footage pass on the backend (same as the cron
+ *  tick), `GET /refresh` is polled until it finishes, then /feed is refetched. Throttled
+ *  server-side (429 + Retry-After) so a busy demo can't run up the VLM bill. */
+export function useRefresh(): Refresh {
+  const qc = useQueryClient()
+  const [running, setRunning] = useState(false)
+  const [cooldown, setCooldown] = useState(0)
+  const [last, setLast] = useState<RefreshStatus>()
+  const alive = useRef(true)
+
+  useEffect(() => {
+    if (cooldown <= 0) return
+    const t = setTimeout(() => setCooldown((c) => Math.max(0, c - 1)), 1000)
+    return () => clearTimeout(t)
+  }, [cooldown])
+  useEffect(() => {
+    alive.current = true
+    return () => {
+      alive.current = false
+    }
+  }, [])
+
+  const poll = useCallback(async () => {
+    for (;;) {
+      const r = await fetch(`${API_BASE}/refresh`)
+      const s = (await r.json()) as RefreshStatus
+      if (!alive.current) return
+      if (!s.running) {
+        setLast(s)
+        setRunning(false)
+        await qc.invalidateQueries({ queryKey: ['feed'] })
+        return
+      }
+      await new Promise((res) => setTimeout(res, 2000))
+    }
+  }, [qc])
+
+  const trigger = useCallback(() => {
+    if (running || cooldown > 0) return
+    if (!LIVE) {
+      setRunning(true)
+      void qc.refetchQueries({ queryKey: ['feed'] }).then(() => setRunning(false))
+      return
+    }
+    setRunning(true)
+    void (async () => {
+      const r = await fetch(`${API_BASE}/refresh`, { method: 'POST' })
+      if (r.status === 429) {
+        setRunning(false)
+        setCooldown(Number(r.headers.get('Retry-After') ?? 30))
+        return
+      }
+      if (!r.ok) {
+        setRunning(false)
+        setLast({ running: false, error: `/refresh ${r.status}` })
+        return
+      }
+      await poll()
+    })()
+  }, [running, cooldown, qc, poll])
+
+  return { running, cooldown, last, trigger }
 }

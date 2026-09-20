@@ -5,6 +5,7 @@ const ROWS: [string, string][] = [
   ['1 2 3 4', 'broadcast · globe · time travel · story mode'],
   ['space', 'play / pause the day (time travel)'],
   ['esc', 'leave story mode · close this'],
+  ['r', 'refresh footage now'],
   ['?', 'this card'],
 ]
 

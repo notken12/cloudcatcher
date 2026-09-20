@@ -1,0 +1,17 @@
+# systemd unit: sunroof scheduler — weather reanalysis every 30 min, footage refresh every 5 min.
+[Unit]
+Description=sunroof cron (weather -> import -> match -> footage refresh)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/repos/sunroof/camera
+EnvironmentFile=/etc/sunroof.env
+Environment=SUNROOF_VLM_BACKEND=openai
+ExecStart=/usr/bin/env uv run sunroof-camera cron --db data/events.db --weather-every-s 1800 --every-s 300 --per-type 3
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
