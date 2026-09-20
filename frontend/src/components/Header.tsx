@@ -42,7 +42,7 @@ export function Header({
   const label = stream === 'fixture' ? 'fixture' : stream === 'open' ? 'connected' : stream
   return (
     <header className="flex h-14 items-center justify-between gap-3 px-4 sm:px-6">
-      <h1 className="text-[20px] font-semibold tracking-tight">sunroof</h1>
+      <h1 className="text-[20px] font-semibold tracking-tight">skylight</h1>
       <div className="flex min-w-0 items-center gap-2 sm:gap-4">
         <div className="seg" role="group" aria-label="Layout">
           <button

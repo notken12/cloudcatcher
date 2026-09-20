@@ -263,6 +263,18 @@ def run_time_at(conn: sqlite3.Connection, time: datetime | str | None) -> str | 
     return row[0] if row and row[0] else None
 
 
+def runs_with_footage(conn: sqlite3.Connection, limit: int = 48) -> list[str]:
+    """Run times that stored at least one FOOTAGE_FOUND result, newest first."""
+    return [
+        r[0]
+        for r in conn.execute(
+            "SELECT DISTINCT time FROM event_footage WHERE result LIKE '%\"FOOTAGE_FOUND\"%' "
+            "ORDER BY time DESC LIMIT ?",
+            (limit,),
+        )
+    ]
+
+
 def unmatched(conn: sqlite3.Connection, run_time: str) -> list[sqlite3.Row]:
     """Observations of `run_time` that have no event_cameras rows yet."""
     return conn.execute(
