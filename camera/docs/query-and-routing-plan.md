@@ -29,7 +29,7 @@ async def resolve_footage(event: Event, k: int = 3, deadline_s: float = 30) -> F
 class Event(BaseModel):                      # produced by the weather half, unchanged
     id: str
     type: Literal["sunrise","sunset","thunderstorm","lightning","mammatus",
-                  "lenticular","fog","undercast","aurora","rainbow"]
+                  "lenticular","undercast","aurora","rainbow"]
     lat: float; lon: float; radius_km: float
     t_start: datetime; t_end: datetime       # UTC
     severity: float | None = None            # 0..1
@@ -51,8 +51,8 @@ class FootageResult(BaseModel):
     reason: str                              # human readable, logged + shown in debug UI
 ```
 
-`fog` and `undercast` arrive as two types even though the UI shows one
-"fog/undercast" chip: the camera rule is opposite (inside vs. above the layer),
+`fog` was dropped from scope (2026-09-20): only `undercast` is handled, camera above the layer.
+Historical note — the two would need opposite camera rules (inside vs. above the layer),
 so the weather side should emit whichever its ceiling/model supports, or both.
 
 The non-`FOOTAGE_FOUND` statuses are all "no footage" to the frontend but tell
@@ -91,7 +91,6 @@ class EventProfile(BaseModel):
 | **thunderstorm** | annulus, h = `evidence.anvil_top_km` or 12 | 150 km | `health==live`; elev_min ≤ 10 | 30–100 km distance +0.3; `sky_frac` ≥ 0.4 +0.2; ALERTCA/IEM/NDBC source prior | twilight_ok | jpeg > hls, 1 frame | 20 min / 5 min |
 | **mammatus** | annulus, h = 4 | 40 km | `health==live`; sun_elev > -3 | `elev_max ≥ 40` +0.3 (near-overhead); IEM/foto-webcam prior; low sun (< 15°) +0.2 (side-lit) | day_only | jpeg, 1 frame | 20 min / 5 min |
 | **lenticular** | annulus, h = `evidence.cloud_base_km` or 6 | 80 km | `health==live` | bearing toward `evidence.ridge_bearing` ±30° +0.3; Panomax/foto-webcam/Roundshot prior +0.2 | day_only | jpeg, 1 frame | 30 min / 10 min |
-| **fog** | inside_layer: `alt_m < evidence.fog_top_m`; distance only | 10 km | `health==live`; `alt_m < fog_top_m` | `sky_frac` low is fine; DOT cams OK | twilight_ok | jpeg > hls, 1 frame | 30 min / 10 min |
 | **undercast** | above_layer: `alt_m > fog_top_m` and `elev_min < 0` | 30 km | `health==live`; `alt_m > fog_top_m + 100` | Panomax/ALERTCA mountaintop prior +0.3; `hfov ≥ 180` +0.2 | twilight_ok | jpeg, 1 frame | 30 min / 10 min |
 | **sunset / sunrise** | sun_az: `sun_az(cam, t_mid) ∈ az ± (hfov/2 + δ)` | `radius_km` (≤ 100) | `heading_conf ∈ {catalog,text}` (unknown-heading cams are useless here); `elev_min ≤ 2`; `sky_frac ≥ 0.3` | horizon over water/plain (`over_water`) +0.3; foto-webcam/Panomax prior +0.3; `severity` from weather side already encodes "will it be pretty" | any (it *is* twilight) | jpeg, 1 frame; **re-fetch every 2–3 min** inside the window | until sun_elev < -8 / 3 min |
 | **rainbow** | antisolar: `(sun_az+180) ∈ az ± (hfov/2+42)`, sun_elev ∈ (0,42) | 5 km | `health==live`; `refresh_s ≤ 300` | wide hfov +0.3; `over_water` +0.1 | day_only | jpeg, 1 frame, re-fetch every refresh_s | 10 min / 2 min |
@@ -107,7 +106,7 @@ Notes that fall out of the table:
 - The weather side's `evidence` dict is the only place type-specific numbers
   come from (fog top, anvil top, ridge bearing, Kp). Every field has a default
   so a bare `{type, lat, lon, radius_km}` still works.
-- Point events (rainbow, fog) use `radius_km` as R_cap; areal events (aurora,
+- Point events (rainbow) use `radius_km` as R_cap; areal events (aurora,
   storm) use the type's R_cap and ignore `radius_km` unless it is larger.
 - Replay (`t_end` in the past): same profiles; `require` gains
   `history_kind != 'none' and history_depth_days ≥ age`; media becomes
@@ -337,7 +336,7 @@ Ordered from "will work at the demo" to "needs an extra layer". Build and
 polish in this order; the UI can show all nine chips, but the hero slots
 should be drawn from tiers A–B.
 
-**Tier A — static, daytime, big targets: thunderstorm, fog, undercast, lenticular.**
+**Tier A — static, daytime, big targets: thunderstorm, undercast, lenticular.**
 A single fresh JPEG is enough; the VLM is reliable on "storm cloud / fog /
 looking down on a cloud deck"; the annulus geometry gives many candidates
 (storm: 150 km radius). Undercast is the demo's best visual and is common

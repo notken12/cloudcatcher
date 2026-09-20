@@ -36,7 +36,7 @@ class WeatherEvent(BaseModel):
     t_end: datetime | None = None
     severity: float | None = Field(None, description="0..1 from the weather side")
     rarity: float | None = None
-    layer_top_m: float | None = Field(None, description="fog / undercast: top of the layer")
+    layer_top_m: float | None = Field(None, description="undercast: top of the layer")
     region: list[tuple[float, float]] | None = Field(None, description="polygon (lat, lon)")
     replay: bool = Field(False, description="historical event: fetch archive frames at t_start")
 

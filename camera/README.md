@@ -131,7 +131,7 @@ res = cat.find_cameras(Event(type="thunderstorm", lat=39.7, lon=-104.9, radius_k
 # -> DataFrame: all camera columns + distance_km, bearing_to_event, solar_elev, score, reason
 ```
 
-`Event.type` ∈ `sunrise sunset thunderstorm lightning mammatus lenticular fog undercast aurora rainbow`.
+`Event.type` ∈ `sunrise sunset thunderstorm lightning mammatus lenticular undercast aurora rainbow`.
 `t=None` means now; a past `t` gives replay candidates (rows with history).
 Returns up to `k` rows, best first, deduped to one view per ~1 km. Feed the top
 `k*3` to the VLM and keep what passes. `reason` is a short human string for
@@ -213,8 +213,6 @@ uv run sunroof-camera find sunset      --lat 47.07 --lon 12.70   --radius-km 5  
 uv run sunroof-camera find lenticular  --lat 47.2  --lon 12.9    --radius-km 10
 # Central Valley anvil seen from Bay Area ridge cams (33–150 km annulus)
 uv run sunroof-camera find thunderstorm --lat 37.5 --lon=-121.5  --radius-km 20
-# Golden Gate fog at 08:00 PDT -> ALERTCalifornia ridge cams
-uv run sunroof-camera find fog         --lat 37.8  --lon=-122.45 --radius-km 5  --t 2026-09-20T15:00:00
 # rainbow over South Lake Tahoe, 17:30 PDT (antisolar az≈77° -> E-facing Caltrans cams)
 uv run sunroof-camera find rainbow     --lat 38.9  --lon=-120.0  --radius-km 5  --t 2026-09-21T00:30:00
 # aurora over Iceland at local midnight -> night_ok Vegagerðin cams

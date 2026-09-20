@@ -8,7 +8,6 @@ export const EVENT_TYPES = [
   'lightning',
   'mammatus',
   'lenticular',
-  'fog',
   'undercast',
   'aurora',
   'rainbow',

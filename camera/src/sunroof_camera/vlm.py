@@ -95,7 +95,7 @@ def backend() -> Backend | None:
 
 
 EVENT_TYPES = (
-    "sunrise sunset thunderstorm lightning mammatus lenticular fog undercast aurora rainbow"
+    "sunrise sunset thunderstorm lightning mammatus lenticular undercast aurora rainbow"
 ).split()
 
 SYSTEM = (

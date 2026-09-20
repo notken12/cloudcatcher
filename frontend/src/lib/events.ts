@@ -1,6 +1,6 @@
 import type { EventType } from './types'
 
-/** UI filter values: the 9 chips from the brief (fog + undercast merged) plus "all". */
+/** UI filter values: one chip per event type plus "all". */
 export const FILTERS = [
   'all',
   'sunrise',
@@ -9,7 +9,7 @@ export const FILTERS = [
   'lightning',
   'mammatus',
   'lenticular',
-  'fog',
+  'undercast',
   'aurora',
   'rainbow',
 ] as const
@@ -23,7 +23,7 @@ export const FILTER_LABEL: Record<Filter, string> = {
   lightning: 'Lightning',
   mammatus: 'Mammatus',
   lenticular: 'Lenticular',
-  fog: 'Fog / undercast',
+  undercast: 'Undercast',
   aurora: 'Aurora',
   rainbow: 'Rainbow',
 }
@@ -35,7 +35,6 @@ export const EVENT_LABEL: Record<EventType, string> = {
   lightning: 'Lightning',
   mammatus: 'Mammatus',
   lenticular: 'Lenticular',
-  fog: 'Fog',
   undercast: 'Undercast',
   aurora: 'Aurora',
   rainbow: 'Rainbow',
@@ -49,7 +48,6 @@ export const EVENT_BLURB: Record<EventType, string> = {
   lightning: 'Charge separated by ice collisions inside the storm discharges.',
   mammatus: 'Pouch-like lobes sinking from the underside of a decaying anvil.',
   lenticular: 'Stationary lens clouds where air waves over a ridge.',
-  fog: 'Cloud at ground level: air cooled to its dew point.',
   undercast: 'Looking down on a cloud deck from above the inversion.',
   aurora: 'Solar wind particles exciting oxygen and nitrogen high in the atmosphere.',
   rainbow: 'Sunlight refracted in raindrops, always opposite the sun.',
@@ -57,7 +55,6 @@ export const EVENT_BLURB: Record<EventType, string> = {
 
 export function matchesFilter(type: EventType, f: Filter): boolean {
   if (f === 'all') return true
-  if (f === 'fog') return type === 'fog' || type === 'undercast'
   return type === f
 }
 

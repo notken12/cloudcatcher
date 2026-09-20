@@ -18,7 +18,6 @@ from .query import MAX_CATALOG_AGE_S, Catalog
 
 FALLBACK = [  # used when nothing in the catalog is lit: exercises the failure statuses
     ("thunderstorm", 38.60, -121.60, 25.0),  # Sacramento valley
-    ("fog", 37.50, -122.45, 5.0),  # Half Moon Bay coast
     ("undercast", 39.10, -120.05, 10.0),  # Tahoe rim
 ]
 
@@ -71,19 +70,6 @@ def fake_events(
             )
         )
     alt = np.nan_to_num(df["alt_m"].to_numpy(dtype=float), nan=0.0)
-    c = pick(day & (alt < 300))
-    if c is not None:
-        out.append(
-            WeatherEvent(
-                id=f"fake-fog-{stamp}",
-                type="fog",
-                lat=c["lat"],
-                lon=c["lon"],
-                radius_km=5,
-                layer_top_m=250,
-                t_start=now,
-            )
-        )
     c = pick(day & (alt > 1000))
     if c is not None:
         out.append(

@@ -58,13 +58,6 @@ PROFILES: dict[str, EventProfile] = {
         "usually near mountains.",
         feasibility=4,
     ),
-    "fog": EventProfile(
-        "fog",
-        hold_s=1800,
-        vlm_definition="fog: the camera is inside a low cloud; visibility clearly reduced, "
-        "distant objects hidden by grey haze.",
-        feasibility=5,
-    ),
     "undercast": EventProfile(
         "undercast",
         hold_s=1800,
