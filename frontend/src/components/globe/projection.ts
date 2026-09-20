@@ -65,3 +65,48 @@ export function shortestTurn(from: number, to: number): number {
   const d = (to - from) % (2 * Math.PI)
   return d > Math.PI ? d - 2 * Math.PI : d < -Math.PI ? d + 2 * Math.PI : d
 }
+
+/**
+ * Shade the night half of the globe onto a 2D canvas the size of cobe's (w × w px).
+ * The terminator is a great circle, so on screen it is an ellipse with semi-axes
+ * (R·|k|, R) along the projected sun direction, k = view·sun. A stack of slightly offset
+ * translucent fills gives a soft twilight band without a blur filter. `sun` undefined → cleared.
+ */
+export function drawNight(
+  ctx: CanvasRenderingContext2D,
+  w: number,
+  sun: { lat: number; lon: number } | undefined,
+  v: { phi: number; theta: number },
+): void {
+  ctx.clearRect(0, 0, w, w)
+  if (!sun) return
+  const [sx, sy, sz] = toUnit(sun.lat, sun.lon)
+  const r = Math.cos(v.theta)
+  const a = Math.cos(v.phi)
+  const o = Math.sin(v.theta)
+  const i = Math.sin(v.phi)
+  // Same rotation as project(): screen-right, screen-up, toward-viewer components of the sun.
+  const cx = a * sx + i * sz
+  const cy = i * o * sx + r * sy - a * o * sz
+  const k = -i * r * sx + o * sy + a * r * sz
+  const R = 0.4 * w
+  ctx.save()
+  ctx.translate(w / 2, w / 2)
+  ctx.rotate(Math.atan2(-cy, cx))
+  ctx.beginPath()
+  ctx.arc(0, 0, R, 0, 2 * Math.PI)
+  ctx.clip()
+  const STEPS = 10
+  ctx.fillStyle = `rgb(28 32 58 / ${0.26 / STEPS})`
+  for (let s = 0; s < STEPS; s++) {
+    const kk = Math.max(-1, Math.min(1, k + ((s / (STEPS - 1)) * 2 - 1) * 0.14))
+    ctx.beginPath()
+    ctx.moveTo(0, -R)
+    ctx.arc(0, 0, R, -Math.PI / 2, Math.PI / 2, true)
+    if (kk >= 0) ctx.ellipse(0, 0, kk * R + 1e-3, R, 0, Math.PI / 2, (3 * Math.PI) / 2, false)
+    else ctx.ellipse(0, 0, -kk * R, R, 0, Math.PI / 2, -Math.PI / 2, true)
+    ctx.closePath()
+    ctx.fill()
+  }
+  ctx.restore()
+}

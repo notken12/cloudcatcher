@@ -882,3 +882,16 @@ def test_phenocam_replay_converts_utc_to_site_local():
     assert got[1].endswith("/demo_2021_09_14_104205.jpg")
     naive = datetime(2021, 9, 14, 16, 50)
     assert phenocam.local_time(naive, "Etc/GMT+6") == naive  # naive = already local
+
+
+def test_history_cache_lru():
+    from sunroof_camera.server import HistoryCache
+
+    c = HistoryCache(capacity=2)
+    c.put(("a", "t", None), (b"1", "image/jpeg", "u"))
+    c.put(("b", "t", None), (b"2", "image/jpeg", "u"))
+    assert c.get(("a", "t", None)) == (b"1", "image/jpeg", "u")  # touch a → b is oldest
+    c.put(("c", "t", 240), (b"3", "image/jpeg", "u"))
+    assert c.get(("b", "t", None)) is None
+    assert c.get(("a", "t", None)) is not None
+    assert c.get(("c", "t", None)) is None  # width is part of the key

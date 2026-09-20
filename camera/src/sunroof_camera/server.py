@@ -60,6 +60,27 @@ def downscale_jpeg(content: bytes, width: int) -> tuple[bytes, str]:
     return content, f"image/{(im.format or 'jpeg').lower()}"
 
 
+class HistoryCache:
+    """LRU of archive frames keyed by (camera, instant, width): the card and its globe pin ask
+    for the same instant seconds apart, and a scrub back over a slider step is free."""
+
+    def __init__(self, capacity: int = 600):
+        self.capacity = capacity
+        self._d: OrderedDict[tuple[str, str, int | None], tuple[bytes, str, str]] = OrderedDict()
+
+    def get(self, key: tuple[str, str, int | None]) -> tuple[bytes, str, str] | None:
+        v = self._d.get(key)
+        if v is not None:
+            self._d.move_to_end(key)
+        return v
+
+    def put(self, key: tuple[str, str, int | None], value: tuple[bytes, str, str]) -> None:
+        self._d[key] = value
+        self._d.move_to_end(key)
+        while len(self._d) > self.capacity:
+            self._d.popitem(last=False)
+
+
 class State:
     def __init__(self, catalog_path: Path, verdict_log: Path | None, db: Path | None = None):
         self.catalog_path = catalog_path
@@ -68,6 +89,7 @@ class State:
         self.catalog: Catalog | None = None
         self.cache = FrameCache()
         self.results: OrderedDict[str, FootageResult] = OrderedDict()
+        self.history = HistoryCache()
         self.subscribers: set[asyncio.Queue] = set()
         self.http = make_client(timeout=15.0)
         self.lock = asyncio.Lock()
@@ -267,16 +289,23 @@ def create_app(
             raise HTTPException(404)
         if cam.history_kind == "none":
             raise HTTPException(422, "camera has no archive")
-        fr = await fetch_frame(st.http, cam, archive_time(cam.source, ts))
-        if fr is None:
-            raise HTTPException(502, "archive fetch failed")
-        content, ctype = fr.content, fr.content_type or "image/jpeg"
-        if w is not None:
-            content, ctype = await asyncio.to_thread(downscale_jpeg, content, w)
+        when = archive_time(cam.source, ts)
+        key = (camera_id, when.isoformat(timespec="minutes"), w)
+        hit = st.history.get(key)
+        if hit is None:
+            fr = await fetch_frame(st.http, cam, when)
+            if fr is None:
+                raise HTTPException(502, "archive fetch failed")
+            content, ctype = fr.content, fr.content_type or "image/jpeg"
+            if w is not None:
+                content, ctype = await asyncio.to_thread(downscale_jpeg, content, w)
+            hit = (content, ctype, fr.url)
+            st.history.put(key, hit)
+        content, ctype, url = hit
         return Response(
             content,
             media_type=ctype,
-            headers={"Cache-Control": "public, max-age=86400", "X-Frame-Url": fr.url},
+            headers={"Cache-Control": "public, max-age=86400", "X-Frame-Url": url},
         )
 
     @app.get("/")
