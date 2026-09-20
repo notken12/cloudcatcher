@@ -22,9 +22,9 @@ export function Header({ filter, onFilter, liveCount, stream, view, onView, onHe
         : 'bg-amber-400'
   const label = stream === 'fixture' ? 'fixture' : stream === 'open' ? 'connected' : stream
   return (
-    <header className="flex h-14 items-center justify-between px-6">
+    <header className="flex h-14 items-center justify-between gap-3 px-4 sm:px-6">
       <h1 className="text-[20px] font-semibold tracking-tight">sunroof</h1>
-      <div className="flex items-center gap-3 sm:gap-4">
+      <div className="flex min-w-0 items-center gap-2 sm:gap-4">
         <div className="seg" role="group" aria-label="Layout">
           <button
             type="button"
@@ -63,7 +63,7 @@ export function Header({ filter, onFilter, liveCount, stream, view, onView, onHe
             <span className="sr-only">Story mode</span>
           </button>
         </div>
-        <label className={`relative ${view === 'time' ? 'invisible' : ''}`}>
+        <label className={`relative ${view === 'time' ? 'hidden' : ''}`}>
           <select
             className="plain"
             value={filter}

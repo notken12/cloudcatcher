@@ -112,6 +112,11 @@ a:hover {
   background: var(--ink);
   color: #fff;
 }
+@media (max-width: 639px) {
+  .seg button {
+    padding: 4px 8px;
+  }
+}
 
 .pin {
   position: absolute;
