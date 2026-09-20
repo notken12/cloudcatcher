@@ -11,6 +11,7 @@ import pandas as pd
 from sunroof_camera.ingest.build import dedupe_views, merge_shards
 from sunroof_camera.ingest.sources import (
     caltrans,
+    cars_list,
     digitraffic,
     drivebc,
     fotowebcam,
@@ -202,3 +203,36 @@ def test_drivebc_orientation_and_off_filter():
     cams = _run(drivebc.DriveBCAdapter(), {"api/v1/webcams": {"webcams": [cam, off]}})
     assert len(cams) == 1 and cams[0].azimuth_deg == 0 and cams[0].alt_m == 980
     assert cams[0].heading_conf == "catalog"
+
+
+def test_cars_list_paging_wkt_and_filters():
+    def site(i, direction, desc, **im):
+        return {
+            "id": i,
+            "direction": direction,
+            "location": f"I-95 @ MM {i}",
+            "latLng": {"geography": {"wellKnownText": "POINT (-81.1 26.2)"}},
+            "images": [
+                {
+                    "id": i * 10,
+                    "description": desc,
+                    "imageUrl": f"/map/Cctv/{i * 10}",
+                    "disabled": False,
+                    "blocked": False,
+                    **im,
+                }
+            ],
+        }
+
+    page0 = {"recordsTotal": 101, "data": [site(1, "Northbound", "")] * 100}
+    page1 = {
+        "recordsTotal": 101,
+        "data": [site(2, "Unknown", "Looking SW"), site(3, "Unknown", "", disabled=True)],
+    }
+    adapter = cars_list.CARS_LIST_ADAPTERS[0]()
+    cams = _run(adapter, {"%22start%22%3A0%2C": page0, "%22start%22%3A100%2C": page1})
+    assert len(cams) == 101
+    assert cams[0].lat == 26.2 and cams[0].lon == -81.1 and cams[0].azimuth_deg == 0
+    assert cams[-1].id.endswith(":2:20") and cams[-1].azimuth_deg == 225
+    assert cams[-1].image_url == f"https://{adapter.host}/map/Cctv/20"
+    assert cars_list.parse_wkt_point("junk") is None

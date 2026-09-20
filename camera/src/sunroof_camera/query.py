@@ -79,6 +79,22 @@ SOURCE_PRIOR = {
     "caltrans": 0.45,
     "cars_ny": 0.4,
     "cars_on": 0.4,
+    "cars_ak": 0.5,
+    "cars_ab": 0.5,
+    "cars_id": 0.5,
+    "cars_ut": 0.45,
+    "cars_nv": 0.45,
+    "cars_az": 0.4,
+    "cars_yt": 0.5,
+    "cars_ne6": 0.45,
+    "cars_nl": 0.45,
+    "cars_ns": 0.4,
+    "cars_nb": 0.4,
+    "cars_pa": 0.35,
+    "cars_nc": 0.35,
+    "cars_wi": 0.35,
+    "cars_la": 0.35,
+    "cars_fl": 0.3,
 }
 DEFAULT_PRIOR = 0.5
 

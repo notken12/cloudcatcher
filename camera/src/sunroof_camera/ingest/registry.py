@@ -5,6 +5,7 @@ from __future__ import annotations
 from .sources.alertca import AlertCaliforniaAdapter
 from .sources.caltrans import CaltransAdapter
 from .sources.cars import NewYork511Adapter, Ontario511Adapter
+from .sources.cars_list import CARS_LIST_ADAPTERS
 from .sources.digitraffic import DigitrafficAdapter
 from .sources.drivebc import DriveBCAdapter
 from .sources.fotowebcam import FotoWebcamAdapter
@@ -36,6 +37,7 @@ ADAPTERS: dict[str, type] = {
         DriveBCAdapter,
         TripCheckAdapter,
         NZTAAdapter,
+        *CARS_LIST_ADAPTERS,  # cars_ga, cars_fl, ... (keyless 511 list endpoint)
         WindyAdapter,  # needs WINDY_API_KEY
     )
 }

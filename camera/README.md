@@ -69,6 +69,7 @@ Secrets: `WINDY_API_KEY` etc. via environment only; never in the repo.
 |---|---|---|---|---|---|
 | `caltrans` | ~3,300 | text 88% | – | last 12 frames | 12 district JSONs, JPEG + HLS |
 | `cars_ny` / `cars_on` | ~1,800 / ~1,400 | text ~50-70% | – | – | 511 portals; NY optional `NY511_API_KEY` |
+| `cars_fl` `cars_ut` `cars_pa` `cars_nc` `cars_az` `cars_nv` `cars_id` `cars_wi` `cars_ne6` `cars_la` `cars_ak` `cars_ab` `cars_ns` `cars_nb` `cars_nl` `cars_yt` | ~14,000 total (FL 4.9k, UT 2.1k, PA 1.4k, NC 1.1k) | text 0–100% (`direction` + view description) | – | – | keyless `/List/GetData/Cameras` on every CARS 511 portal; video-only sites return a 15 KB placeholder PNG that `fetch_frame` rejects. Georgia (4.3k) excluded: ~85% placeholder + auth-walled HLS |
 | `alertca` | ~1,800 | catalog (pan) | IR subset | – | ridge-top PTZ, firestorm mirror |
 | `digitraffic` | ~1,700 | – | yes | 24 h API | Finland, CC BY 4.0 |
 | `panomax` | ~630 | catalog (zeroDirection+viewAngle/2) | `nightVision` | recent API | Alpine panoramas |
@@ -83,7 +84,7 @@ Secrets: `WINDY_API_KEY` etc. via environment only; never in the repo.
 | `windy` | ~1k/country | text from title | – | embed player day/month/year | needs `WINDY_API_KEY`; offset ≤1000/free tier |
 | `manual` | yaml | – | – | – | hand-picked (all-sky, YouTube) |
 
-`uv run sunroof-camera refresh` builds every keyless source in ~15 s (~14.5k rows).
+`uv run sunroof-camera refresh` builds every keyless source in ~2 min (~29k rows; the CARS portals are paged 100 at a time).
 
 ## Demo cameras & sample queries
 
