@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>sunroof · camera sandbox</title>
+<style>
+  html,body{margin:0;height:100%;background:#0b0d12;color:#e8e8e8;font:15px/1.4 -apple-system,Segoe UI,Helvetica,Arial,sans-serif}
+  main{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;box-sizing:border-box}
+  #badge{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#9ad}
+  #stage{width:min(92vw,1100px);aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px #222}
+  #stage img,#stage video,#stage iframe{width:100%;height:100%;object-fit:contain;border:0;background:#000}
+  #stage .empty{color:#667;font-size:16px;text-align:center;padding:24px}
+  #where{font-size:18px}
+  #when{color:#bbb;font-size:14px}
+  #meta{color:#888;font-size:12.5px;max-width:1100px;text-align:center}
+  #meta a{color:#9ad}
+  #log{position:fixed;left:0;right:0;bottom:0;max-height:22vh;overflow:auto;background:#0f1218;border-top:1px solid #222;font:12px/1.5 Menlo,Consolas,monospace;padding:6px 12px;color:#aaa}
+  #log .ok{color:#7c7}  #log .no{color:#e88}
+  .pill{display:inline-block;padding:1px 7px;border-radius:9px;background:#243;color:#9d9;font-size:12px;margin-left:6px}
+  .pill.unv{background:#432;color:#db9}
+</style>
+</head>
+<body>
+<main>
+  <div id="badge">waiting for footage…</div>
+  <div id="stage"><div class="empty">Nothing verified yet.<br>The weather backend posts events to <code>POST /events</code>; verified frames show up here via <code>/stream</code>.</div></div>
+  <div id="where"></div>
+  <div id="when"></div>
+  <div id="meta"></div>
+</main>
+<div id="log"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+let current = null, refreshTimer = null;
+
+function fmtLocal(iso, tz){
+  if(!iso) return null;
+  const d = new Date(iso);
+  const opts = {year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false,timeZoneName:'short'};
+  try { return d.toLocaleString('en-GB', {...opts, timeZone: tz || 'UTC'}); } catch(e){ return d.toISOString(); }
+}
+function ago(iso){ const s=(Date.now()-new Date(iso))/1000; return s<90? `${Math.round(s)} s ago` : `${Math.round(s/60)} min ago`; }
+
+function show(f){
+  current = f;
+  const m = f.media, st = $('stage'); st.innerHTML = '';
+  if(m.kind === 'image'){
+    const img = document.createElement('img');
+    img.src = m.src + '?t=' + Date.now();
+    st.appendChild(img);
+    clearInterval(refreshTimer);
+    refreshTimer = setInterval(()=>{ img.src = m.src + '?t=' + Date.now(); $('when').textContent = whenText(f); }, Math.max(30, m.refresh_s) * 1000);
+  } else if(m.kind === 'hls'){
+    const v = document.createElement('video'); v.autoplay = v.muted = v.playsInline = true; v.poster = m.poster || '';
+    if(v.canPlayType('application/vnd.apple.mpegurl')) v.src = m.src;
+    else { const s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/hls.js@1'; s.onload=()=>{const h=new Hls(); h.loadSource(m.src); h.attachMedia(v);}; document.head.appendChild(s); }
+    st.appendChild(v);
+  } else {
+    const fr = document.createElement('iframe'); fr.src = m.src; fr.allow = 'autoplay'; st.appendChild(fr);
+  }
+  const v = f.verdict || {};
+  $('badge').innerHTML = `${f.event_type}` + (f.verified ? `<span class="pill">verified · ${(v.confidence*100|0)}% · q${v.quality}</span>` : `<span class="pill unv">unverified (no VLM)</span>`);
+  const c = f.camera;
+  $('where').textContent = `${c.name} — ${c.lat.toFixed(4)}, ${c.lon.toFixed(4)}` + (c.alt_m!=null ? ` · ${Math.round(c.alt_m)} m` : '') + (c.azimuth_deg!=null ? ` · facing ${Math.round(c.azimuth_deg)}°` : '') + ` · ${c.distance_km.toFixed(0)} km from event`;
+  $('when').textContent = whenText(f);
+  $('meta').innerHTML = `${v.caption ? '“'+v.caption+'” · ' : ''}${f.why} · <a href="${c.page_url||'#'}" target="_blank">${c.source}</a>${c.attribution ? ' · '+c.attribution.replace(/<[^>]+>/g,'') : ''}`;
+}
+function whenText(f){
+  const src = {source_api:'from camera API', exif:'from EXIF', last_modified:'from Last-Modified header', fetch_time:'⚠ no timestamp on frame — fetch time shown', unknown:'unknown'}[f.ts_source] || f.ts_source;
+  return f.frame_ts ? `frame taken ${fmtLocal(f.frame_ts, f.camera.tz)} (${ago(f.frame_ts)}; ${src}) · UTC ${new Date(f.frame_ts).toISOString().replace('T',' ').slice(0,19)}` : 'frame time unknown';
+}
+function log(res){
+  const line = document.createElement('div');
+  const ok = res.status === 'FOOTAGE_FOUND';
+  line.className = ok ? 'ok' : 'no';
+  const rej = (res.rejected||[]).slice(0,3).map(r=>`${r.camera_id}[${r.stage}: ${r.reason}]`).join('  ');
+  line.textContent = `${new Date().toISOString().slice(11,19)}  ${res.event_id}  ${res.status}  cand=${res.candidates} fetched=${res.fetched} gates=${res.passed_gates} vlm=${res.vlm_calls} ${res.elapsed_s.toFixed(1)}s  ${rej}`;
+  $('log').prepend(line);
+}
+function onResult(res){
+  log(res);
+  if(res.status === 'FOOTAGE_FOUND' && res.footage.length){
+    const best = res.footage[0];
+    if(!current || best.verified || !current.verified) show(best);
+  }
+}
+function connect(){
+  const es = new EventSource('/stream');
+  es.addEventListener('footage', e => onResult(JSON.parse(e.data)));
+  es.onerror = () => { es.close(); setTimeout(connect, 3000); };
+}
+connect();
+</script>
+</body>
+</html>

@@ -8,6 +8,7 @@ from .sources.cars import NewYork511Adapter, Ontario511Adapter
 from .sources.cars_list import CARS_LIST_ADAPTERS
 from .sources.digitraffic import DigitrafficAdapter
 from .sources.drivebc import DriveBCAdapter
+from .sources.faa import FaaAdapter
 from .sources.fotowebcam import FotoWebcamAdapter
 from .sources.hongkong import HongKongTDAdapter
 from .sources.iceland import IcelandAdapter
@@ -25,6 +26,7 @@ ADAPTERS: dict[str, type] = {
     a.source: a
     for a in (
         ManualAdapter,
+        FaaAdapter,
         CaltransAdapter,
         Ontario511Adapter,
         NewYork511Adapter,

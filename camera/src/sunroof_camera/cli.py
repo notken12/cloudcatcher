@@ -71,6 +71,61 @@ def describe(catalog: Path = Path("data/cameras.parquet")):
 
 
 @app.command()
+def serve(
+    host: str = "127.0.0.1",
+    port: int = 8080,
+    catalog: Path = Path("data/cameras.parquet"),
+    fake_events: bool = typer.Option(False, help="replay fake weather-backend events"),
+    fake_period_s: float = 90.0,
+    k: int = 3,
+    deadline_s: float = 30.0,
+):
+    """Run the camera service + sandbox page (see server.py for endpoints)."""
+    from .server import run
+
+    run(
+        host,
+        port,
+        catalog_path=catalog,
+        fake_events=fake_events,
+        fake_period_s=fake_period_s,
+        k=k,
+        deadline_s=deadline_s,
+    )
+
+
+@app.command()
+def resolve(
+    type: str,
+    lat: float = typer.Option(...),
+    lon: float = typer.Option(...),
+    radius_km: float = 10,
+    k: int = 3,
+    catalog: Path = Path("data/cameras.parquet"),
+    save_frames: Path | None = typer.Option(None, help="dir to dump the chosen JPEGs"),
+):
+    """One-shot: fake one event, print the FootageResult JSON."""
+    from .footage import WeatherEvent
+    from .ingest.base import make_client
+    from .resolve import FrameCache, resolve_footage
+
+    async def go():
+        ev = WeatherEvent(id=f"cli-{type}", type=type, lat=lat, lon=lon, radius_km=radius_km)
+        cache = FrameCache()
+        async with make_client(timeout=15.0) as http:
+            res = await resolve_footage(ev, Catalog.load(catalog), http, cache, k=k)
+        if save_frames:
+            save_frames.mkdir(parents=True, exist_ok=True)
+            for f in res.footage:
+                cf = cache.get(f.camera_id)
+                if cf:
+                    (save_frames / f"{f.camera_id.replace(':', '_')}.jpg").write_bytes(cf.content)
+        return res
+
+    typer.echo(asyncio.run(go()).model_dump_json(indent=2))
+
+
+@app.command()
 def schema():
     """Print the Parquet column -> dtype map as JSON."""
     from .schema import CAMERA_DTYPES

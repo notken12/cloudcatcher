@@ -62,6 +62,7 @@ def dedupe_views(df: pd.DataFrame) -> pd.DataFrame:
 
 SOURCE_PRIORITY = [
     "manual",
+    "faa",
     "panomax",
     "fotowebcam",
     "phenocam",
