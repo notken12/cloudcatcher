@@ -18,6 +18,7 @@ from .ingest.base import Frame
 MIN_BYTES = 3000
 JPEG_MAGIC = b"\xff\xd8\xff"
 PNG_MAGIC = b"\x89PNG"
+RIFF_MAGIC = b"RIFF"  # WebP: 'RIFF....WEBP'
 
 # SHA-1s of known "camera unavailable" placeholder images, learned offline; extend per source.
 PLACEHOLDER_SHA1: set[str] = set()
@@ -106,8 +107,9 @@ def check_frame(
     if not fr.content or len(fr.content) < MIN_BYTES:
         res.reason = f"too small ({len(fr.content or b'')} B)"
         return res
-    head = fr.content[:4]
-    if not (head.startswith(JPEG_MAGIC) or head.startswith(PNG_MAGIC)):
+    head = fr.content[:12]
+    is_webp = head.startswith(RIFF_MAGIC) and head[8:12] == b"WEBP"
+    if not (head.startswith(JPEG_MAGIC) or head.startswith(PNG_MAGIC) or is_webp):
         res.reason = f"not an image (content-type {fr.content_type!r})"
         return res
     sha1 = fr.sha1

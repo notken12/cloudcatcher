@@ -213,6 +213,9 @@ Secrets: `WINDY_API_KEY` etc. via environment or a git-ignored `.env` only; neve
 | `ndbc` | ~90 | 360° strip | – | – | BuoyCAMs, found by probing `buoycam.php` |
 | `iem` | live only | catalog (`angle`) | – | per-minute archive | rows accumulate across refreshes |
 | `windy` | ~1k/country | text from title | – | embed player day/month/year | needs `WINDY_API_KEY`; offset ≤1000/free tier |
+| `pe_igp` | 13 | sector word (`Sector Noreste`) 100% | – | – | Instituto Geofísico del Perú (CENVUL) volcano cams: Sabancaya, Ubinas, Misti, Coropuna, Ticsani, Chachani, Yucamane, Sara Sara; JSON API, JPEG every ~1 min |
+| `ec_igepn` | 26 | known site → summit bearing 54% | 3 thermal (IR) | – | IG-EPN Ecuador: Cotopaxi, Tungurahua, Reventador, Sangay, Guagua Pichincha, Sierra Negra (Galápagos); 1296×960 WebP ~2 min; "sin señal" card auto-flagged by the health probe |
+| `co_sgc` | 20 | known site → summit bearing 40% | 2 thermal (IR) | – | Servicio Geológico Colombiano: Puracé, Galeras, Cumbal, Azufral, Sotará, Las Ánimas; up to 1920×1080 JPEG |
 | `manual` | yaml | – | – | – | hand-picked: UAF Poker Flat + IRF Kiruna all-sky (aurora, `night_ok`) |
 
 `uv run sunroof-camera refresh` builds every keyless source in ~3 min (~42k rows; the CARS portals are paged 100 at a time).
@@ -241,12 +244,17 @@ Known-good rows (frames verified live, Sep 2026) to hard-code into demos/tests:
 | `cars_ie:127:1733092217` N59 Maam Cross | 53.456, -9.537 | Connemara, Atlantic fronts/rainbows |
 | `au_qld:84` Murarrie – Port of Brisbane, W | -27.452, 153.114 | southern hemisphere; Brisbane summer thunderstorms, sunset over the city |
 | `au_nsw_maritime:1` Merimbula bar | -36.889, 149.919 | 1080p HLS over the Pacific: sunrise, storms offshore, rainbows |
+| `pe_igp:1` Sabancaya — Sector Noreste | -15.743, -71.810, ~4,800 m | South America; active volcano (ash plumes), high-Andes lenticulars, thunderstorms |
+| `ec_igepn:sincholagua` Cotopaxi from Sincholagua | -0.550, -78.372, ~4,000 m | 1296×960, looks SSW at Cotopaxi's cone; `ec_igepn:rumIR` is the thermal twin (`night_ok`) |
+| `co_sgc:galeras-consaca` Galeras from Consacá | 1.207, -77.466 | 1080p, looks E at Galeras; Andean afternoon convection |
 
 Ready-to-run queries (`--t` is UTC, omit for now):
 
 ```bash
 # Alpine sunset: Panomax panoramas around Großglockner, sun az≈276°
 uv run sunroof-camera find sunset      --lat 47.07 --lon 12.70   --radius-km 5  --t 2026-09-20T17:30:00
+# Andes: afternoon storm over Cotopaxi (Ecuador) — daytime returns the visible cams, at night only the IR twins
+uv run sunroof-camera find thunderstorm --lat -0.68 --lon -78.44 --radius-km 15 --t 2026-09-20T20:00:00
 # lenticulars over the Hohe Tauern (annulus 16–80 km for a 6 km cloud)
 uv run sunroof-camera find lenticular  --lat 47.2  --lon 12.9    --radius-km 10
 # Central Valley anvil seen from Bay Area ridge cams (33–150 km annulus)

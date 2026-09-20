@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from .sources.alertca import AlertCaliforniaAdapter
 from .sources.algo import AlgoTrafficAdapter
+from .sources.andes_volcano import IGEPNAdapter, IGPPeruAdapter, SGCColombiaAdapter
 from .sources.austin import AustinCCTVAdapter
 from .sources.caltrans import CaltransAdapter
 from .sources.cars import NewYork511Adapter, Ontario511Adapter
@@ -68,6 +69,9 @@ ADAPTERS: dict[str, type] = {
         TaiwanTDXAdapter,
         TfLJamCamAdapter,
         VegvesenAdapter,
+        IGPPeruAdapter,
+        IGEPNAdapter,
+        SGCColombiaAdapter,
         *CARS_LIST_ADAPTERS,  # cars_fl, cars_ut, ... (keyless 511 list endpoint)
         *CARS_GQL_ADAPTERS,  # cars_mn, cars_ia, ... (OneWeb GraphQL portals)
         WindyAdapter,  # needs WINDY_API_KEY

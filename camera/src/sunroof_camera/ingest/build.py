@@ -46,11 +46,13 @@ def fill_tz(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def _view_key(df: pd.DataFrame) -> pd.Series:
-    """(lat, lon, azimuth) rounded to ~100 m / 15°. Rows without a known azimuth are keyed by id
-    instead, so a multi-preset station with unknown headings keeps every view."""
+    """(lat, lon, azimuth, night_ok) rounded to ~100 m / 15°. Rows without a known azimuth are
+    keyed by id instead, so a multi-preset station with unknown headings keeps every view; a
+    thermal/IR twin of a visible camera is a distinct view."""
     az = (df["azimuth_deg"] / 15).round().astype("Int64").astype(str)
     az = az.where(df["azimuth_deg"].notna(), "id:" + df["id"].astype(str))
-    return df["lat"].round(3).astype(str) + "|" + df["lon"].round(3).astype(str) + "|" + az
+    ir = df["night_ok"].astype(bool).map({True: "|ir", False: ""})
+    return df["lat"].round(3).astype(str) + "|" + df["lon"].round(3).astype(str) + "|" + az + ir
 
 
 def dedupe_views(df: pd.DataFrame) -> pd.DataFrame:
