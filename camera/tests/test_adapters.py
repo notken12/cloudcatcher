@@ -11,6 +11,7 @@ import pandas as pd
 from sunroof_camera.ingest.build import dedupe_views, merge_shards
 from sunroof_camera.ingest.sources import (
     caltrans,
+    cars_gql,
     cars_list,
     digitraffic,
     drivebc,
@@ -19,7 +20,10 @@ from sunroof_camera.ingest.sources import (
     nzta,
     panomax,
     singapore,
+    taiwan,
+    tfl,
     tripcheck,
+    vegvesen,
 )
 from sunroof_camera.schema import Camera, to_frame, write_parquet
 
@@ -281,3 +285,150 @@ def test_singapore_unions_recent_batches():
     cams = asyncio.run(go())
     assert sorted(c.id for c in cams) == ["sg_lta:2701", "sg_lta:4703"]
     assert cams[0].image_url is None and cams[0].history_kind == "api"
+
+
+def test_cars_gql_active_filter_strips_query_and_finds_hls():
+    feats = [
+        {
+            "bbox": [-93.1, 44.9, -93.1, 44.9],
+            "title": "I-94 @ Hwy 280",
+            "uri": "camera/1",
+            "__typename": "Camera",
+            "active": True,
+            "views": [
+                {
+                    "uri": "camera/1/10",
+                    "category": "VIDEO",
+                    "url": "https://x/1.jpg?1700000000",
+                    "title": "I-94 WB @ Hwy 280",
+                    "sources": [{"type": "application/x-mpegURL", "src": "https://x/1.m3u8"}],
+                },
+                {"uri": "camera/1/11", "category": "IMAGE", "url": None, "title": "dead"},
+                {"uri": "camera/1/12", "category": "IMAGE", "url": "https://x/icon.svg"},
+            ],
+        },
+        {
+            "bbox": [-93.2, 44.8, -93.2, 44.8],
+            "title": "inactive",
+            "uri": "camera/2",
+            "__typename": "Camera",
+            "active": False,
+            "views": [{"uri": "camera/2/1", "category": "IMAGE", "url": "https://x/2.jpg"}],
+        },
+    ]
+    payload = {"data": {"mapFeaturesQuery": {"mapFeatures": feats, "error": None}}}
+    cams = _run(cars_gql.CARS_GQL_ADAPTERS[0](), {"/api/graphql": payload})
+    assert [c.id for c in cams] == ["cars_mn:1:10"]
+    c = cams[0]
+    assert c.image_url == "https://x/1.jpg" and c.stream_url == "https://x/1.m3u8"
+    assert c.azimuth_deg == 270 and c.heading_conf == "text" and c.refresh_s == 120
+    assert (c.lat, c.lon) == (44.9, -93.1)
+
+
+def test_taiwan_mjpeg_vs_snapshot_and_first_frame():
+    hw = {
+        "CCTVs": [
+            {
+                "CCTVID": "A",
+                "PositionLat": 24.1,
+                "PositionLon": 120.6,
+                "RoadName": "台1線",
+                "RoadDirection": "N",
+                "VideoImageURL": "https://cctv.thb.gov.tw/A.jpg",
+                "VideoStreamURL": "https://cctv.thb.gov.tw/A.m3u8",
+            },
+            {"CCTVID": "nocoords", "VideoImageURL": "https://x/n.jpg"},
+        ]
+    }
+    fw = {
+        "CCTVs": [
+            {
+                "CCTVID": "B",
+                "PositionLat": 25.0,
+                "PositionLon": 121.5,
+                "RoadName": "國道1號",
+                "VideoStreamURL": "https://cctvn.freeway.gov.tw/abs2mjpg/bmjpg?camera=B",
+            },
+            {
+                "CCTVID": "C",
+                "PositionLat": 25.0,
+                "PositionLon": 121.5,
+                "VideoStreamURL": "https://x/C.m3u8",
+            },
+        ]
+    }
+    cams = _run(taiwan.TaiwanTDXAdapter(), {"CCTV/Highway": hw, "CCTV/Freeway": fw})
+    assert [c.id for c in cams] == ["tw_tdx:A", "tw_tdx:B"]
+    assert cams[0].image_url.endswith("A.jpg") and cams[0].stream_url is None
+    assert cams[0].azimuth_deg == 0
+    assert cams[1].image_url.startswith("https://cctvn.freeway.gov.tw") and cams[1].stream_url
+    buf = b"--boundary\r\nContent-Type: image/jpeg\r\n\r\n\xff\xd8abc\xff\xd9\r\n--boundary"
+    assert taiwan.first_mjpeg_frame(buf) == b"\xff\xd8abc\xff\xd9"
+    assert taiwan.first_mjpeg_frame(b"\xff\xd8partial") is None
+
+
+def test_tfl_available_filter_and_view_heading():
+    def place(pid, avail, view):
+        return {
+            "id": f"JamCams_{pid}",
+            "commonName": f"cam {pid}",
+            "lat": 51.5,
+            "lon": -0.1,
+            "additionalProperties": [
+                {"key": "available", "value": avail},
+                {"key": "imageUrl", "value": f"https://s3/{pid}.jpg"},
+                {"key": "videoUrl", "value": f"https://s3/{pid}.mp4"},
+                {"key": "view", "value": view},
+            ],
+        }
+
+    cams = _run(
+        tfl.TfLJamCamAdapter(),
+        {
+            "Place/Type/JamCam": [
+                place("00001.1", "true", "North East"),
+                place("00001.2", "false", "West"),
+            ]
+        },
+    )
+    assert [c.id for c in cams] == ["tfl:00001.1"]
+    assert cams[0].azimuth_deg == 45 and cams[0].stream_url.endswith(".mp4")
+    assert cams[0].tz == "Europe/London"
+
+
+def test_vegvesen_status_altitude_and_naming():
+    payload = {
+        "measurementSites": [
+            {
+                "id": "2000065",
+                "name": "Aisaroaivi",
+                "location": {
+                    "geometry": {"type": "Point", "coordinates": [24.1, 70.28]},
+                    "heightAboveSeaLevel": 237.7,
+                    "road": {"number": "E6"},
+                },
+                "cameras": [
+                    {
+                        "id": "2000065_1",
+                        "orientationDescription": "Skaidi",
+                        "stillImageUrl": "https://kamera.atlas.vegvesen.no/api/images/2000065_1",
+                        "videoUrl": "https://kamera.vegvesen.no/public/2000065_1/manifest.m3u8",
+                        "status": "OK",
+                    },
+                    {
+                        "id": "2000065_2",
+                        "stillImageUrl": "https://kamera.atlas.vegvesen.no/api/images/2000065_2",
+                        "status": "OUT_OF_SERVICE",
+                    },
+                ],
+            },
+            {"id": "x", "location": {}, "cameras": []},
+        ]
+    }
+    cams = _run(vegvesen.VegvesenAdapter(), {"measurement-sites": payload})
+    assert [c.id for c in cams] == ["no_vegvesen:2000065_1"]
+    c = cams[0]
+    assert (
+        c.name == "E6 Aisaroaivi (Skaidi)" and c.alt_m == 237.7 and c.stream_url.endswith(".m3u8")
+    )
+    assert (c.lat, c.lon) == (70.28, 24.1) and c.heading_conf == "unknown"

@@ -97,6 +97,14 @@ SOURCE_PRIOR = {
     "cars_wi": 0.35,
     "cars_la": 0.35,
     "cars_fl": 0.3,
+    "no_vegvesen": 0.6,  # rural, mountain passes, altitude known
+    "tw_tdx": 0.35,
+    "tfl": 0.3,  # dense urban, low mount
+    "cars_mn": 0.4,
+    "cars_ia": 0.4,
+    "cars_ne": 0.45,
+    "cars_in": 0.35,
+    "cars_ma": 0.35,
 }
 DEFAULT_PRIOR = 0.5
 
