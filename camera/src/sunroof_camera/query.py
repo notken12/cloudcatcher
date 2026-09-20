@@ -1,0 +1,222 @@
+"""`find_cameras(event, k)` — the function the backend calls (plan §3–§5)."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Literal
+
+import numpy as np
+import pandas as pd
+from pydantic import BaseModel, Field
+
+from . import geometry as g
+from . import solar
+from .schema import read_parquet
+
+EventType = Literal[
+    "sunrise",
+    "sunset",
+    "thunderstorm",
+    "lightning",
+    "mammatus",
+    "lenticular",
+    "fog",
+    "undercast",
+    "aurora",
+    "rainbow",
+]
+
+
+class Event(BaseModel):
+    type: EventType
+    lat: float
+    lon: float
+    radius_km: float = Field(10.0, description="horizontal extent of the phenomenon")
+    t: datetime | None = Field(None, description="time of interest; None = now")
+    layer_top_m: float | None = Field(None, description="fog/undercast: top of the layer")
+
+
+@dataclass(frozen=True)
+class TypeParams:
+    h_km: float | None  # feature altitude; None = solar rule / distance-only
+    r_cap_km: float
+    prefer_km: tuple[float, float] | None = None  # distance band that gets a bonus
+    needs_night: bool = False
+    source_prior_boost: tuple[str, ...] = ()
+
+
+PARAMS: dict[str, TypeParams] = {
+    "thunderstorm": TypeParams(12.0, 150.0, prefer_km=(30, 100)),
+    "lightning": TypeParams(6.0, 60.0, prefer_km=(5, 40)),
+    "mammatus": TypeParams(4.0, 40.0, prefer_km=(0, 15)),
+    "lenticular": TypeParams(
+        6.0, 80.0, prefer_km=(10, 50), source_prior_boost=("panomax", "fotowebcam")
+    ),
+    "fog": TypeParams(None, 10.0),
+    "undercast": TypeParams(None, 30.0, source_prior_boost=("panomax", "fotowebcam")),
+    "aurora": TypeParams(110.0, 600.0, needs_night=True),
+    "sunrise": TypeParams(None, 50.0),
+    "sunset": TypeParams(None, 50.0),
+    "rainbow": TypeParams(None, 5.0),
+}
+
+SOURCE_PRIOR = {"panomax": 0.9, "fotowebcam": 0.9, "phenocam": 0.7, "iem": 0.6, "manual": 0.8}
+DEFAULT_PRIOR = 0.5
+
+
+class Catalog:
+    """Loads cameras.parquet once and answers find_cameras()."""
+
+    def __init__(self, df: pd.DataFrame):
+        self.df = df.reset_index(drop=True)
+
+    @classmethod
+    def load(cls, path: str | Path = "data/cameras.parquet") -> Catalog:
+        return cls(read_parquet(path))
+
+    def find_cameras(
+        self, event: Event, k: int = 10, include_unverified: bool = True
+    ) -> pd.DataFrame:
+        df = self.df
+        p = PARAMS[event.type]
+        t = event.t or datetime.now(timezone.utc)
+        if t.tzinfo is None:
+            t = t.replace(tzinfo=timezone.utc)
+
+        lat, lon = df["lat"].to_numpy(), df["lon"].to_numpy()
+        d = g.haversine_km(lat, lon, event.lat, event.lon)
+        b = g.bearing_deg(lat, lon, event.lat, event.lon)
+        cam_alt_km = np.nan_to_num(df["alt_m"].to_numpy(dtype=float)) / 1000.0
+        sun_el, sun_az = solar.sun_position_deg(lat, lon, t)
+
+        # -- hard geometry --------------------------------------------------
+        ok = d <= p.r_cap_km + event.radius_km
+        reason = np.full(len(df), "", dtype=object)
+        if p.h_km is not None:
+            d_min, d_max = g.annulus_km(p.h_km, df["elev_min_deg"], df["elev_max_deg"], p.r_cap_km)
+            d_eff = np.maximum(d - event.radius_km, 0)  # nearest edge of the event
+            ok &= (d + event.radius_km >= d_min) & (d_eff <= d_max)
+            ok &= g.bearing_ok(
+                b, df["azimuth_deg"], df["hfov_deg"], df["heading_conf"], d, event.radius_km
+            )
+            reason[:] = [
+                f"d={x:.0f}km in [{lo:.0f},{hi:.0f}]" for x, lo, hi in zip(d, d_min, d_max)
+            ]
+        elif event.type in ("sunrise", "sunset"):
+            ok &= (sun_el >= -6) & (sun_el <= 6)
+            ok &= df["elev_min_deg"].to_numpy() <= 2
+            ok &= g.bearing_ok(
+                sun_az,
+                df["azimuth_deg"],
+                df["hfov_deg"],
+                df["heading_conf"],
+                np.full_like(d, 1e6),
+                0,
+            )
+            reason[:] = [f"sun az={a:.0f} el={e:.1f}" for a, e in zip(sun_az, sun_el)]
+        elif event.type == "rainbow":
+            anti = (sun_az + 180) % 360
+            ok &= (sun_el > 0) & (sun_el < 42)
+            ok &= g.bearing_ok(
+                anti,
+                df["azimuth_deg"],
+                df["hfov_deg"] + 84,
+                df["heading_conf"],
+                np.full_like(d, 1e6),
+                0,
+            )
+            reason[:] = [f"antisolar az={a:.0f} sun el={e:.1f}" for a, e in zip(anti, sun_el)]
+        elif event.type == "fog":
+            top = (event.layer_top_m or 300.0) / 1000.0
+            ok &= cam_alt_km <= top + 0.05
+            reason[:] = "camera inside layer"
+        elif event.type == "undercast":
+            top = (event.layer_top_m or 800.0) / 1000.0
+            ok &= (cam_alt_km > top) & (df["elev_min_deg"].to_numpy() < 0)
+            reason[:] = "camera above layer, looks down"
+
+        # -- night gate (plan §4) -----------------------------------------------
+        night_ok = df["night_ok"].to_numpy()
+        night_mult = np.ones(len(df))
+        twilight = (sun_el <= -6) & (sun_el > -18)
+        dark = sun_el <= -18
+        fast = df["refresh_s"].to_numpy() <= 60
+        if p.needs_night:
+            ok &= night_ok & (sun_el < -12)
+        else:
+            lightning = event.type == "lightning"
+            afterglow = event.type in ("sunrise", "sunset")
+            if not (lightning or afterglow):
+                ok &= ~(twilight & ~night_ok)
+            if lightning:
+                ok &= ~(dark & ~night_ok & ~fast)
+            else:
+                ok &= ~(dark & ~night_ok)
+            night_mult = np.where(twilight & ~night_ok, 0.5, night_mult)
+
+        health = df["health"].astype(str).to_numpy()
+        ok &= health != "dead"
+        if not include_unverified:
+            ok &= health == "live"
+
+        # -- score (plan §5) -------------------------------------------------------
+        geo_fit = np.ones(len(df))
+        if p.prefer_km:
+            lo, hi = p.prefer_km
+            geo_fit = np.where((d >= lo) & (d <= hi), 1.0, 0.7)
+        if event.type == "mammatus":
+            geo_fit *= np.where(df["elev_max_deg"].to_numpy() >= 40, 1.2, 1.0)
+        heading_mult = np.where(df["heading_conf"].isin(["ptz", "unknown"]).to_numpy(), 0.6, 1.0)
+        age_s = (pd.Timestamp(t) - df["last_frame_ts"]).dt.total_seconds().to_numpy(dtype=float)
+        fresh = np.where(
+            np.isnan(age_s), 0.3, np.exp(-np.maximum(age_s, 0) / (3 * df["refresh_s"].to_numpy()))
+        )
+        prior = (
+            df["source"]
+            .astype(str)
+            .map(lambda s: SOURCE_PRIOR.get(s, DEFAULT_PRIOR))
+            .to_numpy(dtype=float)
+        )
+        prior = np.where(
+            df["source"].astype(str).isin(p.source_prior_boost).to_numpy(), prior + 0.1, prior
+        )
+        sky = np.nan_to_num(df["sky_frac"].to_numpy(dtype=float), nan=0.4)
+        score = (
+            (
+                0.35 * geo_fit
+                + 0.25 * fresh
+                + 0.15 * sky
+                + 0.15 * prior
+                + 0.10 * df["quality_score"].to_numpy()
+            )
+            * heading_mult
+            * night_mult
+        )
+
+        out = df.loc[ok].copy()
+        out["distance_km"] = d[ok]
+        out["bearing_to_event"] = b[ok]
+        out["solar_elev"] = sun_el[ok]
+        out["score"] = score[ok]
+        out["reason"] = reason[ok]
+        out = out.sort_values("score", ascending=False)
+        out = _dedupe_nearby(out)
+        return out.head(k).reset_index(drop=True)
+
+
+def _dedupe_nearby(df: pd.DataFrame, cell_deg: float = 0.01) -> pd.DataFrame:
+    """Keep the best-scoring view per ~1 km cell so top-k isn't ten presets of one PTZ."""
+    key = (
+        (df["lat"] / cell_deg).round().astype(int).astype(str)
+        + ","
+        + (df["lon"] / cell_deg).round().astype(int).astype(str)
+    )
+    return df.loc[~key.duplicated()]
+
+
+def find_cameras(
+    event: Event, k: int = 10, path: str | Path = "data/cameras.parquet"
+) -> pd.DataFrame:
+    return Catalog.load(path).find_cameras(event, k)
