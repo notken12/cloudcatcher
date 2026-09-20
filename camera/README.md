@@ -39,8 +39,9 @@ probe to `data/health_log.parquet`. The catalog's health columns are then *deriv
 Placeholder "camera unavailable" cards are caught per run: identical bytes from ≥3 cameras of one
 source (DriveBC, QLD, some CARS states do this) → failed probe. A frame byte-identical to the
 previous probe >6 h earlier with no source timestamp → `frozen`. `find_cameras` drops `dead`
-rows and weights `fresh = exp(-age / 3·refresh_s)`, so run the probe before a demo
-(`--tier unverified` first, then `--tier stale` every ~10 min). Run it at night in your region
+rows and any camera whose `last_frame_ts` is older than 24 h (same cutoff as `dead`, so unprobed
+cameras with a stale ingest timestamp are skipped too), and weights `fresh = exp(-age / 3·refresh_s)`,
+so run the probe before a demo (`--tier unverified` first, then `--tier stale` every ~10 min). Run it at night in your region
 of interest once to get `night_usable_frac` populated for the aurora / lightning gates.
 
 ## Camera service (query → gate → VLM → route)

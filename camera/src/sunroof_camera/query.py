@@ -13,6 +13,7 @@ from pydantic import BaseModel, Field
 
 from . import geometry as g
 from . import solar
+from .health import DEAD_AFTER
 from .schema import read_parquet
 
 EventType = Literal[
@@ -110,7 +111,9 @@ SOURCE_PRIOR = {
     "cars_ma": 0.35,
 }
 DEFAULT_PRIOR = 0.5
-MAX_CATALOG_AGE_S = 24 * 3600  # last_frame_ts older than this -> treat the camera as offline
+# last_frame_ts older than this -> offline, same cutoff the health probe uses for `dead`; covers
+# cameras the probe has not reached yet (health still `unverified`, timestamp from ingest)
+MAX_CATALOG_AGE_S = DEAD_AFTER.total_seconds()
 
 
 class Catalog:
