@@ -94,6 +94,85 @@ a:hover {
   }
 }
 
+.seg {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+}
+.seg button {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.seg button[aria-pressed='true'] {
+  background: var(--ink);
+  color: #fff;
+}
+
+.pin {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  padding: 3px;
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow:
+    0 0 0 2px var(--pin),
+    0 6px 18px rgb(0 0 0 / 0.15);
+  transition:
+    opacity 0.2s,
+    scale 0.15s;
+  will-change: transform;
+}
+.pin:hover,
+.pin-active {
+  scale: 1.12;
+}
+.pin-active {
+  box-shadow:
+    0 0 0 3px var(--pin),
+    0 0 0 7px color-mix(in srgb, var(--pin) 30%, transparent),
+    0 6px 18px rgb(0 0 0 / 0.15);
+}
+.pin img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 9px;
+  display: block;
+}
+.pin-tail {
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  width: 2px;
+  height: 9px;
+  background: var(--pin);
+  translate: -50% 0;
+}
+@media (min-width: 1024px) {
+  .pin {
+    width: 56px;
+    height: 56px;
+  }
+}
+.pin-tail::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pin);
+  translate: -50% 0;
+}
+
 select.plain {
   appearance: none;
   background: var(--surface);

@@ -24,8 +24,9 @@ broadcast, iteration 2 globe"), and the HackMIT sponsor sheet.
 - **Globe = iteration 2, but the layout is built for it from day one**: the
   broadcast card is a component that already takes a `Footage`, and the app
   state is "selected footage + filter", so the globe just becomes a second
-  way to set `selected`. Library: `react-globe.gl` (three.js). ~half a
-  session to get dots + thumbnail pins working once the fixture has cameras.
+  way to set `selected`. Library: **`cobe`** (5 kB WebGL, dotted-earth look
+  that matches the theme) — chosen over `react-globe.gl` (~570 kB gzip +
+  texture) after measuring both; see §3 iteration 2.
 
 ---
 
@@ -56,17 +57,17 @@ dev loop is faster. If a same-origin proxy is needed in dev, `vite.config.ts`
 
 **Kept deliberately small:**
 
-| concern        | choice                                                                                                                     | why                                                                                            |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| framework      | React 19 + TS + Vite 6                                                                                                     | team knows React; TS pins the `Footage` contract                                               |
-| styling        | Tailwind v4 + a few CSS vars in `index.css`                                                                                | light neutral theme in one place; "change colours of bars/buttons later" = change vars         |
-| data           | TanStack Query for `/feed` & `/events/{id}/footage`; raw `EventSource` for `/stream` that invalidates queries              | cache/retry/stale for free; SSE stays 15 lines                                                 |
-| state          | React `useState` lifted to `App` (selected footage, event-type filter). Zustand only if the globe makes prop-drilling ugly | nothing global enough yet                                                                      |
-| video          | `hls.js` (lazy `import()` so the image-only path pays nothing)                                                             | already the backend's recommendation                                                           |
-| globe (iter 2) | `react-globe.gl`                                                                                                           | points + HTML pins + arcs out of the box, Apple-ish when textured with a flat light-grey earth |
-| icons          | `lucide-react`                                                                                                             | thin-line, neutral                                                                             |
-| tests          | Vitest + Testing Library on `FootageCard` + renderer switch                                                                | cheap, guards the contract                                                                     |
-| lint/format    | oxlint (vite template default) + Prettier                                                                                  |                                                                                                |
+| concern        | choice                                                                                                                     | why                                                                                    |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| framework      | React 19 + TS + Vite 6                                                                                                     | team knows React; TS pins the `Footage` contract                                       |
+| styling        | Tailwind v4 + a few CSS vars in `index.css`                                                                                | light neutral theme in one place; "change colours of bars/buttons later" = change vars |
+| data           | TanStack Query for `/feed` & `/events/{id}/footage`; raw `EventSource` for `/stream` that invalidates queries              | cache/retry/stale for free; SSE stays 15 lines                                         |
+| state          | React `useState` lifted to `App` (selected footage, event-type filter). Zustand only if the globe makes prop-drilling ugly | nothing global enough yet                                                              |
+| video          | `hls.js` (lazy `import()` so the image-only path pays nothing)                                                             | already the backend's recommendation                                                   |
+| globe (iter 2) | `cobe` (lazy chunk) + our own lat/lon→screen projection for DOM pins                                                       | 5 kB, zero deps, dotted light globe fits the design; pins stay real `<button>`s        |
+| icons          | `lucide-react`                                                                                                             | thin-line, neutral                                                                     |
+| tests          | Vitest + Testing Library on `FootageCard` + renderer switch                                                                | cheap, guards the contract                                                             |
+| lint/format    | oxlint (vite template default) + Prettier                                                                                  |                                                                                        |
 
 ---
 
@@ -201,25 +202,49 @@ Fog is out of scope (weather side may still emit it; the UI ignores unknown type
   (evidence, why-this-camera, attribution) lives _under_ the hero and is
   collapsible.
 
-### Iteration 2 — Globe (next session)
+### Iteration 2 — Globe (done)
 
-- `react-globe.gl` in the **bottom-right corner, ~320px, rounded, translucent
-  card**; click expands to a split view (globe left 45 %, hero right 55 %).
-  Matches "globe view bottom-right" from the one-pager and keeps the
-  iteration-1 layout intact.
-- Layers: `pointsData` = every camera (`cameras.geojson`, 1px grey dots,
-  `pointAltitude` 0); `htmlElementsData` = one pin per live `Footage` with a
-  48px thumbnail of `media.poster`; `ringsData` pulses on the event centre
-  with the type colour. Hover pin → caption tooltip; click → sets
-  `selected`, hero switches. Globe texture: flat light-grey land / white
-  ocean (Natural Earth 1:110m rasterised once) instead of the NASA blue
-  marble — that's the Apple-Maps-light look.
-- Time estimate: dots + pins + click-to-select is ~2 h of one session once
-  `cameras.geojson` exists; the split-view animation another hour. Auto
-  rotate + fly-to-event on select is 20 lines (`pointOfView({lat,lng,alt},
-1000)`).
-- Risk: 90k dots is fine in three.js points; HTML pins must stay ≤ ~50, so
-  pins = live pairs only, never all cameras.
+**Library: `cobe`, not `react-globe.gl`.** Measured on a real build:
+`react-globe.gl` adds ~570 kB gzip (three.js + d3) plus a 1–2 MB earth
+texture and looks "NASA dark" unless re-skinned; `cobe` is ~6 kB gzip, zero
+deps, and its dotted light-grey earth _is_ the Apple-light look we want.
+What we lose (zoom, hit-testing on arbitrary globe points, photoreal
+texture) we don't need: the globe's job is "all cameras as dots + ≤ 50
+clickable event pins + auto-rotate".
+
+**Same page, two layouts — not a separate page.** Header segmented toggle
+(`Tv` / `Earth`) backed by a hash route: `#/globe` ↔ globe layout, anything
+else ↔ broadcast (`src/lib/view.ts`, `useSyncExternalStore` on
+`hashchange`). Filter, selected index and the 20 s auto-cycle survive the
+switch because it's the same `App` state; the card is the same
+`FootageCard`, docked right on `lg:` and stacked under the globe on phones.
+
+**How it's built** (`src/components/globe/`):
+
+- `Globe.tsx` — lazy-imports `cobe`, one `<canvas>` sized to its square
+  wrapper (ResizeObserver → `globe.update({width,height})`). cobe draws the
+  earth + every camera as a tiny marker (`useCameras()` → fixture
+  `cameras.json` today, `GET /cameras.geojson` when the backend has it).
+- Event pins are **DOM `<button>`s**, not cobe markers: one per visible
+  `Footage` (≤ `PIN_SLOTS` = 50), thumbnail = `media.poster`, ring colour =
+  `--c-{event.type}`. Every frame they're positioned with
+  `projection.ts`, which mirrors cobe's shader camera (`phi`, `theta`,
+  radius 0.8 + `markerElevation`) so a pin sits exactly on its dot; far-side
+  pins fade out and lose pointer events. This avoids cobe v2's CSS-anchor
+  positioning (no Firefox) and keeps pins fully styleable/clickable.
+- Motion: idle auto-rotate (`IDLE_SPIN`), pointer drag on the canvas, and
+  fly-to on select (`phiFacing(lon)` + `shortestTurn`, eased). All mutable
+  render state lives in refs; the rAF loop never re-renders React. Loop
+  skips frames while `document.hidden`; unmount cancels rAF and calls
+  `globe.destroy()`.
+- Click pin → `setIndex(...)` in `App`; the docked card switches, the globe
+  flies. The `Cycler` keeps advancing, so the globe follows the broadcast.
+
+**Phones.** Layout works at 420 px (pins shrink to 40 px, status label
+collapses to the dot). Still a live WebGL loop → noticeable battery; the
+default route is broadcast, globe is opt-in via the toggle. **PWA / iOS
+install deliberately skipped** for now (decided with the team); when
+wanted it's a manifest + service worker on the same build, no new codebase.
 
 ### Iteration 3 (only if time)
 
@@ -227,7 +252,8 @@ Fog is out of scope (weather side may still emit it; the UI ignores unknown type
   half, "why it's rare" text) — needs the weather half to expose a tile URL.
 - Share link `/e/{event_id}` → deep-links to that footage (React Router,
   one route).
-- PWA manifest + Web Push for the Long Lake story.
+- PWA manifest + Web Push for the Long Lake story (skipped in iteration 2
+  on purpose; ~1 h when needed).
 
 ---
 
@@ -298,7 +324,7 @@ frontend/
    proxy. — as soon as the routing Devin has step 2 of _their_ build order
    ("proxy routes + store + SSE").
 4. Globe (§3 iteration 2).
-5. Evidence panel / share link / PWA.
+5. Evidence panel / share link / PWA (PWA deferred).
 
 ---
 
