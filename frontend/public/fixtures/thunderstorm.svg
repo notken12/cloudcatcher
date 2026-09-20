@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2e3440"/><stop offset="0.4" stop-color="#5a6577"/><stop offset="0.75" stop-color="#9aa5b5"/><stop offset="1" stop-color="#6d7480"/></linearGradient>
+<filter id="b"><feGaussianBlur stdDeviation="18"/></filter></defs>
+<rect width="1280" height="720" fill="url(#g)"/><ellipse cx="900" cy="260" rx="380" ry="170" fill="#262b34" opacity=".9" filter="url(#b)"/><rect x="820" y="380" width="200" height="260" fill="#7c8698" opacity=".5" filter="url(#b)"/><rect y="600" width="1280" height="120" fill="#3d4148"/>
+<text x="1264" y="706" text-anchor="end" font-family="Helvetica,Arial" font-size="16" fill="#fff" opacity=".7">fixture frame · thunderstorm</text>
+</svg>

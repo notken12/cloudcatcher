@@ -1,0 +1,161 @@
+[
+  {
+    "event_id": "evt_20260920_denver_mammatus",
+    "camera_id": "iem:KCCI-014",
+    "rank": 1,
+    "verified": true,
+    "media": {
+      "kind": "image",
+      "src": "/fixtures/mammatus.svg",
+      "poster": "/fixtures/mammatus.svg",
+      "refresh_s": 60,
+      "width": 1280,
+      "height": 720
+    },
+    "verdict": {
+      "event_visible": "yes",
+      "confidence": 0.82,
+      "quality": 4,
+      "caption": "Mammatus lobes under a decaying anvil, looking SW"
+    },
+    "why": "18 km NE of the storm core, camera faces 225°, cloud base at ~35° elevation",
+    "camera": {
+      "name": "Des Moines KCCI tower",
+      "lat": 41.6,
+      "lon": -93.6,
+      "source": "iem",
+      "page_url": "https://mesonet.agron.iastate.edu/current/webcam.php",
+      "attribution": "Iowa Environmental Mesonet",
+      "license": "public"
+    },
+    "frame_ts": "2026-09-20T05:11:30Z",
+    "hold_until": "2026-09-20T05:31:30Z",
+    "event": {
+      "type": "mammatus",
+      "lat": 39.74,
+      "lon": -104.99,
+      "radius_km": 40,
+      "place": "Denver, Colorado",
+      "rarity": 0.86
+    }
+  },
+  {
+    "event_id": "evt_20260920_kiruna_aurora",
+    "camera_id": "irf:kiruna-allsky",
+    "rank": 1,
+    "verified": true,
+    "media": {
+      "kind": "image",
+      "src": "/fixtures/aurora.svg",
+      "poster": "/fixtures/aurora.svg",
+      "refresh_s": 60,
+      "width": 1024,
+      "height": 1024
+    },
+    "verdict": {
+      "event_visible": "yes",
+      "confidence": 0.93,
+      "quality": 5,
+      "caption": "Bright green arc with rays across the northern half of the sky"
+    },
+    "why": "All-sky camera inside the auroral oval segment, sun at -21°, moon 12% lit",
+    "camera": {
+      "name": "IRF Kiruna all-sky",
+      "lat": 67.84,
+      "lon": 20.41,
+      "source": "irf",
+      "page_url": "https://www.irf.se/en/observatory-activities/allsky-camera/",
+      "attribution": "Swedish Institute of Space Physics",
+      "license": "display-with-attribution"
+    },
+    "frame_ts": "2026-09-20T05:09:00Z",
+    "hold_until": "2026-09-20T05:39:00Z",
+    "event": {
+      "type": "aurora",
+      "lat": 68.5,
+      "lon": 22.0,
+      "radius_km": 600,
+      "place": "Swedish Lapland",
+      "rarity": 0.71
+    }
+  },
+  {
+    "event_id": "evt_20260920_alps_undercast",
+    "camera_id": "panomax:zugspitze",
+    "rank": 1,
+    "verified": false,
+    "media": {
+      "kind": "iframe",
+      "src": "https://zugspitze.panomax.com/",
+      "poster": "/fixtures/undercast.svg",
+      "width": 1600,
+      "height": 900
+    },
+    "verdict": {
+      "event_visible": "yes",
+      "confidence": 0.77,
+      "quality": 5,
+      "caption": "Unbroken stratus deck filling the valleys below the summit"
+    },
+    "why": "Summit camera at 2962 m above a 1400 m fog top, 200° panorama looking down",
+    "camera": {
+      "name": "Zugspitze summit panorama",
+      "lat": 47.42,
+      "lon": 10.99,
+      "source": "panomax",
+      "page_url": "https://zugspitze.panomax.com/",
+      "attribution": "Panomax · Bayerische Zugspitzbahn",
+      "license": "iframe-only"
+    },
+    "frame_ts": "2026-09-20T05:00:00Z",
+    "hold_until": "2026-09-20T05:30:00Z",
+    "event": {
+      "type": "undercast",
+      "lat": 47.45,
+      "lon": 11.05,
+      "radius_km": 30,
+      "place": "Bavarian Alps",
+      "rarity": 0.34
+    }
+  },
+  {
+    "event_id": "evt_20260920_miami_thunderstorm",
+    "camera_id": "fl511:I95-MM12-N",
+    "rank": 1,
+    "verified": true,
+    "media": {
+      "kind": "hls",
+      "src": "/proxy/hls/fl511:I95-MM12-N/playlist.m3u8",
+      "poster": "/fixtures/thunderstorm.svg",
+      "width": 1280,
+      "height": 720
+    },
+    "verdict": {
+      "event_visible": "yes",
+      "confidence": 0.88,
+      "quality": 3,
+      "caption": "Dark cumulonimbus base with a rain shaft to the east"
+    },
+    "why": "42 km W of the cell, camera faces 090°, anvil top at 13 km fills the upper frame",
+    "camera": {
+      "name": "I-95 at MM 12 northbound",
+      "lat": 25.79,
+      "lon": -80.2,
+      "source": "fl511",
+      "page_url": "https://fl511.com/",
+      "attribution": "Florida 511 / FDOT",
+      "license": "public"
+    },
+    "frame_ts": "2026-09-20T05:12:10Z",
+    "hold_until": "2026-09-20T05:32:10Z",
+    "event": {
+      "type": "thunderstorm",
+      "lat": 25.8,
+      "lon": -79.8,
+      "radius_km": 150,
+      "place": "Miami, Florida",
+      "rarity": 0.22,
+      "severity": 0.64
+    }
+  }
+]
