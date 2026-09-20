@@ -1,7 +1,9 @@
 import { ChevronDown, Earth, History, Tv } from 'lucide-react'
 import type { StreamState } from '../lib/api'
 import { FILTER_LABEL, FILTERS, type Filter } from '../lib/events'
+import { personalEnabled } from '../lib/personal'
 import type { View } from '../lib/view'
+import { NotifyButton } from './NotifyButton'
 
 interface Props {
   filter: Filter
@@ -68,6 +70,7 @@ export function Header({ filter, onFilter, liveCount, stream, view, onView }: Pr
           </select>
           <ChevronDown className="muted pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2" />
         </label>
+        {personalEnabled() && <NotifyButton />}
         <span
           className="muted inline-flex items-center gap-2 text-sm tabular-nums whitespace-nowrap"
           title={`${label} · ${liveCount}`}

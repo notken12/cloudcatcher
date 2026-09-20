@@ -113,6 +113,26 @@ a:hover {
   color: #fff;
 }
 
+.seg-solo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-2);
+}
+.seg-solo[aria-pressed='true'] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.seg-solo:disabled:not([aria-pressed='true']) {
+  opacity: 0.5;
+}
+
 .pin {
   position: absolute;
   top: 0;
