@@ -8,10 +8,11 @@ Rules, no ML:
 - storm: ProbSevere objects with COMPREF >= 50 and (FLASH_RATE >= 5 or ProbSevere >= 30)
 - aurora (--aurora): OVATION probability >= 20, dark sky, and little low cloud (HRRR lcc)
 
-The sunset lattice sweep is intentionally left out for now; the existing ray model
-(weather/sunset_rays.score_site) still scores individual camera sites under --sites, and
-weather/sunset_quality.py holds a newer Sunsethue-whitepaper two-phase classifier verified on the
-Lamar 5/5 frame but not yet wired into detection.
+The sunset lattice sweep is intentionally left out for now; --sites scores individual camera sites
+for their next sunset+15 min. When a GOES scan from the last 90 min before that target covers the
+site, the Sunsethue-whitepaper classifier (weather/sunset_quality.py) runs on the GOES cloud field
+(weather/goes_cloud.py; it sees the thin cirrus HRRR misses); otherwise the HRRR ray model
+(weather/sunset_rays.score_site) scores the site from the forecast.
 
 With --when, storms and site scores replay from the S3 archives (ProbSevere back to 2020-10, HRRR to
 2014); OVATION is live-only, so --aurora with --when uses *current* space weather.
@@ -27,9 +28,11 @@ import numpy as np
 
 from common.geo import bearing_deg, distance_km
 from weather import mrms
+from weather.goes_cloud import GoesCloudField, bucket_for, load_field
 from weather.hrrr import CloudGrid, download_subset, key_for, latest_run
-from weather.sun import sun_azimuth, sun_elevation, sunset_utc
-from weather.sunset_rays import score_site
+from weather.sun import golden_hour_minutes, sun_azimuth, sun_elevation, sunset_utc
+from weather.sunset_quality import score_site as quality_score
+from weather.sunset_rays import score_site as rays_score
 from weather.swpc_aurora import aurora_rule, ovation
 
 AURORA_LAT = np.arange(50.0, 71.01, 0.5)
@@ -41,6 +44,8 @@ STORM_MIN_PROBSEVERE = 30.0
 DAYLIGHT_ELEVATION_DEG = -6.0
 AURORA_RADIUS_KM = 150
 AURORA_MAX_LCC = 30.0
+COLOUR_PEAK_AFTER_SUNSET = dt.timedelta(minutes=15)
+GOES_MAX_LEAD = dt.timedelta(minutes=90)  # a GOES scan is a nowcast; beyond this lead the HRRR forecast is the better input
 
 GRIB_DIR = os.environ.get("CLOUDCATCHER_GRIB_DIR", "/tmp/cloudcatcher-hrrr")
 
@@ -151,34 +156,55 @@ def aurora_events(when: dt.datetime, grids) -> tuple[list[dict], dict]:
     return events, {"ovation_observed_at": iso(ov["observed_at"]), "ovation_forecast_at": iso(ov["forecast_at"])}
 
 
+def local_offset_hours(lon: float) -> int:
+    return round(lon / 15)
+
+
 def next_sunset(lat: float, lon: float, when: dt.datetime) -> dt.datetime | None:
     """First local sunset whose colour window (sunset+15) is still ahead of `when`."""
-    offset = round(lon / 15)
+    offset = local_offset_hours(lon)
     today = (when + dt.timedelta(hours=offset)).date()
     for local_date in (today, today + dt.timedelta(days=1)):
         try:
             sunset = sunset_utc(lat, lon, local_date, offset)
         except ValueError:  # polar day/night
             continue
-        if sunset + dt.timedelta(minutes=15) >= when:
+        if sunset + COLOUR_PEAK_AFTER_SUNSET >= when:
             return sunset
     return None
 
 
-def site_scores(sites: list[dict], when: dt.datetime, grids, storms: list[dict], aurora_on: bool) -> list[dict]:
-    """Per-site join for the camera side: next-sunset score (existing ray model), nearest storm, aurora rule."""
+def goes_fields(when: dt.datetime, sites: list[dict], terrain: CloudGrid) -> dict[str, GoesCloudField | None]:
+    """Newest GOES scan per satellite bucket the sites need; None where the bucket has no recent scan."""
+    return {bucket: load_field(when, bucket, terrain) for bucket in {bucket_for(site["lon"]) for site in sites}}
+
+
+def sunset_score(site: dict, sunset: dt.datetime, grid: CloudGrid, goes: GoesCloudField | None) -> dict:
+    """Classifier on the GOES cloud field when a recent scan covers the site, else the HRRR ray model."""
+    lat, lon = site["lat"], site["lon"]
+    azimuth = sun_azimuth(lat, lon, sunset)
+    target = sunset + COLOUR_PEAK_AFTER_SUNSET
+    if goes is None or target - goes.scanned_at > GOES_MAX_LEAD or not goes.covers(lat, lon):
+        return {"model": "sunset_rays/hrrr", **rays_score(grid, lat, lon, azimuth)}
+    offset = local_offset_hours(lon)
+    rh = float(grid.sample("rh", [lat], [lon])[0])
+    golden = golden_hour_minutes(lat, lon, (sunset + dt.timedelta(hours=offset)).date(), offset)
+    return {"model": "sunset_quality/goes", "goes_scan": iso(goes.scanned_at), **quality_score(goes, lat, lon, azimuth, rh, golden)}
+
+
+def site_scores(sites: list[dict], when: dt.datetime, grids, goes: dict[str, GoesCloudField | None],
+                storms: list[dict], aurora_on: bool) -> list[dict]:
+    """Per-site join for the camera side: next-sunset score, nearest storm, aurora rule."""
     valid_times = [run + dt.timedelta(hours=f) for run, f, _ in grids]
     ov = ovation() if aurora_on else None
     rows = []
     for site in sites:
         row = {"id": site["id"], "lat": site["lat"], "lon": site["lon"]}
         sunset = next_sunset(site["lat"], site["lon"], when)
-        target = sunset + dt.timedelta(minutes=15) if sunset else None
-        if sunset and any(v - dt.timedelta(hours=1) <= target <= v + dt.timedelta(hours=1) for v in valid_times):
-            grid = nearest_grid(grids, target)[2]
-            azimuth = sun_azimuth(site["lat"], site["lon"], sunset)
-            row["sunset"] = {"sunset_utc": iso(sunset), "hrrr_valid": iso(nearest_grid(grids, target)[0] + dt.timedelta(hours=nearest_grid(grids, target)[1])),
-                             **score_site(grid, site["lat"], site["lon"], azimuth)}
+        if sunset is not None and any(abs(v - sunset - COLOUR_PEAK_AFTER_SUNSET) <= dt.timedelta(hours=1) for v in valid_times):
+            run, fhour, grid = nearest_grid(grids, sunset + COLOUR_PEAK_AFTER_SUNSET)
+            row["sunset"] = {"sunset_utc": iso(sunset), "hrrr_valid": iso(run + dt.timedelta(hours=fhour)),
+                             **sunset_score(site, sunset, grid, goes[bucket_for(site["lon"])])}
         nearest = None
         for event in storms:
             km = distance_km(site["lat"], site["lon"], event["lat"], event["lon"])
@@ -203,17 +229,20 @@ def run_once(when: dt.datetime, args) -> dict:
         aurora, aurora_source = aurora_events(when, grids)
         events += aurora
         sources["ovation"] = aurora_source
+    sites = json.load(open(args.sites)) if args.sites else []
+    goes = goes_fields(when, sites, nearest_grid(grids, when)[2]) if sites and grids else {}
+    if sites:
+        sources["goes"] = {bucket: None if field is None else iso(field.scanned_at) for bucket, field in goes.items()}
     payload = {"generated_at": iso(dt.datetime.now(dt.UTC)), "when": iso(when), "sources": sources, "events": events}
     write_atomic(args.out, payload)
-    if args.sites:
+    if sites:
         site_path = os.path.join(os.path.dirname(args.out) or ".", "site_scores.json")
-        sites = json.load(open(args.sites))
-        write_atomic(site_path, {"when": iso(when), "sites": site_scores(sites, when, grids, storms, args.aurora)})
+        write_atomic(site_path, {"when": iso(when), "sites": site_scores(sites, when, grids, goes, storms, args.aurora)})
     return payload
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser = argparse.ArgumentParser(description=(__doc__ or "").splitlines()[0])
     parser.add_argument("--out", default="out/events.json")
     parser.add_argument("--when", default=None, help="ISO instant to evaluate instead of now (replay)")
     parser.add_argument("--sites", default=None, help="camera site catalog JSON [{id, lat, lon}]")

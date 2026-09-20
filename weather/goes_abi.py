@@ -27,11 +27,14 @@ class FixedGrid:
         self.lon0 = np.radians(proj.longitude_of_projection_origin)
         self.re = proj.semi_major_axis
         self.rp = proj.semi_minor_axis
-        self.x = ds.variables["x"][:]
-        self.y = ds.variables["y"][:]
+        self.x = np.asarray(ds.variables["x"][:], dtype=float)
+        self.y = np.asarray(ds.variables["y"][:], dtype=float)
+        self.dx = float(self.x[1] - self.x[0])
+        self.dy = float(self.y[1] - self.y[0])
 
-    def index(self, lat_deg: float, lon_deg: float) -> tuple[int, int]:
-        lat, lon = np.radians(lat_deg), np.radians(lon_deg)
+    def indices(self, lats_deg, lons_deg) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """(row, col, inside) per point; row/col are clipped to the grid, `inside` is False off the scan or behind the limb."""
+        lat, lon = np.radians(np.asarray(lats_deg, dtype=float)), np.radians(np.asarray(lons_deg, dtype=float))
         e2 = 1 - (self.rp / self.re) ** 2
         phi_c = np.arctan((self.rp / self.re) ** 2 * np.tan(lat))
         r_c = self.rp / np.sqrt(1 - e2 * np.cos(phi_c) ** 2)
@@ -40,7 +43,15 @@ class FixedGrid:
         sz = r_c * np.sin(phi_c)
         scan_y = np.arctan(sz / sx)
         scan_x = np.arcsin(-sy / np.sqrt(sx**2 + sy**2 + sz**2))
-        return int(np.abs(self.y - scan_y).argmin()), int(np.abs(self.x - scan_x).argmin())
+        visible = np.cos(phi_c) * np.cos(lon - self.lon0) > self.re / (self.h + self.re)  # this side of the limb
+        col = np.rint(np.nan_to_num((scan_x - self.x[0]) / self.dx)).astype(int)
+        row = np.rint(np.nan_to_num((scan_y - self.y[0]) / self.dy)).astype(int)
+        inside = visible & (col >= 0) & (col < self.x.size) & (row >= 0) & (row < self.y.size)
+        return np.clip(row, 0, self.y.size - 1), np.clip(col, 0, self.x.size - 1), inside
+
+    def index(self, lat_deg: float, lon_deg: float) -> tuple[int, int]:
+        row, col, _ = self.indices([lat_deg], [lon_deg])
+        return int(row[0]), int(col[0])
 
 
 def window(ds: netCDF4.Dataset, variable: str, lat: float, lon: float, half: int) -> np.ndarray:
@@ -54,5 +65,6 @@ if __name__ == "__main__":
     now = dt.datetime.now(dt.UTC)
     bucket = east_bucket(now)
     obj = latest_product("ABI-L2-CMIPC", now, bucket, "-M6C13")
+    assert obj is not None, "no band-13 CONUS scan this hour"
     ds = open_dataset(bucket, obj["Key"])
     print(obj["Key"].split("/")[-1], "scan", file_start(obj["Key"]), "min BT near Phoenix:", np.nanmin(window(ds, "CMI", 33.45, -112.07, 3)))
