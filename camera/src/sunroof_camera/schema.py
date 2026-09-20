@@ -39,8 +39,8 @@ class Camera(BaseModel):
     name: str
 
     # location
-    lat: float
-    lon: float
+    lat: float = Field(ge=-90, le=90)
+    lon: float = Field(ge=-180, le=180)
     alt_m: float | None = Field(None, description="camera altitude; catalog or DEM lookup")
     tz: str | None = Field(None, description="IANA zone, for local-time display")
 

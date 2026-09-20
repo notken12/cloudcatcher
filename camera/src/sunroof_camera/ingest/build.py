@@ -45,20 +45,19 @@ def fill_tz(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def _view_key(df: pd.DataFrame) -> pd.Series:
+    """(lat, lon, azimuth) rounded to ~100 m / 15°. Rows without a known azimuth are keyed by id
+    instead, so a multi-preset station with unknown headings keeps every view."""
+    az = (df["azimuth_deg"] / 15).round().astype("Int64").astype(str)
+    az = az.where(df["azimuth_deg"].notna(), "id:" + df["id"].astype(str))
+    return df["lat"].round(3).astype(str) + "|" + df["lon"].round(3).astype(str) + "|" + az
+
+
 def dedupe_views(df: pd.DataFrame) -> pd.DataFrame:
-    """Within one source, drop rows with identical (lat, lon, azimuth) rounded to ~100 m / 15°."""
+    """Within one source, drop rows with identical (lat, lon, azimuth)."""
     if df.empty:
         return df
-    key = (
-        df["lat"].round(3).astype(str)
-        + "|"
-        + df["lon"].round(3).astype(str)
-        + "|"
-        + (df["azimuth_deg"] / 15).round().astype("Int64").astype(str)
-        + "|"
-        + df["id"].astype(str)
-    )
-    return df.loc[~key.duplicated()]
+    return df.loc[~df["id"].duplicated() & ~_view_key(df).duplicated()]
 
 
 SOURCE_PRIORITY = [
@@ -89,15 +88,8 @@ def merge_shards(data_dir: Path = DATA) -> pd.DataFrame:
     df = pd.concat(frames, ignore_index=True)
     rank = {s: i for i, s in enumerate(SOURCE_PRIORITY)}
     df["_rank"] = df["source"].astype(str).map(lambda s: rank.get(s, len(rank)))
-    df = df.sort_values("_rank")
-    key = (
-        df["lat"].round(3).astype(str)
-        + "|"
-        + df["lon"].round(3).astype(str)
-        + "|"
-        + (df["azimuth_deg"] / 15).round().astype("Int64").astype(str)
-    )
-    df = df.loc[~key.duplicated()].drop(columns="_rank")
+    df = df.sort_values("_rank", kind="stable")
+    df = df.loc[~_view_key(df).duplicated()].drop(columns="_rank")
     return df.reset_index(drop=True)
 
 

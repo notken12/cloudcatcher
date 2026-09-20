@@ -62,7 +62,42 @@ PARAMS: dict[str, TypeParams] = {
     "rainbow": TypeParams(None, 5.0),
 }
 
-SOURCE_PRIOR = {"panomax": 0.9, "fotowebcam": 0.9, "phenocam": 0.7, "iem": 0.6, "manual": 0.8}
+SOURCE_PRIOR = {
+    "panomax": 0.9,
+    "fotowebcam": 0.9,
+    "manual": 0.8,
+    "ndbc": 0.75,
+    "windy": 0.7,
+    "phenocam": 0.7,
+    "alertca": 0.65,
+    "iem": 0.6,
+    "iceland": 0.55,
+    "drivebc": 0.55,
+    "nzta": 0.5,
+    "sg_lta": 0.45,
+    "hk_td": 0.35,
+    "tripcheck": 0.45,
+    "digitraffic": 0.5,
+    "caltrans": 0.45,
+    "cars_ny": 0.4,
+    "cars_on": 0.4,
+    "cars_ak": 0.5,
+    "cars_ab": 0.5,
+    "cars_id": 0.5,
+    "cars_ut": 0.45,
+    "cars_nv": 0.45,
+    "cars_az": 0.4,
+    "cars_yt": 0.5,
+    "cars_ne6": 0.45,
+    "cars_nl": 0.45,
+    "cars_ns": 0.4,
+    "cars_nb": 0.4,
+    "cars_pa": 0.35,
+    "cars_nc": 0.35,
+    "cars_wi": 0.35,
+    "cars_la": 0.35,
+    "cars_fl": 0.3,
+}
 DEFAULT_PRIOR = 0.5
 
 
