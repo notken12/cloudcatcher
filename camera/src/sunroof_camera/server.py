@@ -67,7 +67,11 @@ def create_app(
     async def lifespan(app: FastAPI):
         st.catalog = Catalog.load(st.catalog_path)
         log.info("catalog: %d cameras from %s", len(st.catalog.df), st.catalog_path)
-        task = asyncio.create_task(_fake_loop(st, fake_period_s)) if fake_events else None
+        task = (
+            asyncio.create_task(_fake_loop(st, fake_period_s, ignore_night))
+            if fake_events
+            else None
+        )
         yield
         if task:
             task.cancel()
@@ -185,14 +189,14 @@ def create_app(
     return app
 
 
-async def _fake_loop(st: State, period_s: float) -> None:
+async def _fake_loop(st: State, period_s: float, ignore_night: bool = False) -> None:
     """Pretend to be Ken's weather backend: post one fake event every `period_s`."""
     from .demo import fake_events
 
     await asyncio.sleep(1)
     while True:
         assert st.catalog is not None and st.handle is not None
-        for ev in fake_events(st.catalog):
+        for ev in fake_events(st.catalog, ignore_night=ignore_night):
             try:
                 await st.handle(ev)
             except Exception:  # noqa: BLE001

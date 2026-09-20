@@ -14,7 +14,7 @@ import pandas as pd
 
 from . import solar
 from .footage import WeatherEvent
-from .query import Catalog
+from .query import MAX_CATALOG_AGE_S, Catalog
 
 FALLBACK = [  # used when nothing in the catalog is lit: exercises the failure statuses
     ("thunderstorm", 38.60, -121.60, 25.0),  # Sacramento valley
@@ -34,12 +34,19 @@ def _offset(lat: float, lon: float, bearing_deg: float, dist_km: float) -> tuple
     return math.degrees(la2), (math.degrees(lo2) + 540) % 360 - 180
 
 
-def fake_events(cat: Catalog, now: datetime | None = None) -> list[WeatherEvent]:
+def fake_events(
+    cat: Catalog, now: datetime | None = None, ignore_night: bool = False
+) -> list[WeatherEvent]:
     now = now or datetime.now(timezone.utc)
     df = cat.df
     stamp = now.strftime("%H%M")
     el, az = solar.sun_position_deg(df["lat"].to_numpy(), df["lon"].to_numpy(), now)
-    alive = (df["health"].astype(str) != "dead").to_numpy()
+    if ignore_night:
+        el = np.full_like(el, 45.0)  # pretend it is midday everywhere
+    age_s = (pd.Timestamp(now) - df["last_frame_ts"]).dt.total_seconds().to_numpy(dtype=float)
+    alive = (df["health"].astype(str) != "dead").to_numpy() & (
+        np.isnan(age_s) | (age_s <= MAX_CATALOG_AGE_S)
+    )
     heading = df["azimuth_deg"].notna().to_numpy()
     rng = np.random.default_rng(int(now.timestamp() // 600))
     out: list[WeatherEvent] = []

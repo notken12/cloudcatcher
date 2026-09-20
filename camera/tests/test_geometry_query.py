@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import numpy as np
 import pytest
@@ -129,6 +129,16 @@ def test_aurora_requires_night():
             "id"
         ]
     ) == ["b"]
+
+
+def test_camera_silent_for_days_is_skipped():
+    noon = datetime(2026, 7, 1, 19, 0, tzinfo=timezone.utc)
+    ev = Event(type="thunderstorm", lat=40.0, lon=-104.3, radius_km=5, t=noon)
+    df = _cams()[lambda d: d["id"] == "a"].copy()  # alone, so the 1 km de-dupe can't hide it
+    df.loc[:, "last_frame_ts"] = noon - timedelta(days=3)
+    assert "a" not in set(Catalog(df).find_cameras(ev, k=10)["id"])
+    df.loc[:, "last_frame_ts"] = noon - timedelta(hours=1)
+    assert "a" in set(Catalog(df).find_cameras(ev, k=10)["id"])
 
 
 def test_ignore_night_skips_solar_gate():

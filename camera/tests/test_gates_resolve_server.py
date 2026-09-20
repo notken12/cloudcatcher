@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import io
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -13,6 +14,7 @@ import pytest
 from PIL import Image
 
 from sunroof_camera import gates, resolve, vlm
+from sunroof_camera.fetch import fetch_frame
 from sunroof_camera.footage import WeatherEvent
 from sunroof_camera.ingest.base import Frame
 from sunroof_camera.ingest.sources.faa import camera_row
@@ -167,6 +169,26 @@ def test_faa_camera_row():
     assert c.tz == "America/Anchorage" and c.refresh_s == 600
     assert c.image_url.endswith("/cameras/10523/images/last/1")
     assert c.last_frame_ts is not None and c.last_frame_ts.tzinfo is not None
+
+
+def test_faa_no_images_does_not_fall_back_to_raw_api_get():
+    """`images/last/1` -> {"payload": null} means "no frame"; the dispatcher must not then GET
+    image_url (the same API endpoint) without headers, which 401s."""
+    seen: list[str] = []
+
+    def handler(req: httpx.Request) -> httpx.Response:
+        seen.append(str(req.url))
+        return httpx.Response(200, json={"success": True, "payload": None})
+
+    site = {"siteId": 1, "siteName": "Chevery", "latitude": 50.4, "longitude": -59.6}
+    cam = camera_row(site, {"cameraId": 11203, "cameraBearing": 45})
+
+    async def go():
+        async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as http:
+            return await fetch_frame(http, cam)
+
+    assert asyncio.run(go()) is None
+    assert len(seen) == 1 and seen[0].endswith("/cameras/11203/images/last/1")
 
 
 # --- resolver + server ------------------------------------------------------------

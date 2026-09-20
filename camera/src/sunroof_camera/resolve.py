@@ -231,7 +231,10 @@ async def resolve_footage(
         # distinguish "nothing nearby" from "nearby but filtered out (night / heading)"
         d = haversine_km(catalog.df["lat"].to_numpy(), catalog.df["lon"].to_numpy(), ev.lat, ev.lon)
         nearby = int((d <= PARAMS[ev.type].r_cap_km + ev.radius_km).sum())
-        res.status = "CAMERAS_DARK" if nearby else "NO_CAMERAS_IN_RANGE"
+        if nearby and ignore_night:  # night gate is off, so it was heading/health, not darkness
+            res.status = "NO_FOOTAGE_FOUND"
+        else:
+            res.status = "CAMERAS_DARK" if nearby else "NO_CAMERAS_IN_RANGE"
         res.retry_after_s = 3600 if res.status == "CAMERAS_DARK" else None
         res.elapsed_s = time.monotonic() - t0
         return res

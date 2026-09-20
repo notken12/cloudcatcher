@@ -27,6 +27,10 @@ from .sources.tripcheck import TripCheckAdapter
 from .sources.vegvesen import VegvesenAdapter
 from .sources.windy import WindyAdapter
 
+# sources whose `image_url` is an API endpoint, not a JPEG: the adapter's fetch_frame is final,
+# a None from it means "no frame" and must not fall back to a raw GET of image_url
+OWNS_FETCH: frozenset[str] = frozenset({FaaAdapter.source})
+
 ADAPTERS: dict[str, type] = {
     a.source: a
     for a in (
