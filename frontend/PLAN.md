@@ -83,7 +83,6 @@ type EventType =
   | 'lightning'
   | 'mammatus'
   | 'lenticular'
-  | 'fog'
   | 'undercast'
   | 'aurora'
   | 'rainbow'
@@ -149,8 +148,8 @@ the routing Devin to add them to `/feed` (both trivial joins):
    `cameras.geojson` dumped from `cameras.parquet` at build time) for the
    globe's "dot per camera" layer. Static file is fine for the demo.
 
-Fog + undercast arrive as two `type`s; the UI shows one chip "fog / undercast"
-and filters on both.
+Fog is out of scope (weather side may still emit it; the UI ignores unknown types).
+`undercast` is its own chip.
 
 ---
 
@@ -274,7 +273,7 @@ frontend/
     lib/types.ts              ← Footage contract (§2)
     lib/api.ts                ← fetchFeed(), useStream(); fixture fallback
     lib/time.ts               ← relative time, "delay ≈"
-    lib/events.ts             ← EVENT_TYPES, labels, colours, fog/undercast merge
+    lib/events.ts             ← EVENT_TYPES, labels, colours
     components/
       Header.tsx  EventFilter.tsx
       FootageCard.tsx         ← hero: media + caption + attribution

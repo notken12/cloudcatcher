@@ -23,7 +23,6 @@ EventType = Literal[
     "lightning",
     "mammatus",
     "lenticular",
-    "fog",
     "undercast",
     "aurora",
     "rainbow",
@@ -36,7 +35,7 @@ class Event(BaseModel):
     lon: float
     radius_km: float = Field(10.0, description="horizontal extent of the phenomenon")
     t: datetime | None = Field(None, description="time of interest; None = now")
-    layer_top_m: float | None = Field(None, description="fog/undercast: top of the layer")
+    layer_top_m: float | None = Field(None, description="undercast: top of the layer")
     ignore_night: bool = Field(False, description="demo/testing: skip the solar night gate")
 
 
@@ -56,7 +55,6 @@ PARAMS: dict[str, TypeParams] = {
     "lenticular": TypeParams(
         6.0, 80.0, prefer_km=(10, 50), source_prior_boost=("panomax", "fotowebcam")
     ),
-    "fog": TypeParams(None, 10.0),
     "undercast": TypeParams(None, 30.0, source_prior_boost=("panomax", "fotowebcam")),
     "aurora": TypeParams(110.0, 600.0, needs_night=True),
     "sunrise": TypeParams(None, 50.0),
@@ -178,10 +176,6 @@ class Catalog:
                 0,
             )
             reason[:] = [f"antisolar az={a:.0f} sun el={e:.1f}" for a, e in zip(anti, sun_el)]
-        elif event.type == "fog":
-            top = (event.layer_top_m or 300.0) / 1000.0
-            ok &= cam_alt_km <= top + 0.05
-            reason[:] = "camera inside layer"
         elif event.type == "undercast":
             top = (event.layer_top_m or 800.0) / 1000.0
             ok &= (cam_alt_km > top) & (df["elev_min_deg"].to_numpy() < 0)
