@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { CameraPoint } from '../../lib/api'
-import { phiFacing, project, shortestTurn } from './projection'
+import { drawNight, phiFacing, project, shortestTurn } from './projection'
 
 /** Anything with a place and a thumbnail: live footage or an archive frame. */
 export interface Pin {
@@ -19,7 +19,15 @@ interface Props {
   pins: Pin[]
   selectedId?: string
   onSelect: (id: string) => void
+  /** Subsolar point: shades the night half. Omit for a flat, unlit globe. */
+  sun?: { lat: number; lon: number }
+  /** 0 (day) .. 1 (night): tints the whole globe when there is no single terminator. */
+  dusk?: number
 }
+
+const DAY = { base: [0.94, 0.94, 0.96], glow: [0.98, 0.98, 0.99], marker: [0.36, 0.42, 0.56] }
+const NIGHT = { base: [0.72, 0.74, 0.84], glow: [0.86, 0.87, 0.94], marker: [0.95, 0.8, 0.45] }
+const mix = (a: number[], b: number[], t: number) => a.map((v, i) => v + (b[i] - v) * t)
 
 const THETA = 0.28
 const IDLE_SPIN = 0.0025 // rad / frame
@@ -32,9 +40,10 @@ type PinPos = { x: number; y: number; visible: boolean; depth: number }
  * event pins are absolutely positioned <button>s projected with the same
  * camera maths every frame, so they stay clickable and styleable.
  */
-export function Globe({ cameras, pins, selectedId, onSelect }: Props) {
+export function Globe({ cameras, pins, selectedId, onSelect, sun, dusk = 0 }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const nightRef = useRef<HTMLCanvasElement>(null)
   const pinRefs = useRef(new Map<string, HTMLButtonElement>())
   const [ready, setReady] = useState(false)
   const [broken, setBroken] = useState<ReadonlySet<string>>(() => new Set())
@@ -48,11 +57,21 @@ export function Globe({ cameras, pins, selectedId, onSelect }: Props) {
   useEffect(() => {
     pinsRef.current = pins
   }, [pins])
+  const sunRef = useRef(sun)
+  const duskRef = useRef(dusk)
+  const shadeDirty = useRef(true)
+  useEffect(() => {
+    sunRef.current = sun
+    duskRef.current = dusk
+    shadeDirty.current = true
+  }, [sun, dusk])
 
   useEffect(() => {
     const canvas = canvasRef.current
+    const night = nightRef.current
     const wrap = wrapRef.current
-    if (!canvas || !wrap) return
+    if (!canvas || !night || !wrap) return
+    const nctx = night.getContext('2d')
     let raf = 0
     let globe: { update: (s: Record<string, unknown>) => void; destroy: () => void } | null = null
     let cancelled = false
@@ -85,6 +104,10 @@ export function Globe({ cameras, pins, selectedId, onSelect }: Props) {
       canvas.height = w * dpr
       canvas.style.width = `${w}px`
       canvas.style.height = `${w}px`
+      night.width = w
+      night.height = w
+      night.style.width = `${w}px`
+      night.style.height = `${w}px`
       globe?.update({ width: w * dpr, height: w * dpr })
     }
     const ro = new ResizeObserver(fit)
@@ -125,7 +148,19 @@ export function Globe({ cameras, pins, selectedId, onSelect }: Props) {
         } else if (!drag.current && idle) {
           phi.current += IDLE_SPIN
         }
-        globe?.update({ phi: phi.current })
+        const t = duskRef.current
+        globe?.update(
+          shadeDirty.current
+            ? {
+                phi: phi.current,
+                baseColor: mix(DAY.base, NIGHT.base, t),
+                glowColor: mix(DAY.glow, NIGHT.glow, t),
+                markerColor: mix(DAY.marker, NIGHT.marker, t),
+              }
+            : { phi: phi.current },
+        )
+        shadeDirty.current = false
+        if (nctx) drawNight(nctx, w, sunRef.current, { phi: phi.current, theta: THETA })
         positionPins(w)
       }
       tick()
@@ -188,6 +223,12 @@ export function Globe({ cameras, pins, selectedId, onSelect }: Props) {
         className="block"
         style={{ cursor: 'grab', opacity: ready ? 1 : 0, transition: 'opacity 0.6s' }}
       />
+      <canvas
+        ref={nightRef}
+        className="pointer-events-none absolute inset-0 block"
+        style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.6s' }}
+        aria-hidden
+      />
       <div className="pointer-events-none absolute inset-0">
         {pins.map((f) => {
           const thumb = f.thumb && !broken.has(f.thumb) ? f.thumb : null
@@ -210,10 +251,12 @@ export function Globe({ cameras, pins, selectedId, onSelect }: Props) {
                   src={thumb}
                   alt=""
                   loading="lazy"
+                  onLoad={(e) => e.currentTarget.classList.add('loaded')}
                   onError={() => setBroken((b) => new Set(b).add(thumb))}
                 />
               )}
               <span className="pin-tail" />
+              <span className="pin-label">{f.label}</span>
             </button>
           )
         })}

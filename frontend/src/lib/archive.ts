@@ -88,3 +88,17 @@ export function describeMoment(m: Moment): string {
   })
   return `${pad(Math.floor(m.minutes / 60))}:${pad(m.minutes % 60)} local · ${day}`
 }
+
+/** Frames per day: 48 keeps a day under ~3 MB at w=640 through the proxy. */
+export const LAPSE_STEP_MIN = 30
+
+/** Frame URLs for `date` at LAPSE_STEP_MIN cadence (or the camera's, if coarser). */
+export function lapseFrames(cam: ArchiveCam, date: string, width = 640) {
+  const step = Math.max(cam.step_min, LAPSE_STEP_MIN)
+  const out: { minutes: number; url: string }[] = []
+  for (let minutes = 0; minutes < 1440; minutes += step) {
+    const url = frameUrl(cam, { date, minutes }, width)
+    if (url) out.push({ minutes, url })
+  }
+  return out
+}

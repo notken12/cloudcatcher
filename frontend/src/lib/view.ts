@@ -1,11 +1,13 @@
 import { useCallback, useMemo, useSyncExternalStore } from 'react'
 
-export type View = 'broadcast' | 'globe' | 'time'
+export type View = 'broadcast' | 'globe' | 'time' | 'show'
 
-/** Hash route: `#/globe` ↔ globe, `#/time[/YYYY-MM-DDTHH:MM]` ↔ time travel, else broadcast. */
+/** Hash route: `#/globe` ↔ globe, `#/time[/YYYY-MM-DDTHH:MM]` ↔ time travel, `#/show` ↔ story
+ *  mode (full-screen auto-play), else broadcast. */
 export function viewFromHash(hash: string): View {
   const path = hash.replace(/^#\/?/, '')
   if (path === 'globe') return 'globe'
+  if (path === 'show') return 'show'
   if (path === 'time' || path.startsWith('time/')) return 'time'
   return 'broadcast'
 }
@@ -30,6 +32,11 @@ export function momentFromHash(hash: string): Moment | null {
   const minutes = Number(m[2]) * 60 + Number(m[3])
   if (minutes > 1439 || Number.isNaN(Date.parse(m[1]))) return null
   return { date: m[1], minutes }
+}
+
+/** `m` advanced by `step` minutes; wraps within the same day (the time-of-day slider is a ring). */
+export function stepMoment(m: Moment, step: number): Moment {
+  return { ...m, minutes: (((m.minutes + step) % 1440) + 1440) % 1440 }
 }
 
 export function momentToHash(m: Moment): string {
@@ -57,7 +64,7 @@ export function useView(): [View, (v: View) => void] {
     () => 'broadcast' as View,
   )
   const setView = useCallback((v: View) => {
-    setHash(v === 'globe' ? '#/globe' : v === 'time' ? '#/time' : '', false)
+    setHash(v === 'broadcast' ? '' : `#/${v}`, false)
   }, [])
   return [view, setView]
 }
