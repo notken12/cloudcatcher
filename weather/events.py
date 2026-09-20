@@ -12,10 +12,14 @@ Rules, no ML:
   elsewhere a model prior, GFS simulated composite reflectivity >= 45 dBZ with CAPE >= 300 J/kg, one event
   per connected blob.
 - aurora (--aurora): OVATION probability >= 20, dark sky, and little low cloud (GFS lcc), both hemispheres.
+- rare_cloud / lenticular: a manned SYNOP station reported, within the last 90 min, a genus that is a sight in
+  itself (chaotic sky, cirrus from cumulonimbus, cirrocumulus, altocumulus castellanus, cirrostratus covering
+  the sky, cirrus uncinus; altocumulus lenticularis as the camera side's own `lenticular` type).
 - sunset (--sunset): a 1-degree land lattice worldwide; points whose sunset+15 min is within 90 min are
   scored by the Sunsethue-whitepaper classifier (weather/sunset_quality.py) on the best cloud field there:
   GOES over CONUS, Himawari-9 over Asia-Pacific (both see the thin cirrus models miss), else HRRR or GFS
-  layer cover. Every point with severity >= 0.5 becomes an event.
+  layer cover. A manned SYNOP station within 150 km (weather/synop.py) supplies the observed cloud genus
+  as evidence and a bounded prior factor. Every point with severity >= 0.5 becomes an event.
 
 --sites scores individual camera sites for their next sunset+15 min the same way.
 """
@@ -31,7 +35,7 @@ import requests
 from scipy.ndimage import label
 
 from common.geo import bearing_deg, distance_km
-from weather import gfs, goes_cloud, himawari_cloud, hrrr, mrms
+from weather import gfs, goes_cloud, himawari_cloud, hrrr, mrms, synop
 from weather.cloud_columns import CloudField
 from weather.cloud_grid import CloudGrid, LayerCloudField
 from weather.grib_subset import download_subset
@@ -62,6 +66,11 @@ SUNSET_RADIUS_KM = 60          # half a lattice cell's diagonal; the camera side
 SUNSET_QUALITY_FULL = 0.06     # classifier quality worth severity 1: the West-Coast test's best sites, Lamar 5/5 via GOES 0.05
 SUNSET_MIN_SEVERITY = 0.5
 FAN_MARGIN_DEG = 6.0           # the classifier looks 600 km sunward; satellite windows extend this far beyond the points
+SYNOP_MAX_KM = 150.0           # a manned station this close, reporting within the last 3 h, tells us the cloud genus
+SYNOP_MAX_AGE = dt.timedelta(hours=3)
+RARE_CLOUD_MAX_AGE = dt.timedelta(minutes=90)   # a rare genus is an event only while the report is fresh
+RARE_CLOUD_RADIUS_KM = 50                       # what one observer can see
+RARE_CLOUD_WINDOW = dt.timedelta(minutes=90)
 
 GRIB_DIR = os.environ.get("CLOUDCATCHER_GRIB_DIR", "/tmp/cloudcatcher-grib")
 
@@ -169,6 +178,29 @@ def model_storm_events(run: dt.datetime, fhour: int, grid: CloudGrid) -> list[di
     return events
 
 
+def rare_cloud_events(when: dt.datetime, observations: list[synop.Report]) -> list[dict]:
+    """One event per fresh SYNOP report of a genus worth a camera on its own, at the station that saw it."""
+    events = []
+    for report in observations:
+        if when - report.observed_at > RARE_CLOUD_MAX_AGE:
+            continue
+        daylight = sun_elevation(report.lat, report.lon, when) > DAYLIGHT_ELEVATION_DEG
+        for event_type, genus, severity in report.rare_genera():
+            events.append({
+                "id": f"cloud-{report.station}-{stamp(report.observed_at)}-{genus.split()[0]}",
+                "type": event_type,
+                "lat": report.lat, "lon": report.lon,
+                "radius_km": RARE_CLOUD_RADIUS_KM,
+                "t_start": iso(report.observed_at), "t_end": iso(report.observed_at + RARE_CLOUD_WINDOW),
+                "severity": severity,
+                "needs_daylight": daylight,
+                "needs_night_capable_camera": not daylight,
+                "look_bearing_hint": None,
+                "evidence": {"genus": genus, **report.describe()},
+            })
+    return events
+
+
 def hrrr_grids(when: dt.datetime, domain: str = "conus") -> Grids:
     """One CloudGrid per forecast hour f01-f03 of the latest run that has each hour uploaded."""
     grids = []
@@ -259,8 +291,10 @@ class CloudFields:
     """The satellite fields loaded for one run, and the choice of field for a point: GOES over CONUS, Himawari-9
     over Asia-Pacific, otherwise the HRRR or GFS layer cover."""
 
-    def __init__(self, when: dt.datetime, hrrr_conus: Grids, gfs_global: Grids, points: list[tuple[float, float]]):
+    def __init__(self, when: dt.datetime, hrrr_conus: Grids, gfs_global: Grids, observations: list[synop.Report],
+                 points: list[tuple[float, float]]):
         self.hrrr, self.gfs = hrrr_conus, gfs_global
+        self.synop = observations
         terrain = nearest_grid(gfs_global, when)[2]
         lats = np.array([p[0] for p in points])
         lons = np.array([p[1] for p in points])
@@ -291,11 +325,22 @@ class CloudFields:
 
 
 def sunset_score(fields: CloudFields, lat: float, lon: float, sunset: dt.datetime) -> dict:
-    name, field, grid = fields.choose(lat, lon, sunset + COLOUR_PEAK_AFTER_SUNSET)
+    """Classifier quality on the best cloud field, the nearest SYNOP genus report as evidence, and the severity the
+    camera side ranks by: min(1, quality x genus factor / SUNSET_QUALITY_FULL)."""
+    target = sunset + COLOUR_PEAK_AFTER_SUNSET
+    name, field, grid = fields.choose(lat, lon, target)
     offset = local_offset_hours(lon)
     rh = float(grid.sample("rh", [lat], [lon])[0])
     golden = golden_hour_minutes(lat, lon, (sunset + dt.timedelta(hours=offset)).date(), offset)
-    return {"model": f"sunset_quality/{name}", **score_site(field, lat, lon, sun_azimuth(lat, lon, sunset), rh, golden)}
+    score = score_site(field, lat, lon, sun_azimuth(lat, lon, sunset), rh, golden)
+    report = synop.nearest(fields.synop, lat, lon, target, SYNOP_MAX_KM, SYNOP_MAX_AGE)
+    factor = 1.0 if report is None else report.genus_factor()
+    return {
+        "model": f"sunset_quality/{name}",
+        **score,
+        "synop": None if report is None else {**report.describe(), "distance_km": round(float(distance_km(lat, lon, report.lat, report.lon)))},
+        "severity": round(min(1.0, score["quality"] * factor / SUNSET_QUALITY_FULL), 3),
+    }
 
 
 def sunset_lattice(when: dt.datetime, land_grid: CloudGrid) -> list[tuple[float, float, dt.datetime]]:
@@ -316,8 +361,7 @@ def sunset_events(fields: CloudFields, points: list[tuple[float, float, dt.datet
     events = []
     for lat, lon, sunset in points:
         score = sunset_score(fields, lat, lon, sunset)
-        severity = min(1.0, score["quality"] / SUNSET_QUALITY_FULL)
-        if severity < SUNSET_MIN_SEVERITY:
+        if score["severity"] < SUNSET_MIN_SEVERITY:
             continue
         azimuth = sun_azimuth(lat, lon, sunset)
         events.append({
@@ -326,7 +370,7 @@ def sunset_events(fields: CloudFields, points: list[tuple[float, float, dt.datet
             "lat": lat, "lon": lon,
             "radius_km": SUNSET_RADIUS_KM,
             "t_start": iso(sunset + COLOUR_WINDOW[0]), "t_end": iso(sunset + COLOUR_WINDOW[1]),
-            "severity": round(severity, 3),
+            "severity": score["severity"],
             "needs_daylight": True,
             "needs_night_capable_camera": False,
             "look_bearing_hint": round(azimuth, 1),
@@ -369,10 +413,12 @@ def run_once(when: dt.datetime, args) -> dict:
     sites = json.load(open(args.sites)) if args.sites else []
     gfs_global = gfs_grids(when)
     hrrr_conus = hrrr_grids(when) if (sites or args.sunset) else []
-    events = list(storms)
+    observations = synop.reports(when, GRIB_DIR)
+    events = list(storms) + rare_cloud_events(when, observations)
     sources = {"probsevere": storm_source,
                "hrrr": [{"run": iso(run), "fhour": f, "valid": iso(run + dt.timedelta(hours=f))} for run, f, _ in hrrr_conus],
-               "gfs": [{"run": iso(run), "fhour": f, "valid": iso(run + dt.timedelta(hours=f))} for run, f, _ in gfs_global]}
+               "gfs": [{"run": iso(run), "fhour": f, "valid": iso(run + dt.timedelta(hours=f))} for run, f, _ in gfs_global],
+               "synop": {"genus_reports": len(observations), "window_end": iso(when.replace(minute=0, second=0, microsecond=0))}}
     if gfs_global:
         events += model_storm_events(*nearest_grid(gfs_global, when))
     if args.aurora:
@@ -381,7 +427,7 @@ def run_once(when: dt.datetime, args) -> dict:
         sources["ovation"] = aurora_source
     lattice = sunset_lattice(when, nearest_grid(gfs_global, when)[2]) if (args.sunset and gfs_global) else []
     points = [(lat, lon) for lat, lon, _ in lattice] + [(site["lat"], site["lon"]) for site in sites]
-    fields = CloudFields(when, hrrr_conus, gfs_global, points) if (points and gfs_global) else None
+    fields = CloudFields(when, hrrr_conus, gfs_global, observations, points) if (points and gfs_global) else None
     if fields is not None:
         sources["satellite"] = fields.scans()
         events += sunset_events(fields, lattice)
