@@ -75,13 +75,20 @@ All backends speak the OpenAI chat-completions API, so switching is env-only:
 
 | setup | env | model |
 |---|---|---|
-| OpenAI (hosted, ~2 s/frame) | `OPENAI_API_KEY` | `gpt-4o-mini`, escalates to `gpt-4o` |
-| **Groq (hosted, free tier, ~0.5–1 s/frame) — current default for dev/demo** | `GROQ_API_KEY` ([console.groq.com/keys](https://console.groq.com/keys)) | `qwen/qwen3.8-27b` |
+| **OpenAI (hosted, ~2 s/frame, ≈ $0.0001/frame)** | `OPENAI_API_KEY` ([platform.openai.com/api-keys](https://platform.openai.com/api-keys)) | `gpt-4o-mini`, `detail: low`; set `SUNROOF_VLM_MODEL_LARGE=gpt-4o` to escalate unsure verdicts (~25× the price) |
+| Groq (hosted, free tier, ~0.5–1 s/frame) | `GROQ_API_KEY` ([console.groq.com/keys](https://console.groq.com/keys)) | `qwen/qwen3.8-27b` |
 | local Ollama (auto-detected on `127.0.0.1:11434`) | none — `ollama pull qwen2.5vl:3b` | `qwen2.5vl:3b` |
 | any OpenAI-compatible server (vLLM, OpenRouter, remote Ollama) | `SUNROOF_VLM_BASE_URL`, `SUNROOF_VLM_API_KEY` | `SUNROOF_VLM_MODEL` |
 | disabled (CI / offline) | `SUNROOF_VLM_BACKEND=off` | — |
 
-Precedence: `off` > `OPENAI_API_KEY` > `SUNROOF_VLM_BASE_URL` > `GROQ_API_KEY` > local Ollama.
+Precedence when several are configured: `OPENAI_API_KEY` > `SUNROOF_VLM_BASE_URL` >
+`GROQ_API_KEY` > local Ollama; force one with `SUNROOF_VLM_BACKEND=openai|groq|ollama|custom|off`.
+
+Cost: a gate call is ~300 input + ~60 output tokens (the image is downscaled to 768 px and sent
+at `detail: low`, a flat 85 tokens), i.e. about $0.0001 per frame on gpt-4o-mini — the demo
+loop (a few events/min, top-k ≤ 5 frames each) is a few cents per hour. Verdicts are cached per
+frame hash. `GET /health` → `vlm_usage` reports calls, tokens and the running USD estimate, and
+each call is logged with its token counts.
 
 Overrides: `SUNROOF_VLM_MODEL` / `SUNROOF_VLM_MODEL_LARGE`, `SUNROOF_VLM_PARALLEL`
 (concurrent calls; default 1 for localhost, 4 for other custom URLs, 8 for OpenAI),
