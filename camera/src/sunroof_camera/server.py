@@ -35,6 +35,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from PIL import Image
@@ -145,6 +146,7 @@ def create_app(
         await st.http.aclose()
 
     app = FastAPI(title="sunroof camera", lifespan=lifespan)
+    app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
     app.state.st = st
 
     async def record(res: FootageResult, ev_type: str | None = None) -> None:
