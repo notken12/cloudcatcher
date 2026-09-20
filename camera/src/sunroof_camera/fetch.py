@@ -10,11 +10,11 @@ from datetime import datetime, timezone
 import httpx
 import pandas as pd
 
-from .ingest.base import Frame, default_fetch_frame
-from .ingest.registry import ADAPTERS
+from .ingest.base import Adapter, Frame, default_fetch_frame
+from .ingest.registry import ADAPTERS, OWNS_FETCH
 from .schema import Camera
 
-_ADAPTER_CACHE: dict[str, object] = {}
+_ADAPTER_CACHE: dict[str, Adapter | None] = {}
 
 
 def row_to_camera(row: pd.Series) -> Camera:
@@ -30,7 +30,7 @@ def row_to_camera(row: pd.Series) -> Camera:
     return Camera(**d)
 
 
-def _adapter(source: str):
+def _adapter(source: str) -> Adapter | None:
     if source not in _ADAPTER_CACHE:
         cls = ADAPTERS.get(source)
         _ADAPTER_CACHE[source] = cls() if cls else None
@@ -76,9 +76,9 @@ async def fetch_frame(
 ) -> Frame | None:
     """Dispatch on source adapter, then source_kind. `ts` = replay time (archive frame)."""
     adapter = _adapter(cam.source)
-    if adapter is not None and hasattr(adapter, "fetch_frame"):
+    if adapter is not None:
         fr = await adapter.fetch_frame(http, cam, ts)
-        if fr is not None or ts is not None:
+        if fr is not None or ts is not None or cam.source in OWNS_FETCH:
             return fr
     if cam.source_kind == "hls" and ts is None:
         return await fetch_hls_frame(cam)

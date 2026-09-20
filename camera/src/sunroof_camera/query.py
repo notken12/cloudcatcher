@@ -13,6 +13,7 @@ from pydantic import BaseModel, Field
 
 from . import geometry as g
 from . import solar
+from .health import DEAD_AFTER
 from .schema import read_parquet
 
 EventType = Literal[
@@ -110,6 +111,9 @@ SOURCE_PRIOR = {
     "cars_ma": 0.35,
 }
 DEFAULT_PRIOR = 0.5
+# last_frame_ts older than this -> offline, same cutoff the health probe uses for `dead`; covers
+# cameras the probe has not reached yet (health still `unverified`, timestamp from ingest)
+MAX_CATALOG_AGE_S = DEAD_AFTER.total_seconds()
 
 
 class Catalog:
@@ -208,6 +212,8 @@ class Catalog:
         ok &= health != "dead"
         if not include_unverified:
             ok &= health == "live"
+        age_s = (pd.Timestamp(t) - df["last_frame_ts"]).dt.total_seconds().to_numpy(dtype=float)
+        ok &= np.isnan(age_s) | (age_s <= MAX_CATALOG_AGE_S)  # camera silent for a day+: skip it
 
         # -- score (plan §5) -------------------------------------------------------
         geo_fit = np.ones(len(df))
@@ -217,7 +223,6 @@ class Catalog:
         if event.type == "mammatus":
             geo_fit *= np.where(df["elev_max_deg"].to_numpy() >= 40, 1.2, 1.0)
         heading_mult = np.where(df["heading_conf"].isin(["ptz", "unknown"]).to_numpy(), 0.6, 1.0)
-        age_s = (pd.Timestamp(t) - df["last_frame_ts"]).dt.total_seconds().to_numpy(dtype=float)
         fresh = np.where(
             np.isnan(age_s), 0.3, np.exp(-np.maximum(age_s, 0) / (3 * df["refresh_s"].to_numpy()))
         )
