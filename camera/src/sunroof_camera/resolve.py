@@ -17,7 +17,7 @@ import httpx
 import pandas as pd
 from PIL import Image
 
-from . import gates, vlm
+from . import gates, quality, vlm
 from .fetch import fetch_burst, fetch_frame, row_to_camera
 from .footage import (
     CameraInfo,
@@ -73,7 +73,7 @@ class FrameCache:
         return self.frames.get(cam_id)
 
 
-@dataclass
+@dataclass(eq=False)  # identity semantics: `row` is a Series, which has no truth value
 class _Candidate:
     row: pd.Series
     cam: Camera
@@ -81,6 +81,7 @@ class _Candidate:
     gate: gates.GateResult | None = None
     verdict: Verdict | None = None
     score: float = 0.0
+    q: float = 0.5  # deterministic Stage-A quality, quality.score()
     rejected: Rejected | None = None
     burst: list[Frame] = field(default_factory=list)
 
@@ -167,7 +168,11 @@ async def _fetch_and_gate(
         c.rejected = Rejected(camera_id=c.cam.id, stage="gate", reason=g.reason)
         return
     cache.put(c.cam.id, c.frame, g, now)
-    c.score = float(c.row["score"]) * g.score_mult * (1 + 0.2 * min((g.sharpness or 0) / 200, 1))
+    if g.features is None:
+        g.features = quality.extract(Image.open(io.BytesIO(c.frame.content)))
+    c.q = quality.score(g.features, prof.q)
+    # Q only re-orders among frames that passed the gates; it never rejects here
+    c.score = float(c.row["score"]) * g.score_mult * (0.5 + 0.5 * c.q)
 
 
 def _dedupe_phash(cands: list[_Candidate]) -> None:
@@ -199,13 +204,25 @@ async def _judge(c: _Candidate, ev: WeatherEvent, prof: EventProfile, cache: Fra
     c.verdict = v
 
 
+def _vlm_reject(v: Verdict, ev_type: str, prof: EventProfile) -> str | None:
+    """Per-type acceptance rules on the VLM verdict; None = passes."""
+    if not v.usable:
+        return "unusable frame"
+    if v.event_visible not in ("yes", "partial"):
+        return f"{v.event_visible}"
+    if prof.require_yes and v.event_visible != "yes":
+        return "only partial; this type needs a clear view"
+    if v.event_type_seen != ev_type:
+        return f"saw {v.event_type_seen}"
+    if v.confidence < prof.min_conf:
+        return f"confidence {v.confidence:.2f} < {prof.min_conf}"
+    if v.night and not prof.allow_night_frames:
+        return "night frame for a daytime event type"
+    return None
+
+
 def _passes(v: Verdict, ev_type: str, prof: EventProfile) -> bool:
-    return (
-        v.usable
-        and v.event_visible in ("yes", "partial")
-        and v.event_type_seen == ev_type
-        and v.confidence >= prof.min_conf
-    )
+    return _vlm_reject(v, ev_type, prof) is None
 
 
 async def resolve_footage(
@@ -294,8 +311,16 @@ async def resolve_footage(
         judged = res.vlm_calls > 0
         if verdict_log:
             for c in good:
-                if c.verdict and c.frame:
-                    vlm.log_verdict(verdict_log, c.cam.id, ev.type, c.verdict, c.frame.sha1)
+                if c.verdict and c.frame and c.gate:
+                    vlm.log_verdict(
+                        verdict_log,
+                        c.cam.id,
+                        ev.type,
+                        c.verdict,
+                        c.frame.sha1,
+                        q=c.q,
+                        features=c.gate.features.as_dict() if c.gate.features else None,
+                    )
         if not judged:  # every call timed out / errored: degrade to gate-only rather than nothing
             for c in good:
                 c.verdict = vlm.skipped_verdict(f"VLM ({vlm.describe()}) gave no verdict in time")
@@ -307,21 +332,26 @@ async def resolve_footage(
     footage: list[Footage] = []
     if judged:
         passed = [c for c in good if c.verdict and _passes(c.verdict, ev.type, prof)]
-        passed.sort(key=lambda c: -(c.verdict.confidence * (0.6 + 0.1 * c.verdict.quality)))  # type: ignore[union-attr]
+        # VLM confidence decides presence; the deterministic Q decides which passing frame looks best
+        passed.sort(key=lambda c: -(c.verdict.confidence * (0.5 + 0.5 * c.q)))  # type: ignore[union-attr]
         for c in good:
             if c not in passed:
-                why = (
-                    "vlm timeout"
-                    if c.verdict is None
-                    else (
-                        f"vlm: {c.verdict.event_visible}, saw {c.verdict.event_type_seen} "
-                        f"({c.verdict.confidence:.2f}) — {c.verdict.caption}"
-                    )
-                )
+                if c.verdict is None:
+                    why = "vlm timeout"
+                else:
+                    rule = _vlm_reject(c.verdict, ev.type, prof)
+                    why = f"vlm: {rule} — {c.verdict.caption}"
                 c.rejected = Rejected(camera_id=c.cam.id, stage="vlm", reason=why)
         chosen, verified = passed[:k], True
     else:
         chosen, verified = good[:k], False
+    # ⑤ worth showing? — a frame that passes everything but scores far below the type's floor
+    low_q = [c for c in chosen if c.q < prof.min_q]
+    for c in low_q:
+        c.rejected = Rejected(
+            camera_id=c.cam.id, stage="quality", reason=f"low quality Q={c.q:.2f}"
+        )
+    chosen = [c for c in chosen if c.q >= prof.min_q]
 
     for rank, c in enumerate(chosen, 1):
         g = c.gate
@@ -335,7 +365,9 @@ async def resolve_footage(
                 verified=verified,
                 media=_media_for(c.cam, proxy_base, g),
                 verdict=c.verdict,
-                why=f"{c.row['reason']}; {gates.freshness_note(g.age_s, c.cam.refresh_s)}",
+                quality=round(c.q, 3),
+                features=g.features.as_dict() if g.features else None,
+                why=f"{c.row['reason']}; {gates.freshness_note(g.age_s, c.cam.refresh_s)}; Q={c.q:.2f}",
                 camera=CameraInfo(
                     id=c.cam.id,
                     name=c.cam.name,
@@ -362,6 +394,9 @@ async def resolve_footage(
     res.rejected = [c.rejected for c in cands if c.rejected]
     if footage:
         res.status = "FOOTAGE_FOUND"
+    elif low_q:
+        res.status = "LOW_QUALITY"
+        res.retry_after_s = prof.retry_after_s
     elif judged and any(c.verdict and c.verdict.event_visible != "yes" for c in good):
         res.status = "EVENT_NOT_VISIBLE"
         res.retry_after_s = prof.retry_after_s

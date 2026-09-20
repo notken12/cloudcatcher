@@ -16,6 +16,7 @@ Status = Literal[
     "CAMERAS_DARK",
     "ALL_STALE",
     "EVENT_NOT_VISIBLE",
+    "LOW_QUALITY",
     "NO_FOOTAGE_FOUND",
     "TIMEOUT",
 ]
@@ -90,6 +91,12 @@ class Footage(BaseModel):
     verified: bool = Field(description="VLM said the target event is visible")
     media: Media
     verdict: Verdict | None
+    quality: float | None = Field(
+        None, description="deterministic 0-1 'worth showing' score (Stage A)"
+    )
+    features: dict[str, float] | None = Field(
+        None, description="quality.FrameFeatures behind `quality`"
+    )
     why: str = Field(description="human 'why this camera' string from find_cameras")
     camera: CameraInfo
     frame_ts: datetime | None = Field(None, description="when the frame was taken (best guess)")
@@ -100,7 +107,7 @@ class Footage(BaseModel):
 
 class Rejected(BaseModel):
     camera_id: str
-    stage: Literal["fetch", "gate", "vlm"]
+    stage: Literal["fetch", "gate", "vlm", "quality"]
     reason: str
 
 
