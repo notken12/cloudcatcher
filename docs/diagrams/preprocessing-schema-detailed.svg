@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200" font-family="Helvetica,Arial,sans-serif" font-size="12">
+<defs>
+<marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#444"/></marker>
+<marker id="r" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#c0392b"/></marker>
+<style>
+.t{font-weight:700;font-size:13.5px;fill:#111}
+.s{font-size:11.5px;fill:#333}
+.m{font-family:Menlo,Consolas,monospace;font-size:10.5px;fill:#222}
+.lbl{font-size:11px;fill:#555;font-style:italic}
+.sec{font-weight:700;font-size:15px;fill:#222}
+.h1{font-weight:700;font-size:24px;fill:#111}
+.h2{font-size:12.5px;fill:#555;font-style:italic}
+path.f{stroke:#444;stroke-width:1.5;fill:none;marker-end:url(#a)}
+path.no{stroke:#c0392b;stroke-width:1.5;fill:none;marker-end:url(#r);stroke-dasharray:6 3}
+</style></defs>
+<rect width="1600" height="1200" fill="#fff"/>
+<text x="28" y="50" class="h1">Sunroof · camera preprocessing → mini-DB → query</text>
+<text x="28" y="72" class="h2">Offline/scheduled jobs build the catalog; the backend calls find_cameras() at event time. Grey = other teams' components.</text>
+<g transform="translate(0.0,88) scale(1.0000) translate(0,-88)">
+<rect x="28" y="88" width="1544" height="312.0" rx="10" fill="#fffbf2" stroke="#d48806" stroke-width="1.2"/>
+<text x="42.0" y="109.0" class="sec" >1–4 · Build the catalog (offline / scheduled jobs)</text>
+<rect x="42.0" y="132.0" width="356.5" height="135.5" rx="8" style="fill:#f4f4f4;stroke:#888;stroke-dasharray:5 3;stroke-width:1.4"/>
+<text x="54.0" y="159.0" class="t" >Sources</text>
+<text x="54.0" y="173.5" class="s" >Tier 1 · JSON catalog + JPEG: Caltrans, ALERTCalifornia,</text>
+<text x="54.0" y="188.0" class="s" >NY/ON 511, Digitraffic, Iceland, Panomax, foto-webcam,</text>
+<text x="54.0" y="202.5" class="s" >NDBC, PhenoCam, IEM, NPS (~12k views)</text>
+<text x="54.0" y="217.0" class="s" >Tier 2 · needs free key: Windy (~70k), CARS states,</text>
+<text x="54.0" y="231.5" class="s" >WSDOT, FAA WeatherCams</text>
+<text x="54.0" y="246.0" class="s" >Tier 3 · manual.yaml: YouTube 24/7, Explore.org, all-sky</text>
+<text x="54.0" y="260.5" class="s" >hobby cams</text>
+<path class="f" d="M400.5,154.0 L426.5,154.0"/>
+<rect x="428.5" y="132.0" width="356.5" height="164.5" rx="8" style="fill:#fff7e6;stroke:#d48806;stroke-width:1.4"/>
+<text x="440.5" y="159.0" class="t" >Adapters (one per source)</text>
+<text x="440.5" y="173.5" class="m" >catalog() → RawCamera[]</text>
+<text x="440.5" y="188.0" class="m" >normalize() → Camera row</text>
+<text x="440.5" y="202.5" class="m" >fetch_frame(cam, ts?) → Frame</text>
+<text x="440.5" y="217.0" class="s" >Edge cases: gzip/identity headers, placeholder 'cam</text>
+<text x="440.5" y="231.5" class="s" >offline' JPEG → sha1 set, redirect-to-HTML / &lt;3 KB frozen</text>
+<text x="440.5" y="246.0" class="s" >frame, per-host rate limit, signed URLs (Windy), tz-less</text>
+<text x="440.5" y="260.5" class="s" >timestamps → EXIF</text>
+<text x="440.5" y="275.0" class="s" >Heading: numeric (Panomax/PhenoCam/IEM/FAA) · text</text>
+<text x="440.5" y="289.5" class="s" >'N/looking west' · road geometry · PTZ → unknown</text>
+<path class="f" d="M787.0,154.0 L813.0,154.0"/>
+<rect x="815.0" y="132.0" width="356.5" height="121.0" rx="8" style="fill:#fff7e6;stroke:#d48806;stroke-width:1.4"/>
+<text x="827.0" y="159.0" class="t" >Enrich (once per camera)</text>
+<text x="827.0" y="173.5" class="s" >Coverage = viewing cone: az, hfov, elev_min, elev_max,</text>
+<text x="827.0" y="188.0" class="s" >conf</text>
+<text x="827.0" y="202.5" class="s" >8-pt compass from text (±22.5°), road geometry,</text>
+<text x="827.0" y="217.0" class="s" >unknown/PTZ → no bearing filter, score ×0.6</text>
+<text x="827.0" y="231.5" class="s" >Static: tz (timezonefinder) · alt_m (SRTM) · license ·</text>
+<text x="827.0" y="246.0" class="s" >sky_frac heuristic on one daytime frame</text>
+<path class="f" d="M1173.5,154.0 L1199.5,154.0"/>
+<rect x="1201.5" y="132.0" width="356.5" height="150.0" rx="8" style="fill:#f0fff0;stroke:#389e0d;stroke-width:1.4"/>
+<text x="1213.5" y="159.0" class="t" >Mini-DB</text>
+<text x="1213.5" y="173.5" class="m" >cameras.parquet (pandas, one row per view)</text>
+<text x="1213.5" y="188.0" class="m" >id source name lat lon alt_m tz azimuth_deg</text>
+<text x="1213.5" y="202.5" class="m" >hfov_deg elev_min/max heading_conf sky_frac</text>
+<text x="1213.5" y="217.0" class="m" >night_ok all_sky ptz image_url stream_url embed_url</text>
+<text x="1213.5" y="231.5" class="m" >refresh_s history_kind license last_frame_ts health</text>
+<text x="1213.5" y="246.0" class="m" >quality_score</text>
+<text x="1213.5" y="260.5" class="m" >camera_samples.parquet: camera_id ts url sha1 bytes</text>
+<text x="1213.5" y="275.0" class="m" >luminance solar_elev vlm_label</text>
+<rect x="42.0" y="308.5" width="749.0" height="63.0" rx="8" style="fill:#fff7e6;stroke:#d48806;stroke-width:1.4"/>
+<text x="54.0" y="335.5" class="t" >Scheduled jobs</text>
+<text x="54.0" y="350.0" class="s" >daily: re-pull catalogs, upsert, 3 misses → dead</text>
+<text x="54.0" y="364.5" class="s" >10 min: probe frame → last_frame_ts, sha1, luminance → health (re-uses fetch_frame)</text>
+<rect x="809.0" y="308.5" width="749.0" height="77.5" rx="8" style="fill:#fff;stroke:#333;stroke-width:1.4"/>
+<text x="821.0" y="335.5" class="t" >Annular-sector test</text>
+<text x="821.0" y="350.0" class="s" >Feature at altitude h over ground distance d appears at elevation α = atan(h/d) − d/(2·R_earth)</text>
+<text x="821.0" y="364.5" class="s" >visible iff |bearing − az| ≤ hfov/2 + δ(conf) and elev_min ≤ α ≤ elev_max ⇒ annulus d_min..d_max</text>
+<text x="821.0" y="379.0" class="s" >h per type: anvil 12 km, mammatus 4, aurora 110–250, fog 0.2; sunset/rainbow use sun az</text>
+<rect x="28" y="434.0" width="1544" height="237.0" rx="10" fill="#fbf5ff" stroke="#9254de" stroke-width="1.2"/>
+<text x="42.0" y="455.0" class="sec" >5 · Query time (backend calls us every ~10 min per event)</text>
+<path class="f" d="M800.0,402.0 L800.0,432.0"/>
+<text x="806.0" y="413.0" class="lbl" >reads cameras.parquet</text>
+<rect x="42.0" y="478.0" width="279.2" height="106.5" rx="8" style="fill:#f4f4f4;stroke:#888;stroke-dasharray:5 3;stroke-width:1.4"/>
+<text x="54.0" y="505.0" class="t" >Event</text>
+<text x="54.0" y="519.5" class="m" >type lat lon radius_km t_start t_end</text>
+<text x="54.0" y="534.0" class="m" >severity</text>
+<text x="54.0" y="548.5" class="s" >sunrise sunset thunderstorm lightning</text>
+<text x="54.0" y="563.0" class="s" >mammatus lenticular fog/undercast aurora</text>
+<text x="54.0" y="577.5" class="s" >rainbow</text>
+<path class="f" d="M323.2,500.0 L349.2,500.0"/>
+<rect x="351.2" y="478.0" width="279.2" height="179.0" rx="8" style="fill:#fdf0ff;stroke:#9254de;stroke-width:1.4"/>
+<text x="363.2" y="505.0" class="t" >find_cameras(event, k)</text>
+<text x="363.2" y="519.5" class="s" >① bbox prefilter → haversine ≤ R_cap(type)</text>
+<text x="363.2" y="534.0" class="s" >② annular-sector test: bearing ∈ az ±</text>
+<text x="363.2" y="548.5" class="s" >hfov/2, d_min ≤ d ≤ d_max; per-type rules</text>
+<text x="363.2" y="563.0" class="s" >(sunset: sun_az, aurora: night_ok…)</text>
+<text x="363.2" y="577.5" class="s" >③ night gate (astral) · ④ health == live · ⑤</text>
+<text x="363.2" y="592.0" class="s" >score = geo_fit + freshness + sky_frac +</text>
+<text x="363.2" y="606.5" class="s" >source_prior</text>
+<text x="363.2" y="621.0" class="s" >⑥ return top 3k hits with reason string +</text>
+<text x="363.2" y="635.5" class="s" >fetch URL; t in the past → history_template</text>
+<text x="363.2" y="650.0" class="s" >(replay)</text>
+<path class="f" d="M632.4,500.0 L658.4,500.0"/>
+<rect x="660.4" y="478.0" width="279.2" height="92.0" rx="8" style="fill:#fff7e6;stroke:#d48806;stroke-width:1.4"/>
+<text x="672.4" y="505.0" class="t" >Frame fetch + CV gates</text>
+<text x="672.4" y="519.5" class="s" >JPEG · HLS/YouTube → ffmpeg 1 frame · embed</text>
+<text x="672.4" y="534.0" class="s" >→ screenshot</text>
+<text x="672.4" y="548.5" class="s" >sha1 dedupe, luminance gate, sky crop;</text>
+<text x="672.4" y="563.0" class="s" >verdict cached per (cam, 10-min bucket)</text>
+<path class="f" d="M941.6,500.0 L967.6,500.0"/>
+<rect x="969.6" y="478.0" width="279.2" height="92.0" rx="8" style="fill:#e6f7ff;stroke:#1890ff;stroke-width:1.4"/>
+<text x="981.6" y="505.0" class="t" >VLM gate (OpenAI)</text>
+<text x="981.6" y="519.5" class="m" >usable: bool · sky_visible: 0..1 ·</text>
+<text x="981.6" y="534.0" class="m" >event_visible: enum · night: bool</text>
+<text x="981.6" y="548.5" class="s" >verdict → camera_samples → night_ok,</text>
+<text x="981.6" y="563.0" class="s" >quality_score feedback</text>
+<path class="f" d="M1250.8,500.0 L1276.8,500.0"/>
+<rect x="1278.8" y="478.0" width="279.2" height="63.0" rx="8" style="fill:#f4f4f4;stroke:#888;stroke-dasharray:5 3;stroke-width:1.4"/>
+<text x="1290.8" y="505.0" class="t" >Frontend</text>
+<text x="1290.8" y="519.5" class="s" >top-k passing pairs; iframe / &lt;video&gt; / img</text>
+<text x="1290.8" y="534.0" class="s" >via proxy (CORS); attribution + 'why'</text>
+<rect x="28" y="705.0" width="1544" height="150.0" rx="10" fill="#f6fff6" stroke="#389e0d" stroke-width="1.2"/>
+<text x="42.0" y="726.0" class="sec" >6 · Historical / backtest (Voloridge angle)</text>
+<rect x="42.0" y="749.0" width="493.3" height="77.5" rx="8" style="fill:#f0fff0;stroke:#389e0d;stroke-width:1.4"/>
+<text x="54.0" y="776.0" class="t" >Archives</text>
+<text x="54.0" y="790.5" class="s" >IEM 2003→ (5-min, heading logged), PhenoCam 2008→ (30-min), foto-webcam (years),</text>
+<text x="54.0" y="805.0" class="s" >Caltrans last-12, FAA/Digitraffic 24 h</text>
+<text x="54.0" y="819.5" class="s" >fetch_frame(cam, ts) fills history_template</text>
+<rect x="553.3" y="749.0" width="493.3" height="92.0" rx="8" style="fill:#f0fff0;stroke:#389e0d;stroke-width:1.4"/>
+<text x="565.3" y="776.0" class="t" >Replay fixtures</text>
+<text x="565.3" y="790.5" class="s" >Front Range mammatus day · Lapland aurora night · Alpine undercast morning ·</text>
+<text x="565.3" y="805.0" class="s" >Miami thunderstorm</text>
+<text x="565.3" y="819.5" class="s" >same find_cameras() with t_end in the past → demo never depends on tonight's</text>
+<text x="565.3" y="834.0" class="s" >weather</text>
+<rect x="1064.7" y="749.0" width="493.3" height="77.5" rx="8" style="fill:#f4f4f4;stroke:#888;stroke-dasharray:5 3;stroke-width:1.4"/>
+<text x="1076.7" y="776.0" class="t" >Sponsor seam</text>
+<text x="1076.7" y="790.5" class="s" >pandas/Parquet canonical; Elastic mirror only if the events team adopts it</text>
+<text x="1076.7" y="805.0" class="s" >OpenAI = VLM gate · Token Company = frame gating/caching metrics · Voloridge =</text>
+<text x="1076.7" y="819.5" class="s" >archives → rarity/backtest</text>
+</g>
+</svg>

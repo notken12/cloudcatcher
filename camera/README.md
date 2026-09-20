@@ -3,7 +3,7 @@
 Finds public webcams that can plausibly *see* a weather event, so the backend can
 fetch a frame, run the VLM gate and broadcast it. Design docs: `docs/sources.md`
 (where cameras come from), `docs/preprocessing-plan.md` (schema, coverage math,
-night logic, ranking), `docs/preprocessing-schema.svg` (one-page diagram).
+night logic, ranking), `../docs/diagrams/preprocessing-schema.svg` (overview; `-detailed.svg` for the annotated version).
 
 ```
 uv sync --extra dev
@@ -46,7 +46,7 @@ of interest once to get `night_usable_frac` populated for the aurora / lightning
 
 ## Camera service (query → gate → VLM → route)
 
-Design: `docs/query-and-routing-plan.md` + `docs/query-routing-schema.svg`.
+Design: `docs/query-and-routing-plan.md` + `../docs/diagrams/query-routing-schema.svg`.
 The weather backend posts a `WeatherEvent` and gets a `FootageResult` back
 (`src/sunroof_camera/footage.py` is the contract for both the backend and the frontend):
 

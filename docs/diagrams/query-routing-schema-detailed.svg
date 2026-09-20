@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200" font-family="Helvetica,Arial,sans-serif" font-size="12">
+<defs>
+<marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#444"/></marker>
+<marker id="r" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#c0392b"/></marker>
+<style>
+.t{font-weight:700;font-size:13.5px;fill:#111}
+.s{font-size:11.5px;fill:#333}
+.m{font-family:Menlo,Consolas,monospace;font-size:10.5px;fill:#222}
+.lbl{font-size:11px;fill:#555;font-style:italic}
+.sec{font-weight:700;font-size:15px;fill:#222}
+.h1{font-weight:700;font-size:24px;fill:#111}
+.h2{font-size:12.5px;fill:#555;font-style:italic}
+path.f{stroke:#444;stroke-width:1.5;fill:none;marker-end:url(#a)}
+path.no{stroke:#c0392b;stroke-width:1.5;fill:none;marker-end:url(#r);stroke-dasharray:6 3}
+</style></defs>
+<rect width="1600" height="1200" fill="#fff"/>
+<text x="28" y="50" class="h1">Sunroof · event → which camera → is the frame real → what the frontend gets</text>
+<text x="28" y="72" class="h2">One call of resolve_footage(event, k=3, deadline 30 s). Solid arrows = success path, red dashed = status back to the weather backend.</text>
+<g transform="translate(30.4,88) scale(0.9619) translate(0,-88)">
+<rect x="28" y="88" width="1544" height="135.5" rx="10" fill="#f7f7f7" stroke="#888" stroke-width="1.2"/>
+<text x="42.0" y="109.0" class="sec" >Inputs</text>
+<rect x="42.0" y="132.0" width="493.3" height="77.5" rx="8" style="fill:#f4f4f4;stroke:#888;stroke-dasharray:5 3;stroke-width:1.4"/>
+<text x="54.0" y="159.0" class="t" >Event (weather backend)</text>
+<text x="54.0" y="173.5" class="m" >Event{id, type, lat, lon, radius_km, t_start, t_end, severity, rarity,</text>
+<text x="54.0" y="188.0" class="m" >evidence{…}, region?: polygon}</text>
+<text x="54.0" y="202.5" class="s" >every ~10 min per live event · once per replay event</text>
+<rect x="553.3" y="132.0" width="493.3" height="77.5" rx="8" style="fill:#f0fff0;stroke:#389e0d;stroke-width:1.4"/>
+<text x="565.3" y="159.0" class="t" >Mini-DB</text>
+<text x="565.3" y="173.5" class="s" >cameras.parquet · one row per view: lat lon alt_m tz · azimuth hfov elev ·</text>
+<text x="565.3" y="188.0" class="s" >sky_frac night_ok all_sky ptz · urls refresh_s · health quality_score</text>
+<text x="565.3" y="202.5" class="s" >camera_samples.parquet (sha1, luminance, vlm_label)</text>
+<rect x="1064.7" y="132.0" width="493.3" height="77.5" rx="8" style="fill:#fdf0ff;stroke:#9254de;stroke-width:1.4"/>
+<text x="1076.7" y="159.0" class="t" >EventProfile table · one row per type</text>
+<text x="1076.7" y="173.5" class="s" >geometry h/R_cap · night_policy · require/prefer · media · frames · hold</text>
+<text x="1076.7" y="188.0" class="s" >thunderstorm annulus 12/150 twilight … · undercast above_layer · lightning</text>
+<text x="1076.7" y="202.5" class="s" >annulus 6/60 hls burst · sunset sun_az exact heading … (9 rows)</text>
+<rect x="28" y="257.5" width="1544" height="179.0" rx="10" fill="#fbf5ff" stroke="#9254de" stroke-width="1.2"/>
+<text x="42.0" y="278.5" class="sec" >① find_cameras(event, profile, k) → top 3k candidates · vectorised pandas, ~10 ms</text>
+<path class="f" d="M800.0,225.5 L800.0,255.5"/>
+<rect x="42.0" y="301.5" width="227.7" height="77.5" rx="8" style="fill:#fff;stroke:#333;stroke-width:1.4"/>
+<text x="54.0" y="328.5" class="t" >bbox → haversine</text>
+<text x="54.0" y="343.0" class="s" >d ≤ R_cap(type) or ≤ radius_km for</text>
+<text x="54.0" y="357.5" class="s" >point events</text>
+<text x="54.0" y="372.0" class="s" >90k → ~500 rows</text>
+<path class="f" d="M271.7,323.5 L297.7,323.5"/>
+<rect x="299.7" y="301.5" width="227.7" height="121.0" rx="8" style="fill:#fff;stroke:#333;stroke-width:1.4"/>
+<text x="311.7" y="328.5" class="t" >geometry test (per profile)</text>
+<text x="311.7" y="343.0" class="s" >annulus: |b−az| ≤ hfov/2+δ, dmin ≤</text>
+<text x="311.7" y="357.5" class="s" >d ≤ dmax</text>
+<text x="311.7" y="372.0" class="s" >sun_az / antisolar · above_layer:</text>
+<text x="311.7" y="386.5" class="s" >alt_m vs fog_top · region polygon</text>
+<text x="311.7" y="401.0" class="s" >ptz/unknown heading: skip test,</text>
+<text x="311.7" y="415.5" class="s" >score ×0.6</text>
+<path class="f" d="M529.3,323.5 L555.3,323.5"/>
+<rect x="557.3" y="301.5" width="227.7" height="92.0" rx="8" style="fill:#fff;stroke:#333;stroke-width:1.4"/>
+<text x="569.3" y="328.5" class="t" >hard filters</text>
+<text x="569.3" y="343.0" class="s" >health == live · profile.require</text>
+<text x="569.3" y="357.5" class="s" >(elev_min, alt_m, refresh_s,</text>
+<text x="569.3" y="372.0" class="s" >heading…)</text>
+<text x="569.3" y="386.5" class="s" >replay: history covers t</text>
+<path class="f" d="M787.0,323.5 L813.0,323.5"/>
+<rect x="815.0" y="301.5" width="227.7" height="92.0" rx="8" style="fill:#fff;stroke:#333;stroke-width:1.4"/>
+<text x="827.0" y="328.5" class="t" >night gate (astral)</text>
+<text x="827.0" y="343.0" class="s" >sun_el &gt; −6 all cams · −6…−18</text>
+<text x="827.0" y="357.5" class="s" >night_ok or ×0.5 · &lt; −18 night_ok</text>
+<text x="827.0" y="372.0" class="s" >only</text>
+<text x="827.0" y="386.5" class="s" >lightning exempt · aurora &lt; −12</text>
+<path class="f" d="M1044.7,323.5 L1070.7,323.5"/>
+<rect x="1072.7" y="301.5" width="227.7" height="106.5" rx="8" style="fill:#fff;stroke:#333;stroke-width:1.4"/>
+<text x="1084.7" y="328.5" class="t" >score &amp; rank</text>
+<text x="1084.7" y="343.0" class="s" >geo_fit + freshness + sky_frac +</text>
+<text x="1084.7" y="357.5" class="s" >source_prior + night_mult +</text>
+<text x="1084.7" y="372.0" class="s" >profile.prefer − dup_penalty</text>
+<text x="1084.7" y="386.5" class="s" >top 3k (≤9) with reason string +</text>
+<text x="1084.7" y="401.0" class="s" >URLs</text>
+<path class="no" d="M1302.3,323.5 L1328.3,323.5"/>
+<rect x="1330.3" y="301.5" width="227.7" height="63.0" rx="8" style="fill:#fff1f0;stroke:#c0392b;stroke-width:1.4"/>
+<text x="1342.3" y="328.5" class="t" >0 rows → NO_CAMERAS_IN_RANGE · CAMERAS_DARK</text>
+<text x="1342.3" y="343.0" class="s" >drop / don't re-poll · retry after</text>
+<text x="1342.3" y="357.5" class="s" >sunrise unless aurora/lightning</text>
+<rect x="28" y="470.5" width="1544" height="179.0" rx="10" fill="#fffbf2" stroke="#d48806" stroke-width="1.2"/>
+<text x="42.0" y="491.5" class="sec" >② fetch frames + cheap gates (no LLM) · concurrent httpx, 5 s timeout · verdict cached per (camera, 10-min bucket)</text>
+<path class="f" d="M800.0,438.5 L800.0,468.5"/>
+<text x="806.0" y="449.5" class="lbl" >≤ 9 candidates</text>
+<rect x="42.0" y="514.5" width="227.7" height="121.0" rx="8" style="fill:#fff7e6;stroke:#d48806;stroke-width:1.4"/>
+<text x="54.0" y="541.5" class="t" >get a frame (profile.media_pref)</text>
+<text x="54.0" y="556.0" class="s" >jpeg GET image_url?t=… · hls m3u8 →</text>
+<text x="54.0" y="570.5" class="s" >last seg → ffmpeg 1 fr · lightning:</text>
+<text x="54.0" y="585.0" class="s" >15–20 s burst · embed yt-dlp -g →</text>
+<text x="54.0" y="599.5" class="s" >hls</text>
+<text x="54.0" y="614.0" class="s" >page no frame → iframe-only,</text>
+<text x="54.0" y="628.5" class="s" >verified=false</text>
+<path class="f" d="M271.7,536.5 L297.7,536.5"/>
+<rect x="299.7" y="514.5" width="227.7" height="106.5" rx="8" style="fill:#fff7e6;stroke:#d48806;stroke-width:1.4"/>
+<text x="311.7" y="541.5" class="t" >bytes</text>
+<text x="311.7" y="556.0" class="s" >200 · image/* · ≥3 KB · FFD8…FFD9 ·</text>
+<text x="311.7" y="570.5" class="s" >PIL.verify</text>
+<text x="311.7" y="585.0" class="s" >placeholder: sha1 ∈ per-source</text>
+<text x="311.7" y="599.5" class="s" >offline set · frozen: pHash ≈ last</text>
+<text x="311.7" y="614.0" class="s" >sample</text>
+<path class="f" d="M529.3,536.5 L555.3,536.5"/>
+<rect x="557.3" y="514.5" width="227.7" height="106.5" rx="8" style="fill:#fff7e6;stroke:#d48806;stroke-width:1.4"/>
+<text x="569.3" y="541.5" class="t" >timestamp</text>
+<text x="569.3" y="556.0" class="s" >source JSON → EXIF → Last-Modified</text>
+<text x="569.3" y="570.5" class="s" >→ fetch time; reject if &gt;</text>
+<text x="569.3" y="585.0" class="s" >2·refresh_s old</text>
+<text x="569.3" y="599.5" class="s" >clock skew: bytes changed but ts</text>
+<text x="569.3" y="614.0" class="s" >says stale → trust bytes</text>
+<path class="f" d="M787.0,536.5 L813.0,536.5"/>
+<rect x="815.0" y="514.5" width="227.7" height="106.5" rx="8" style="fill:#fff7e6;stroke:#d48806;stroke-width:1.4"/>
+<text x="827.0" y="541.5" class="t" >pixels (256-px sky crop, &lt;5 ms)</text>
+<text x="827.0" y="556.0" class="s" >mean lum &lt; 12/255 → reject (except</text>
+<text x="827.0" y="570.5" class="s" >aurora, lightning) · std &lt; 4 →</text>
+<text x="827.0" y="585.0" class="s" >uniform · Laplacian var &lt; 15 →</text>
+<text x="827.0" y="599.5" class="s" >penalise</text>
+<text x="827.0" y="614.0" class="s" >dedupe across cams: pHash dist ≤ 4</text>
+<path class="f" d="M1044.7,536.5 L1070.7,536.5"/>
+<rect x="1072.7" y="514.5" width="227.7" height="92.0" rx="8" style="fill:#fff7e6;stroke:#d48806;stroke-width:1.4"/>
+<text x="1084.7" y="541.5" class="t" >re-rank → top ≤ 6</text>
+<text x="1084.7" y="556.0" class="s" >score · (1 + 0.2·sharpness)</text>
+<text x="1084.7" y="570.5" class="s" >CLIP pre-gate (optional, CPU):</text>
+<text x="1084.7" y="585.0" class="s" >'offline card / black / road at</text>
+<text x="1084.7" y="599.5" class="s" >night' → drop before paying</text>
+<path class="no" d="M1302.3,536.5 L1328.3,536.5"/>
+<rect x="1330.3" y="514.5" width="227.7" height="106.5" rx="8" style="fill:#fff1f0;stroke:#c0392b;stroke-width:1.4"/>
+<text x="1342.3" y="541.5" class="t" >every frame failed → ALL_STALE · TIMEOUT</text>
+<text x="1342.3" y="556.0" class="s" >retry in 10 min · 30 s deadline</text>
+<text x="1342.3" y="570.5" class="s" >returns partial, verified=false</text>
+<text x="1342.3" y="585.0" class="s" >rejected frames →</text>
+<text x="1342.3" y="599.5" class="s" >camera_samples.vlm_label =</text>
+<text x="1342.3" y="614.0" class="s" >'rejected:&lt;gate&gt;'</text>
+<rect x="28" y="683.5" width="1544" height="179.0" rx="10" fill="#f2faff" stroke="#1890ff" stroke-width="1.2"/>
+<text x="42.0" y="704.5" class="sec" >③ VLM gate · OpenAI mini-tier, structured output, detail:'low', ≤ 6 concurrent calls, p50 2 s</text>
+<path class="f" d="M800.0,651.5 L800.0,681.5"/>
+<text x="806.0" y="662.5" class="lbl" >≤ 6 frames (lightning: max-projection composite)</text>
+<rect x="42.0" y="727.5" width="356.5" height="106.5" rx="8" style="fill:#e6f7ff;stroke:#1890ff;stroke-width:1.4"/>
+<text x="54.0" y="754.5" class="t" >prompt</text>
+<text x="54.0" y="769.0" class="s" >fixed system msg + target type + one-line definition +</text>
+<text x="54.0" y="783.5" class="s" >sun_az &amp; cam.azimuth (sunset)</text>
+<text x="54.0" y="798.0" class="s" >asks what it DOES see, not yes/no → fewer sycophantic</text>
+<text x="54.0" y="812.5" class="s" >positives</text>
+<text x="54.0" y="827.0" class="s" >escalate ≤ 1× per event to the large model when unsure</text>
+<path class="f" d="M400.5,749.5 L426.5,749.5"/>
+<rect x="428.5" y="727.5" width="356.5" height="121.0" rx="8" style="fill:#e6f7ff;stroke:#1890ff;stroke-width:1.4"/>
+<text x="440.5" y="754.5" class="t" >Verdict (pydantic)</text>
+<text x="440.5" y="769.0" class="m" >usable: bool · sky_visible: 0..1 · night: bool ·</text>
+<text x="440.5" y="783.5" class="m" >event_visible: yes|partial|no|unsure ·</text>
+<text x="440.5" y="798.0" class="m" >event_type_seen · confidence 0..1 · quality 1..5 ·</text>
+<text x="440.5" y="812.5" class="m" >caption ≤ 12 words</text>
+<text x="440.5" y="827.0" class="s" >verdict → camera_samples → night_ok / quality_score</text>
+<text x="440.5" y="841.5" class="s" >feedback</text>
+<path class="f" d="M787.0,749.5 L813.0,749.5"/>
+<rect x="815.0" y="727.5" width="356.5" height="92.0" rx="8" style="fill:#e6f7ff;stroke:#1890ff;stroke-width:1.4"/>
+<text x="827.0" y="754.5" class="t" >pass / pick order</text>
+<text x="827.0" y="769.0" class="s" >pass iff usable ∧ event_visible ∈ {yes, partial} ∧</text>
+<text x="827.0" y="783.5" class="s" >event_type_seen == target ∧ conf ≥ 0.5</text>
+<text x="827.0" y="798.0" class="s" >order = conf · (0.6 + 0.1·quality) → top k (=3) to</text>
+<text x="827.0" y="812.5" class="s" >routing</text>
+<path class="no" d="M1173.5,749.5 L1199.5,749.5"/>
+<rect x="1201.5" y="727.5" width="356.5" height="63.0" rx="8" style="fill:#fff1f0;stroke:#c0392b;stroke-width:1.4"/>
+<text x="1213.5" y="754.5" class="t" >fresh frames, VLM says no → NO_FOOTAGE_FOUND · EVENT_NOT_VISIBLE</text>
+<text x="1213.5" y="769.0" class="s" >labelled negative worth keeping (backtest) · only</text>
+<text x="1213.5" y="783.5" class="s" >partial/unsure → retry 10 min</text>
+<rect x="28" y="896.5" width="1544" height="179.0" rx="10" fill="#f2fffd" stroke="#13c2c2" stroke-width="1.2"/>
+<text x="42.0" y="917.5" class="sec" >④ route · one universal Footage envelope, three renderers · store + SSE · hold &amp; cheap re-verify</text>
+<path class="f" d="M800.0,864.5 L800.0,894.5"/>
+<text x="806.0" y="875.5" class="lbl" >k verified (camera, frame, verdict)</text>
+<rect x="42.0" y="940.5" width="356.5" height="121.0" rx="8" style="fill:#e6fffb;stroke:#13c2c2;stroke-width:1.4"/>
+<text x="54.0" y="967.5" class="t" >Footage (what the frontend gets)</text>
+<text x="54.0" y="982.0" class="m" >{event_id, camera_id, rank, verified, media:{kind:</text>
+<text x="54.0" y="996.5" class="m" >image|hls|iframe, src, poster, refresh_s,</text>
+<text x="54.0" y="1011.0" class="m" >expires_at}, verdict:{…}, why, camera:{…},</text>
+<text x="54.0" y="1025.5" class="m" >frame_ts, hold_until}</text>
+<text x="54.0" y="1040.0" class="s" >image ≈ 90 % of catalog and the only cheaply VLM-verified</text>
+<text x="54.0" y="1054.5" class="s" >path</text>
+<path class="f" d="M400.5,962.5 L426.5,962.5"/>
+<rect x="428.5" y="940.5" width="356.5" height="92.0" rx="8" style="fill:#e6fffb;stroke:#13c2c2;stroke-width:1.4"/>
+<text x="440.5" y="967.5" class="t" >proxy /proxy/frame|hls/{camera_id}</text>
+<text x="440.5" y="982.0" class="s" >fixes CORS (.gov/DOT block browsers) · rewrites HLS</text>
+<text x="440.5" y="996.5" class="s" >segment URIs · Cache-Control = refresh_s</text>
+<text x="440.5" y="1011.0" class="s" >no-store pass-through: ALERTCA, Windy (signed URL),</text>
+<text x="440.5" y="1025.5" class="s" >Panomax iframe</text>
+<path class="f" d="M787.0,962.5 L813.0,962.5"/>
+<rect x="815.0" y="940.5" width="356.5" height="92.0" rx="8" style="fill:#e6fffb;stroke:#13c2c2;stroke-width:1.4"/>
+<text x="827.0" y="967.5" class="t" >store + push</text>
+<text x="827.0" y="982.0" class="s" >aiosqlite, key = event_id · GET /feed · GET</text>
+<text x="827.0" y="996.5" class="s" >/events/{id}/footage · GET /stream (SSE)</text>
+<text x="827.0" y="1011.0" class="s" >hold &amp; re-verify: visible for hold_s (10–30 min);</text>
+<text x="827.0" y="1025.5" class="s" >frozen/black → demote + ALL_STALE upstream</text>
+<path class="f" d="M1173.5,962.5 L1199.5,962.5"/>
+<rect x="1201.5" y="940.5" width="356.5" height="92.0" rx="8" style="fill:#f4f4f4;stroke:#888;stroke-dasharray:5 3;stroke-width:1.4"/>
+<text x="1213.5" y="967.5" class="t" >Frontend</text>
+<text x="1213.5" y="982.0" class="s" >image → &lt;img&gt; re-request every refresh_s · hls → hls.js ·</text>
+<text x="1213.5" y="996.5" class="s" >iframe → embed, verified=false</text>
+<text x="1213.5" y="1011.0" class="s" >time to first verified frame ≈ 4 s p50 (JPEG) · 10–15 s</text>
+<text x="1213.5" y="1025.5" class="s" >HLS · 30 s cap</text>
+<rect x="28" y="1109.5" width="1544" height="106.5" rx="10" fill="#f7f7f7" stroke="#888" stroke-width="1.2"/>
+<text x="42.0" y="1130.5" class="sec" >FootageResult → weather backend (always returned, success or not)</text>
+<path class="f" d="M800.0,1077.5 L800.0,1107.5"/>
+<text x="806.0" y="1088.5" class="lbl" >FOOTAGE_FOUND + counters</text>
+<rect x="42.0" y="1153.5" width="1516.0" height="48.5" rx="8" style="fill:#f4f4f4;stroke:#888;stroke-dasharray:5 3;stroke-width:1.4"/>
+<text x="54.0" y="1180.5" class="t" >FootageResult</text>
+<text x="54.0" y="1195.0" class="m" >{event_id, status, footage[0..k], candidates, checked, vlm_calls, tokens_in, elapsed_ms, retry_after_s, reason}</text>
+</g>
+</svg>
