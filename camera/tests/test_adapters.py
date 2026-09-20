@@ -15,8 +15,10 @@ from sunroof_camera.ingest.sources import (
     digitraffic,
     drivebc,
     fotowebcam,
+    hongkong,
     nzta,
     panomax,
+    singapore,
     tripcheck,
 )
 from sunroof_camera.schema import Camera, to_frame, write_parquet
@@ -236,3 +238,46 @@ def test_cars_list_paging_wkt_and_filters():
     assert cams[-1].id.endswith(":2:20") and cams[-1].azimuth_deg == 225
     assert cams[-1].image_url == f"https://{adapter.host}/map/Cctv/20"
     assert cars_list.parse_wkt_point("junk") is None
+
+
+def test_hongkong_xml():
+    xml = """<?xml version="1.0"?><image-list>
+    <image><key>H421F</key><description>Aberdeen Tunnel [H421F]</description>
+      <latitude>22.24986</latitude><longitude>114.17557</longitude>
+      <url>https://tdcctv.data.one.gov.hk/H421F.JPG</url></image>
+    <image><key>X</key><url>u</url></image></image-list>"""
+    cams = _run(hongkong.HongKongTDAdapter(), {"Traffic_Camera_Locations_En.xml": xml})
+    assert [c.id for c in cams] == ["hk_td:H421F"]
+    assert cams[0].tz == "Asia/Hong_Kong" and cams[0].image_url.endswith("H421F.JPG")
+
+
+def test_singapore_unions_recent_batches():
+    def batch(*ids):
+        return {
+            "items": [
+                {
+                    "cameras": [
+                        {
+                            "camera_id": i,
+                            "image": f"https://images.data.gov.sg/x/{i}.jpg",
+                            "location": {"latitude": 1.3, "longitude": 103.8},
+                        }
+                        for i in ids
+                    ]
+                }
+            ]
+        }
+
+    calls = iter([batch("2701"), batch("2701", "4703"), batch(), batch(), batch()])
+
+    def handler(req: httpx.Request) -> httpx.Response:
+        assert "date_time=" in str(req.url)
+        return httpx.Response(200, json=next(calls))
+
+    async def go():
+        async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as http:
+            return await singapore.SingaporeLTAAdapter().catalog(http)
+
+    cams = asyncio.run(go())
+    assert sorted(c.id for c in cams) == ["sg_lta:2701", "sg_lta:4703"]
+    assert cams[0].image_url is None and cams[0].history_kind == "api"

@@ -79,10 +79,12 @@ Secrets: `WINDY_API_KEY` etc. via environment only; never in the repo.
 | `tripcheck` | ~1,150 | filename suffix (NB/SW…) 47% | – | – | Oregon DOT: Cascades, coast, Gorge |
 | `drivebc` | ~1,040 | `orientation` 100% + elevation | – | ReplayTheDay | British Columbia passes, PNG frames |
 | `nzta` | ~250 | `direction` 99% | – | – | New Zealand state highways, CC BY 4.0 |
+| `hk_td` | ~1,010 | text ("- Eastbound" suffix) ~40% | – | – | Hong Kong Transport Dept snapshots, 2-min, data.gov.hk |
+| `sg_lta` | ~8 live (90 in archive) | – | – | any past minute via `?date_time=` | Singapore LTA 1080p; `image_url` empty, `fetch_frame` re-queries the API |
 | `ndbc` | ~90 | 360° strip | – | – | BuoyCAMs, found by probing `buoycam.php` |
 | `iem` | live only | catalog (`angle`) | – | per-minute archive | rows accumulate across refreshes |
 | `windy` | ~1k/country | text from title | – | embed player day/month/year | needs `WINDY_API_KEY`; offset ≤1000/free tier |
-| `manual` | yaml | – | – | – | hand-picked (all-sky, YouTube) |
+| `manual` | yaml | – | – | – | hand-picked: UAF Poker Flat + IRF Kiruna all-sky (aurora, `night_ok`) |
 
 `uv run sunroof-camera refresh` builds every keyless source in ~2 min (~29k rows; the CARS portals are paged 100 at a time).
 
@@ -101,6 +103,9 @@ Known-good rows (frames verified live, Sep 2026) to hard-code into demos/tests:
 | `iceland:7001:hellisheidi_1.jpg` Hellisheiði W | 64.018, -21.343 | Iceland road cam, aurora candidate |
 | `digitraffic:C0150301` Inkoo | 60.054, 23.996 | Finland, 24 h history API, CC BY 4.0 |
 | `phenocam:alfacada` Ebro Delta | 40.68, 0.84 | archive to 2000s at 30 min, S-facing |
+| `manual:irf-kiruna-allsky` | 67.84, 20.41 | all-sky aurora camera, 1-min JPEG, `night_ok` |
+| `hk_td:H421F` Aberdeen Tunnel | 22.250, 114.176 | Hong Kong, 2-min refresh, typhoon/fog demo |
+| `cars_ak:*` / `cars_ut:*` | Alaska / Utah | 511 cams with text headings (Richardson Hwy, Wasatch) |
 
 Ready-to-run queries (`--t` is UTC, omit for now):
 

@@ -74,6 +74,8 @@ SOURCE_PRIOR = {
     "iceland": 0.55,
     "drivebc": 0.55,
     "nzta": 0.5,
+    "sg_lta": 0.45,
+    "hk_td": 0.35,
     "tripcheck": 0.45,
     "digitraffic": 0.5,
     "caltrans": 0.45,
