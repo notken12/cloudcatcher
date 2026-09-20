@@ -75,12 +75,15 @@ Secrets: `WINDY_API_KEY` etc. via environment only; never in the repo.
 | `phenocam` | ~550 | text | – | archive to 2000s, 30 min | research sites |
 | `iceland` | ~480 | text (is) | yes | – | Vegagerðin |
 | `fotowebcam` | ~340 | catalog (`direction`, `sector`=hfov) | yes | 10-min archive, years | best quality/attribution |
+| `tripcheck` | ~1,150 | filename suffix (NB/SW…) 47% | – | – | Oregon DOT: Cascades, coast, Gorge |
+| `drivebc` | ~1,040 | `orientation` 100% + elevation | – | ReplayTheDay | British Columbia passes, PNG frames |
+| `nzta` | ~250 | `direction` 99% | – | – | New Zealand state highways, CC BY 4.0 |
 | `ndbc` | ~90 | 360° strip | – | – | BuoyCAMs, found by probing `buoycam.php` |
 | `iem` | live only | catalog (`angle`) | – | per-minute archive | rows accumulate across refreshes |
 | `windy` | ~1k/country | text from title | – | embed player day/month/year | needs `WINDY_API_KEY`; offset ≤1000/free tier |
 | `manual` | yaml | – | – | – | hand-picked (all-sky, YouTube) |
 
-`uv run sunroof-camera refresh` builds every keyless source in ~10 s (~12k rows).
+`uv run sunroof-camera refresh` builds every keyless source in ~15 s (~14.5k rows).
 
 ## Demo cameras & sample queries
 

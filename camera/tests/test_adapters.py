@@ -9,7 +9,15 @@ import httpx
 import pandas as pd
 
 from sunroof_camera.ingest.build import dedupe_views, merge_shards
-from sunroof_camera.ingest.sources import caltrans, digitraffic, fotowebcam, panomax
+from sunroof_camera.ingest.sources import (
+    caltrans,
+    digitraffic,
+    drivebc,
+    fotowebcam,
+    nzta,
+    panomax,
+    tripcheck,
+)
 from sunroof_camera.schema import Camera, to_frame, write_parquet
 
 
@@ -129,3 +137,68 @@ def test_merge_prefers_priority_source(tmp_path):
     df = merge_shards(tmp_path)
     assert list(df["source"].astype(str)) == ["panomax"]
     assert isinstance(df, pd.DataFrame)
+
+
+def test_nzta_xml_direction_and_offline_filter():
+    xml = """<?xml version="1.0"?><response>
+    <camera><description>South along SH1</description><direction>Southbound</direction><id>714</id>
+      <imageUrl>/camera/714.jpg</imageUrl><latitude>-43.9</latitude><longitude>171.7</longitude>
+      <name>SH1 Tinwald</name><offline>false</offline><underMaintenance>false</underMaintenance>
+      <viewUrl>/camera/view/714</viewUrl></camera>
+    <camera><description>x</description><direction>Northbound</direction><id>1</id><imageUrl>/camera/1.jpg</imageUrl>
+      <latitude>-41</latitude><longitude>174</longitude><name>dead</name><offline>true</offline>
+      <underMaintenance>false</underMaintenance><viewUrl>/camera/view/1</viewUrl></camera>
+    </response>"""
+    cams = _run(nzta.NZTAAdapter(), {"cameras/all": xml})
+    assert [c.id for c in cams] == ["nzta:714"]
+    assert cams[0].azimuth_deg == 180 and cams[0].heading_conf == "text"
+    assert cams[0].image_url == "https://trafficnz.info/camera/714.jpg"
+
+
+def test_tripcheck_filename_heading_and_bad_coords():
+    assert tripcheck.heading_from_filename("AstoriaUS101MeglerBrNB_pid392.jpg") == 0
+    assert tripcheck.heading_from_filename("FooSW_pid1.jpg") == 225
+    assert tripcheck.heading_from_filename("Foo_pid1.jpg") is None
+    feats = {
+        "features": [
+            {
+                "attributes": {
+                    "cameraId": 1,
+                    "filename": "aNB_pid1.jpg",
+                    "latitude": 45.0,
+                    "longitude": -122.0,
+                    "title": "a",
+                }
+            },
+            {
+                "attributes": {
+                    "cameraId": 2,
+                    "filename": "b_pid2.jpg",
+                    "latitude": 45.0,
+                    "longitude": 226.0,
+                    "title": "b",
+                }
+            },
+        ]
+    }
+    cams = _run(tripcheck.TripCheckAdapter(), {"cctvinventory": feats})
+    assert [c.id for c in cams] == ["tripcheck:1"]
+
+
+def test_drivebc_orientation_and_off_filter():
+    cam = {
+        "id": 2,
+        "isOn": True,
+        "shouldAppear": True,
+        "camName": "Coquihalla - N",
+        "orientation": "N",
+        "location": {"latitude": 49.6, "longitude": -121.16, "elevation": 980},
+        "links": {
+            "imageDisplay": "https://images.drivebc.ca/bchighwaycam/pub/cameras/2.jpg",
+            "replayTheDay": "r",
+        },
+    }
+    off = {**cam, "id": 3, "isOn": False}
+    cams = _run(drivebc.DriveBCAdapter(), {"api/v1/webcams": {"webcams": [cam, off]}})
+    assert len(cams) == 1 and cams[0].azimuth_deg == 0 and cams[0].alt_m == 980
+    assert cams[0].heading_conf == "catalog"

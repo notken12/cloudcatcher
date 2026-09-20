@@ -6,13 +6,16 @@ from .sources.alertca import AlertCaliforniaAdapter
 from .sources.caltrans import CaltransAdapter
 from .sources.cars import NewYork511Adapter, Ontario511Adapter
 from .sources.digitraffic import DigitrafficAdapter
+from .sources.drivebc import DriveBCAdapter
 from .sources.fotowebcam import FotoWebcamAdapter
 from .sources.iceland import IcelandAdapter
 from .sources.iem import IEMAdapter
 from .sources.manual import ManualAdapter
 from .sources.ndbc import NDBCAdapter
+from .sources.nzta import NZTAAdapter
 from .sources.panomax import PanomaxAdapter
 from .sources.phenocam import PhenoCamAdapter
+from .sources.tripcheck import TripCheckAdapter
 from .sources.windy import WindyAdapter
 
 ADAPTERS: dict[str, type] = {
@@ -30,6 +33,9 @@ ADAPTERS: dict[str, type] = {
         PhenoCamAdapter,
         IEMAdapter,
         NDBCAdapter,
+        DriveBCAdapter,
+        TripCheckAdapter,
+        NZTAAdapter,
         WindyAdapter,  # needs WINDY_API_KEY
     )
 }
