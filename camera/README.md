@@ -49,9 +49,12 @@ All backends speak the OpenAI chat-completions API, so switching is env-only:
 | setup | env | model |
 |---|---|---|
 | OpenAI (hosted, ~2 s/frame) | `OPENAI_API_KEY` | `gpt-4o-mini`, escalates to `gpt-4o` |
+| **Groq (hosted, free tier, ~0.5–1 s/frame) — current default for dev/demo** | `GROQ_API_KEY` ([console.groq.com/keys](https://console.groq.com/keys)) | `qwen/qwen3.8-27b` |
 | local Ollama (auto-detected on `127.0.0.1:11434`) | none — `ollama pull qwen2.5vl:3b` | `qwen2.5vl:3b` |
 | any OpenAI-compatible server (vLLM, OpenRouter, remote Ollama) | `SUNROOF_VLM_BASE_URL`, `SUNROOF_VLM_API_KEY` | `SUNROOF_VLM_MODEL` |
 | disabled (CI / offline) | `SUNROOF_VLM_BACKEND=off` | — |
+
+Precedence: `off` > `OPENAI_API_KEY` > `SUNROOF_VLM_BASE_URL` > `GROQ_API_KEY` > local Ollama.
 
 Overrides: `SUNROOF_VLM_MODEL` / `SUNROOF_VLM_MODEL_LARGE`, `SUNROOF_VLM_PARALLEL`
 (concurrent calls; default 1 for localhost, 4 for other custom URLs, 8 for OpenAI),
