@@ -195,16 +195,19 @@ a:hover {
   font-size: 12px;
   line-height: 1.25;
   white-space: nowrap;
-  opacity: 0;
+  display: none;
   pointer-events: none;
-  transition:
-    opacity 0.15s,
-    translate 0.15s;
+  animation: label-in 0.15s ease both;
 }
 .pin:hover .pin-label,
 .pin:focus-visible .pin-label {
-  opacity: 1;
-  translate: -50% 0;
+  display: block;
+}
+@keyframes label-in {
+  from {
+    opacity: 0;
+    translate: -50% 4px;
+  }
 }
 .pin-tail {
   position: absolute;
