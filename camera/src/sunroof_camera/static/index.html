@@ -60,7 +60,8 @@ function show(f){
     const fr = document.createElement('iframe'); fr.src = m.src; fr.allow = 'autoplay'; st.appendChild(fr);
   }
   const v = f.verdict || {};
-  $('badge').innerHTML = `${f.event_type}` + (f.verified ? `<span class="pill">verified · ${(v.confidence*100|0)}% · q${v.quality}</span>` : `<span class="pill unv">unverified (no VLM)</span>`);
+  const q = f.quality == null ? '' : ` · Q ${f.quality.toFixed(2)}`;
+  $('badge').innerHTML = `${f.event_type}` + (f.verified ? `<span class="pill">verified · ${(v.confidence*100|0)}%${q}</span>` : `<span class="pill unv">unverified (no VLM)${q}</span>`);
   const c = f.camera;
   $('where').textContent = `${c.name} — ${c.lat.toFixed(4)}, ${c.lon.toFixed(4)}` + (c.alt_m!=null ? ` · ${Math.round(c.alt_m)} m` : '') + (c.azimuth_deg!=null ? ` · facing ${Math.round(c.azimuth_deg)}°` : '') + ` · ${c.distance_km.toFixed(0)} km from event`;
   $('when').textContent = whenText(f);

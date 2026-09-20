@@ -322,13 +322,23 @@ def skipped_verdict(reason: str) -> Verdict:
     )
 
 
-def log_verdict(path: str, camera_id: str, event_type: str, v: Verdict, sha1: str) -> None:
-    """Append-only JSONL used later to learn night_ok / quality_score per camera."""
+def log_verdict(
+    path: str,
+    camera_id: str,
+    event_type: str,
+    v: Verdict,
+    sha1: str,
+    q: float | None = None,
+    features: dict[str, float] | None = None,
+) -> None:
+    """Append-only JSONL: VLM verdict + deterministic features, the training set for Stage C."""
     rec = {
         "ts": datetime.now(timezone.utc).isoformat(),
         "camera_id": camera_id,
         "event_type": event_type,
         "sha1": sha1,
+        "q": q,
+        "features": features,
         **v.model_dump(),
     }
     with open(path, "a") as f:

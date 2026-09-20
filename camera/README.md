@@ -53,7 +53,7 @@ The weather backend posts a `WeatherEvent` and gets a `FootageResult` back
 ```
 POST /events                {"id":"…","type":"thunderstorm","lat":..,"lon":..,"radius_km":20}
   -> {"status": "FOOTAGE_FOUND" | "NO_CAMERAS_IN_RANGE" | "CAMERAS_DARK" | "ALL_STALE"
-                | "EVENT_NOT_VISIBLE" | "NO_FOOTAGE_FOUND" | "TIMEOUT",
+                | "EVENT_NOT_VISIBLE" | "LOW_QUALITY" | "NO_FOOTAGE_FOUND" | "TIMEOUT",
       "footage": [Footage…], "rejected": [...], "retry_after_s": ...}
 GET  /stream                SSE, one `footage` event per FootageResult (what the sandbox page consumes)
 GET  /feed, /events/{id}/footage, /proxy/frame/{camera_id}, /health
@@ -68,6 +68,16 @@ candidates → `gates.check_frame` (bytes/magic/decode, placeholder + frozen-fra
 freshness vs cadence, uniform / blown-out / dark, pHash de-dupe, sharpness) →
 `vlm.judge` (one structured verdict per frame) → top-`k` `Footage`. Without any VLM
 backend the service still runs and returns gate-passed frames marked `verified: false`.
+
+"Worth showing?" (`quality.py`, design in `docs/match-and-filter-design.md` Stage A): every
+gate-passed frame gets seven deterministic [0,1] features (sky share, Hasler–Süsstrunk
+colourfulness, warm-hue share, sky texture, dark-channel clarity, sharpness, exposure; ~2 ms,
+numpy only) and a per-type weighted mean `Q` (`EventProfile.q`). `Q` re-ranks — it never
+decides presence: with the VLM on, passing frames sort by `confidence × (0.5 + 0.5·Q)`; the only
+hard use is `min_q` (a frame far below the type's floor is dropped → `LOW_QUALITY`). The VLM
+verdict is also held to per-type rules: `require_yes` (lightning, rainbow: "partial" is not
+enough) and `night` ⇒ reject for daytime-only types. `Footage.quality` / `Footage.features`
+and `data/verdicts.jsonl` (`q`, `features` next to the verdict) expose all of it for calibration.
 
 ### Event store + `GET /events` (`events_db.py`, `match.py`)
 

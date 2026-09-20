@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 import numpy as np
 from PIL import Image, ImageOps
 
+from . import quality
 from .ingest.base import Frame
 
 MIN_BYTES = 3000
@@ -40,6 +41,7 @@ class GateResult:
     night: bool = False
     score_mult: float = 1.0
     notes: list[str] = field(default_factory=list)
+    features: quality.FrameFeatures | None = None
 
 
 def _exif_ts(img: Image.Image) -> datetime | None:
@@ -170,6 +172,7 @@ def check_frame(
     if res.sharpness < 15:
         res.score_mult *= 0.7
         res.notes.append("soft / low-detail frame")
+    res.features = quality.extract(img)
     res.ok = True
     res.reason = "passed"
     return res
