@@ -108,6 +108,8 @@ def serve(
     frontend: Path | None = typer.Option(
         None, help="serve the built SPA (frontend/dist) at /; sandbox page moves to /sandbox"
     ),
+    refresh_per_type: int = typer.Option(3, help="POST /refresh: events re-resolved per type"),
+    refresh_min_s: float = typer.Option(60.0, help="POST /refresh: minimum seconds between runs"),
 ):
     """Run the camera service + sandbox page (see server.py for endpoints)."""
     from .server import run
@@ -124,6 +126,8 @@ def serve(
         db=db,
         watch_db_s=watch_db_s,
         frontend=frontend,
+        refresh_per_type=refresh_per_type,
+        refresh_min_s=refresh_min_s,
     )
 
 
@@ -180,6 +184,87 @@ def match(
     results = asyncio.run(go())
     for r in results:
         typer.echo(f"{r.event_id[:8]} {r.status} footage={len(r.footage)}")
+
+
+WEATHER_CMD = "uv run python -m weather.events --out out/events.json --sunset --aurora"
+
+
+@app.command()
+def cron(
+    db: Path = Path("data/events.db"),
+    catalog: Path = Path("data/cameras.parquet"),
+    every_s: float = typer.Option(300.0, help="footage refresh period (fetch/gate/VLM)"),
+    weather_every_s: float = typer.Option(
+        1800.0, help="how often to run the weather reanalysis + import (0 = never; import only)"
+    ),
+    per_type: int = typer.Option(3, help="events re-resolved per event type on each refresh"),
+    k: int = 5,
+    deadline_s: float = 30.0,
+    ignore_night: bool = False,
+    repo: Path = typer.Option(Path(".."), help="repo root: where the weather command runs"),
+    weather_cmd: str = typer.Option(WEATHER_CMD, help="shell command producing events.json"),
+    events_json: Path = typer.Option(Path("out/events.json"), help="relative to --repo"),
+    verdict_log: Path = Path("data/verdicts.jsonl"),
+    once: bool = typer.Option(False, help="one weather + match + refresh pass, then exit"),
+):
+    """Scheduler: weather reanalysis every --weather-every-s, live footage refresh every
+    --every-s (per-type budget so every event type gets cameras), all into --db.
+    Run next to `serve --db` (its watcher stays idle: everything is matched here)."""
+    import time
+
+    from . import events_db as edb
+    from .ingest.base import make_client
+    from .match import match_run, refresh_run
+    from .resolve import FrameCache
+
+    async def weather(conn, cat: Catalog) -> None:
+        proc = await asyncio.create_subprocess_shell(weather_cmd, cwd=repo)
+        rc = await proc.wait()
+        if rc != 0:
+            logging.error("weather command exited %d; importing previous events.json", rc)
+        path = repo / events_json
+        if path.is_file():
+            ids = edb.import_events_json(conn, path)
+            logging.info("imported %d events (run %s)", len(ids), edb.run_time_at(conn, None))
+        await match_run(conn, cat, k=k, ignore_night=ignore_night)
+
+    async def go() -> None:
+        conn = edb.connect(db)
+        cat = Catalog.load(catalog, verdict_log=verdict_log)
+        cache = FrameCache()
+        last_weather = -float("inf")
+        async with make_client(timeout=15.0) as http:
+            while True:
+                t0 = time.monotonic()
+                try:
+                    if weather_every_s > 0 and t0 - last_weather >= weather_every_s:
+                        await weather(conn, cat)
+                        last_weather = t0
+                    results = await refresh_run(
+                        conn,
+                        cat,
+                        per_type=per_type,
+                        k=k,
+                        http=http,
+                        cache=cache,
+                        deadline_s=deadline_s,
+                        ignore_night=ignore_night,
+                        verdict_log=str(verdict_log),
+                    )
+                    found = sum(1 for r in results if r.footage)
+                    logging.info(
+                        "refresh: %d events resolved, %d with footage, %.0fs",
+                        len(results),
+                        found,
+                        time.monotonic() - t0,
+                    )
+                except Exception:  # noqa: BLE001
+                    logging.exception("cron pass failed")
+                if once:
+                    return
+                await asyncio.sleep(max(0.0, every_s - (time.monotonic() - t0)))
+
+    asyncio.run(go())
 
 
 @app.command()

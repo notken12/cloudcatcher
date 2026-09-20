@@ -141,6 +141,14 @@ async def test_match_run_and_get_events(tmp_path, conn, patched_fetch, monkeypat
     # rerun is a no-op; a later run with cameras not yet matched falls back to the older match
     async with httpx.AsyncClient() as http:
         assert await match_run(conn, cat, resolve=True, http=http) == []
+    # the cron's periodic refresh re-resolves matched events (per-type budget), no new rows
+    from sunroof_camera.match import refresh_run
+
+    async with httpx.AsyncClient() as http:
+        again = await refresh_run(conn, cat, per_type=1, http=http)
+        assert [r.event_id for r in again] == [eid] and again[0].status == "FOOTAGE_FOUND"
+        assert await refresh_run(conn, cat, per_type=0, http=http) == []
+    assert len(edb.list_events(conn)[0]["cameras"]) == 2
     edb.upsert_run(conn, [STORM.model_dump()], T2 + timedelta(minutes=10))
     ev = edb.list_events(conn)[0]
     assert ev["id"] == eid and ev["cameras"][0]["matched_at"] == edb.iso(T2)
@@ -168,6 +176,16 @@ async def test_match_run_and_get_events(tmp_path, conn, patched_fetch, monkeypat
             assert st.match_pending is not None
             assert len(await st.match_pending(None)) == 1
             assert edb.unmatched(conn, edb.iso(T2 + timedelta(minutes=10))) == []
+            # the Refresh button: POST starts a pass, GET reports it, second POST is throttled
+            assert (await c.get("/refresh")).json() == {"running": False}
+            r = await c.post("/refresh")
+            assert r.status_code == 202 and r.json()["running"] is True
+            await st.refresh_task
+            status = (await c.get("/refresh")).json()
+            assert status["running"] is False and status["resolved"] == 1
+            assert status["with_footage"] == 1 and len((await c.get("/feed")).json()) == 1
+            r = await c.post("/refresh")
+            assert r.status_code == 429 and "Retry-After" in r.headers
 
     app2 = create_app(catalog_path=_catalog(tmp_path), verdict_log=None)
     async with app2.router.lifespan_context(app2):
@@ -175,3 +193,4 @@ async def test_match_run_and_get_events(tmp_path, conn, patched_fetch, monkeypat
             transport=httpx.ASGITransport(app=app2), base_url="http://t"
         ) as c:
             assert (await c.get("/events")).status_code == 503
+            assert (await c.post("/refresh")).status_code == 503

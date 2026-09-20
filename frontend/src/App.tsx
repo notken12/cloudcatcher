@@ -9,7 +9,7 @@ import type { Pin } from './components/globe/Globe'
 import { Show, SHOW_PERIOD_MS } from './components/show/Show'
 import { ArchiveCard } from './components/time/ArchiveCard'
 import { TimeControls } from './components/time/TimeControls'
-import { LIVE, mediaUrl, useCameras, useFeed, useStream } from './lib/api'
+import { LIVE, mediaUrl, useCameras, useFeed, useRefresh, useStream } from './lib/api'
 import { ARCHIVE_CAMS, availableCams, camHasYear, describeMoment, frameUrl } from './lib/archive'
 import { EVENT_LABEL, FILTER_LABEL, matchesFilter, type Filter } from './lib/events'
 import { duskiness, subsolar } from './lib/sun'
@@ -41,6 +41,7 @@ function useSun() {
 export default function App() {
   const feed = useFeed()
   const stream = useStream()
+  const refresh = useRefresh()
   const [view, setView] = useView()
   const [moment, setMoment] = useMoment()
   const cameras = useCameras()
@@ -158,6 +159,7 @@ export default function App() {
       else if (e.key === ' ' && view === 'time') setPlaying((p) => !p)
       else if (e.key === '?') setHelp((h) => !h)
       else if (e.key === 'Escape') setHelp(false)
+      else if (e.key === 'r' || e.key === 'R') refresh.trigger()
       else if (e.key in VIEW_KEYS) onView(VIEW_KEYS[e.key])
       else return
       e.preventDefault()
@@ -211,6 +213,7 @@ export default function App() {
         onFilter={onFilter}
         liveCount={feed.data?.length ?? 0}
         stream={stream}
+        refresh={refresh}
         view={view}
         onView={onView}
         onHelp={() => setHelp(true)}

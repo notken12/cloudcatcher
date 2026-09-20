@@ -273,6 +273,16 @@ def unmatched(conn: sqlite3.Connection, run_time: str) -> list[sqlite3.Row]:
     ).fetchall()
 
 
+def with_cameras(conn: sqlite3.Connection, run_time: str) -> list[sqlite3.Row]:
+    """Observations of `run_time` that have at least one matched camera, rarest first."""
+    return conn.execute(
+        "SELECT o.*, e.type, e.t_start FROM event_observations o JOIN events e ON e.id=o.event_id "
+        "WHERE o.time=? AND EXISTS (SELECT 1 FROM event_cameras c WHERE c.event_id=o.event_id "
+        "AND c.time=o.time) ORDER BY o.rarity DESC, o.severity DESC",
+        (run_time,),
+    ).fetchall()
+
+
 def write_cameras(
     conn: sqlite3.Connection, event_id: str, run_time: str, rows: list[dict[str, Any]]
 ) -> None:

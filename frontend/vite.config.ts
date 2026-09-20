@@ -9,6 +9,7 @@ export default defineConfig({
     // Same-origin dev proxy to the camera backend (FastAPI) if you'd rather not set VITE_API_BASE.
     proxy: {
       '/feed': 'http://localhost:8000',
+      '/refresh': 'http://localhost:8000',
       '/stream': 'http://localhost:8000',
       '/events': 'http://localhost:8000',
       '/proxy': 'http://localhost:8000',

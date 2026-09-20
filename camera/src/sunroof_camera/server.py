@@ -102,6 +102,8 @@ class State:
         self.lock = asyncio.Lock()
         self.handle: Callable[[WeatherEvent], Awaitable[FootageResult]] | None = None
         self.match_pending: Callable[[str | None], Awaitable[list[FootageResult]]] | None = None
+        self.refresh_task: asyncio.Task | None = None
+        self.refresh_status: dict = {"running": False}
 
     def publish(self, kind: str, data: str) -> None:
         for q in list(self.subscribers):
@@ -119,6 +121,8 @@ def create_app(
     db: Path | None = None,
     watch_db_s: float = 30.0,
     frontend: Path | None = None,
+    refresh_per_type: int = 3,
+    refresh_min_s: float = 60.0,
 ) -> FastAPI:
     st = State(catalog_path, verdict_log, db)
 
@@ -198,8 +202,64 @@ def create_app(
                 on_footage=record,
             )
 
+    async def refresh_now() -> None:
+        """Manual footage refresh (the Refresh button): same pass the cron runs every few minutes."""
+        assert st.catalog is not None and st.db is not None
+        from .match import refresh_run
+
+        st.refresh_status = {"running": True, "started": edb.iso(datetime.now(timezone.utc))}
+        try:
+            async with st.lock:
+                results = await refresh_run(
+                    st.db,
+                    st.catalog,
+                    per_type=refresh_per_type,
+                    k=max(k, 5),
+                    http=st.http,
+                    cache=st.cache,
+                    deadline_s=deadline_s,
+                    ignore_night=ignore_night,
+                    verdict_log=st.verdict_log,
+                    on_footage=record,
+                )
+            st.refresh_status = {
+                "running": False,
+                "finished": edb.iso(datetime.now(timezone.utc)),
+                "resolved": len(results),
+                "with_footage": sum(1 for r in results if r.footage),
+            }
+        except Exception as e:  # noqa: BLE001
+            log.exception("manual refresh failed")
+            st.refresh_status = {"running": False, "error": str(e)}
+        finally:
+            st.publish("refresh", json.dumps(st.refresh_status))
+
     st.handle = handle
     st.match_pending = match_pending
+
+    @app.post("/refresh", status_code=202)
+    async def refresh() -> dict:
+        """Start a footage refresh pass now; poll GET /refresh (or listen for the `refresh` SSE
+        event) for completion. One at a time, at most one per --refresh-min-s."""
+        if st.db is None:
+            raise HTTPException(503, "server started without --db")
+        if st.refresh_task is not None and not st.refresh_task.done():
+            return st.refresh_status
+        fin = st.refresh_status.get("finished")
+        if fin is not None:
+            wait = refresh_min_s - (datetime.now(timezone.utc) - edb.parse_iso(fin)).total_seconds()
+            if wait > 0:
+                raise HTTPException(
+                    429,
+                    f"refreshed {int(refresh_min_s - wait)}s ago; retry in {int(wait) + 1}s",
+                    headers={"Retry-After": str(int(wait) + 1)},
+                )
+        st.refresh_task = asyncio.create_task(refresh_now())
+        return {"running": True}
+
+    @app.get("/refresh")
+    async def refresh_status() -> dict:
+        return st.refresh_status
 
     @app.get("/events")
     async def list_events(

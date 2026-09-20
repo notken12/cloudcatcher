@@ -6,9 +6,21 @@ description: Browser testing of Sunroof broadcast, globe, and archive layouts wi
 # Fixture setup
 - Use the canonical repository's `frontend` directory.
 - Install with `pnpm install --frozen-lockfile` if needed.
-- Run `pnpm dev -- --port 5199` with `VITE_API_BASE` unset. Before reusing a
+- Run `pnpm dev --port 5199` with `VITE_API_BASE` unset. An extra `--` may
+  prevent Vite from parsing the requested port; check its startup URL.
+  Before reusing a
   server, verify its process working directory and environment.
 - No backend/catalog is required for fixture mode. Run `pnpm test` separately.
+
+## Same-origin live comparison
+- When testing a backend-mounted SPA, build with `VITE_API_BASE=/ pnpm build`.
+  Unset or empty `VITE_API_BASE` selects fixture mode at build time, even if a
+  backend serves the resulting files.
+- The backend can mount it using `sunroof-camera serve --frontend ../frontend/dist`
+  from `camera/`; reuse an existing backend rather than restarting it.
+- Confirm the UI says `connected`, not `fixture`, and browser requests use
+  `/feed`, `/cameras.geojson`, `/proxy/frame/…`, and `/proxy/history/…`.
+- `/sandbox` remains the backend diagnostic page when the SPA is mounted at `/`.
 
 ## Devin Secrets Needed
 None for fixture mode. Public archive domains need internet access.

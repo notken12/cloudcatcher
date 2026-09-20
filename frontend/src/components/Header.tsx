@@ -1,5 +1,5 @@
-import { ChevronDown, Clapperboard, Earth, History, Tv } from 'lucide-react'
-import type { StreamState } from '../lib/api'
+import { ChevronDown, Clapperboard, Earth, History, RefreshCw, Tv } from 'lucide-react'
+import type { Refresh, StreamState } from '../lib/api'
 import { FILTER_LABEL, FILTERS, type Filter } from '../lib/events'
 import type { View } from '../lib/view'
 
@@ -8,12 +8,31 @@ interface Props {
   onFilter: (f: Filter) => void
   liveCount: number
   stream: StreamState
+  refresh: Refresh
   view: View
   onView: (v: View) => void
   onHelp: () => void
 }
 
-export function Header({ filter, onFilter, liveCount, stream, view, onView, onHelp }: Props) {
+export function Header({
+  filter,
+  onFilter,
+  liveCount,
+  stream,
+  refresh,
+  view,
+  onView,
+  onHelp,
+}: Props) {
+  const refreshTitle = refresh.running
+    ? 'Refreshing footage…'
+    : refresh.cooldown > 0
+      ? `Refresh again in ${refresh.cooldown}s`
+      : refresh.last?.error
+        ? `Refresh failed: ${refresh.last.error}`
+        : refresh.last
+          ? `Refresh footage (last: ${refresh.last.with_footage ?? 0}/${refresh.last.resolved ?? 0} events with footage)`
+          : 'Refresh footage now (R)'
   const dot =
     stream === 'open'
       ? 'bg-emerald-500 pulse'
@@ -78,6 +97,17 @@ export function Header({ filter, onFilter, liveCount, stream, view, onView, onHe
           </select>
           <ChevronDown className="muted pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2" />
         </label>
+        <button
+          type="button"
+          className="muted inline-grid h-7 w-7 place-items-center rounded-full border border-[var(--line)] disabled:opacity-50"
+          onClick={refresh.trigger}
+          disabled={refresh.running || refresh.cooldown > 0}
+          aria-busy={refresh.running}
+          title={refreshTitle}
+          aria-label="Refresh footage"
+        >
+          <RefreshCw className={`h-4 w-4 ${refresh.running ? 'animate-spin' : ''}`} aria-hidden />
+        </button>
         <span
           className="muted inline-flex items-center gap-2 text-sm tabular-nums whitespace-nowrap"
           title={`${label} · ${liveCount}`}

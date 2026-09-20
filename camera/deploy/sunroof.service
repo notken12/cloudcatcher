@@ -1,0 +1,19 @@
+# systemd unit: sunroof camera API + SPA. Install:
+#   sudo cp deploy/*.service /etc/systemd/system/ && sudo systemctl enable --now sunroof sunroof-cron
+# Edit WorkingDirectory/User and put OPENAI_API_KEY=... in /etc/sunroof.env (chmod 600).
+[Unit]
+Description=sunroof camera API (FastAPI + frontend)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/repos/sunroof/camera
+EnvironmentFile=/etc/sunroof.env
+Environment=SUNROOF_VLM_BACKEND=openai
+ExecStart=/usr/bin/env uv run sunroof-camera serve --db data/events.db --port 8000 --frontend ../frontend/dist
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
