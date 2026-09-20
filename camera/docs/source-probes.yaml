@@ -76,20 +76,117 @@
   probe: fetch 50 random image URLs, hash
   expect: <20% identical hashes
 
+- id: cars_ct
+  region: US-CT
+  status: added
+  adapter: cars_list.py (PORTALS["ct"])
+  endpoint: https://ctroads.org/List/GetData/Cameras
+  rows: ~350
+  notes: real JPEGs from /map/Cctv/{id} (not the placeholder PNG); HLS auth-required
+
 - id: other_511_vendors
-  region: US-VA, US-TN, US-SC, US-CO, US-WV, US-ND, US-NM, US-RI, US-KY, US-MO, US-IL
+  region: US-VA, US-TN, US-SC, US-CO, US-WV, US-ND, US-NM, US-RI, US-KY, US-MO, US-AR, US-HI, US-MT, US-WY, US-SD, US-OK, US-MS
   status: later
-  observed: /api/graphql 404/405/redirect; /List/GetData shell or 404
-  reason: different vendors (Castle Rock, Iteris, Serco); need per-vendor adapters
-  probe: inspect XHR of each portal's map page
+  observed: >-
+    re-probed 2026-09-20: /api/graphql 404/405/redirect; /List/GetData/Cameras shell or 404;
+    guessed /api/cameras paths 404; RI connection refused
+  reason: different vendors (Castle Rock, Iteris, Serco, in-house SPAs); need per-vendor adapters
+  probe: inspect XHR of each portal's map page in a browser
+
+- id: deldot
+  region: US-DE
+  status: added
+  adapter: deldot.py
+  endpoint: https://tmc.deldot.gov/json/videocamera.json
+  rows: ~360
+  notes: HLS only (video.deldot.gov Wowza, m3u8s); ffmpeg frame; ~20% streams time out per probe
+
+- id: al_algo
+  region: US-AL
+  status: added
+  adapter: algo.py
+  endpoint: https://api.algotraffic.com/v4.0/Cameras
+  rows: ~610
+  notes: v2/v3 paths 404; snapshotImageUrl JPEG + Wowza CDN HLS; direction word; accessLevel Public only
+
+- id: seattle
+  region: US-WA (Seattle / Puget Sound)
+  status: added
+  adapter: seattle.py
+  endpoint: https://web.seattle.gov/Travelers/api/Map/Data?zoomId=13&type=2
+  rows: ~650
+  notes: 389 SDOT + 264 WSDOT cams; filenames resolve on seattle.gov/trafficcams/images/ and images.wsdot.wa.gov/nw/
+
+- id: austin
+  region: US-TX (Austin)
+  status: added
+  adapter: austin.py
+  endpoint: https://data.austintexas.gov/resource/b4k4-adkb.json?$limit=5000
+  rows: ~820
+  notes: Socrata open data, public domain; cctv.austinmobility.io JPEG; ~20% shared placeholder (health probe marks them)
+
+- id: travelmidwest
+  region: US-IL (Chicago corridor / IDOT)
+  status: added
+  adapter: travelmidwest.py
+  endpoint: https://travelmidwest.com/lmiga/cameras.json
+  rows: ~1400
+  notes: 529 sites x up to 4 directional views; www. host 301s and sometimes times out, use bare host
+
+- id: md_chart
+  region: US-MD
+  status: retry
+  endpoint: https://chartexp1.sha.maryland.gov/CHARTExportClientService/getCameraMapDataJSON.do
+  observed: 200, 552 cams with lat/lon + publicVideoURL (HTML player); HLS https://{cctvIp}/rtplive/{id}/playlist.m3u8 timed out (0 bytes) from US datacentre egress
+  reason: no frame path reachable; likely CDN/geo allow-list
+  probe: curl -m 20 the playlist URL above from a US-East / residential egress
+  expect: 200 application/vnd.apple.mpegurl
+
+- id: nyc_tmc
+  region: US-NY (NYC)
+  status: later
+  endpoint: https://webcams.nyctmc.org/api/cameras
+  observed: 200 with -k, ~900 cams with imageUrl; default TLS verification fails (incomplete chain, missing intermediate)
+  reason: would need the intermediate cert pinned into the client's CA bundle; do not disable verification
+  probe: openssl s_client -connect webcams.nyctmc.org:443 -showcerts
+  expect: full chain served, or intermediate pinned in adapter
+
+- id: ohgo
+  region: US-OH
+  status: needs_key
+  endpoint: https://publicapi.ohgo.com/api/v1/cameras
+  observed: 401 "API key required"
+  unlock: free key at https://publicapi.ohgo.com/docs
+
+- id: wunderground_webcams
+  region: US / global
+  status: needs_key
+  endpoint: https://api.weather.com/v2/webcams
+  observed: 401 Missing apiKey
+  unlock: weather.com API key (PWS owners get one free)
+
+- id: txdot
+  region: US-TX
+  status: rejected
+  endpoint: https://drivetexas.org/api/map/cameras ; https://its.txdot.gov/ITS_WEB/FrontEnd/svc/its.svc/GetCameraList
+  observed: 500 / 307 -> 404
+  reason: no reachable catalog; Houston TranStar is HTML only
+  probe: inspect DriveTexas map XHR
+
+- id: fsvisimages
+  region: US (USFS visibility cams)
+  status: rejected
+  endpoint: https://www.fsvisimages.com/descriptions.aspx
+  observed: nginx default page
+  reason: site decommissioned
 
 - id: michigan_midrive
   region: US-MI
-  status: later
+  status: retry
   endpoint: https://mdotjboss.state.mi.us/MiDrive/camera (JSON with HTML strings)
-  observed: 804 cams, image URLs embedded in HTML snippets
-  reason: needs HTML unescaping/parsing; deferred
-  probe: parse `<img src>` out of the HTML field
+  observed: 804 cams on first probe; 404 on re-probe 2026-09-20
+  reason: endpoint moved or removed; find the new MiDrive map XHR
+  probe: inspect XHR of https://mdotjboss.state.mi.us/MiDrive/map
 
 - id: wsdot
   region: US-WA

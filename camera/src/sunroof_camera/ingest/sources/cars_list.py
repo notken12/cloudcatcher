@@ -43,6 +43,7 @@ PORTALS: dict[str, tuple[str, str]] = {
     "wi": ("511wi.gov", "Wisconsin DOT / 511WI"),
     "id": ("511.idaho.gov", "Idaho Transportation Department"),
     "ne6": ("newengland511.org", "New England 511 (VT/NH/ME)"),
+    "ct": ("ctroads.org", "Connecticut DOT / CTroads"),
     "la": ("511la.org", "Louisiana DOTD / 511LA"),
     "ak": ("511.alaska.gov", "Alaska DOT&PF / 511"),
     "ab": ("511.alberta.ca", "Alberta 511"),

@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 from .sources.alertca import AlertCaliforniaAdapter
+from .sources.algo import AlgoTrafficAdapter
+from .sources.austin import AustinCCTVAdapter
 from .sources.caltrans import CaltransAdapter
 from .sources.cars import NewYork511Adapter, Ontario511Adapter
 from .sources.cars_gql import CARS_GQL_ADAPTERS
 from .sources.cars_list import CARS_LIST_ADAPTERS
+from .sources.deldot import DelDOTAdapter
 from .sources.digitraffic import DigitrafficAdapter
 from .sources.drivebc import DriveBCAdapter
 from .sources.faa import FaaAdapter
@@ -21,9 +24,11 @@ from .sources.nzta import NZTAAdapter
 from .sources.panomax import PanomaxAdapter
 from .sources.phenocam import PhenoCamAdapter
 from .sources.qld import QLDTrafficAdapter
+from .sources.seattle import SeattleTravelersAdapter
 from .sources.singapore import SingaporeLTAAdapter
 from .sources.taiwan import TaiwanTDXAdapter
 from .sources.tfl import TfLJamCamAdapter
+from .sources.travelmidwest import TravelMidwestAdapter
 from .sources.tripcheck import TripCheckAdapter
 from .sources.vegvesen import VegvesenAdapter
 from .sources.windy import WindyAdapter
@@ -50,6 +55,11 @@ ADAPTERS: dict[str, type] = {
         NDBCAdapter,
         DriveBCAdapter,
         TripCheckAdapter,
+        DelDOTAdapter,
+        AlgoTrafficAdapter,
+        SeattleTravelersAdapter,
+        AustinCCTVAdapter,
+        TravelMidwestAdapter,
         NZTAAdapter,
         HongKongTDAdapter,
         SingaporeLTAAdapter,
